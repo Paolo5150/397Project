@@ -16,7 +16,6 @@ public:
 	void Run();
 	void Shutdown();
 
-
 	bool Update(Event* e);
 
 
