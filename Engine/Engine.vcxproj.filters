@@ -59,5 +59,8 @@
     <ClInclude Include="src\Event\EventDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Event\TimerEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

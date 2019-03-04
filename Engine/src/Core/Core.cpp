@@ -1,5 +1,5 @@
 #include "Core.h"
-
+#include "..\Event\TimerEvents.h"
 
 void Core::Initialize()
 {
@@ -35,7 +35,11 @@ void Core::Initialize()
 	Timer::Initialize();
 
 	//Events subscirption
-	EventDispatcher::Instance().SubscribeCallback<LogicUpdateEvent>(std::bind(&Core::Update, this, std::placeholders::_1));
+	EventDispatcher::Instance().SubscribeCallback<LogicUpdateEvent>(std::bind(&Core::LogicUpdate, this, std::placeholders::_1));
+	EventDispatcher::Instance().SubscribeCallback<LateUpdateEvent>(std::bind(&Core::LateUpdate, this, std::placeholders::_1));
+	EventDispatcher::Instance().SubscribeCallback<RenderEvent>(std::bind(&Core::Render, this, std::placeholders::_1));
+	EventDispatcher::Instance().SubscribeCallback<EngineUpdateEvent>(std::bind(&Core::EngineUpdate, this, std::placeholders::_1));
+
 
 
 	//Get cpplication
@@ -80,8 +84,27 @@ bool Core::IsRunning()
 	return m_isRunning;
 }
 
-bool Core::Update(Event* e)
+bool Core::LogicUpdate(Event* e)
 {
-	LOG_INFO("Update received");
+	LOG_WARNING("Logic Update received");
+	return 0;
+}
+
+bool Core::EngineUpdate(Event* e)
+{
+	LOG_INFO("Engine Update received");
+	return 0;
+}
+
+bool Core::LateUpdate(Event* e)
+{
+	LOG_INFO("Late Update received");
+	return 0;
+}
+
+
+bool Core::Render(Event* e)
+{
+	LOG_INFO("Render received");
 	return 0;
 }

@@ -16,7 +16,11 @@ public:
 	void Run();
 	void Shutdown();
 
-	bool Update(Event* e);
+	bool LogicUpdate(Event* e);
+	bool EngineUpdate(Event* e);
+	bool LateUpdate(Event* e);
+	bool Render(Event* e);
+
 
 
 	~Core();
