@@ -1,11 +1,13 @@
 #pragma once
+
+#include <GLFW/glfw3.h>
+#include "Logger.h"
+
 class Core
 {
 public:
-	static Core& Instance()
-	{
-		std::cout << "asd";
-	}
+	static Core& Instance();
+
 	void Initialize();
 	void Run();
 	void Shutdown();
@@ -13,18 +15,13 @@ public:
 
 	~Core();
 	bool IsRunning();
-	//Window& GetWindow();
-	//Application& GetRunningApplication();
+
 
 private:
 
 
 	Core();
-
-
-
 	bool m_isRunning;
-
 	Core& operator=(Core& other) = delete;
 	Core(Core& other) = delete;
 
