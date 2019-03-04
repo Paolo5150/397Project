@@ -10,13 +10,15 @@ void Core::Initialize()
 	if (!glfwInit())
 		LOG_ERROR("Failed to initialize GLFW");
 
-
 	//Create Window
 
 
+
 	//glewExperimental = true;
+	glewExperimental = true; //Apparently this is necessary to use shaders
 	//Initialize glew
-	
+	if (!glewInit())
+		LOG_ERROR("Failed to initialize GLEW");
 
 	//OpengGL initialization
 	glEnable(GL_DEPTH_TEST);
