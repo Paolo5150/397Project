@@ -15,8 +15,8 @@ public:
 
 	virtual void AppShutdown() = 0;
 
-	virtual ~Application() = 0;
-	bool isPaused;
+	virtual ~Application() {};
+
 
 
 protected:

@@ -5,7 +5,7 @@
 #include "Timer.h"
 #include "Application.h"
 
-
+extern "C++" Application* CreateApplication();
 
 class Core
 {

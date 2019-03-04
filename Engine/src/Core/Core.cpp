@@ -39,8 +39,8 @@ void Core::Initialize()
 
 
 	//Get cpplication
-	//m_runningApplication = CreateApplication();
-	//m_runningApplication->AppInitialize();
+	m_runningApplication = CreateApplication();
+	m_runningApplication->AppInitialize();
 
 	//Start update loop
 	m_isRunning = true;
