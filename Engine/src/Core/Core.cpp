@@ -35,7 +35,7 @@ void Core::Initialize()
 	Timer::Initialize();
 
 	//Events subscirption
-	//EventDispatcher::Instance().SubscribeCallback<LogicUpdateEvent>(std::bind(&Core::Update, this, std::placeholders::_1));
+	EventDispatcher::Instance().SubscribeCallback<LogicUpdateEvent>(std::bind(&Core::Update, this, std::placeholders::_1));
 
 
 	//Get cpplication
@@ -48,12 +48,12 @@ void Core::Initialize()
 void Core::Run()
 {
 	LOG_WARNING("Engine run");
-	/*while (m_isRunning)
+	while (m_isRunning)
 	{
 		// Just update the timer
 		// The timer will send out events for update, render and so on
 		Timer::Update();
-	}*/
+	}
 }
 void Core::Shutdown()
 {

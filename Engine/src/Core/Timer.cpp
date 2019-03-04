@@ -22,6 +22,7 @@ void Timer::Initialize()
 	now = glfwGetTime();
 	prev = glfwGetTime();
 	timerMultiplier = 1.0;
+	displayFPS = 0;
 }
 
 float Timer::GetDeltaS()
