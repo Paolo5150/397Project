@@ -1,30 +1,28 @@
 #include "Core.h"
 #include "..\Event\TimerEvents.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 void Core::Initialize()
 {
-	LOG_INFO("Engine initialize");
+
+
 
 	//Set up environment
-	//Glfw init MST be called after creating the context (the window)
-	if (!glfwInit())
-		LOG_ERROR("Failed to initialize GLFW");
+	//Glew init MST be called after creating the context (the window)
+	glfwInit();
 
-	//Create Window
-
-
-
-	//glewExperimental = true;
-	glewExperimental = true; //Apparently this is necessary to use shaders
+	glewExperimental = true;
 	//Initialize glew
-	if (!glewInit())
-		LOG_ERROR("Failed to initialize GLEW");
+	glewInit();
+
 
 	//OpengGL initialization
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
+
 
 
 	//Standard shapes
@@ -51,7 +49,7 @@ void Core::Initialize()
 }
 void Core::Run()
 {
-	LOG_WARNING("Engine run");
+
 	while (m_isRunning)
 	{
 		// Just update the timer
@@ -61,7 +59,7 @@ void Core::Run()
 }
 void Core::Shutdown()
 {
-	LOG_ERROR("Engine shutdown");
+
 }
 
 Core& Core::Instance()
@@ -86,25 +84,24 @@ bool Core::IsRunning()
 
 bool Core::LogicUpdate(Event* e)
 {
-	LOG_WARNING("Logic Update received");
+	std::cout << "Update\n";
 	return 0;
 }
 
 bool Core::EngineUpdate(Event* e)
 {
-	LOG_INFO("Engine Update received");
+
 	return 0;
 }
 
 bool Core::LateUpdate(Event* e)
 {
-	LOG_INFO("Late Update received");
 	return 0;
 }
 
 
 bool Core::Render(Event* e)
 {
-	LOG_INFO("Render received");
+
 	return 0;
 }

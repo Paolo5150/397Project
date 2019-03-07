@@ -1,9 +1,9 @@
 #pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+
 #include "Logger.h"
 #include "Timer.h"
 #include "Application.h"
+#include <iostream>
 
 extern "C++" Application* CreateApplication();
 

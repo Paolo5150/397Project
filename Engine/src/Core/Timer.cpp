@@ -80,7 +80,7 @@ void Timer::Update()
 		if (st >= 1)
 		{
 			st = 0;
-			LOG_INFO("FPS: {}", FPSCounter);
+
 			FPSCounter = 0;
 		}
 	}

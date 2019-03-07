@@ -1,6 +1,6 @@
 #pragma once
 #include <GLFW/glfw3.h>
-#include "Logger.h"
+
 #include "..\Event\EventDispatcher.h"
 
 class Timer
