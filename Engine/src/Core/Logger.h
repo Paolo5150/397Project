@@ -10,6 +10,7 @@
 #include<Windows.h>
 #endif
 
+#define DEBUG 0
 
 
 class Logger
@@ -38,6 +39,7 @@ private:
 template<class T, class...Args>
 void Logger::LogInfo(T&& f, Args&&...pack)
 {
+#if DEBUG
 #if defined(_WIN32) || defined(_WIN64)
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hStdout, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
@@ -56,13 +58,14 @@ void Logger::LogInfo(T&& f, Args&&...pack)
 		std::cout << f << " ";
 
 	LogInfo(std::forward<Args>(pack)...);
-
+#endif
 
 }
 
 template<class T>
 void Logger::LogInfo(T&& f)
 {
+#if DEBUG
 #if defined(_WIN32) || defined(_WIN64)
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hStdout, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
@@ -80,12 +83,13 @@ void Logger::LogInfo(T&& f)
 		std::cout << f << "\n";
 
 	first = 1;
-
+#endif
 }
 
 template<class T, class...Args>
 void Logger::LogError(T&& f, Args&&...pack)
 {
+#if DEBUG
 #if defined(_WIN32) || defined(_WIN64)
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hStdout,FOREGROUND_RED| FOREGROUND_INTENSITY);
@@ -103,13 +107,14 @@ void Logger::LogError(T&& f, Args&&...pack)
 		std::cout << f << " ";
 
 	LogError(std::forward<Args>(pack)...);
-
+#endif
 
 }
 
 template<class T>
 void Logger::LogError(T&& f)
 {
+#if DEBUG
 #if defined(_WIN32) || defined(_WIN64)
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hStdout, FOREGROUND_RED | FOREGROUND_INTENSITY);
@@ -126,5 +131,5 @@ void Logger::LogError(T&& f)
 	else
 	std::cout << f << "\n";
 	first = 1;
-
+#endif
 }
