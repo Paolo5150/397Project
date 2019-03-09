@@ -2,6 +2,7 @@
 #include "..\Event\TimerEvents.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "Logger.h"
 
 void Core::Initialize()
 {
@@ -84,13 +85,13 @@ bool Core::IsRunning()
 
 bool Core::LogicUpdate(Event* e)
 {
-	std::cout << "Update\n";
+	Logger::LogInfo("Logic Update",1,2,44,6,7,"random number test");
 	return 0;
 }
 
 bool Core::EngineUpdate(Event* e)
 {
-
+	Logger::LogError("Engine Update","This is how you chain stuff","pretty simple",1,3,0.5);
 	return 0;
 }
 
