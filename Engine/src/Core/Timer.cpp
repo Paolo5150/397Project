@@ -44,7 +44,7 @@ float Timer::GetTimeS()
 
 void Timer::Update()
 {
-	static float accumulator = 0;
+	static float accumulator = 1000;
 
 	now = glfwGetTime();
 	delta = (now - prev);

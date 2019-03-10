@@ -1,9 +1,11 @@
 #pragma once
 
+#include "Window.h"
 #include "Logger.h"
 #include "Timer.h"
 #include "Application.h"
 #include <iostream>
+
 
 extern "C++" Application* CreateApplication();
 
@@ -28,7 +30,7 @@ public:
 
 
 private:
-
+	
 
 	Core();
 	Core& operator=(const Core& other) = delete;
@@ -36,5 +38,6 @@ private:
 
 	Application* m_runningApplication;
 	bool m_isRunning;
+
 
 };
