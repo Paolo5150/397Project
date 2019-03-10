@@ -98,7 +98,7 @@ bool Core::IsRunning()
 
 bool Core::LogicUpdate(Event* e)
 {
-	//Logger::LogInfo("Logic Update",1,2,44,6,7,"random number test");
+	Logger::LogInfo("Logic Update",1,2,44,6,7,"random number test");
 	return 0;
 }
 

@@ -31,6 +31,13 @@ public:
 
 private:
 	static bool first;
+	static std::string GetCurrentTime()
+	{
+		std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+		std::string s(20, '\0');
+		std::strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+		return s;
+	}
 
 };
 
@@ -47,12 +54,9 @@ void Logger::LogInfo(T&& f, Args&&...pack)
 #endif	
 
 	if (first)
-	{
-	std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-	std::string s(20, '\0');
-	std::strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+	{	
 	first = 0;
-	std::cout << s << f << " ";
+	std::cout << GetCurrentTime() << f << " ";
 	}
 	else
 		std::cout << f << " ";
@@ -72,12 +76,9 @@ void Logger::LogInfo(T&& f)
 
 #endif
 	if (first)
-	{
-		std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-		std::string s(20, '\0');
-		std::strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+	{		
 		first = 0;
-		std::cout << s << f << "\n";
+		std::cout << GetCurrentTime() << f << "\n";
 	}
 	else
 		std::cout << f << "\n";
@@ -97,11 +98,8 @@ void Logger::LogError(T&& f, Args&&...pack)
 
 	if (first)
 	{
-		std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-		std::string s(20, '\0');
-		std::strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
 		first = 0;
-		std::cout << s << f << " ";
+		std::cout << GetCurrentTime() << f << " ";
 	}
 	else
 		std::cout << f << " ";
@@ -122,11 +120,9 @@ void Logger::LogError(T&& f)
 #endif
 	if (first)
 	{
-		std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-		std::string s(20, '\0');
-		std::strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+		
 		first = 0;
-		std::cout << s << f << "\n";
+		std::cout << GetCurrentTime() << f << "\n";
 	}
 	else
 	std::cout << f << "\n";
