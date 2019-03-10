@@ -17,6 +17,8 @@
 		void UpdateEvents();
 		void SetWindowSize(int w, int h);
 		void GetWindowSize(int& w, int& h);
+		void SetWindowTitle(std::string title);
+
 
 		static void OnClose(GLFWwindow* win);
 		static void OnResize(GLFWwindow* win, int w, int h);

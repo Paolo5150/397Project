@@ -56,6 +56,11 @@ void Window::GetWindowSize(int& w, int& h)
 	glfwGetWindowSize(this->window, &w, &h);
 }
 
+void Window::SetWindowTitle(std::string title)
+{
+	glfwSetWindowTitle(this->window, title.c_str());
+}
+
 void Window::Refresh()
 {
 	glfwSwapBuffers(window);
@@ -67,14 +72,12 @@ void Window::Destroy()
 	glfwSetWindowShouldClose(window, true);
 	glfwDestroyWindow(window);
 	window = NULL;
-
 }
 
 void Window::OnClose(GLFWwindow* win)
 {
 	glfwSetWindowShouldClose(win, false); //Prevent window from closing	
 	EventDispatcher::Instance().DispatchEvent(new WindowCloseEvent());
-
 }
 
 

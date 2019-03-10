@@ -35,7 +35,9 @@ void Core::Initialize()
 
 
 	//WINDOW
+	// Set up windows after flew initialization (and after the context has been set).
 	Window::Instance().SetWindowSize(1500, 800);
+	Window::Instance().SetWindowTitle("397 Project");
 
 	//Managers initialization
 	Timer::Initialize();
@@ -50,9 +52,6 @@ void Core::Initialize()
 	EventDispatcher::Instance().SubscribeCallback<WindowCloseEvent>([this](Event* event) -> bool{
 		m_isRunning = 0;
 		return 0; });
-
-
-
 
 	//Get cpplication
 	m_runningApplication = CreateApplication();
