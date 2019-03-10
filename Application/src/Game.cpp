@@ -1,9 +1,11 @@
 #pragma once
 #include "Game.h"
+#include "Core\Window.h"
+#include "Core\Logger.h"
 
 Application* CreateApplication()
 {
-	return new Game("My Game");
+	return new Game("397 Project");
 }
 
 Game::Game(std::string appName)

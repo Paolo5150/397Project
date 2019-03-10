@@ -7,7 +7,7 @@
 	class Window
 	{
 	public:
-		friend class Core;
+		friend class Core; //Core will initialize the window
 		static Window& Instance();
 
 

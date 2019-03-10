@@ -30,7 +30,7 @@ void Core::Initialize()
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-	glClearColor(1, 1, 0, 1);
+	glClearColor(0, 0, 0, 1);
 
 
 	//WINDOW
@@ -54,8 +54,7 @@ void Core::Initialize()
 	//Get cpplication
 	m_runningApplication = CreateApplication();
 	m_runningApplication->AppInitialize();
-	Logger::LogInfo("Appname", m_runningApplication->name);
-	Window::Instance().SetWindowTitle(m_runningApplication->name.c_str());
+	Window::Instance().SetWindowTitle(m_runningApplication->name.c_str()); //Window title -> game title
 
 	//Start update loop
 	m_isRunning = true;
@@ -68,13 +67,12 @@ void Core::Run()
 		// Just update the timer
 		// The timer will send out events for update, render and so on
 		Timer::Update();
-		Window::Instance().UpdateEvents();
-
-		
+		Window::Instance().UpdateEvents();		
 	}
 }
 void Core::Shutdown()
 {
+	m_runningApplication->AppShutdown();
 	Window::Instance().Destroy();
 	glfwTerminate();
 }
@@ -119,6 +117,14 @@ bool Core::LateUpdate(Event* e)
 bool Core::Render(Event* e)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glBegin(GL_TRIANGLES);
+	glVertex3f(-0.5f, -0.5f, 0.0f);
+	glVertex3f(0.5f, -0.5f, 0.0f);
+	glVertex3f(0.0f, 0.5f, 0.0f);
+
+	glEnd();
+
 	Window::Instance().Refresh();
 	return 0;
 }
