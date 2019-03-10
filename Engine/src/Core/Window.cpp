@@ -84,6 +84,6 @@ void Window::OnClose(GLFWwindow* win)
 
 void Window::OnResize(GLFWwindow* win, int w, int h)
 {
-	Logger::LogInfo("Resized");
+
 	glViewport(0,0,w, h);
 }

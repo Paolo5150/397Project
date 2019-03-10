@@ -20,9 +20,9 @@
 		void SetWindowTitle(std::string title);
 
 
+	private:
 		static void OnClose(GLFWwindow* win);
 		static void OnResize(GLFWwindow* win, int w, int h);
-	private:
 		static void Initialize();
 		static Window instance;
 

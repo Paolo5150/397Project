@@ -9,7 +9,7 @@ void Core::Initialize()
 {
 	
 	//Set up environment
-	//Glew init MST be called after creating the context (the window)
+	//Glew init MUST be called after creating the context (the window)
 	if (!glfwInit())
 	{
 		Logger::LogError("GLFW failed to initialize");
@@ -23,7 +23,6 @@ void Core::Initialize()
 	if (glewInit() != GLEW_OK)
 	{
 		Logger::LogError("GLEW failed to initialize");
-
 	}
 
 	//OpengGL initialization
@@ -31,13 +30,12 @@ void Core::Initialize()
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-	glClearColor(1, 0, 0, 1);
+	glClearColor(1, 1, 0, 1);
 
 
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
 	Window::Instance().SetWindowSize(1500, 800);
-	Window::Instance().SetWindowTitle("397 Project");
 
 	//Managers initialization
 	Timer::Initialize();
@@ -48,7 +46,7 @@ void Core::Initialize()
 	EventDispatcher::Instance().SubscribeCallback<RenderEvent>(std::bind(&Core::Render, this, std::placeholders::_1));
 	EventDispatcher::Instance().SubscribeCallback<EngineUpdateEvent>(std::bind(&Core::EngineUpdate, this, std::placeholders::_1));
 
-	//Close window 
+	//Close window, exit loop
 	EventDispatcher::Instance().SubscribeCallback<WindowCloseEvent>([this](Event* event) -> bool{
 		m_isRunning = 0;
 		return 0; });
@@ -56,6 +54,8 @@ void Core::Initialize()
 	//Get cpplication
 	m_runningApplication = CreateApplication();
 	m_runningApplication->AppInitialize();
+	Logger::LogInfo("Appname", m_runningApplication->name);
+	Window::Instance().SetWindowTitle(m_runningApplication->name.c_str());
 
 	//Start update loop
 	m_isRunning = true;
@@ -75,14 +75,14 @@ void Core::Run()
 }
 void Core::Shutdown()
 {
-
+	Window::Instance().Destroy();
+	glfwTerminate();
 }
 
 Core& Core::Instance()
 {
 	static Core instance;
 	return instance;
-
 }
 
 Core::~Core()
@@ -106,7 +106,7 @@ bool Core::LogicUpdate(Event* e)
 
 bool Core::EngineUpdate(Event* e)
 {
-	//Logger::LogError("Engine Update","This is how you chain stuff","pretty simple",1,3,0.5);
+
 	return 0;
 }
 

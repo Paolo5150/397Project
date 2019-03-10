@@ -5,7 +5,7 @@ class Game : public Application
 {
 
 public:
-	std::string name;
+
 	Game(std::string appName);
 
 	virtual ~Game();

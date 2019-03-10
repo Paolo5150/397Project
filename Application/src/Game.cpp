@@ -3,12 +3,13 @@
 
 Application* CreateApplication()
 {
-
 	return new Game("My Game");
 }
 
 Game::Game(std::string appName)
-{}
+{
+	this->name = appName;
+}
 
 Game::~Game()
 {}

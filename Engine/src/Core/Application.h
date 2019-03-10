@@ -17,8 +17,6 @@ public:
 
 	virtual ~Application() {};
 
-
-
 protected:
 	
 
