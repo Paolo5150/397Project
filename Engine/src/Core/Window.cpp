@@ -14,6 +14,15 @@ Window& Window::Instance()
 
 void Window::Initialize()
 {
+
+	//Set up environment
+	//Glew init MUST be called after creating the context (the window)
+	if (!glfwInit())
+	{
+		Logger::LogError("GLFW failed to initialize");
+	}
+
+
 	glfwWindowHint(GLFW_DOUBLEBUFFER, true);
 	instance.window = glfwCreateWindow(800, 600, "", NULL, NULL);
 	glfwMakeContextCurrent(instance.window);

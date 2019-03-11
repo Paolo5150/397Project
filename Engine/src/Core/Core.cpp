@@ -1,38 +1,19 @@
 #include "Core.h"
 #include "..\Event\TimerEvents.h"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+
+
 #include "Logger.h"
 #include "..\Event\WindowEvents.h"
 
 void Core::Initialize()
 {
 	
-	//Set up environment
-	//Glew init MUST be called after creating the context (the window)
-	if (!glfwInit())
-	{
-		Logger::LogError("GLFW failed to initialize");
-	}
-	
 
 	Window::Initialize(); //Set context
 
-	glewExperimental = true;
-	//Initialize glew
-	if (glewInit() != GLEW_OK)
-	{
-		Logger::LogError("GLEW failed to initialize");
-	}
+	graphicsAPI = new API_Opengl();
 
-	//OpengGL initialization
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
-	glClearColor(0, 0, 0, 1);
-
-
+	graphicsAPI->Initialize();
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
 	Window::Instance().SetWindowSize(1500, 800);
@@ -72,6 +53,7 @@ void Core::Run()
 }
 void Core::Shutdown()
 {
+	graphicsAPI->Shutdown();
 	m_runningApplication->AppShutdown();
 	Window::Instance().Destroy();
 	glfwTerminate();
@@ -85,7 +67,7 @@ Core& Core::Instance()
 
 Core::~Core()
 {
-
+	delete graphicsAPI;
 }
 
 Core::Core()
@@ -102,6 +84,11 @@ bool Core::LogicUpdate(Event* e)
 	return 0;
 }
 
+GraphicsAPI& Core::GetGraphicsAPI()
+{
+	return *graphicsAPI;
+}
+
 bool Core::EngineUpdate(Event* e)
 {
 
@@ -116,7 +103,9 @@ bool Core::LateUpdate(Event* e)
 
 bool Core::Render(Event* e)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	graphicsAPI->ClearColorBuffer();
+	graphicsAPI->ClearDepthBuffer();
+
 
 	glBegin(GL_TRIANGLES);
 	glVertex3f(-0.5f, -0.5f, 0.0f);

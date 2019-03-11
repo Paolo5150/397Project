@@ -1,11 +1,11 @@
 #pragma once
 
+#include "..\Graphics\API_Opengl.h"
 #include "Window.h"
 #include "Logger.h"
 #include "Timer.h"
 #include "Application.h"
 #include <iostream>
-
 
 extern "C++" Application* CreateApplication();
 
@@ -23,7 +23,7 @@ public:
 	bool LateUpdate(Event* e);
 	bool Render(Event* e);
 
-
+	GraphicsAPI& GetGraphicsAPI();
 
 	~Core();
 	bool IsRunning();
@@ -38,6 +38,7 @@ private:
 
 	Application* m_runningApplication;
 	bool m_isRunning;
+	GraphicsAPI* graphicsAPI;
 
 
 };

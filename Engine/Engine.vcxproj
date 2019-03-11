@@ -196,6 +196,8 @@
     <ClInclude Include="src\Event\EventDispatcher.h" />
     <ClInclude Include="src\Event\TimerEvents.h" />
     <ClInclude Include="src\Event\WindowEvents.h" />
+    <ClInclude Include="src\Graphics\API_Opengl.h" />
+    <ClInclude Include="src\Graphics\GraphicsAPI.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +208,7 @@
     <ClCompile Include="src\Core\Window.cpp" />
     <ClCompile Include="src\Event\Event.cpp" />
     <ClCompile Include="src\Event\EventDispatcher.cpp" />
+    <ClCompile Include="src\Graphics\API_Opengl.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
