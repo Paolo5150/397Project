@@ -27,6 +27,11 @@ void Core::Initialize()
 		return 0;
 	});
 
+	//Close window, exit loop
+	EventDispatcher::Instance().SubscribeCallback<WindowCloseEvent>([this](Event* event) -> bool{
+		m_isRunning = 0;
+		return 0; });
+
 
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
@@ -35,13 +40,7 @@ void Core::Initialize()
 	//Managers initialization
 	Timer::Initialize();
 
-	
 
-
-	//Close window, exit loop
-	EventDispatcher::Instance().SubscribeCallback<WindowCloseEvent>([this](Event* event) -> bool{
-		m_isRunning = 0;
-		return 0; });
 
 	//Get cpplication
 	m_runningApplication = CreateApplication();
