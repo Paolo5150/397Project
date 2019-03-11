@@ -20,6 +20,7 @@ public:
 	virtual void Shutdown() = 0;
 	virtual void ClearColorBuffer() = 0;
 	virtual void ClearDepthBuffer() = 0;
+	virtual void SetViewPort(int w, int h) = 0;
 	API_NAME GetApiName(){ return apiName; }
 
 

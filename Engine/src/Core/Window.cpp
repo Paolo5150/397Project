@@ -58,7 +58,7 @@ float Window::GetAspectRatio()
 void Window::SetWindowSize(int w, int h)
 {
 	glfwSetWindowSize(this->window,w, h);
-	EventDispatcher::Instance().DispatchEvent(new WindowResizeEvent(w, h));
+
 }
 void Window::GetWindowSize(int& w, int& h)
 {
@@ -94,5 +94,5 @@ void Window::OnClose(GLFWwindow* win)
 void Window::OnResize(GLFWwindow* win, int w, int h)
 {
 
-	glViewport(0,0,w, h);
+	EventDispatcher::Instance().DispatchEvent(new WindowResizeEvent(w,h));
 }

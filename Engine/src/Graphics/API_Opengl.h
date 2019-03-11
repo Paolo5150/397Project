@@ -12,5 +12,6 @@ public:
 	virtual void Shutdown();
 	void ClearColorBuffer() ;
 	void ClearDepthBuffer() ;
+	void SetViewPort(int w, int h);
 
 };

@@ -14,6 +14,20 @@ void Core::Initialize()
 	graphicsAPI = new API_Opengl();
 
 	graphicsAPI->Initialize();
+
+	//Events subscirption
+	EventDispatcher::Instance().SubscribeCallback<LogicUpdateEvent>(std::bind(&Core::LogicUpdate, this, std::placeholders::_1));
+	EventDispatcher::Instance().SubscribeCallback<LateUpdateEvent>(std::bind(&Core::LateUpdate, this, std::placeholders::_1));
+	EventDispatcher::Instance().SubscribeCallback<RenderEvent>(std::bind(&Core::Render, this, std::placeholders::_1));
+	EventDispatcher::Instance().SubscribeCallback<EngineUpdateEvent>(std::bind(&Core::EngineUpdate, this, std::placeholders::_1));
+
+	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>([this](Event* e){
+		WindowResizeEvent* wre = dynamic_cast<WindowResizeEvent*>(e);
+		GetGraphicsAPI().SetViewPort(wre->width, wre->height);
+		return 0;
+	});
+
+
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
 	Window::Instance().SetWindowSize(1500, 800);
@@ -21,11 +35,8 @@ void Core::Initialize()
 	//Managers initialization
 	Timer::Initialize();
 
-	//Events subscirption
-	EventDispatcher::Instance().SubscribeCallback<LogicUpdateEvent>(std::bind(&Core::LogicUpdate, this, std::placeholders::_1));
-	EventDispatcher::Instance().SubscribeCallback<LateUpdateEvent>(std::bind(&Core::LateUpdate, this, std::placeholders::_1));
-	EventDispatcher::Instance().SubscribeCallback<RenderEvent>(std::bind(&Core::Render, this, std::placeholders::_1));
-	EventDispatcher::Instance().SubscribeCallback<EngineUpdateEvent>(std::bind(&Core::EngineUpdate, this, std::placeholders::_1));
+	
+
 
 	//Close window, exit loop
 	EventDispatcher::Instance().SubscribeCallback<WindowCloseEvent>([this](Event* event) -> bool{

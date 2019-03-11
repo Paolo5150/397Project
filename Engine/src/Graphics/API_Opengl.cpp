@@ -35,6 +35,12 @@ void API_Opengl::ClearDepthBuffer()
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
+void API_Opengl::SetViewPort(int w, int h)
+{
+	glViewport(0, 0, w, h);
+}
+
+
 void API_Opengl::Shutdown()
 {
 
