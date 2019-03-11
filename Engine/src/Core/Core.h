@@ -9,6 +9,8 @@
 
 extern "C++" Application* CreateApplication();
 
+
+
 class Core
 {
 public:
@@ -30,7 +32,6 @@ public:
 
 
 private:
-	
 
 	Core();
 	Core& operator=(const Core& other) = delete;

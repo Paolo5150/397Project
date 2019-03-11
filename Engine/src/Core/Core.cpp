@@ -1,9 +1,8 @@
 #include "Core.h"
 #include "..\Event\TimerEvents.h"
-
-
 #include "Logger.h"
 #include "..\Event\WindowEvents.h"
+#include "..\Graphics\ShaderGL.h"
 
 void Core::Initialize()
 {
