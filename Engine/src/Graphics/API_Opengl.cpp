@@ -40,6 +40,10 @@ void API_Opengl::SetViewPort(int w, int h)
 	glViewport(0, 0, w, h);
 }
 
+Shader* API_Opengl::CreateShader(std::string name, std::string vertexSource, std::string fragmentSource)
+{
+	return new ShaderGL(name,vertexSource, fragmentSource);
+}
 
 void API_Opengl::Shutdown()
 {

@@ -3,11 +3,10 @@
 #include "Logger.h"
 #include "..\Event\WindowEvents.h"
 #include "..\Graphics\ShaderGL.h"
+#include "..\Utils\AssetLoader.h"
 
 void Core::Initialize()
 {
-	
-
 	Window::Initialize(); //Set context
 
 	graphicsAPI = new API_Opengl();
@@ -39,12 +38,16 @@ void Core::Initialize()
 	//Managers initialization
 	Timer::Initialize();
 
-
-
 	//Get cpplication
 	m_runningApplication = CreateApplication();
 	m_runningApplication->AppInitialize();
 	Window::Instance().SetWindowTitle(m_runningApplication->name.c_str()); //Window title -> game title
+
+	AssetLoader::Initialize(graphicsAPI);
+
+	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\coloronly.v", "Assets\\Shaders\\coloronly.f");
+
+
 
 	//Start update loop
 	m_isRunning = true;
@@ -62,6 +65,7 @@ void Core::Run()
 }
 void Core::Shutdown()
 {
+	AssetLoader::Instance().Unload<Shader>();
 	graphicsAPI->Shutdown();
 	m_runningApplication->AppShutdown();
 	Window::Instance().Destroy();

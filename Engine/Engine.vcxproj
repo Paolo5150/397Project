@@ -201,6 +201,9 @@
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Graphics\ShaderGL.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Utils\Asset.h" />
+    <ClInclude Include="src\Utils\AssetContainer.h" />
+    <ClInclude Include="src\Utils\AssetLoader.h" />
     <ClInclude Include="src\Utils\FileUtils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +222,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Utils\AssetContainer.cpp" />
+    <ClCompile Include="src\Utils\AssetLoader.cpp" />
     <ClCompile Include="src\Utils\FileUtils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

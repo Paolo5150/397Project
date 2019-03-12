@@ -8,5 +8,5 @@ void main()
 	Core::Instance().Run();
 	Core::Instance().Shutdown();
 
-
+	system("pause");
 }

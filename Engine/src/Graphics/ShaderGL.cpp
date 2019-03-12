@@ -1,18 +1,14 @@
 
 #include "ShaderGL.h"
+#include "..\Utils\FileUtils.h"
 #include <assert.h>
 
 
-ShaderGL::ShaderGL(std::string vertexFullPath, std::string fragmentFullPath)
+ShaderGL::ShaderGL(std::string name, std::string vSource, std::string fSource) 
 {
-	std::string vertexFileContent = FileUtils::ReadFileToString(vertexFullPath);
-	std::string fragFileContent = FileUtils::ReadFileToString(fragmentFullPath);
-
-
-	const char* vertexSource = vertexFileContent.c_str();
-	const char* fragmentSource = fragFileContent.c_str();
-
-
+	this->name = name;
+	const char* vertexSource = vSource.c_str();
+	const char* fragmentSource = fSource.c_str();
 
 	unsigned int vertexID, fragmentID;
 	bool result = true;
@@ -22,7 +18,7 @@ ShaderGL::ShaderGL(std::string vertexFullPath, std::string fragmentFullPath)
 	{
 
 		glGetShaderInfoLog(vertexID, 512, NULL, infoLog);
-		Logger::LogError("Could not compile VERTEX shader:",vertexFullPath,". Error:",std::string(infoLog));
+		Logger::LogError("Could not compile VERTEX shader:",name,". Error:",std::string(infoLog));
 
 		result = false;
 	}
@@ -31,7 +27,7 @@ ShaderGL::ShaderGL(std::string vertexFullPath, std::string fragmentFullPath)
 	{
 
 		glGetShaderInfoLog(fragmentID, 512, NULL, infoLog);
-		Logger::LogError("Could not compile FRAGMENT shader:", fragmentFullPath, ". Error:", std::string(infoLog));
+		Logger::LogError("Could not compile FRAGMENT shader:", name, ". Error:", std::string(infoLog));
 		
 		result = false;
 	}
@@ -55,16 +51,11 @@ ShaderGL::ShaderGL(std::string vertexFullPath, std::string fragmentFullPath)
 	glDeleteShader(vertexID);
 	glDeleteShader(fragmentID);
 
-
 }
 
 
 ShaderGL::~ShaderGL()
 {
-
-
-
-
 }
 
 bool ShaderGL::CompileShader(unsigned int& sid, const char* source, GLenum type)
@@ -81,7 +72,7 @@ bool ShaderGL::CompileShader(unsigned int& sid, const char* source, GLenum type)
 }
 
 
-void ShaderGL::Activate()
+void ShaderGL::Bind()
 {
 	glUseProgram(shaderID);
 
@@ -124,7 +115,7 @@ void ShaderGL::SetVec4(const std::string &name, glm::vec4 v) const
 
 }
 
-void ShaderGL::AssignToUniformBuffer(std::string uniformName, GLuint bufferIndex)
+void ShaderGL::AssignToUniformBuffer(std::string uniformName, unsigned bufferIndex)
 {
 	int location = glGetUniformBlockIndex(shaderID, uniformName.c_str());
 	glUniformBlockBinding(shaderID, location, bufferIndex);
