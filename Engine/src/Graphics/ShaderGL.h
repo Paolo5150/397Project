@@ -5,9 +5,8 @@
 class ShaderGL : public Shader
 {
 public: 
-
+	friend class API_Opengl;
 	~ShaderGL();
-	ShaderGL(){}
 
 	void Bind();
 	void SetBool(const std::string &name, bool value) const;
@@ -19,8 +18,9 @@ public:
 	void AssignToUniformBuffer(std::string uniformName, unsigned bufferIndex);
 
 
-	ShaderGL(std::string name, std::string vSource, std::string fSource);
 private:
+	ShaderGL(std::string name, std::string vSource, std::string fSource);
+	ShaderGL(){}
 
 	bool CompileShader(unsigned int& sid, const char* source, GLenum type);
 

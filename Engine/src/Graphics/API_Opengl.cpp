@@ -1,5 +1,5 @@
 #include "API_Opengl.h"
-
+#include "Texture2DGL.h"
 
 API_Opengl::API_Opengl()
 {
@@ -43,6 +43,15 @@ void API_Opengl::SetViewPort(int w, int h)
 Shader* API_Opengl::CreateShader(std::string name, std::string vertexSource, std::string fragmentSource)
 {
 	return new ShaderGL(name,vertexSource, fragmentSource);
+}
+
+Texture2D* API_Opengl::CreateTexture2D(std::string textureName, int width, int height, int channels, unsigned char* data)
+{
+	return new Texture2DGL(textureName, width, height, channels, data);
+}
+Texture2D* API_Opengl::CreateTexture2D(std::string name, unsigned width, unsigned height, bool isDepth )
+{
+	return new Texture2DGL(name, width, height, isDepth);
 }
 
 void API_Opengl::Shutdown()

@@ -26,10 +26,10 @@ public:
 	virtual void SetVec4(const std::string &name, glm::vec4 value) const = 0;
 	virtual void AssignToUniformBuffer(std::string uniformName, unsigned bufferIndex) = 0;
 
-
-	Shader(std::string vertexSource, std::string fragSource){};
-	Shader(){}
 	protected :
+
+	Shader(){}
+	Shader(std::string vertexSource, std::string fragSource){};
 	unsigned shaderID;
 	bool CompileShader(unsigned int& sid, const char* source, GLenum type);
 

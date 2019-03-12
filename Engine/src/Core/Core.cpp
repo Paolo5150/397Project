@@ -3,6 +3,8 @@
 #include "Logger.h"
 #include "..\Event\WindowEvents.h"
 #include "..\Graphics\ShaderGL.h"
+#include "..\Graphics\Texture2D.h"
+
 #include "..\Utils\AssetLoader.h"
 
 void Core::Initialize()
@@ -46,7 +48,8 @@ void Core::Initialize()
 	AssetLoader::Initialize(graphicsAPI);
 
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\coloronly.v", "Assets\\Shaders\\coloronly.f");
-
+	Texture2D* t = AssetLoader::Instance().LoadTexture("wood", "Assets\\Textures\\wood.jpg");
+	Logger::LogInfo("Text ", t->name);
 
 
 	//Start update loop
@@ -65,7 +68,8 @@ void Core::Run()
 }
 void Core::Shutdown()
 {
-	AssetLoader::Instance().Unload<Shader>();
+
+
 	graphicsAPI->Shutdown();
 	m_runningApplication->AppShutdown();
 	Window::Instance().Destroy();
@@ -119,11 +123,18 @@ bool Core::Render(Event* e)
 	graphicsAPI->ClearColorBuffer();
 	graphicsAPI->ClearDepthBuffer();
 
-
+	glEnable(GL_TEXTURE_2D);
+	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();
 	glBegin(GL_TRIANGLES);
+	glTexCoord2f(0.0, 0.0);
 	glVertex3f(-0.5f, -0.5f, 0.0f);
+
+	glTexCoord2f(1.0, 0.0);
 	glVertex3f(0.5f, -0.5f, 0.0f);
+
+	glTexCoord2f(0.5, 1.0);
 	glVertex3f(0.0f, 0.5f, 0.0f);
+
 
 	glEnd();
 

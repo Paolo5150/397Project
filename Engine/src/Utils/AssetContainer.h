@@ -1,16 +1,18 @@
 #pragma once
 #include <map>
 #include <string>
+#include "Asset.h"
 
-template <class T>
 class AssetContainer
 {
 public:
-	AssetContainer();
-	~AssetContainer();
+	AssetContainer(){};
+	~AssetContainer(){};
 
-	void Load(std::string name,T* asset);
 
+	void Load(std::string name,Asset* asset);
+
+	template<class T>
 	T* GetAsset(std::string name);
 
 	void Unload();
@@ -18,51 +20,22 @@ public:
 	std::string GetAssetType();
 
 private:
-	std::map<std::string, T*> assets;
+	std::map<std::string, Asset*> assets;
 };
 
-template <class T>
-AssetContainer<T>::AssetContainer()
-{
 
-}
+
+
 
 template <class T>
-AssetContainer<T>::~AssetContainer()
-{}
-
-template <class T>
-std::string AssetContainer<T>::GetAssetType()
-{
-	return typeid(T).name();
-}
-
-template <class T>
-void AssetContainer<T>::Load(std::string name, T* asset)
-{
-	assets[name] = asset;
-}
-
-template <class T>
-T* AssetContainer<T>::GetAsset(std::string name)
+T* AssetContainer::GetAsset(std::string name)
 {
 	auto it = assets.find(name);
 
 	if (it != assets.end())
-		return it->second;
+		return (T*)it->second;
 	else
 		return nullptr;
 }
 
-template <class T>
-void AssetContainer<T>::Unload()
-{
-	auto it = assets.begin();
 
-	for (; it != assets.end(); it++)
-	{
-		delete it->second;
-	}
-
-
-}
