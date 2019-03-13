@@ -69,6 +69,8 @@ void Core::Run()
 void Core::Shutdown()
 {
 
+	AssetLoader::Instance().Unload<Shader>();
+	AssetLoader::Instance().Unload<Texture2D>();
 
 	graphicsAPI->Shutdown();
 	m_runningApplication->AppShutdown();

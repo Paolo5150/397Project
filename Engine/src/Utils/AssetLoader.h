@@ -13,6 +13,7 @@ public:
 	Shader* LoadShader(std::string name, std::string vertexPath, std::string fragmentPath);
 	Texture2D* LoadTexture(std::string name, std::string path);
 	
+	template<class T>
 	void Unload();
 
 	template <class T>
@@ -30,15 +31,24 @@ private:
 
 };
 
+template<class T>
+void AssetLoader::Unload()
+{
+	std::string t = typeid(T).name();
+
+	auto it = containers.find(t);
+	if (it != containers.end())
+	{
+		it->second.Unload();
+	}
+}
+
 template <class T>
 T* AssetLoader::GetAsset(std::string name)
 {
 	std::string t = typeid(T).name();
 
 	return (T*)containers[t].GetAsset<T>(name);
-	/*if (typeid(T).name() == allShaders.GetAssetType())
-		return (T*)allShaders.GetAsset(name);
-	else 	if (typeid(T).name() == allTextures.GetAssetType())
-		return (T*)allTextures.GetAsset(name);*/
+
 }
 
