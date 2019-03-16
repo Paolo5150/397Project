@@ -174,7 +174,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Entity\Component.h" />
-    <ClInclude Include="src\Entity\Entity.h" />
+    <ClInclude Include="src\Entity\GameObject.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Core\Core.h" />
     <ClInclude Include="src\Core\Logger.h" />
@@ -185,7 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Entity\Component.cpp" />
-    <ClCompile Include="src\Entity\Entity.cpp" />
+    <ClCompile Include="src\Entity\GameObject.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Core.cpp" />
     <ClCompile Include="src\Core\Logger.cpp" />

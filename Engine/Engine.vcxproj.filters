@@ -36,10 +36,10 @@
     <ClCompile Include="src\Event\EventDispatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Entity\Entity.cpp">
+    <ClCompile Include="src\Entity\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Entity\Component.cpp">
+    <ClCompile Include="src\Entity\GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,10 +65,10 @@
     <ClInclude Include="src\Event\EventDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Entity\Entity.h">
+    <ClInclude Include="src\Entity\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Entity\Component.h">
+    <ClInclude Include="src\Entity\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
