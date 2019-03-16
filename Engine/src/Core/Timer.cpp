@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Timer.h"
+#include "..\Event\TimerEvents.h"
 
 bool Timer::displayFPS;
 double Timer::timerMultiplier;
@@ -17,11 +18,12 @@ void Timer::Initialize()
 	delta = 0;
 
 	FPSCounter = 0;
-	FPS = 60;
+	FPS = 1;
 	limitFPS = 1.0 / FPS;
 	now = glfwGetTime();
 	prev = glfwGetTime();
 	timerMultiplier = 1.0;
+	displayFPS = 0;
 }
 
 float Timer::GetDeltaS()
@@ -42,7 +44,7 @@ float Timer::GetTimeS()
 
 void Timer::Update()
 {
-	static float accumulator = 0;
+	static float accumulator = 1000;
 
 	now = glfwGetTime();
 	delta = (now - prev);
@@ -62,6 +64,10 @@ void Timer::Update()
 		accumulator = 0;
 
 		EventDispatcher::Instance().DispatchEvent(new LogicUpdateEvent());
+		EventDispatcher::Instance().DispatchEvent(new EngineUpdateEvent());
+		EventDispatcher::Instance().DispatchEvent(new RenderEvent());
+		EventDispatcher::Instance().DispatchEvent(new LateUpdateEvent());
+
 
 	}
 
@@ -74,7 +80,7 @@ void Timer::Update()
 		if (st >= 1)
 		{
 			st = 0;
-			LOG_INFO("FPS: {}", FPSCounter);
+
 			FPSCounter = 0;
 		}
 	}

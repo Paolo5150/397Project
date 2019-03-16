@@ -1,9 +1,13 @@
 #pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+
+#include "..\Graphics\API_Opengl.h"
+#include "Window.h"
 #include "Logger.h"
 #include "Timer.h"
 #include "Application.h"
+#include <iostream>
+
+extern "C++" Application* CreateApplication();
 
 
 
@@ -16,8 +20,12 @@ public:
 	void Run();
 	void Shutdown();
 
-	bool Update(Event* e);
+	bool LogicUpdate(Event* e);
+	bool EngineUpdate(Event* e);
+	bool LateUpdate(Event* e);
+	bool Render(Event* e);
 
+	GraphicsAPI& GetGraphicsAPI();
 
 	~Core();
 	bool IsRunning();
@@ -25,12 +33,13 @@ public:
 
 private:
 
-
 	Core();
 	Core& operator=(const Core& other) = delete;
 	Core(const Core& other) = delete;
 
 	Application* m_runningApplication;
 	bool m_isRunning;
+	GraphicsAPI* graphicsAPI;
+
 
 };
