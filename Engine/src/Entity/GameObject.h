@@ -4,11 +4,6 @@
 #include <string>
 #include "Component.h"
 
-//DEBUG
-#include <iostream>
-//DEBUG
-
-//Initial version, not for use in program yet
 class GameObject
 {
 public:
