@@ -66,6 +66,15 @@ void GameObject::AddChild(GameObject* child)
 	}
 }
 
+void GameObject::RemoveChild(std::string childName)
+{
+	if (HasChild(childName) == true)
+	{
+		GetChild(childName)->SetParent(nullptr);
+		_children.remove_if([&](GameObject* gameObject) {return gameObject->GetName() == childName; });
+	}
+}
+
 GameObject* GameObject::GetChild(std::string childName) const
 {
 	std::list<GameObject*>::const_iterator it;
@@ -106,6 +115,14 @@ void GameObject::AddComponent(Component *component)
 	if (HasComponent(component->GetName()) == false)
 	{
 		_components.push_back(component);
+	}
+}
+
+void GameObject::RemoveComponent(std::string componentName)
+{
+	if (HasComponent(componentName) == true)
+	{
+		_components.remove_if([&](Component* component) {return component->GetName() == componentName; });
 	}
 }
 

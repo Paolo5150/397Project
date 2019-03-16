@@ -23,11 +23,13 @@ public:
 	GameObject* GetParent() const;
 
 	void AddChild(GameObject* child);
+	void RemoveChild(std::string childName);
 	GameObject* GetChild(std::string childName) const;
 	bool HasChild(std::string childName);
 	std::list<GameObject*> GetChildList() const;
 
 	void AddComponent(Component *component);
+	void RemoveComponent(std::string componentName);
 	Component* GetComponent(std::string componentName) const;
 	bool HasComponent(std::string componentName);
 	std::list<Component*> GetComponentList() const;
