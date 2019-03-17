@@ -3,42 +3,42 @@
 #include "Timer.h"
 #include "..\Event\TimerEvents.h"
 
-bool Timer::displayFPS;
-double Timer::timerMultiplier;
-double Timer::delta;
-int Timer::FPSCounter;
-double Timer::FPS;
-double Timer::limitFPS;
-double Timer::now;
-double Timer::prev;
+bool Timer::m_displayFPS;
+double Timer::m_timerMultiplier;
+double Timer::m_delta;
+int Timer::m_FPSCounter;
+double Timer::m_FPS;
+double Timer::m_limitFPS;
+double Timer::m_now;
+double Timer::m_prev;
 
 
 void Timer::Initialize()
 {
-	delta = 0;
-
-	FPSCounter = 0;
-	FPS = 1;
-	limitFPS = 1.0 / FPS;
-	now = glfwGetTime();
-	prev = glfwGetTime();
-	timerMultiplier = 1.0;
-	displayFPS = 0;
+	m_delta = 0;
+	
+	m_FPSCounter = 0;
+	m_FPS = 1;
+	m_limitFPS = 1.0 / m_FPS;
+	m_now = glfwGetTime();
+	m_prev = glfwGetTime();
+	m_timerMultiplier = 1.0;
+	m_displayFPS = 0;
 }
 
 float Timer::GetDeltaS()
 {
-	return delta * timerMultiplier;
+	return m_delta * m_timerMultiplier;
 }
 
 void Timer::SetDisplayFPS(bool dfps)
 {
-	displayFPS = dfps;
+	m_displayFPS = dfps;
 }
 
 float Timer::GetTimeS()
 {
-	return glfwGetTime()* timerMultiplier;
+	return glfwGetTime()* m_timerMultiplier;
 }
 
 
@@ -46,19 +46,19 @@ void Timer::Update()
 {
 	static float accumulator = 1000;
 
-	now = glfwGetTime();
-	delta = (now - prev);
-	prev = now;
+	float now = glfwGetTime();
+	m_delta = (now - m_prev);
+	m_prev = m_now;
 
-	accumulator += delta;
+	accumulator += m_delta;
 
-	if (accumulator >= limitFPS)
+	if (accumulator >= m_limitFPS)
 	{
 		static float fixedNow = glfwGetTime();
 		static float fixedPrev = glfwGetTime();
 
 		fixedNow = glfwGetTime();
-		delta = (fixedNow - fixedPrev);
+		m_delta = (fixedNow - fixedPrev);
 		fixedPrev = fixedNow;
 
 		accumulator = 0;
@@ -71,17 +71,17 @@ void Timer::Update()
 
 	}
 
-	FPSCounter++;
+	m_FPSCounter++;
 
-	if (displayFPS)
+	if (m_displayFPS)
 	{
 		static double st = 0;
-		st += delta;
+		st += m_delta;
 		if (st >= 1)
 		{
 			st = 0;
 
-			FPSCounter = 0;
+			m_FPSCounter = 0;
 		}
 	}
 }

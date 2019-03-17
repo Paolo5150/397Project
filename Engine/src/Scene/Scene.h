@@ -24,6 +24,7 @@ public:
 
 	virtual void LoadAssets() = 0;
 	virtual void UnloadAssets() = 0;
+	virtual void ExitScene() = 0;
 	virtual void Initialize() = 0;
 	virtual void LogicUpdate() = 0;
 	virtual void EngineUpdate() = 0;
@@ -33,7 +34,7 @@ public:
 	Skybox* skybox;
 
 private:
-	std::list<GameObject*> allGameObjects;
+	std::list<GameObject*> m_allGameObjects;
 
 
 };

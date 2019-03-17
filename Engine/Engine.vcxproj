@@ -204,6 +204,7 @@
     <ClInclude Include="src\Graphics\Texture2DGL.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Scene\Scene.h" />
+    <ClInclude Include="src\Scene\SceneManager.h" />
     <ClInclude Include="src\Utils\Asset.h" />
     <ClInclude Include="src\Utils\AssetContainer.h" />
     <ClInclude Include="src\Utils\AssetLoader.h" />
@@ -227,6 +228,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Scene\Scene.cpp" />
+    <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Utils\AssetContainer.cpp" />
     <ClCompile Include="src\Utils\AssetLoader.cpp" />
     <ClCompile Include="src\Utils\FileUtils.cpp" />

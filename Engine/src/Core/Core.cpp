@@ -52,7 +52,6 @@ void Core::Initialize()
 
 	Logger::LogInfo("Text ", t->name);
 
-
 	//Start update loop
 	m_isRunning = true;
 }
@@ -70,10 +69,10 @@ void Core::Run()
 void Core::Shutdown()
 {
 
-	m_runningApplication->AppShutdown();
+	m_runningApplication->AppShutdown(); //Shutdow game first
 
-	AssetLoader::Instance().Unload<Shader>();
-	AssetLoader::Instance().Unload<Texture2D>();
+	AssetLoader::Instance().Unload<Shader>(); 
+	AssetLoader::Instance().Unload<Texture2D>(); //This will be done at scene leve
 	graphicsAPI->Shutdown();
 	Window::Instance().Destroy();
 	glfwTerminate();
