@@ -16,10 +16,18 @@ Game::Game(std::string appName)
 Game::~Game()
 {}
 void Game::AppInitialize()
-{}
+{
+	Logger::LogInfo("Game initialized");
+}
 void Game::AppStart()
-{}
-void Game::AppUpdate()
-{}
+{
+	Logger::LogInfo("Game Start");
+}
+void Game::AppLogicUpdate()
+{
+	Logger::LogInfo("Game logic update");
+}
 void Game::AppShutdown()
-{}
+{
+	Logger::LogInfo("Game shutdown");
+}

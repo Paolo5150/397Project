@@ -49,6 +49,7 @@ void Core::Initialize()
 
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\coloronly.v", "Assets\\Shaders\\coloronly.f");
 	Texture2D* t = AssetLoader::Instance().LoadTexture("wood", "Assets\\Textures\\wood.jpg");
+
 	Logger::LogInfo("Text ", t->name);
 
 
@@ -69,11 +70,11 @@ void Core::Run()
 void Core::Shutdown()
 {
 
+	m_runningApplication->AppShutdown();
+
 	AssetLoader::Instance().Unload<Shader>();
 	AssetLoader::Instance().Unload<Texture2D>();
-
 	graphicsAPI->Shutdown();
-	m_runningApplication->AppShutdown();
 	Window::Instance().Destroy();
 	glfwTerminate();
 }
@@ -99,7 +100,8 @@ bool Core::IsRunning()
 
 bool Core::LogicUpdate(Event* e)
 {
-	Logger::LogInfo("Logic Update",1,2,44,6,7,"random number test");
+	Logger::LogInfo("Core update");
+	m_runningApplication->AppLogicUpdate();
 	return 0;
 }
 
@@ -110,18 +112,22 @@ GraphicsAPI& Core::GetGraphicsAPI()
 
 bool Core::EngineUpdate(Event* e)
 {
+	m_runningApplication->AppEngineUpdate();
 
 	return 0;
 }
 
 bool Core::LateUpdate(Event* e)
 {
+	m_runningApplication->AppLateUpdate();
+
 	return 0;
 }
 
 
 bool Core::Render(Event* e)
 {
+	Logger::LogInfo("Rendering");
 	graphicsAPI->ClearColorBuffer();
 	graphicsAPI->ClearDepthBuffer();
 
