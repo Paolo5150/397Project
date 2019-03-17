@@ -10,7 +10,6 @@ public:
 
 	virtual ~Game();
 	virtual void AppInitialize() override;
-	virtual void AppStart() override;
 	virtual void AppLogicUpdate() override;	
 	virtual void AppShutdown() override;
 

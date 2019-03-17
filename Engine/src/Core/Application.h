@@ -10,8 +10,10 @@ public:
 	friend class Core;
 	std::string name;
 
+	Application();
+
 	virtual void AppInitialize() = 0;
-	virtual void AppStart() = 0;
+
 	virtual void AppLogicUpdate() = 0;
 	virtual void AppShutdown() = 0;
 
@@ -22,6 +24,6 @@ public:
 	virtual ~Application() {};
 
 protected:
-	
+	Scene* m_currentScene;
 
 };

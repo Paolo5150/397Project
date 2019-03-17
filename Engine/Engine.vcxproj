@@ -192,6 +192,7 @@
     <ClInclude Include="src\Core\Logger.h" />
     <ClInclude Include="src\Core\Timer.h" />
     <ClInclude Include="src\Core\Window.h" />
+    <ClInclude Include="src\Event\ApplicationEvents.h" />
     <ClInclude Include="src\Event\Event.h" />
     <ClInclude Include="src\Event\EventDispatcher.h" />
     <ClInclude Include="src\Event\TimerEvents.h" />

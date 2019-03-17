@@ -57,7 +57,7 @@ void Core::Initialize()
 }
 void Core::Run()
 {
-
+	
 	while (m_isRunning)
 	{
 		// Just update the timer

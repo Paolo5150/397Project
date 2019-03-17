@@ -1,7 +1,9 @@
 #pragma once
-#include "Scene.h"
+
 #include <map>
 #include <string>
+
+class Scene;
 
 class SceneManager
 {
@@ -11,6 +13,8 @@ public:
 	Scene& GetCurrentScene();
 	void AddScene(Scene* s);
 	void LoadNewScene(std::string sceneName);
+	void DestroyAllScenes();
+
 	~SceneManager();
 
 private:
@@ -20,3 +24,4 @@ private:
 	Scene* m_currentScene;
 
 };
+

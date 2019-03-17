@@ -3,7 +3,7 @@
 #include <vector>
 #include <list>
 #include <string>
-
+#include "..\Core\Timer.h"
 
 class GameObject;
 class Skybox;
@@ -12,11 +12,11 @@ class Skybox;
 class Scene
 {
 public:
-	Scene(std::string n) : name(n)
-	{
+	friend class SceneManager;
 
-	}
 
+
+	Scene(std::string n);
 	virtual ~Scene() {};
 
 	void AddGameObject(GameObject* go);
@@ -30,11 +30,17 @@ public:
 	virtual void EngineUpdate() = 0;
 	virtual void LateUpdate() = 0;
 
+	bool GetIsReady() { return m_isReady; };
+
 	std::string name;
-	Skybox* skybox;
+
+
+
+protected:
+	std::list<GameObject*> m_allGameObjects;
+	bool m_isReady;
 
 private:
-	std::list<GameObject*> m_allGameObjects;
 
 
 };

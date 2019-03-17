@@ -46,8 +46,8 @@ void Timer::Update()
 {
 	static float accumulator = 1000;
 
-	float now = glfwGetTime();
-	m_delta = (now - m_prev);
+	m_now = glfwGetTime();
+	m_delta = (m_now - m_prev);
 	m_prev = m_now;
 
 	accumulator += m_delta;

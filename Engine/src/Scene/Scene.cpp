@@ -1,5 +1,9 @@
 #include "Scene.h"
+#include "SceneManager.h"
 
+Scene::Scene(std::string n) : name(n)
+{
+}
 void Scene::AddGameObject(GameObject* go)
 {
 	/*auto it = allGameObjects.begin();

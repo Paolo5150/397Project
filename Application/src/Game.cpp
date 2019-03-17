@@ -2,6 +2,11 @@
 #include "Game.h"
 #include "Core\Window.h"
 #include "Core\Logger.h"
+#include "Scene/SceneManager.h"
+
+#include "Scenes/TestScene1.h"
+#include "Scenes/TestScene2.h"
+
 
 Application* CreateApplication()
 {
@@ -11,23 +16,37 @@ Application* CreateApplication()
 Game::Game(std::string appName)
 {
 	this->name = appName;
+
+	//Scene instances
+	
 }
 
 Game::~Game()
 {}
+
+
 void Game::AppInitialize()
 {
-	Logger::LogInfo("Game initialized");
+	//Create all scenes here, might need to use LUA...?
+	SceneManager::Instance().AddScene(new TestScene1());
+	SceneManager::Instance().AddScene(new TestScene2());
+
+
+
+	//Load first scene
+	SceneManager::Instance().LoadNewScene("TestScene1"); //Scene initialize is called here
+
+
+	
 }
-void Game::AppStart()
-{
-	Logger::LogInfo("Game Start");
-}
+
 void Game::AppLogicUpdate()
 {
-	Logger::LogInfo("Game logic update");
+	m_currentScene->LogicUpdate();
+	//Logger::LogInfo("Game logic update");
 }
 void Game::AppShutdown()
 {
-	Logger::LogInfo("Game shutdown");
+	SceneManager::Instance().DestroyAllScenes();
+	//Logger::LogInfo("Game shutdown");
 }
