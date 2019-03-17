@@ -32,7 +32,6 @@ void Game::AppInitialize()
 	SceneManager::Instance().AddScene(new TestScene2());
 
 
-
 	//Load first scene
 	SceneManager::Instance().LoadNewScene("TestScene1"); //Scene initialize is called here
 

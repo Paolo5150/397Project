@@ -42,7 +42,6 @@ void Core::Initialize()
 
 	//Get cpplication
 	m_runningApplication = CreateApplication();
-	m_runningApplication->AppInitialize();
 	Window::Instance().SetWindowTitle(m_runningApplication->name.c_str()); //Window title -> game title
 
 	AssetLoader::Initialize(graphicsAPI);
@@ -50,14 +49,15 @@ void Core::Initialize()
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\coloronly.v", "Assets\\Shaders\\coloronly.f");
 	Texture2D* t = AssetLoader::Instance().LoadTexture("wood", "Assets\\Textures\\wood.jpg");
 
-	Logger::LogInfo("Text ", t->name);
+	
 
+	
 	//Start update loop
 	m_isRunning = true;
 }
 void Core::Run()
 {
-	
+	m_runningApplication->AppInitialize();
 	while (m_isRunning)
 	{
 		// Just update the timer
