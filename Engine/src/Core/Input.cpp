@@ -2,11 +2,32 @@
 #include "Input.h"
 
 
-Input::Input()
+void Input::Update()
 {
+	glfwPollEvents();
 }
 
-
-Input::~Input()
+bool Input::GetKeyPressed()
 {
+
+}
+
+bool Input::GetKeyDown()
+{
+
+}
+
+bool Input::GetKeyUp()
+{
+
+}
+
+void Input::SetWindow(GLFWwindow* window)
+{
+	_window = window;
+}
+
+GLFWwindow* Input::GetWindow() const
+{
+	return _window;
 }
