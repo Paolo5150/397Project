@@ -196,6 +196,9 @@ void  Transform::LookAt(glm::vec3 target)
 		localUp.x, localUp.y, localUp.z, 0.0f,
 		localFront.x, localFront.y, localFront.z, 0.0f,
 		position.x, position.y, position.z, 1.0f);
+
+	glm::quat q = glm::quat(rotationMatrix);
+	rotation = glm::degrees(glm::eulerAngles(q));
 	
 
 }
