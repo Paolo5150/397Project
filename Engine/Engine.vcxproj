@@ -100,7 +100,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(SolutionDir)PCH\$(ProjectName)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -108,10 +108,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalDependencies>Luabuild_vs2013_D.lib;Lua_5.1_vs2013_D.lib;SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Luabind\lib;$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,7 +146,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(SolutionDir)PCH\$(ProjectName)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -156,10 +156,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalDependencies>Luabuild_vs2013.lib;Lua_5.1_vs2013.lib;SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Luabind\lib;$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -193,7 +193,9 @@
     <ClInclude Include="src\Core\Core.h" />
     <ClInclude Include="src\Core\Logger.h" />
     <ClInclude Include="src\Core\Timer.h" />
+    <ClInclude Include="src\Core\Transform.h" />
     <ClInclude Include="src\Core\Window.h" />
+    <ClInclude Include="src\Event\ApplicationEvents.h" />
     <ClInclude Include="src\Event\Event.h" />
     <ClInclude Include="src\Event\EventDispatcher.h" />
     <ClInclude Include="src\Event\TimerEvents.h" />
@@ -207,16 +209,20 @@
     <ClInclude Include="src\Graphics\Texture2D.h" />
     <ClInclude Include="src\Graphics\Texture2DGL.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Scene\Scene.h" />
+    <ClInclude Include="src\Scene\SceneManager.h" />
     <ClInclude Include="src\Utils\Asset.h" />
     <ClInclude Include="src\Utils\AssetContainer.h" />
     <ClInclude Include="src\Utils\AssetLoader.h" />
     <ClInclude Include="src\Utils\FileUtils.h" />
+    <ClInclude Include="src\Utils\Maths.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Core.cpp" />
     <ClCompile Include="src\Core\Logger.cpp" />
     <ClCompile Include="src\Core\Timer.cpp" />
+    <ClCompile Include="src\Core\Transform.cpp" />
     <ClCompile Include="src\Core\Window.cpp" />
     <ClCompile Include="src\Event\Event.cpp" />
     <ClCompile Include="src\Event\EventDispatcher.cpp" />
@@ -231,6 +237,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Scene\Scene.cpp" />
+    <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Utils\AssetContainer.cpp" />
     <ClCompile Include="src\Utils\AssetLoader.cpp" />
     <ClCompile Include="src\Utils\FileUtils.cpp" />
