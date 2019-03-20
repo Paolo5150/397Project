@@ -204,10 +204,12 @@
     <ClInclude Include="src\GameObject\GameObject.h" />
     <ClInclude Include="src\Graphics\API_Opengl.h" />
     <ClInclude Include="src\Graphics\GraphicsAPI.h" />
+    <ClInclude Include="src\Graphics\Mesh.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Graphics\ShaderGL.h" />
     <ClInclude Include="src\Graphics\Texture2D.h" />
     <ClInclude Include="src\Graphics\Texture2DGL.h" />
+    <ClInclude Include="src\Graphics\Vertex.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Scene\SceneManager.h" />
@@ -229,6 +231,7 @@
     <ClCompile Include="src\GameObject\Component.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\Graphics\API_Opengl.cpp" />
+    <ClCompile Include="src\Graphics\Mesh.cpp" />
     <ClCompile Include="src\Graphics\ShaderGL.cpp" />
     <ClCompile Include="src\Graphics\Texture2DGL.cpp" />
     <ClCompile Include="src\pch.cpp">
