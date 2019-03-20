@@ -5,16 +5,12 @@
 #include <string>
 #include "..\Core\Timer.h"
 
-class GameObject;
-class Skybox;
 
 
 class Scene
 {
 public:
 	friend class SceneManager;
-
-
 
 	Scene(std::string n);
 	virtual ~Scene() {};
@@ -37,7 +33,7 @@ public:
 
 
 protected:
-	std::list<GameObject*> m_allGameObjects;
+	// List of gameobjects
 	bool m_isReady;
 
 private:

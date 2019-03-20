@@ -4,9 +4,9 @@
 Scene::Scene(std::string n) : name(n)
 {
 }
-void Scene::AddGameObject(GameObject* go)
+/*void Scene::AddGameObject(GameObject* go)
 {
-	/*auto it = allGameObjects.begin();
+auto it = allGameObjects.begin();
 
 	for (; it != allGameObjects.end(); it++)
 	{
@@ -19,9 +19,21 @@ void Scene::AddGameObject(GameObject* go)
 	auto child = go->children.begin();
 
 	for (; child != go->children.end(); child++)
-		AddGameObject(*child);*/
+		AddGameObject(*child);
+}*/
+
+
+void Scene::LateUpdate()
+{
+	// Delete ToBeDestroyed gameobjects here
 }
 
-void Scene::RemoveGameObject(GameObject* go)
+void Scene::LogicUpdate()
 {
+	// Update gameobjects
+}
+
+void Scene::ExitScene()
+{
+	// Delete all GameObjects
 }
