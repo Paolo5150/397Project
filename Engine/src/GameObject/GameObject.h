@@ -2,7 +2,7 @@
 #include <list>
 #include <algorithm>
 #include <string>
-#include "Component.h"
+class Component;
 
 /**
 * @class GameObject
@@ -44,7 +44,7 @@ public:
 	* @pre			At least one GameObject object must exist
 	* @post			The GameObject object will no longer exist
 	*/
-	~GameObject();
+	virtual ~GameObject();
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//-- Setters --//
@@ -65,8 +65,9 @@ public:
 	* @post			The GameObject object's IsActive state is set to the parameter value, if it is valid
 	*
 	* @param		active		State of the GameObject
+	* @param		includeChildren		Whether to set all children to the same state
 	*/
-	void SetActive(bool active);
+	void SetActive(bool active, bool includeChildren = false);
 
 	/**
 	* @brief		Sets the layer of the GameObject to the specified parameter.
@@ -75,8 +76,9 @@ public:
 	* @post			The GameObject object's layer is set to the parameter value, if it is valid
 	*
 	* @param		layer		Layer of the GameObject, must be greater than 0
+	* @param		includeChildren		Whether to set all children to the same layer
 	*/
-	void SetLayer(unsigned int layer);
+	void SetLayer(unsigned int layer, bool includeChildren = false);
 
 	/**
 	* @brief		Sets the parent of the GameObject to the specified parameter.
@@ -247,7 +249,7 @@ public:
 	*
 	* @return		The parent of the GameObject, or nullptr if it has no parent
 	*/
-	std::list<GameObject*> GetChildList() const;
+	std::list<GameObject*>& GetChildList();
 
 	/**
 	* @brief		Retrieves the parent of the GameObject
@@ -257,7 +259,7 @@ public:
 	*
 	* @return		The parent of the GameObject, or nullptr if it has no parent
 	*/
-	std::list<Component*> GetComponentList() const;
+	std::list<Component*>& GetComponentList();
 	
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//-- List Contains Accessors --//
@@ -301,9 +303,10 @@ public:
 private:
 	std::string _name;
 	bool _isActive;
+	bool _toBeDestroyed;
 	unsigned int _layer;
 	GameObject* _parent;
 	std::list<GameObject*> _children;
-	std::list<Component*> _components;
+	std::list<Component*> _components; //Possibly Map
 };
 

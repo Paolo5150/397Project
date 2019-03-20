@@ -1,5 +1,6 @@
 #include "../pch.h"
 #include "GameObject.h"
+#include "Component.h"
 
 
 GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent)
@@ -12,6 +13,19 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 
 GameObject::~GameObject()
 {
+	for (auto it = std::begin(_children); it != std::end(_children); it++)
+	{
+		delete (*it);
+	}
+
+	_children.clear();
+
+	for (auto it = std::begin(_components); it != std::end(_components); it++)
+	{
+		delete (*it);
+	}
+
+	_components.clear();
 }
 
 void GameObject::SetName(std::string name)
@@ -22,14 +36,35 @@ void GameObject::SetName(std::string name)
 	}
 }
 
-void GameObject::SetActive(bool active)
+void GameObject::SetActive(bool active, bool includeChildren)
 {
 	_isActive = active;
+
+	for (auto it = std::begin(_components); it != std::end(_components); it++)
+	{
+		(*it)->SetActive(active);
+	}
+
+	if (includeChildren == true)
+	{
+		for (auto it = std::begin(_children); it != std::end(_children); it++)
+		{
+			(*it)->SetActive(active);
+		}
+	}
 }
 
-void GameObject::SetLayer(unsigned int layer)
+void GameObject::SetLayer(unsigned int layer, bool includeChildren)
 {
 	_layer = layer;
+
+	if (includeChildren == true)
+	{
+		for (auto it = std::begin(_children); it != std::end(_children); it++)
+		{
+			(*it)->SetLayer(layer);
+		}
+	}
 }
 
 void GameObject::SetParent(GameObject *parent)
@@ -70,7 +105,7 @@ void GameObject::AddChild(GameObject* child)
 	}
 }
 
-void GameObject::AddComponent(Component *component)
+void GameObject::AddComponent(Component* component)
 {
 	if (HasComponent(component->GetName()) == false)
 	{
@@ -96,7 +131,8 @@ void GameObject::RemoveComponent(std::string componentName)
 {
 	if (HasComponent(componentName) == true)
 	{
-		_components.remove_if([&](Component* component) {return component->GetName() == componentName; });
+		auto it = std::remove_if(std::begin(_components), std::end(_components), [&](Component* component) {return component->GetName() == componentName; });
+		_components.erase(it, std::end(_components));
 	}
 }
 
@@ -150,12 +186,12 @@ Component* GameObject::GetComponentInChild(std::string childName, std::string co
 	}
 }
 
-std::list<GameObject*> GameObject::GetChildList() const
+std::list<GameObject*>& GameObject::GetChildList()
 {
 	return _children;
 }
 
-std::list<Component*> GameObject::GetComponentList() const
+std::list<Component*>& GameObject::GetComponentList()
 {
 	return _components;
 }
