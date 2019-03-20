@@ -24,15 +24,19 @@ public:
 	glm::vec3& GetLocalRight() { return localRight; };
 	glm::vec3& GetLocalUp() { return localUp; };
 
+	glm::mat4& GetMatrix();
 
 	void RotateBy(float angle, glm::vec3 acis);
 
 	void SetRotation(glm::vec3 r);
 	void SetPosition(glm::vec3 r);
 	void SetScale(glm::vec3 r);
-
-
 	void LookAt(glm::vec3 target);
+
+	void SetRotation(float x, float y, float z);
+	void SetPosition(float x, float y, float z);
+	void SetScale(float x, float y, float z);
+	void LookAt(float x, float y, float z);
 
 	void Update();
 
@@ -63,7 +67,6 @@ private:
 	glm::mat4 GetScaleMatrix();
 	glm::mat4 GetRotationMatrix();
 
-	glm::mat4& GetMatrix();
 
 	void UpdateVectors();
 

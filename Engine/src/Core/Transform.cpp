@@ -34,6 +34,26 @@ void Transform::SetScale(glm::vec3 r)
 
 }
 
+void Transform::SetRotation(float x, float y, float z)
+{
+	rotation.x = x;
+	rotation.y = y;
+	rotation.z = z;
+}
+void Transform::SetPosition(float x, float y, float z)
+{
+	position.x = x;
+	position.y = y;
+	position.z = z;
+}
+void Transform::SetScale(float x, float y, float z)
+{
+	scale.x = x;
+	scale.y = y;
+	scale.z = z;
+}
+
+
 void Transform::UpdateVectors()
 {
 	if (parent == NULL)
@@ -173,6 +193,11 @@ std::string Transform::ToString()
 
 }
 
+void Transform::LookAt(float x, float y, float z)
+{
+	glm::vec3 target(x, y, z);
+	LookAt(target);
+}
 
 void  Transform::LookAt(glm::vec3 target)
 {

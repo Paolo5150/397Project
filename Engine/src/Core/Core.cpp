@@ -8,7 +8,7 @@
 #include "..\Utils\AssetLoader.h"
 #include "Transform.h"
 
-Transform trans;
+
 
 void Core::Initialize()
 {
@@ -52,10 +52,6 @@ void Core::Initialize()
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\coloronly.v", "Assets\\Shaders\\coloronly.f");
 	Texture2D* t = AssetLoader::Instance().LoadTexture("wood", "Assets\\Textures\\wood.jpg");
 
-	trans.RotateBy(0, glm::vec3(0, 1, 0));
-	trans.LookAt(glm::vec3(50, 0, 0));
-
-	
 	//Start update loop
 	m_isRunning = true;
 }
@@ -105,11 +101,7 @@ bool Core::LogicUpdate(Event* e)
 {
 	//Logger::LogInfo("Core update");
 	//m_runningApplication->AppLogicUpdate();
-	trans.Update();
 
-
-	Logger::LogInfo(trans.ToString());
-	Logger::LogInfo(trans.VectorsToString());
 	Logger::LogInfo("  ");
 	return 0;
 }
