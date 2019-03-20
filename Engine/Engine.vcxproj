@@ -187,6 +187,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\MeshRenderer.h" />
+    <ClInclude Include="src\Components\Renderer.h" />
     <ClInclude Include="src\Entity\Component.h" />
     <ClInclude Include="src\Entity\GameObject.h" />
     <ClInclude Include="src\Core\Application.h" />
@@ -221,6 +223,7 @@
     <ClInclude Include="src\Utils\Maths.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\Renderer.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Core.cpp" />
     <ClCompile Include="src\Core\Logger.cpp" />
@@ -234,6 +237,7 @@
     <ClCompile Include="src\Graphics\API_Opengl.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\ShaderGL.cpp" />
     <ClCompile Include="src\Graphics\Texture2DGL.cpp" />
     <ClCompile Include="src\pch.cpp">

@@ -2,6 +2,7 @@
 #include <list>
 #include <algorithm>
 #include <string>
+#include "..\Core\Transform.h"
 class Component;
 
 /**
@@ -299,6 +300,18 @@ public:
 	* @return		True if the component is in the child GameObject, else false
 	*/
 	bool ChildHasComponent(std::string childName, std::string componentName) const;
+
+	/**
+	* @brief		Update the gameobject, its children and components.
+	*
+	* @pre			The GameObject must exist.
+	* @post			
+	*
+	* @return		none
+	*/
+	virtual void Update();
+
+	Transform transform;
 
 private:
 	std::string _name;

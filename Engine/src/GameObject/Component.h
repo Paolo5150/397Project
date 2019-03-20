@@ -2,6 +2,7 @@
 #include <string>
 
 #include "GameObject.h"
+#include "..\Graphics\Shader.h"
 
 class Component
 {
@@ -26,8 +27,12 @@ public:
 	std::string GetName() const;
 	GameObject* GetParent() const;
 
+	virtual void Update(){};
+	virtual void OnAttach(){};
+	virtual void OnPreRender(Shader* currentShader = nullptr){};
 
-private:
+
+protected:
 	std::string _name;
 	bool _isActive;
 	GameObject* _parent;

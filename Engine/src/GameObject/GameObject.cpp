@@ -230,3 +230,14 @@ bool GameObject::ChildHasComponent(std::string childName, std::string componentN
 {
 	return false; //Temp
 }
+
+void GameObject::Update()
+{
+	auto it = _children.begin();
+	for (; it != _children.end(); it++)
+		(*it)->Update();
+
+	auto itc = _components.begin();
+	for (; itc != _components.end(); itc++)
+		(*itc)->Update();
+}
