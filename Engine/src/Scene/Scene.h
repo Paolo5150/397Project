@@ -15,8 +15,8 @@ public:
 	Scene(std::string n);
 	virtual ~Scene() {};
 
-	void AddGameObject(GameObject* go);
-	void RemoveGameObject(GameObject* go);
+	//void AddGameObject(GameObject* go);
+//	void RemoveGameObject(GameObject* go);
 
 	virtual void LoadAssets() = 0;
 	virtual void UnloadAssets() = 0;

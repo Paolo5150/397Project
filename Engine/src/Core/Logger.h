@@ -29,6 +29,11 @@ public:
 	template<class T>
 	static void LogError(T&& f);
 
+	template<class T, class...Args>
+	static void LogWarning(T&& f, Args&&...pack);
+	template<class T>
+	static void LogWarning(T&& f);
+
 private:
 	static bool first;
 	static std::string GetCurrentTime()
@@ -126,6 +131,50 @@ void Logger::LogError(T&& f)
 	}
 	else
 	std::cout << f << "\n";
+	first = 1;
+#endif
+}
+
+
+template<class T, class...Args>
+void Logger::LogWarning(T&& f, Args&&...pack)
+{
+#if DEBUG
+#if defined(_WIN32) || defined(_WIN64)
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hStdout, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+#endif	
+
+	if (first)
+	{
+		first = 0;
+		std::cout << GetCurrentTime() << f << " ";
+	}
+	else
+		std::cout << f << " ";
+
+	LogWarning(std::forward<Args>(pack)...);
+#endif
+
+}
+
+template<class T>
+void Logger::LogWarning(T&& f)
+{
+#if DEBUG
+#if defined(_WIN32) || defined(_WIN64)
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hStdout, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
+#endif
+	if (first)
+	{
+
+		first = 0;
+		std::cout << GetCurrentTime() << f << "\n";
+	}
+	else
+		std::cout << f << "\n";
 	first = 1;
 #endif
 }

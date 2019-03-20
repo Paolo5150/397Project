@@ -32,6 +32,8 @@ void TestScene1::LogicUpdate() {
 	}
 
 	Logger::LogInfo("Updating scene", name);
+	Logger::LogInfo("WTF");
+
 }
 void TestScene1::EngineUpdate() {}
 void TestScene1::LateUpdate() {}

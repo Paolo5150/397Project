@@ -99,7 +99,7 @@ bool Core::IsRunning()
 
 bool Core::LogicUpdate(Event* e)
 {
-	//Logger::LogInfo("Core update");
+	Logger::LogWarning("Core update");
 	//m_runningApplication->AppLogicUpdate();
 
 	Logger::LogInfo("  ");

@@ -46,6 +46,7 @@ void Game::AppLogicUpdate()
 }
 void Game::AppShutdown()
 {
+	
 	SceneManager::Instance().DestroyAllScenes();
 	//Logger::LogInfo("Game shutdown");
 }
