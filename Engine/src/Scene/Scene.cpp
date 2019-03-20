@@ -4,23 +4,23 @@
 Scene::Scene(std::string n) : name(n)
 {
 }
-/*void Scene::AddGameObject(GameObject* go)
+void Scene::AddGameObject(GameObject* go)
 {
-auto it = allGameObjects.begin();
+	auto it = m_allGameObjects.begin();
 
-	for (; it != allGameObjects.end(); it++)
-	{
-		if (*it == go)
-			return;
-	}
+	for (; it != m_allGameObjects.end(); it++)
+		{
+			if (*it == go)
+				return;
+		}
 
-	allGameObjects.push_back(go);
+	m_allGameObjects.push_back(go);
 
-	auto child = go->children.begin();
+	auto child = go->GetChildList().begin();
 
-	for (; child != go->children.end(); child++)
-		AddGameObject(*child);
-}*/
+	for (; child != go->GetChildList().end(); child++)
+			AddGameObject(*child);
+}
 
 
 void Scene::LateUpdate()
@@ -30,10 +30,22 @@ void Scene::LateUpdate()
 
 void Scene::LogicUpdate()
 {
-	// Update gameobjects
+	auto it = m_allGameObjects.begin();
+
+	for (; it != m_allGameObjects.end(); it++)
+	{
+		(*it)->Update();
+	}
 }
 
 void Scene::ExitScene()
 {
-	// Delete all GameObjects
+	auto it = m_allGameObjects.begin();
+
+	for (; it != m_allGameObjects.end(); it++)
+	{
+		delete (*it);
+	}
+
+	m_allGameObjects.clear();
 }

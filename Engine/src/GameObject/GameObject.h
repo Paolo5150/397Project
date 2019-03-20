@@ -2,8 +2,10 @@
 #include <list>
 #include <algorithm>
 #include <string>
+
 #include "..\Core\Transform.h"
 class Component;
+class Shader;
 
 /**
 * @class GameObject
@@ -310,6 +312,10 @@ public:
 	* @return		none
 	*/
 	virtual void Update();
+
+
+	virtual void OnPreRender(Shader* currentShader = nullptr);
+
 
 	Transform transform;
 

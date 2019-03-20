@@ -211,6 +211,7 @@
     <ClInclude Include="src\Graphics\GraphicsAPI.h" />
     <ClInclude Include="src\Graphics\Material.h" />
     <ClInclude Include="src\Graphics\Mesh.h" />
+    <ClInclude Include="src\Graphics\RenderingEngine.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Graphics\ShaderGL.h" />
     <ClInclude Include="src\Graphics\Texture2D.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="src\Graphics\API_Opengl.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\RenderingEngine.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\ShaderGL.cpp" />
     <ClCompile Include="src\Graphics\Texture2DGL.cpp" />

@@ -1,3 +1,4 @@
+
 #include "Core.h"
 #include "..\Event\TimerEvents.h"
 #include "Logger.h"
@@ -121,6 +122,7 @@ bool Core::EngineUpdate(Event* e)
 bool Core::LateUpdate(Event* e)
 {
 	m_runningApplication->AppLateUpdate();
+	//RenderingEngine::Instance().ClearRendererList();
 
 	return 0;
 }
@@ -132,7 +134,7 @@ bool Core::Render(Event* e)
 	graphicsAPI->ClearColorBuffer();
 	graphicsAPI->ClearDepthBuffer();
 
-	glEnable(GL_TEXTURE_2D);
+	/*glEnable(GL_TEXTURE_2D);
 	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();
 	glBegin(GL_TRIANGLES);
 	glTexCoord2f(0.0, 0.0);
@@ -145,7 +147,7 @@ bool Core::Render(Event* e)
 	glVertex3f(0.0f, 0.5f, 0.0f);
 
 
-	glEnd();
+	glEnd();*/
 
 	Window::Instance().Refresh();
 	return 0;

@@ -1,7 +1,7 @@
 #include "../pch.h"
 #include "GameObject.h"
 #include "Component.h"
-
+#include "..\Graphics\Shader.h"
 
 GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent)
 {
@@ -240,4 +240,15 @@ void GameObject::Update()
 	auto itc = _components.begin();
 	for (; itc != _components.end(); itc++)
 		(*itc)->Update();
+}
+
+void GameObject::OnPreRender(Shader* currentShader )
+{
+	auto it = _children.begin();
+	for (; it != _children.end(); it++)
+		(*it)->OnPreRender(currentShader);
+
+	auto itc = _components.begin();
+	for (; itc != _components.end(); itc++)
+		(*itc)->OnPreRender(currentShader);
 }
