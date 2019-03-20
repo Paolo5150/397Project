@@ -313,7 +313,7 @@ public:
 
 	Transform transform;
 
-private:
+protected:
 	std::string _name;
 	bool _isActive;
 	bool _toBeDestroyed;
