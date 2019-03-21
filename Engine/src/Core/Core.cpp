@@ -8,6 +8,7 @@
 
 #include "..\Utils\AssetLoader.h"
 #include "Transform.h"
+#include "..\Graphics\RenderingEngine.h"
 
 
 
@@ -100,10 +101,7 @@ bool Core::IsRunning()
 
 bool Core::LogicUpdate(Event* e)
 {
-	Logger::LogWarning("Core update");
-	//m_runningApplication->AppLogicUpdate();
 
-	Logger::LogInfo("  ");
 	return 0;
 }
 
@@ -130,10 +128,9 @@ bool Core::LateUpdate(Event* e)
 
 bool Core::Render(Event* e)
 {
-	//Logger::LogInfo("Rendering");
-	graphicsAPI->ClearColorBuffer();
-	graphicsAPI->ClearDepthBuffer();
 
+
+	RenderingEngine::Instance().RenderBuffer();
 	/*glEnable(GL_TEXTURE_2D);
 	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();
 	glBegin(GL_TRIANGLES);

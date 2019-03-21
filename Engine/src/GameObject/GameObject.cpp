@@ -233,6 +233,8 @@ bool GameObject::ChildHasComponent(std::string childName, std::string componentN
 
 void GameObject::Update()
 {
+	transform.Update();
+
 	auto it = _children.begin();
 	for (; it != _children.end(); it++)
 		(*it)->Update();

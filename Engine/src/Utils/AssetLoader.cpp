@@ -54,6 +54,6 @@ Shader* AssetLoader::LoadShader(std::string name, std::string vertexPath, std::s
 	std::string fragFileContent = FileUtils::ReadFileToString(fragmentPath);
 
 	Shader* s = graphucsAPI->CreateShader(name, vertexFileContent, fragFileContent);
-	containers[typeid(Texture2D).name()].Load(name, s);
+	containers[typeid(Shader).name()].Load(name, s);
 	return s;
 }

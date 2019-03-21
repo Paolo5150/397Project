@@ -1,38 +1,59 @@
+#include "Components\MeshRenderer.h"
+#include "Core\CameraPerspective.h"
 #include "TestScene1.h"
 #include "Core/Logger.h"
 #include "Scene/SceneManager.h"
+#include "Prefabs\Quad.h"
+#include "Core\Window.h"
+#include "Utils\AssetLoader.h"
 
+
+CameraPerspective* cam;
 TestScene1::TestScene1() : Scene("TestScene1")
 {
 
 }
 
 void TestScene1::LoadAssets() {
+
+	QuadMesh* qm = new QuadMesh();
+	GameObject* quad = new GameObject("Quad");
+	Material m;
+
+	m.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
+	MeshRenderer* mr = new MeshRenderer(qm, m);
+
+	quad->AddComponent(mr);
+	//quad->transform.SetPosition(0, 0, -20);
+	float ar = Window::Instance().GetAspectRatio();
+	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
+	cam->transform.SetPosition(0, 0, 15);
+	//cam->transform.SetRotation(0, 180, 0);
+	//cam->transform.LookAt(0, 0, 0);
+	cam->transform.RotateBy(180, glm::vec3(0, 1, 0));
+
+
+	AddGameObject(quad);
+	AddGameObject(cam);
+
+
 	
 }
 void TestScene1::UnloadAssets() {
-	Logger::LogInfo("Unloaded", name);
+
 }
 void TestScene1::ExitScene() {
-	Logger::LogInfo("Exited", name);
+
 }
 void TestScene1::Initialize() {
-	Logger::LogInfo("Initialized", name);
+
 }
 void TestScene1::LogicUpdate() {
 
-	static float c = 0;
-	
-	c += Timer::GetDeltaS();
+	Scene::LogicUpdate();
+	Logger::LogInfo(cam->transform.ToString());
+	Logger::LogInfo(cam->transform.VectorsToString());
 
-	if (c > 4)
-	{
-		SceneManager::Instance().LoadNewScene("TestScene2");
-		return;
-	}
-
-	Logger::LogInfo("Updating scene", name);
-	Logger::LogInfo("WTF");
 
 }
 void TestScene1::EngineUpdate() {}
