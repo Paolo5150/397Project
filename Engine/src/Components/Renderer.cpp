@@ -23,6 +23,7 @@ void Renderer::Update()
 	if (_isActive)
 	{
 		RenderingEngine::Instance().SubmitRenderer(this);
+		submitted = true;
 	}
 
 }

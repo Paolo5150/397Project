@@ -12,7 +12,8 @@ public:
 	virtual void Initialize() override;
 	virtual void LogicUpdate() override;
 	virtual void EngineUpdate() override;
-	virtual void LateUpdate() override;
 
+	GameObject* cam;
+	GameObject* quad;
 
 };

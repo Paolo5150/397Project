@@ -8,8 +8,7 @@
 #include "Utils\AssetLoader.h"
 
 
-GameObject* cam;
-GameObject* quad;
+
 
 TestScene1::TestScene1() : Scene("TestScene1")
 {
@@ -27,6 +26,7 @@ void TestScene1::UnloadAssets() {
 
 }
 void TestScene1::ExitScene() {
+	Scene::ExitScene();
 
 }
 void TestScene1::Initialize() {
@@ -55,6 +55,8 @@ void TestScene1::Initialize() {
 void TestScene1::LogicUpdate() {
 
 	Scene::LogicUpdate();
+	Logger::LogInfo("Test scene 1 update");
+
 	
 	static float timer = 0;
 	static bool done = 0;
@@ -62,6 +64,7 @@ void TestScene1::LogicUpdate() {
 
 	if (timer > 4 && !done)
 	{
+		Logger::LogError("Destroy!");
 		done = true;
 		quad->SetToBeDestroyed(true);
 	}
@@ -70,7 +73,4 @@ void TestScene1::LogicUpdate() {
 }
 void TestScene1::EngineUpdate() {
 	//Scene::EngineUpdate();
-}
-void TestScene1::LateUpdate() {
-	Scene::LateUpdate();
 }

@@ -335,6 +335,8 @@ public:
 
 	virtual void OnPreRender(Shader* currentShader = nullptr);
 
+	void DestroyChildrenAndComponents();
+
 
 	Transform transform;
 

@@ -25,7 +25,7 @@ public:
 	virtual void Initialize() = 0;
 	virtual void LogicUpdate() = 0;
 	virtual void EngineUpdate() = 0;
-	virtual void LateUpdate() = 0;
+	virtual void LateUpdate() ;
 
 	bool GetIsReady() { return m_isReady; };
 

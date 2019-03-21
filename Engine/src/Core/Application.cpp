@@ -8,7 +8,7 @@ Application::Application()
 {
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e) {
 
-		//Logger::LogInfo("SCENE CHANGED");
+		Logger::LogInfo("SCENE CHANGED");
 		SceneChangedEvent* event = dynamic_cast<SceneChangedEvent*>(e);
 		m_currentScene = event->currentScene;
 		return false;
@@ -17,6 +17,11 @@ Application::Application()
 void Application::AppEngineUpdate()
 {
 	//Logger::LogInfo("Application engine update");
+	m_currentScene->EngineUpdate();
+}
+
+void Application::AppLogicUpdate()
+{
 	m_currentScene->LogicUpdate();
 }
 void Application::AppLateUpdate()

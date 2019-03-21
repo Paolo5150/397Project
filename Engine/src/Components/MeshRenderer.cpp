@@ -16,7 +16,7 @@ MeshRenderer::~MeshRenderer()
 }
 MeshRenderer::MeshRenderer(Mesh* m, Material mat, bool isCullable) : Renderer("MeshRenderer", mat)
 {
-	mesh = NULL;
+	
 	this->isCullable = isCullable;
 	SetMesh(m);
 }

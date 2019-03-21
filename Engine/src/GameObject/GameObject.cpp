@@ -1,4 +1,4 @@
-#include "../pch.h"
+
 #include "GameObject.h"
 #include "Component.h"
 #include "..\Graphics\Shader.h"
@@ -13,7 +13,11 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 
 GameObject::~GameObject()
 {
-	Logger::LogWarning("Gameobject", GetName(), "deleted");
+
+}
+
+void GameObject::DestroyChildrenAndComponents()
+{
 	for (auto it = std::begin(_children); it != std::end(_children); it++)
 	{
 		delete (*it);
@@ -23,6 +27,7 @@ GameObject::~GameObject()
 
 	for (auto it = std::begin(_components); it != std::end(_components); it++)
 	{
+
 		delete (*it);
 	}
 

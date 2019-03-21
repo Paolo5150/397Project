@@ -40,7 +40,7 @@ void Core::Initialize()
 
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
-	Window::Instance().SetWindowSize(1500, 800);
+	Window::Instance().SetWindowSize(800, 600);
 
 	//Managers initialization
 	Timer::Initialize();
@@ -64,8 +64,8 @@ void Core::Run()
 	{
 		// Just update the timer
 		// The timer will send out events for update, render and so on
-		Timer::Update();
 		Window::Instance().UpdateEvents();		
+		Timer::Update();
 	}
 }
 void Core::Shutdown()
@@ -101,7 +101,9 @@ bool Core::IsRunning()
 
 bool Core::LogicUpdate(Event* e)
 {
+	//Logger::LogInfo("Core logic update");
 
+	m_runningApplication->AppLogicUpdate();
 	return 0;
 }
 
@@ -112,7 +114,7 @@ GraphicsAPI& Core::GetGraphicsAPI()
 
 bool Core::EngineUpdate(Event* e)
 {
-	m_runningApplication->AppEngineUpdate();
+	//m_runningApplication->AppEngineUpdate();
 
 	return 0;
 }
@@ -120,7 +122,7 @@ bool Core::EngineUpdate(Event* e)
 bool Core::LateUpdate(Event* e)
 {
 	m_runningApplication->AppLateUpdate();
-	//RenderingEngine::Instance().ClearRendererList();
+	RenderingEngine::Instance().ClearRendererList();
 
 	return 0;
 }

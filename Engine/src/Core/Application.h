@@ -12,10 +12,10 @@ public:
 
 	Application();
 
-	virtual void AppInitialize() = 0;
+	virtual void AppInitialize(){};
 
-	virtual void AppLogicUpdate() = 0;
-	virtual void AppShutdown() = 0;
+	virtual void AppLogicUpdate();
+	virtual void AppShutdown(){};
 
 	virtual void AppEngineUpdate();
 	virtual void AppLateUpdate();
