@@ -25,5 +25,8 @@ private:
 	float bottom;
 	float top;
 
+	bool OnScreenResize(Event* e) {}; // Currently not implemented
+
+
 
 };

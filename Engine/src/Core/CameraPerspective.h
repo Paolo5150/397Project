@@ -11,9 +11,10 @@ public:
 	float GetNearPlane();
 	float GetFarPlane();
 
-	void OnScreenResize(int w, int h);
+
 
 private:
+	bool OnScreenResize(Event* e) override;
 	float aspectRatio;
 	float FOV;
 };

@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "..\Event\WindowEvents.h"
 
 std::list<Camera*> Camera::allCameras;
 std::vector<Camera*> Camera::allCamerasVector;
@@ -14,6 +15,9 @@ Camera::Camera(std::string name) : GameObject(name)
 	depth = 0;
 	allCameras.push_back(this);
 	UpdateOrdererdCameras();
+
+	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>(std::bind(&Camera::OnScreenResize, this, std::placeholders::_1));
+
 }
 
 void Camera::Update()
@@ -29,20 +33,6 @@ void Camera::UpdateViewMatrix()
 	viewMatrix = glm::lookAt(transform.GetPosition(), transform.GetPosition() + transform.GetLocalFront(), transform.GetLocalUp());
 	
 }
-
-
-/*
-bool Camera::HandleEvent(Event& e) {
-
-	WindowResizeEvent& ev = static_cast<WindowResizeEvent&>(e);
-	OnScreenResize(ev.width, ev.height);
-	return 0;
-
-}*/
-
-
-
-
 
 
 void Camera::UpdateOrdererdCameras()

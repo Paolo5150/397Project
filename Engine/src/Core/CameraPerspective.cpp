@@ -14,10 +14,14 @@ CameraPerspective::CameraPerspective(float fieldOfView, float aspectRatio, float
 
 }
 
-void CameraPerspective::OnScreenResize(int w, int h)
+bool CameraPerspective::OnScreenResize(Event* e)
 {
-	this->aspectRatio = w / (float)h;
+
+	WindowResizeEvent* ev = dynamic_cast<WindowResizeEvent*>(e);
+
+	this->aspectRatio = ev->width / (float)ev->height;
 	projectionMatrix = glm::perspective(glm::radians(FOV), aspectRatio, nearPlane, farPlane);
+	return 0;
 
 }
 

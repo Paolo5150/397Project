@@ -51,7 +51,7 @@ public:
 
 protected:
 
-	virtual void OnScreenResize(int w, int h) {};
+	virtual bool OnScreenResize(Event* e) = 0;
 	Transform* entityTransform;
 	unsigned cullingMask;
 	int depth;
