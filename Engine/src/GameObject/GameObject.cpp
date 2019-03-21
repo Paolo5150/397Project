@@ -42,13 +42,14 @@ void GameObject::SetName(std::string name)
 	}
 }
 
-void GameObject::SetToBeDestroyed(bool tbd)
+void GameObject::FlagToBeDestroyed()
 {
-	_toBeDestroyed = tbd;
+	SetActive(false);
+	_toBeDestroyed = true;
 
 	for (auto it = std::begin(_children); it != std::end(_children); it++)
 		{
-			(*it)->SetActive(tbd);
+		(*it)->FlagToBeDestroyed();
 		}
 	
 }

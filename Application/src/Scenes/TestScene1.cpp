@@ -54,7 +54,6 @@ void TestScene1::Initialize() {
 }
 void TestScene1::LogicUpdate() {
 
-	Scene::LogicUpdate();
 	Logger::LogInfo("Test scene 1 update");
 
 	
@@ -66,9 +65,10 @@ void TestScene1::LogicUpdate() {
 	{
 		Logger::LogError("Destroy!");
 		done = true;
-		quad->SetToBeDestroyed(true);
+		quad->FlagToBeDestroyed();
 	}
 
+	Scene::LogicUpdate();
 
 }
 void TestScene1::EngineUpdate() {

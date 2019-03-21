@@ -73,14 +73,13 @@ public:
 	void SetActive(bool active, bool includeChildren = false);
 
 	/**
-	* @brief		Sets the ToBeDestroyed state of the GameObject to the specified parameter.
+	* @brief		Signal that the objet will be destroyed in the next late update
 	*
 	* @pre			The GameObject must exist
 	* @post			The GameObject is deleted
 	*
-	* @param		tbd		New state of the GameObject
 	*/
-	void SetToBeDestroyed(bool tbd);
+	void FlagToBeDestroyed();
 
 	/**
 	* @brief		Sets the layer of the GameObject to the specified parameter.
