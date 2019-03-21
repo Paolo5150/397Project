@@ -1,9 +1,10 @@
 #pragma once
+#include "..\Core\Timer.h"
+#include "..\GameObject\GameObject.h"
 #include <map>
 #include <vector>
 #include <list>
 #include <string>
-#include "..\Core\Timer.h"
 
 
 
@@ -15,7 +16,7 @@ public:
 	Scene(std::string n);
 	virtual ~Scene() {};
 
-	//void AddGameObject(GameObject* go);
+	void AddGameObject(GameObject* go);
 //	void RemoveGameObject(GameObject* go);
 
 	virtual void LoadAssets() = 0;
@@ -24,7 +25,7 @@ public:
 	virtual void Initialize() = 0;
 	virtual void LogicUpdate() = 0;
 	virtual void EngineUpdate() = 0;
-	virtual void LateUpdate() = 0;
+	virtual void LateUpdate() ;
 
 	bool GetIsReady() { return m_isReady; };
 
@@ -34,6 +35,7 @@ public:
 
 protected:
 	// List of gameobjects
+	std::list<GameObject*> m_allGameObjects;
 	bool m_isReady;
 
 private:

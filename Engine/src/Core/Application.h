@@ -12,16 +12,18 @@ public:
 
 	Application();
 
-	virtual void AppInitialize() = 0;
+	virtual void AppInitialize(){};
 
-	virtual void AppLogicUpdate() = 0;
-	virtual void AppShutdown() = 0;
+	virtual void AppLogicUpdate();
+	virtual void AppShutdown(){};
 
 	virtual void AppEngineUpdate();
 	virtual void AppLateUpdate();
 
 
 	virtual ~Application() {};
+
+	Scene& GetCurrentScene(){ return *m_currentScene; }
 
 protected:
 	Scene* m_currentScene;

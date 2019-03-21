@@ -1,3 +1,4 @@
+
 #include "Core.h"
 #include "..\Event\TimerEvents.h"
 #include "Logger.h"
@@ -7,6 +8,7 @@
 
 #include "..\Utils\AssetLoader.h"
 #include "Transform.h"
+#include "..\Graphics\RenderingEngine.h"
 
 
 
@@ -38,7 +40,7 @@ void Core::Initialize()
 
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
-	Window::Instance().SetWindowSize(1500, 800);
+	Window::Instance().SetWindowSize(800, 600);
 
 	//Managers initialization
 	Timer::Initialize();
@@ -62,8 +64,8 @@ void Core::Run()
 	{
 		// Just update the timer
 		// The timer will send out events for update, render and so on
-		Timer::Update();
 		Window::Instance().UpdateEvents();		
+		Timer::Update();
 	}
 }
 void Core::Shutdown()
@@ -99,10 +101,9 @@ bool Core::IsRunning()
 
 bool Core::LogicUpdate(Event* e)
 {
-	Logger::LogWarning("Core update");
-	//m_runningApplication->AppLogicUpdate();
+	//Logger::LogInfo("Core logic update");
 
-	Logger::LogInfo("  ");
+	m_runningApplication->AppLogicUpdate();
 	return 0;
 }
 
@@ -113,7 +114,7 @@ GraphicsAPI& Core::GetGraphicsAPI()
 
 bool Core::EngineUpdate(Event* e)
 {
-	m_runningApplication->AppEngineUpdate();
+	//m_runningApplication->AppEngineUpdate();
 
 	return 0;
 }
@@ -121,6 +122,7 @@ bool Core::EngineUpdate(Event* e)
 bool Core::LateUpdate(Event* e)
 {
 	m_runningApplication->AppLateUpdate();
+	RenderingEngine::Instance().ClearRendererList();
 
 	return 0;
 }
@@ -128,11 +130,10 @@ bool Core::LateUpdate(Event* e)
 
 bool Core::Render(Event* e)
 {
-	//Logger::LogInfo("Rendering");
-	graphicsAPI->ClearColorBuffer();
-	graphicsAPI->ClearDepthBuffer();
 
-	glEnable(GL_TEXTURE_2D);
+
+	RenderingEngine::Instance().RenderBuffer();
+	/*glEnable(GL_TEXTURE_2D);
 	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();
 	glBegin(GL_TRIANGLES);
 	glTexCoord2f(0.0, 0.0);
@@ -145,7 +146,7 @@ bool Core::Render(Event* e)
 	glVertex3f(0.0f, 0.5f, 0.0f);
 
 
-	glEnd();
+	glEnd();*/
 
 	Window::Instance().Refresh();
 	return 0;

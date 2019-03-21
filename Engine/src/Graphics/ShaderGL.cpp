@@ -75,6 +75,7 @@ bool ShaderGL::CompileShader(unsigned int& sid, const char* source, GLenum type)
 void ShaderGL::Bind()
 {
 	glUseProgram(shaderID);
+	m_currentShader = this;
 
 }
 

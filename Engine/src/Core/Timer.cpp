@@ -2,6 +2,7 @@
 
 #include "Timer.h"
 #include "..\Event\TimerEvents.h"
+#include "Logger.h"
 
 bool Timer::m_displayFPS;
 double Timer::m_timerMultiplier;

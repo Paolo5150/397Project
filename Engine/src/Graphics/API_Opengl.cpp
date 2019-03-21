@@ -58,3 +58,10 @@ void API_Opengl::Shutdown()
 {
 
 }
+
+void API_Opengl::ResetTextures()
+{
+	//Reset active textures
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}

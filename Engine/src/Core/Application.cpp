@@ -16,7 +16,12 @@ Application::Application()
 }
 void Application::AppEngineUpdate()
 {
-	Logger::LogInfo("Application engine update");
+	//Logger::LogInfo("Application engine update");
+	m_currentScene->EngineUpdate();
+}
+
+void Application::AppLogicUpdate()
+{
 	m_currentScene->LogicUpdate();
 }
 void Application::AppLateUpdate()

@@ -1,0 +1,77 @@
+#pragma once
+#include "..\Event\EventDispatcher.h"
+#include "..\Event\WindowEvents.h"
+#include "..\GameObject\GameObject.h"
+#include "..\Core\Logger.h"
+#include "..\Graphics\Layers.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include <map>
+#include <list>
+#include <string>
+
+
+enum CAMERA_TYPE
+{
+	PERSPECTIVE,
+	ORTHOGONAL
+};
+
+class Camera_Orthogonal;
+class Camera_Perspective;
+
+class Camera : public GameObject
+{
+public:
+
+
+	~Camera();
+
+	static std::vector<Camera*>& GetAllCameras() {
+		return allCamerasVector;
+	};
+
+	unsigned GetCullingMask() { return cullingMask; };
+	void AddLayerMask(unsigned layer) { cullingMask |= layer; };
+	void RemoveLayerMask(unsigned layer){ cullingMask = cullingMask & (~layer); }
+
+	void UpdateViewMatrix();
+	void Update() override;
+
+	void SetDepth(int d) { depth = d; UpdateOrdererdCameras(); };
+	int GetDepth(){ return depth; }
+
+
+	glm::mat4 viewMatrix;
+	glm::mat4 projectionMatrix;
+	float nearPlane;
+	float farPlane;
+
+
+protected:
+
+	virtual void OnScreenResize(int w, int h) {};
+	Transform* entityTransform;
+	unsigned cullingMask;
+	int depth;
+	CAMERA_TYPE camerType;
+	Camera(std::string name);
+
+
+
+private:
+	static std::list<Camera*> allCameras;
+	static std::vector<Camera*> allCamerasVector; //Temporary;
+	static void UpdateOrdererdCameras();
+
+
+
+};
+
+
+
+
+
+
+

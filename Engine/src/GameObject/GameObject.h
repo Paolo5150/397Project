@@ -1,8 +1,12 @@
 #pragma once
+#include "..\Core\Transform.h"
+#include "..\Graphics\Layers.h"
 #include <list>
 #include <algorithm>
 #include <string>
+
 class Component;
+class Shader;
 
 /**
 * @class GameObject
@@ -70,6 +74,15 @@ public:
 	void SetActive(bool active, bool includeChildren = false);
 
 	/**
+	* @brief		Signal that the objet will be destroyed in the next late update
+	*
+	* @pre			The GameObject must exist
+	* @post			The GameObject is deleted
+	*
+	*/
+	void FlagToBeDestroyed();
+
+	/**
 	* @brief		Sets the layer of the GameObject to the specified parameter.
 	*
 	* @pre			The GameObject must exist
@@ -113,6 +126,15 @@ public:
 	* @return		The IsActive state of the GameObject.
 	*/
 	bool GetActive() const;
+
+	/**
+	* @brief		Retrieves ToBeDestroyed.
+	*
+	* @pre			The GameObject must exist.
+	*
+	* @return		The ToBeDestroyed state of the GameObject.
+	*/
+	bool GetToBeDestroyed() const;
 
 	/**
 	* @brief		Retrieves the layer of the GameObject.
@@ -300,7 +322,25 @@ public:
 	*/
 	bool ChildHasComponent(std::string childName, std::string componentName) const;
 
-private:
+	/**
+	* @brief		Update the gameobject, its children and components.
+	*
+	* @pre			The GameObject must exist.
+	* @post			
+	*
+	* @return		none
+	*/
+	virtual void Update();
+
+
+	virtual void OnPreRender(Shader* currentShader = nullptr);
+
+	void DestroyChildrenAndComponents();
+
+
+	Transform transform;
+
+protected:
 	std::string _name;
 	bool _isActive;
 	bool _toBeDestroyed;

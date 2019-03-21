@@ -1,7 +1,7 @@
-#include "../pch.h"
+
 #include "GameObject.h"
 #include "Component.h"
-
+#include "..\Graphics\Shader.h"
 
 GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent)
 {
@@ -13,6 +13,11 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 
 GameObject::~GameObject()
 {
+
+}
+
+void GameObject::DestroyChildrenAndComponents()
+{
 	for (auto it = std::begin(_children); it != std::end(_children); it++)
 	{
 		delete (*it);
@@ -22,6 +27,7 @@ GameObject::~GameObject()
 
 	for (auto it = std::begin(_components); it != std::end(_components); it++)
 	{
+
 		delete (*it);
 	}
 
@@ -33,7 +39,21 @@ void GameObject::SetName(std::string name)
 	if (name.length() > 0)
 	{
 		_name = name;
+		_parent = nullptr;
+		_layer = Layers::DEFAULT;
 	}
+}
+
+void GameObject::FlagToBeDestroyed()
+{
+	SetActive(false);
+	_toBeDestroyed = true;
+
+	for (auto it = std::begin(_children); it != std::end(_children); it++)
+		{
+		(*it)->FlagToBeDestroyed();
+		}
+	
 }
 
 void GameObject::SetActive(bool active, bool includeChildren)
@@ -56,7 +76,7 @@ void GameObject::SetActive(bool active, bool includeChildren)
 
 void GameObject::SetLayer(unsigned int layer, bool includeChildren)
 {
-	_layer = layer;
+	_layer |= layer;
 
 	if (includeChildren == true)
 	{
@@ -85,6 +105,11 @@ bool GameObject::GetActive() const
 	return _isActive;
 }
 
+bool GameObject::GetToBeDestroyed() const
+{
+	return _toBeDestroyed;
+}
+
 
 unsigned int GameObject::GetLayer() const
 {
@@ -109,6 +134,7 @@ void GameObject::AddComponent(Component* component)
 {
 	if (HasComponent(component->GetName()) == false)
 	{
+		component->SetParent(this);
 		_components.push_back(component);
 	}
 }
@@ -229,4 +255,28 @@ bool GameObject::HasComponent(std::string componentName) const
 bool GameObject::ChildHasComponent(std::string childName, std::string componentName) const
 {
 	return false; //Temp
+}
+
+void GameObject::Update()
+{
+	transform.Update();
+
+	auto it = _children.begin();
+	for (; it != _children.end(); it++)
+		(*it)->Update();
+
+	auto itc = _components.begin();
+	for (; itc != _components.end(); itc++)
+		(*itc)->Update();
+}
+
+void GameObject::OnPreRender(Shader* currentShader )
+{
+	auto it = _children.begin();
+	for (; it != _children.end(); it++)
+		(*it)->OnPreRender(currentShader);
+
+	auto itc = _components.begin();
+	for (; itc != _components.end(); itc++)
+		(*itc)->OnPreRender(currentShader);
 }

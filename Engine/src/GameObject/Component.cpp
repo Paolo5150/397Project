@@ -1,4 +1,4 @@
-#include "../pch.h"
+
 #include "Component.h"
 
 
@@ -6,6 +6,7 @@ Component::Component(std::string name, GameObject* parent)
 {
 	SetName(name);
 	SetParent(parent);
+	SetActive(true);
 }
 
 Component::~Component()

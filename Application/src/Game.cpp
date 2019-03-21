@@ -17,7 +17,7 @@ Game::Game(std::string appName)
 {
 	this->name = appName;
 
-	//Scene instances
+
 	
 }
 
@@ -41,12 +41,12 @@ void Game::AppInitialize()
 
 void Game::AppLogicUpdate()
 {
-	m_currentScene->LogicUpdate();
 	//Logger::LogInfo("Game logic update");
+	Application::AppLogicUpdate();
 }
 void Game::AppShutdown()
 {
 	
-	SceneManager::Instance().DestroyAllScenes();
+	//SceneManager::Instance().DestroyAllScenes();
 	//Logger::LogInfo("Game shutdown");
 }
