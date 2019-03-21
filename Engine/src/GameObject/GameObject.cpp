@@ -39,6 +39,8 @@ void GameObject::SetName(std::string name)
 	if (name.length() > 0)
 	{
 		_name = name;
+		_parent = nullptr;
+		_layer = Layers::DEFAULT;
 	}
 }
 
@@ -74,7 +76,7 @@ void GameObject::SetActive(bool active, bool includeChildren)
 
 void GameObject::SetLayer(unsigned int layer, bool includeChildren)
 {
-	_layer = layer;
+	_layer |= layer;
 
 	if (includeChildren == true)
 	{

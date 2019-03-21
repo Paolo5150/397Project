@@ -5,11 +5,12 @@ std::vector<Camera*> Camera::allCamerasVector;
 
 Camera::Camera(std::string name) : GameObject(name)
 {
-	cullingMask = 0;
-	//cullingMask = Layer::DEFAULT | Layer::GUI;
+	
+	//cullingMask = Layers::DEFAULT | Layers::GUI;
 	//Load all layers
 	for (int i = 0; i < 30; i++)
 		AddLayerMask(1 << i);
+
 	depth = 0;
 	allCameras.push_back(this);
 	UpdateOrdererdCameras();

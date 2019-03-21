@@ -209,6 +209,7 @@
     <ClInclude Include="src\GameObject\GameObject.h" />
     <ClInclude Include="src\Graphics\API_Opengl.h" />
     <ClInclude Include="src\Graphics\GraphicsAPI.h" />
+    <ClInclude Include="src\Graphics\Layers.h" />
     <ClInclude Include="src\Graphics\Material.h" />
     <ClInclude Include="src\Graphics\Mesh.h" />
     <ClInclude Include="src\Graphics\RenderingEngine.h" />

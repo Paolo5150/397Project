@@ -149,20 +149,14 @@ void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, Mater
 
 	for (int i = 0; i < r.size(); i++)
 	{
-		//if (cam.GetCullingMask() & r[i]->_parent->GetLayer()) //Check for culling mask
-		//{
-		if (r[i]->_parent != nullptr)
-			Logger::LogInfo("About to render", r[i]->_parent->GetName());
-
+		if (cam.GetCullingMask() & r[i]->_parent->GetLayer()) //Check for culling mask
+		{
 			//V2Core::LightManager::Instance().UpdateShader(r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).BindMaterial();
 			r[i]->OnPreRender(&r[i]->GetMaterial(m).GetShader()); //Change to get root->OnPrerender
 			r[i]->Render(cam);
 			r[i]->GetMaterial(m).UnbindMaterial();
-			
-
-
-		//}
+		}
 
 
 	}

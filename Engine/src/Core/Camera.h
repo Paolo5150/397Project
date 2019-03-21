@@ -3,6 +3,7 @@
 #include "..\Event\WindowEvents.h"
 #include "..\GameObject\GameObject.h"
 #include "..\Core\Logger.h"
+#include "..\Graphics\Layers.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -32,8 +33,8 @@ public:
 	};
 
 	unsigned GetCullingMask() { return cullingMask; };
-	void AddLayerMask(int layer) { cullingMask |= layer; };
-	void RemoveLayerMask(int layer){ cullingMask = cullingMask & (~layer); }
+	void AddLayerMask(unsigned layer) { cullingMask |= layer; };
+	void RemoveLayerMask(unsigned layer){ cullingMask = cullingMask & (~layer); }
 
 	void UpdateViewMatrix();
 	void Update() override;

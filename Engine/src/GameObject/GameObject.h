@@ -1,9 +1,10 @@
 #pragma once
+#include "..\Core\Transform.h"
+#include "..\Graphics\Layers.h"
 #include <list>
 #include <algorithm>
 #include <string>
 
-#include "..\Core\Transform.h"
 class Component;
 class Shader;
 
