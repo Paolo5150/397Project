@@ -73,6 +73,16 @@ public:
 	void SetActive(bool active, bool includeChildren = false);
 
 	/**
+	* @brief		Sets the ToBeDestroyed state of the GameObject to the specified parameter.
+	*
+	* @pre			The GameObject must exist
+	* @post			The GameObject is deleted
+	*
+	* @param		tbd		New state of the GameObject
+	*/
+	void SetToBeDestroyed(bool tbd);
+
+	/**
 	* @brief		Sets the layer of the GameObject to the specified parameter.
 	*
 	* @pre			The GameObject must exist
@@ -116,6 +126,15 @@ public:
 	* @return		The IsActive state of the GameObject.
 	*/
 	bool GetActive() const;
+
+	/**
+	* @brief		Retrieves ToBeDestroyed.
+	*
+	* @pre			The GameObject must exist.
+	*
+	* @return		The ToBeDestroyed state of the GameObject.
+	*/
+	bool GetToBeDestroyed() const;
 
 	/**
 	* @brief		Retrieves the layer of the GameObject.

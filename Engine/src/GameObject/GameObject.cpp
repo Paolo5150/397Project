@@ -13,6 +13,7 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 
 GameObject::~GameObject()
 {
+	Logger::LogWarning("Gameobject", GetName(), "deleted");
 	for (auto it = std::begin(_children); it != std::end(_children); it++)
 	{
 		delete (*it);
@@ -34,6 +35,17 @@ void GameObject::SetName(std::string name)
 	{
 		_name = name;
 	}
+}
+
+void GameObject::SetToBeDestroyed(bool tbd)
+{
+	_toBeDestroyed = tbd;
+
+	for (auto it = std::begin(_children); it != std::end(_children); it++)
+		{
+			(*it)->SetActive(tbd);
+		}
+	
 }
 
 void GameObject::SetActive(bool active, bool includeChildren)
@@ -85,6 +97,11 @@ bool GameObject::GetActive() const
 	return _isActive;
 }
 
+bool GameObject::GetToBeDestroyed() const
+{
+	return _toBeDestroyed;
+}
+
 
 unsigned int GameObject::GetLayer() const
 {
@@ -109,6 +126,7 @@ void GameObject::AddComponent(Component* component)
 {
 	if (HasComponent(component->GetName()) == false)
 	{
+		component->SetParent(this);
 		_components.push_back(component);
 	}
 }

@@ -8,7 +8,9 @@
 #include "Utils\AssetLoader.h"
 
 
-CameraPerspective* cam;
+GameObject* cam;
+GameObject* quad;
+
 TestScene1::TestScene1() : Scene("TestScene1")
 {
 
@@ -16,8 +18,21 @@ TestScene1::TestScene1() : Scene("TestScene1")
 
 void TestScene1::LoadAssets() {
 
+
+
+
+	
+}
+void TestScene1::UnloadAssets() {
+
+}
+void TestScene1::ExitScene() {
+
+}
+void TestScene1::Initialize() {
+
 	QuadMesh* qm = new QuadMesh();
-	GameObject* quad = new GameObject("Quad");
+	quad = new GameObject("Quad");
 	Material m;
 
 	m.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
@@ -33,28 +48,29 @@ void TestScene1::LoadAssets() {
 	cam->transform.RotateBy(180, glm::vec3(0, 1, 0));
 
 
-	AddGameObject(quad);
+	AddGameObject(quad); //Add objects to scene
 	AddGameObject(cam);
-
-
-	
-}
-void TestScene1::UnloadAssets() {
-
-}
-void TestScene1::ExitScene() {
-
-}
-void TestScene1::Initialize() {
 
 }
 void TestScene1::LogicUpdate() {
 
 	Scene::LogicUpdate();
-	Logger::LogInfo(cam->transform.ToString());
-	Logger::LogInfo(cam->transform.VectorsToString());
+	
+	static float timer = 0;
+	static bool done = 0;
+	timer += Timer::GetDeltaS();
+
+	if (timer > 4 && !done)
+	{
+		done = true;
+		quad->SetToBeDestroyed(true);
+	}
 
 
 }
-void TestScene1::EngineUpdate() {}
-void TestScene1::LateUpdate() {}
+void TestScene1::EngineUpdate() {
+	//Scene::EngineUpdate();
+}
+void TestScene1::LateUpdate() {
+	Scene::LateUpdate();
+}

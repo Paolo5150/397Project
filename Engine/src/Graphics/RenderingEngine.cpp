@@ -151,6 +151,11 @@ void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, Mater
 	{
 		//if (cam.GetCullingMask() & r[i]->_parent->GetLayer()) //Check for culling mask
 		//{
+		if (r[i]->_parent != nullptr)
+			Logger::LogInfo("About to render", r[i]->_parent->GetName());
+		else
+			Logger::LogInfo("Null parent?");
+
 
 			//V2Core::LightManager::Instance().UpdateShader(r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).BindMaterial();
