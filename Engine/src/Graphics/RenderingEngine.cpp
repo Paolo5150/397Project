@@ -2,7 +2,7 @@
 #include "RenderingEngine.h"
 #include "..\Core\Core.h"
 #include "..\Event\EventDispatcher.h"
-
+#include "..\Event\ApplicationEvents.h"
 #include "..\Components\Renderer.h"
 #include "..\Core\Camera.h"
 
@@ -18,6 +18,11 @@ RenderingEngine& RenderingEngine::Instance()
 
 RenderingEngine::RenderingEngine()
 {
+	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
+		Logger::LogWarning("Rendering engine clear");
+		ClearRendererList();
+		return 0;
+	});
 }
 
 

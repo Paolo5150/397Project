@@ -59,18 +59,25 @@ void TestScene1::Initialize() {
 
 	AddGameObject(cam);
 
-	quad->AddChild(quad2);
+	//quad->AddChild(quad2);
 
 }
 void TestScene1::LogicUpdate() {
 
-	Logger::LogInfo("Test scene 1 update");
+	//Logger::LogInfo("Test scene 1 update");
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
-	quad->transform.RotateBy(0.5f, 0,1,0);
+	quad->transform.RotateBy(0.5f, 0,0,1);
 	
-	Scene::LogicUpdate();
 
+	static float timer = 0;
+
+	timer += Timer::GetDeltaS();
+
+	if (timer > 3)
+		SceneManager::Instance().LoadNewScene("TestScene2");
+
+	Scene::LogicUpdate(); //Must be last statement!
 }
 void TestScene1::EngineUpdate() {
 	//Scene::EngineUpdate();

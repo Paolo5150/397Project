@@ -14,11 +14,13 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 
 GameObject::~GameObject()
 {
-
+	Logger::LogWarning("Gameobject", GetName(), "deleted");
 }
 
 void GameObject::DestroyChildrenAndComponents()
 {
+
+
 	for (auto it = std::begin(_children); it != std::end(_children); it++)
 	{
 		delete (*it);
@@ -28,6 +30,7 @@ void GameObject::DestroyChildrenAndComponents()
 
 	for (auto it = std::begin(_components); it != std::end(_components); it++)
 	{
+		Logger::LogWarning("Gameobject", GetName(), "deleted component",(*it)->GetName());
 
 		delete (*it);
 	}

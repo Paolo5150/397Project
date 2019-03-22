@@ -23,9 +23,7 @@ public:
 
 	virtual ~Application() {};
 
-	Scene& GetCurrentScene(){ return *m_currentScene; }
-
 protected:
-	Scene* m_currentScene;
+
 
 };

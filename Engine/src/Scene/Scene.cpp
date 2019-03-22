@@ -27,7 +27,7 @@ void Scene::AddGameObject(GameObject* go)
 void Scene::LateUpdate()
 {
 	// Delete ToBeDestroyed gameobjects here
-	Logger::LogInfo("Late update");
+	//Logger::LogInfo("Late update");
 	auto it = m_allGameObjects.begin();
 	for (; it != m_allGameObjects.end();)
 	{

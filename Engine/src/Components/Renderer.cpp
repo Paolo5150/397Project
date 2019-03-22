@@ -3,6 +3,7 @@
 #include "..\Core\Timer.h"
 #include "..\Event\EventDispatcher.h"
 #include "..\Core\Camera.h"
+#include "..\Event\ApplicationEvents.h"
 #include "..\Graphics\RenderingEngine.h"
 
 
@@ -15,6 +16,7 @@ Renderer::Renderer(std::string name, Material m) : Component(name) {
 	
 	isCullable = true;
 	SetMaterial(m);
+
 }
 
 

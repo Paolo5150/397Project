@@ -2,32 +2,27 @@
 #include "Logger.h"
 #include "..\Event\EventDispatcher.h"
 #include "..\Event\ApplicationEvents.h"
+#include "..\Scene\SceneManager.h"
 
 
 Application::Application()
 {
-	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e) {
 
-		Logger::LogInfo("SCENE CHANGED");
-		SceneChangedEvent* event = dynamic_cast<SceneChangedEvent*>(e);
-		m_currentScene = event->currentScene;
-		return false;
-	});
 }
 void Application::AppEngineUpdate()
 {
 	//Logger::LogInfo("Application engine update");
-	m_currentScene->EngineUpdate();
+	SceneManager::Instance().GetCurrentScene().EngineUpdate();
 }
 
 void Application::AppLogicUpdate()
 {
-	m_currentScene->LogicUpdate();
+	SceneManager::Instance().GetCurrentScene().LogicUpdate();
 }
 void Application::AppLateUpdate()
 {
 	//Logger::LogInfo("Application late update");
-	m_currentScene->LateUpdate();
+	SceneManager::Instance().GetCurrentScene().LateUpdate();
 
 
 }
