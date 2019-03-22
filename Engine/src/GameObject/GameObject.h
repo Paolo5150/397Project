@@ -336,9 +336,6 @@ public:
 
 	virtual void OnPreRender(Camera& camera,Shader* currentShader = nullptr);
 
-	void DestroyChildrenAndComponents();
-
-
 	Transform transform;
 
 protected:

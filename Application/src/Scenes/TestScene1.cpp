@@ -67,15 +67,10 @@ void TestScene1::LogicUpdate() {
 	//Logger::LogInfo("Test scene 1 update");
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
-	quad->transform.RotateBy(0.5f, 0,0,1);
+
+	quad->transform.RotateBy(0.5f, 0,1,1);	
+
 	
-
-	static float timer = 0;
-
-	timer += Timer::GetDeltaS();
-
-	if (timer > 3)
-		SceneManager::Instance().LoadNewScene("TestScene2");
 
 	Scene::LogicUpdate(); //Must be last statement!
 }

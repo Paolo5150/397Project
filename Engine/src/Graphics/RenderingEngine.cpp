@@ -18,8 +18,7 @@ RenderingEngine& RenderingEngine::Instance()
 
 RenderingEngine::RenderingEngine()
 {
-	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
-		Logger::LogWarning("Rendering engine clear");
+	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){		
 		ClearRendererList();
 		return 0;
 	});

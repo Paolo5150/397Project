@@ -45,6 +45,7 @@ void Scene::LateUpdate()
 
 void Scene::LogicUpdate()
 {
+	//Logger::LogError("Updating", m_allGameObjects.size());
 	auto it = m_allGameObjects.begin();
 
 	for (; it != m_allGameObjects.end(); it++)
@@ -59,7 +60,7 @@ void Scene::ExitScene()
 
 	for (; it != m_allGameObjects.end(); it++)
 	{
-		(*it)->DestroyChildrenAndComponents();
+
 		delete (*it);
 	}
 

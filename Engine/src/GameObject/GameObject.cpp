@@ -14,29 +14,15 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 
 GameObject::~GameObject()
 {
+	//Destroy components
+	for (auto it = _components.begin(); it != _components.end(); it++)
+		delete (*it);
+
+	_components.clear();
 	Logger::LogWarning("Gameobject", GetName(), "deleted");
 }
 
-void GameObject::DestroyChildrenAndComponents()
-{
 
-
-	for (auto it = std::begin(_children); it != std::end(_children); it++)
-	{
-		delete (*it);
-	}
-
-	_children.clear();
-
-	for (auto it = std::begin(_components); it != std::end(_components); it++)
-	{
-		Logger::LogWarning("Gameobject", GetName(), "deleted component",(*it)->GetName());
-
-		delete (*it);
-	}
-
-	_components.clear();
-}
 
 void GameObject::SetName(std::string name)
 {
@@ -73,7 +59,7 @@ void GameObject::SetActive(bool active, bool includeChildren)
 	{
 		for (auto it = std::begin(_children); it != std::end(_children); it++)
 		{
-			(*it)->SetActive(active);
+			(*it)->SetActive(active,includeChildren);
 		}
 	}
 }
