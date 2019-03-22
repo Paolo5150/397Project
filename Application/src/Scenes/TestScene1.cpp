@@ -34,7 +34,7 @@ void TestScene1::Initialize() {
 	QuadMesh* qm = new QuadMesh();
 	quad = new GameObject("Quad");
 	Material m;
-	m.LoadVec3("color", glm::vec3(1, 0, 0));
+	m.LoadVec3("color", 1,0,0); // 1 0 0 -> RGB (so, red color)
 	m.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
 	MeshRenderer* mr = new MeshRenderer(qm, m);
 	quad->AddComponent(mr);
@@ -42,7 +42,7 @@ void TestScene1::Initialize() {
 	QuadMesh* qm2 = new QuadMesh();
 	GameObject* quad2 = new GameObject("Quad");
 	Material m2;
-	m2.LoadVec3("color", glm::vec3(0, 1, 0));
+	m2.LoadVec3("color", 0, 1, 0); //0 1 0->RGB(so, green color)
 	m2.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
 	MeshRenderer* mr2 = new MeshRenderer(qm2, m2);
 	quad2->AddComponent(mr2);

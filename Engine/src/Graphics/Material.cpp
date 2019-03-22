@@ -41,7 +41,7 @@ void Material::PreloadMaterial()
 {
 	materialGroup = OPA;
 
-	LoadVec3("color", glm::vec3(1, 1, 1));
+	LoadVec3("color", 1,1,1);
 	LoadFloat("shininess", 32);
 	LoadFloat("UVscale", 1.0);
 	//LoadFloat("alpha", 1.0);
@@ -57,9 +57,9 @@ void Material::LoadVec4(std::string name, glm::vec4 v)
 	vec4s["material." + name] = v;
 }
 
-void Material::LoadVec3(std::string name, glm::vec3 v)
+void Material::LoadVec3(std::string name, float x, float y, float z)
 {
-	vec3s["material." + name] = v;
+	vec3s["material." + name] = glm::vec3(x,y,z);
 }
 
 //Temporary

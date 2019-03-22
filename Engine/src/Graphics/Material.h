@@ -55,7 +55,7 @@
 		void SetShader(Shader* s) { shader = s; }
 		Shader& GetShader() { return *shader; };
 		void LoadVec4(std::string, glm::vec4 v);
-		void LoadVec3(std::string, glm::vec3 v);
+		void LoadVec3(std::string, float x, float y, float z);
 		void LoadFloat(std::string, float v);
 		void LoadMat4(std::string, glm::mat4 v);
 		void SetReflectivity(float r);
