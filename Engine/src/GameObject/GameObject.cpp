@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "..\Graphics\Shader.h"
+#include "..\Core\Camera.h"
 
 GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent)
 {
@@ -126,6 +127,7 @@ void GameObject::AddChild(GameObject* child)
 	if (HasChild(child->GetName()) == false)
 	{
 		child->SetParent(this);
+		child->transform.parent = &transform;
 		_children.push_back(child);
 	}
 }
@@ -270,13 +272,13 @@ void GameObject::Update()
 		(*itc)->Update();
 }
 
-void GameObject::OnPreRender(Shader* currentShader )
+void GameObject::OnPreRender(Camera& cam,Shader* currentShader )
 {
 	auto it = _children.begin();
 	for (; it != _children.end(); it++)
-		(*it)->OnPreRender(currentShader);
+		(*it)->OnPreRender(cam,currentShader);
 
 	auto itc = _components.begin();
 	for (; itc != _components.end(); itc++)
-		(*itc)->OnPreRender(currentShader);
+		(*itc)->OnPreRender(cam,currentShader);
 }

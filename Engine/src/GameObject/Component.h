@@ -29,7 +29,7 @@ public:
 
 	virtual void Update(){};
 	virtual void OnAttach(){};
-	virtual void OnPreRender(Shader* currentShader = nullptr){};
+	virtual void OnPreRender(Camera& cam,Shader* currentShader = nullptr){};
 
 
 protected:

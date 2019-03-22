@@ -28,20 +28,13 @@ void Renderer::Update()
 
 }
 
-void Renderer::SendDataToShader(Camera& cam)
+void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 {
-	glm::mat4 model;
-
-	if (_parent != NULL)
-		model = _parent->transform.GetMatrix();
-
 	
-	glm::mat4 mvp = model;
+	glm::mat4 mvp = cam.projectionMatrix * cam.viewMatrix * _parent->transform.GetMatrix();
 	Shader::GetCurrentShader().SetMat4("mvp", mvp);
-	if (_parent != NULL)
 	Shader::GetCurrentShader().SetVec3("pos", _parent->transform.GetPosition());
-
-	Shader::GetCurrentShader().SetMat4("model", model);
+	Shader::GetCurrentShader().SetMat4("model", _parent->transform.GetMatrix());
 	Shader::GetCurrentShader().SetMat4("view", cam.viewMatrix);
 	Shader::GetCurrentShader().SetMat4("projection", cam.projectionMatrix);
 	//Shader::GetCurrentShader().SetFloat("heightPlane", Water::heightPlane);
@@ -54,7 +47,7 @@ void Renderer::SendDataToShader(Camera& cam)
 	static double lastValue;
 	shaderTimer = Timer::GetTimeS() / 4.0f;
 	if (shaderTimer != 0)
-		lastValue = shaderTimer;
+	lastValue = shaderTimer;
 	Shader::GetCurrentShader().SetFloat("timeSeconds", lastValue);
 
 
@@ -62,7 +55,13 @@ void Renderer::SendDataToShader(Camera& cam)
 	Shader::GetCurrentShader().SetFloat("farPlane", cam.farPlane);
 
 	if (_parent != NULL)
-		Shader::GetCurrentShader().SetVec3("camPosition", cam.transform.GetPosition());*/
+	Shader::GetCurrentShader().SetVec3("camPosition", cam.transform.GetPosition());*/
+}
+
+
+void Renderer::SendDataToShader(Camera& cam)
+{
+	
 
 }
 

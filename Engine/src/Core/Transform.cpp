@@ -26,6 +26,14 @@ void Transform::SetRotation(glm::vec3 r)
 	
 }
 
+void Transform::Translate(float x, float y, float z)
+{
+	position.x += x;
+	position.y += y;
+	position.z += z;
+}
+
+
 void Transform::SetPosition(glm::vec3 r)
 {
 	position = r;

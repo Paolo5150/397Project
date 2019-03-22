@@ -19,7 +19,7 @@ void Timer::Initialize()
 	m_delta = 0;
 	
 	m_FPSCounter = 0;
-	m_FPS = 1;
+	m_FPS = 60;
 	m_limitFPS = 1.0 / m_FPS;
 	m_now = glfwGetTime();
 	m_prev = glfwGetTime();

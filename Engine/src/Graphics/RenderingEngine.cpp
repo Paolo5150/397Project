@@ -65,22 +65,17 @@ void RenderingEngine::RenderCurrentScene(Camera* camera, MaterialType mt)
 
 void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, Material* forcedMaterial)
 {
-
 	for (int i = 0; i < r.size(); i++)
 	{
 		if (cam.GetCullingMask() & r[i]->_parent->GetLayer()) //Check for culling mask
 		{
 			forcedMaterial->BindMaterial();
 			//LightManager::Instance().UpdateShader(r[i]->GetMaterial().GetShader());
-			r[i]->_parent->OnPreRender(&r[i]->GetMaterial().GetShader());
+			r[i]->_parent->OnPreRender(cam,&r[i]->GetMaterial().GetShader());
 			r[i]->Render(cam);
 			forcedMaterial->UnbindMaterial();
 		}
-
-
 	}
-
-
 }
 
 
@@ -128,7 +123,7 @@ void RenderingEngine::RenderBuffer()
 	for (int camIndex = 0; camIndex < Camera::GetAllCameras().size(); camIndex++)
 	{
 		if (!Camera::GetAllCameras()[camIndex]->GetActive()) continue;
-		//Render skybox
+		//Render skybox here when ready
 	
 
 		Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
@@ -153,14 +148,11 @@ void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, Mater
 		{
 			//V2Core::LightManager::Instance().UpdateShader(r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).BindMaterial();
-			r[i]->OnPreRender(&r[i]->GetMaterial(m).GetShader()); //Change to get root->OnPrerender
+			r[i]->OnPreRender(cam,&r[i]->GetMaterial(m).GetShader()); //Change to get root->OnPrerender
 			r[i]->Render(cam);
 			r[i]->GetMaterial(m).UnbindMaterial();
 		}
-
-
 	}
-
 }
 
 void RenderingEngine::ClearRendererList()

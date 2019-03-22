@@ -7,6 +7,7 @@
 
 class Component;
 class Shader;
+class Camera;
 
 /**
 * @class GameObject
@@ -333,7 +334,7 @@ public:
 	virtual void Update();
 
 
-	virtual void OnPreRender(Shader* currentShader = nullptr);
+	virtual void OnPreRender(Camera& camera,Shader* currentShader = nullptr);
 
 	void DestroyChildrenAndComponents();
 

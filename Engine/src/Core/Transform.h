@@ -37,6 +37,7 @@ public:
 	void SetPosition(float x, float y, float z);
 	void SetScale(float x, float y, float z);
 	void LookAt(float x, float y, float z);
+	void Translate(float x, float y, float z);
 
 	void Update();
 
