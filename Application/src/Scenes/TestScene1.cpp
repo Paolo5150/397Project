@@ -51,9 +51,7 @@ void TestScene1::Initialize() {
 	float ar = Window::Instance().GetAspectRatio();
 	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
 	cam->transform.SetPosition(0, 0, 30);
-	//cam->transform.SetRotation(0, 180, 0);
-	//cam->transform.LookAt(0, 0, 0);
-	cam->transform.RotateBy(180, glm::vec3(0, 1, 0));
+	cam->transform.RotateBy(180, 0,1,0);
 
 
 	AddGameObject(quad); //Add objects to scene
@@ -69,7 +67,7 @@ void TestScene1::LogicUpdate() {
 	Logger::LogInfo("Test scene 1 update");
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
-	quad->transform.RotateBy(0.5f, glm::vec3(0, 1, 0));
+	quad->transform.RotateBy(0.5f, 0,1,0);
 	
 	Scene::LogicUpdate();
 

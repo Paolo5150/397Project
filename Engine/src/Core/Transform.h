@@ -27,6 +27,8 @@ public:
 	glm::mat4& GetMatrix();
 
 	void RotateBy(float angle, glm::vec3 acis);
+	void RotateBy(float angle, int x, int y, int z);
+
 
 	void SetRotation(glm::vec3 r);
 	void SetPosition(glm::vec3 r);

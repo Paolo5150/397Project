@@ -252,6 +252,12 @@ void Transform::RotateBy(float angle, glm::vec3 axis)
 	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.z), glm::vec3(0, 0, 1));
 }
 
+void Transform::RotateBy(float angle, int x, int y, int z)
+{
+	RotateBy(angle, glm::vec3(x, y, z));
+}
+
+
 
 glm::vec3& Transform::GetPosition()
 {
