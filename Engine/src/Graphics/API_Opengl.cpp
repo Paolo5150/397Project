@@ -1,5 +1,7 @@
 #include "API_Opengl.h"
 #include "Texture2DGL.h"
+#include "VertexArrayGL.h"
+#include "ArrayBufferGL.h"
 
 API_Opengl::API_Opengl()
 {
@@ -65,3 +67,18 @@ void API_Opengl::ResetTextures()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+ArrayBuffer<Vertex>* API_Opengl::CreateVertexBuffer()
+{
+	return new ArrayBufferGL<Vertex>();
+}
+ArrayBuffer<unsigned>* API_Opengl::CreateIndexBuffer()
+{
+	return new ArrayBufferGL<unsigned>();
+}
+
+VertexArray* API_Opengl::CreateVertexArray()
+{
+	return new VertexArrayGL();
+}
+

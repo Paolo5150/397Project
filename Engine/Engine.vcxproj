@@ -220,6 +220,8 @@
     <ClInclude Include="src\Graphics\Texture2D.h" />
     <ClInclude Include="src\Graphics\Texture2DGL.h" />
     <ClInclude Include="src\Graphics\Vertex.h" />
+    <ClInclude Include="src\Graphics\VertexArray.h" />
+    <ClInclude Include="src\Graphics\VertexArrayGL.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Prefabs\Quad.h" />
     <ClInclude Include="src\Scene\Scene.h" />

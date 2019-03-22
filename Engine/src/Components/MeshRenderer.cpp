@@ -1,5 +1,5 @@
 #include "MeshRenderer.h"
-
+#include "..\Core\Core.h"
 
 
 
@@ -8,13 +8,19 @@ MeshRenderer::~MeshRenderer()
 	if (mesh->bones_id_weights_for_each_vertex.size() > 0)
 		glDeleteBuffers(1, &VBO_bones);
 
+	delete vertexArray;
+	delete vertexBuffer;
+	delete indexBuffer;
 
-	glDeleteVertexArrays(1, &VAO);
 	delete mesh;
 
 }
 MeshRenderer::MeshRenderer(Mesh* m, Material mat, bool isCullable) : Renderer("MeshRenderer", mat)
 {
+	vertexArray = Core::Instance().GetGraphicsAPI().CreateVertexArray();
+	vertexBuffer = Core::Instance().GetGraphicsAPI().CreateVertexBuffer();
+	indexBuffer = Core::Instance().GetGraphicsAPI().CreateIndexBuffer();
+
 	
 	this->isCullable = isCullable;
 	SetMesh(m);
@@ -27,62 +33,47 @@ void MeshRenderer::SetMesh(Mesh* m)
 
 	mesh = m;
 	Initialize();
-
-
 }
 
 
 void MeshRenderer::Initialize()
 {
-	if (VAO == 0)
-		glGenVertexArrays(1, &VAO);
-
-	glBindVertexArray(VAO);
-
+	
+	vertexArray->Bind();
 
 	/*Bones*/
 	//bones data
-	if (mesh->bones_id_weights_for_each_vertex.size() > 0)
+	/*if (mesh->bones_id_weights_for_each_vertex.size() > 0)
 	{
 		if (VBO_bones == 0)
 			glGenBuffers(1, &VBO_bones);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO_bones);
 		glBufferData(GL_ARRAY_BUFFER, mesh->bones_id_weights_for_each_vertex.size() * sizeof(mesh->bones_id_weights_for_each_vertex[0]), &mesh->bones_id_weights_for_each_vertex[0], GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
+	}*/
 
-
-
-	vertexBuffer.AddData(mesh->vertices);
-	indexBuffer.AddData(mesh->indices);
-
-
+	vertexBuffer->AddData(mesh->vertices);
+	indexBuffer->AddData(mesh->indices);
 
 	//Position
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	vertexArray->AddLayoutf(0, 3, false, sizeof(Vertex), 0);
 
 	//normal
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	vertexArray->AddLayoutf(1, 3, false, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 
 	//UV
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, UV));
+	vertexArray->AddLayoutf(2, 2, false, sizeof(Vertex), (void*)offsetof(Vertex, UV));
 
 	//color
-	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+	vertexArray->AddLayoutf(3, 3, false, sizeof(Vertex), (void*)offsetof(Vertex, color));
 
 	//tangent
-	glEnableVertexAttribArray(4);
-	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
+	vertexArray->AddLayoutf(4, 3, false, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
 
 	//bitangemnt
-	glEnableVertexAttribArray(5);
-	glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, binormal));
+	vertexArray->AddLayoutf(5, 3, false, sizeof(Vertex), (void*)offsetof(Vertex, binormal));
 
-	if (mesh->bones_id_weights_for_each_vertex.size() > 0)
+	/*if (mesh->bones_id_weights_for_each_vertex.size() > 0)
 	{
 		//bones
 		glBindBuffer(GL_ARRAY_BUFFER, VBO_bones);
@@ -91,12 +82,9 @@ void MeshRenderer::Initialize()
 		glEnableVertexAttribArray(7);
 		glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(VertexBoneData), (const GLvoid*)(16));
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
+	}*/
 
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindVertexArray(0);
+	vertexArray->Unbind();
 }
 
 Mesh* MeshRenderer::GetMesh()
@@ -105,12 +93,7 @@ Mesh* MeshRenderer::GetMesh()
 }
 
 void MeshRenderer::Render(Camera& cam)
-{
-	
+{	
 	SendDataToShader(cam);
-
-	glBindVertexArray(VAO);
-
-	glDrawElements(GL_TRIANGLES, mesh->indices.size(), GL_UNSIGNED_INT, 0);
-
+	vertexArray->RenderArrayTriangles(mesh->indices.size());
 }

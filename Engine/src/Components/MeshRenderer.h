@@ -1,7 +1,8 @@
 #pragma once
 #include "Renderer.h"
 #include "..\Graphics\Mesh.h"
-#include "..\Graphics\ArrayBufferGL.h"
+#include "..\Graphics\ArrayBuffer.h"
+#include "..\Graphics\VertexArray.h"
 
 
 class MeshRenderer : public Renderer
@@ -19,12 +20,13 @@ class MeshRenderer : public Renderer
 
 	private:
 		Mesh* mesh;
-		GLuint VAO;
+
 
 		GLuint VBO_bones;
 
-		ArrayBufferGL<Vertex> vertexBuffer;
-		ArrayBufferGL<unsigned> indexBuffer;	
+		ArrayBuffer<Vertex>* vertexBuffer;
+		ArrayBuffer<unsigned>* indexBuffer;	
+		VertexArray* vertexArray;
 
 		void Initialize();
 

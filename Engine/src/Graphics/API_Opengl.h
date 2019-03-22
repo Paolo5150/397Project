@@ -18,5 +18,9 @@ public:
 	Texture2D* CreateTexture2D(std::string textureName, int width, int height, int channels, unsigned char* data) override;
 	Texture2D* CreateTexture2D(std::string name, unsigned width, unsigned height, bool isDepth = false) override;
 	void ResetTextures() override;
+	ArrayBuffer<Vertex>* CreateVertexBuffer() override;
+	ArrayBuffer<unsigned>* CreateIndexBuffer() override;
+	VertexArray* CreateVertexArray() override;
+
 
 };
