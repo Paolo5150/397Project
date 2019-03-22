@@ -8,8 +8,7 @@ MeshRenderer::~MeshRenderer()
 	if (mesh->bones_id_weights_for_each_vertex.size() > 0)
 		glDeleteBuffers(1, &VBO_bones);
 
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &IBO);
+
 	glDeleteVertexArrays(1, &VAO);
 	delete mesh;
 
@@ -37,10 +36,6 @@ void MeshRenderer::Initialize()
 {
 	if (VAO == 0)
 		glGenVertexArrays(1, &VAO);
-	if (VBO == 0)
-		glGenBuffers(1, &VBO);
-	if (IBO == 0)
-		glGenBuffers(1, &IBO);
 
 	glBindVertexArray(VAO);
 
@@ -57,39 +52,10 @@ void MeshRenderer::Initialize()
 	}
 
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	glBufferData(GL_ARRAY_BUFFER, mesh->vertices.size() * sizeof(Vertex), NULL, GL_STATIC_DRAW);
+	vertexBuffer.AddData(mesh->vertices);
+	indexBuffer.AddData(mesh->indices);
 
-	Vertex* map = (Vertex*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-
-	for (int i = 0; i < mesh->vertices.size(); i++)
-	{
-		map->position = mesh->vertices[i].position;
-		map->normal = mesh->vertices[i].normal;
-		map->UV = mesh->vertices[i].UV;
-		map->color = mesh->vertices[i].color;
-		map->tangent = mesh->vertices[i].tangent;
-		map->binormal = mesh->vertices[i].binormal;
-
-
-
-		map++;
-	}
-	glUnmapBuffer(GL_ARRAY_BUFFER);
-
-	//Indices
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)* mesh->indices.size(), NULL, GL_STATIC_DRAW);
-
-	GLuint* indexPointer = (GLuint*)glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
-
-	for (int i = 0; i < mesh->indices.size(); i++)
-	{
-		*indexPointer = mesh->indices[i];
-		indexPointer++;
-	}
-	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
 
 	//Position

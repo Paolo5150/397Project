@@ -20,12 +20,11 @@ class MeshRenderer : public Renderer
 	private:
 		Mesh* mesh;
 		GLuint VAO;
-		GLuint VBO;
+
 		GLuint VBO_bones;
 
 		ArrayBufferGL<Vertex> vertexBuffer;
-
-		GLuint IBO;
+		ArrayBufferGL<unsigned> indexBuffer;	
 
 		void Initialize();
 

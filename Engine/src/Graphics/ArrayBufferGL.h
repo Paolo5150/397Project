@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "ArrayBuffer.h"
-
+#include "..\Core\Logger.h"
 template <class T>
 class ArrayBufferGL : public ArrayBuffer<T>
 {
@@ -27,7 +27,9 @@ ArrayBufferGL<T>::ArrayBufferGL()
 	std::string typeName = typeid(T).name();
 
 	if (typeName == "unsigned int")
+	{
 		bufferType = GL_ELEMENT_ARRAY_BUFFER;
+	}
 	else
 		bufferType = GL_ARRAY_BUFFER;
 }
@@ -41,7 +43,7 @@ ArrayBufferGL<T>::~ArrayBufferGL()
 template <class T>
 void ArrayBufferGL<T>::Bind()
 {	
-	glBindBuffer(GL_ARRAY_BUFFER, m_id);
+	glBindBuffer(bufferType, m_id);
 }
 
 
@@ -49,6 +51,6 @@ void ArrayBufferGL<T>::Bind()
 template <class T>
 void ArrayBufferGL<T>::AddData(std::vector<T>& data)
 {
+	Bind();
 	glBufferData(bufferType, data.size() * sizeof(data[0]), &data[0], GL_STATIC_DRAW);
-
 }
