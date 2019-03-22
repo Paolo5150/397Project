@@ -1,6 +1,7 @@
 #pragma once
 #include "Renderer.h"
 #include "..\Graphics\Mesh.h"
+#include "..\Graphics\ArrayBufferGL.h"
 
 
 class MeshRenderer : public Renderer
@@ -21,6 +22,8 @@ class MeshRenderer : public Renderer
 		GLuint VAO;
 		GLuint VBO;
 		GLuint VBO_bones;
+
+		ArrayBufferGL<Vertex> vertexBuffer;
 
 		GLuint IBO;
 

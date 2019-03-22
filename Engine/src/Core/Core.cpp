@@ -131,7 +131,7 @@ bool Core::LateUpdate(Event* e)
 bool Core::Render(Event* e)
 {
 
-
+	
 	RenderingEngine::Instance().RenderBuffer();
 	/*glEnable(GL_TEXTURE_2D);
 	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();

@@ -208,6 +208,8 @@
     <ClInclude Include="src\GameObject\Component.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
     <ClInclude Include="src\Graphics\API_Opengl.h" />
+    <ClInclude Include="src\Graphics\ArrayBuffer.h" />
+    <ClInclude Include="src\Graphics\ArrayBufferGL.h" />
     <ClInclude Include="src\Graphics\GraphicsAPI.h" />
     <ClInclude Include="src\Graphics\Layers.h" />
     <ClInclude Include="src\Graphics\Material.h" />
