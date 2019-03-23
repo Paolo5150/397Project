@@ -27,6 +27,12 @@ void AssetLoader::Initialize(GraphicsAPI* gAPI)
 		instance = new AssetLoader(gAPI);
 }
 
+Model* AssetLoader::LoadModel(std::string name, std::string path)
+{
+
+}
+
+
 Texture2D* AssetLoader::LoadTexture(std::string name, std::string path)
 {
 	int width;

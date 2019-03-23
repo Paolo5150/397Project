@@ -231,6 +231,7 @@
     <ClInclude Include="src\Utils\Asset.h" />
     <ClInclude Include="src\Utils\AssetContainer.h" />
     <ClInclude Include="src\Utils\AssetLoader.h" />
+    <ClInclude Include="src\Utils\AssimpWrapper.h" />
     <ClInclude Include="src\Utils\FileUtils.h" />
     <ClInclude Include="src\Utils\Maths.h" />
   </ItemGroup>
@@ -267,6 +268,7 @@
     <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Utils\AssetContainer.cpp" />
     <ClCompile Include="src\Utils\AssetLoader.cpp" />
+    <ClCompile Include="src\Utils\AssimpWrapper.cpp" />
     <ClCompile Include="src\Utils\FileUtils.cpp" />
     <ClCompile Include="src\Utils\Maths.cpp" />
   </ItemGroup>

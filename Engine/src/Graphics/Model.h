@@ -20,7 +20,6 @@ public:
 	Model();
 	virtual ~Model();
 
-
 	std::vector<Mesh> GetMeshes();
 	virtual GameObject* CreateGameObject();
 	std::string name;

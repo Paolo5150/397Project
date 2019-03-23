@@ -3,6 +3,8 @@
 #include <map>
 #include <list>
 #include "AssetContainer.h"
+#include "..\Graphics\Model.h"
+#include "AssimpWrapper.h"
 
 class AssetLoader
 {
@@ -12,6 +14,7 @@ public:
 	
 	Shader* LoadShader(std::string name, std::string vertexPath, std::string fragmentPath);
 	Texture2D* LoadTexture(std::string name, std::string path);
+	Model* LoadModel(std::string name, std::string path);
 	
 	template<class T>
 	void Unload();
@@ -26,6 +29,7 @@ private:
 	~AssetLoader();
 	GraphicsAPI* graphucsAPI;
 	std::map<std::string, AssetContainer> containers;
+	AssimpWrapper assimpWrapper;
 
 
 
