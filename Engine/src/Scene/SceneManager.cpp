@@ -32,7 +32,7 @@ void SceneManager::AddScene(Scene* s)
 	}
 	else
 	{
-		Logger::LogError("Added scene",s->name);
+		Logger::LogInfo("Added scene",s->name);
 
 		m_allScenes[s->name] = s;
 	}

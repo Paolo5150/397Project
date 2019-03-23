@@ -34,11 +34,10 @@ void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 {
 	
 	glm::mat4 mvp = cam.projectionMatrix * cam.viewMatrix * _parent->transform.GetMatrix();
-	Shader::GetCurrentShader().SetMat4("mvp", mvp);
-	Shader::GetCurrentShader().SetVec3("pos", _parent->transform.GetPosition());
-	Shader::GetCurrentShader().SetMat4("model", _parent->transform.GetMatrix());
-	Shader::GetCurrentShader().SetMat4("view", cam.viewMatrix);
-	Shader::GetCurrentShader().SetMat4("projection", cam.projectionMatrix);
+	Shader::GetCurrentShader().SetMat4("u_mvp", mvp);
+	Shader::GetCurrentShader().SetMat4("u_model", _parent->transform.GetMatrix());
+	Shader::GetCurrentShader().SetMat4("u_view", cam.viewMatrix);
+	Shader::GetCurrentShader().SetMat4("u_projection", cam.projectionMatrix);
 	//Shader::GetCurrentShader().SetFloat("heightPlane", Water::heightPlane);
 	//Shader::GetCurrentShader().SetInt("heightPlaneActive", Water::heightPlaneActive);
 	//Shader::GetCurrentShader().SetVec3("fogColor", LightManager::Instance().fogColor);

@@ -8,8 +8,6 @@ static std::string fileNameOnly;
 static std::string modelFolderName;
 static std::string pathToFolder;
 
-Shader* defaultShader;
-
 Model* AssimpWrapper::LoadModel(const std::string& path)
 {
 	Assimp::Importer import;
@@ -22,9 +20,7 @@ Model* AssimpWrapper::LoadModel(const std::string& path)
 		Logger::LogError("Assimp error: {}", import.GetErrorString());
 		return NULL;
 	}
-
-	defaultShader = AssetLoader::Instance().GetAsset<Shader>("ModelShader");
-
+	
 	modelFolderName = FileUtils::GetLastFolderNameFromAbsolutePath(path);
 
 	pathToFolder = "Assets\\Models\\" + modelFolderName ;
@@ -70,7 +66,7 @@ void AssimpWrapper::ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model
 	LoadMesh(mesh, model, isAnimated);
 
 	//Logger::LogInfo("Processing mesh {}", mesh->mName.C_Str());
-	Material associatedMaterial = NULL;
+	Material associatedMaterial ;
 	//material
 	if (mesh->mMaterialIndex >= 0 && scene->mNumMaterials != 0)
 	{
@@ -78,7 +74,7 @@ void AssimpWrapper::ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 		std::string textureFolder = pathToFolder + "\\Textures";
-		associatedMaterial = Material(AssetLoader::Instance().GetAsset<Shader>("StaticModelShader"));
+		associatedMaterial = Material(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
 		{
@@ -117,8 +113,8 @@ void AssimpWrapper::ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model
 	}
 
 
-	if (scene->HasAnimations())
-		associatedMaterial.SetShader(defaultShader);
+	//if (scene->HasAnimations())
+	//	associatedMaterial.SetShader(defaultShader);
 
 	int index = model->allMaterials.size();
 

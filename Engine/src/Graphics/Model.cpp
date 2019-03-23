@@ -58,13 +58,13 @@ GameObject* Model::CreateGameObject()
 		Mesh* m = new Mesh(*allMeshes[i]);
 
 		MeshRenderer* mr = new MeshRenderer(m, allMaterials[i]);
-		Material mat;
-		mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
+		//Material mat;
+		//mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 		//simplifiedMaterial.LoadVec3("color", 0.3f,0.3f,0.3f);
 	//	simplifiedMaterial.SetShader(AssetLoader::Instance().GetAsset<Shader>("StaticModelSimplifiedShader"));
 		//mr->SetMaterial(*simplifiedMaterial, MaterialType::SIMPLIFIED);
 
-		mr->SetMaterial(mat);
+		//mr->SetMaterial(mat);
 
 
 		GameObject* c = new GameObject(meshesNames[i]);

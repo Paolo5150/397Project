@@ -56,6 +56,8 @@
 		void LoadFloat(std::string, float v);
 		void LoadMat4(std::string, glm::mat4 v);
 
+		void SetColor(float r, float g, float b);
+
 		std::map<int, Texture2D*> textures;
 	protected:
 		//std::map<int, Cubemap*> cubemaps;

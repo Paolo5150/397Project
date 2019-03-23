@@ -51,8 +51,8 @@ void Core::Initialize()
 
 	AssetLoader::Initialize(graphicsAPI);
 
-	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\coloronly.v", "Assets\\Shaders\\coloronly.f");
-	Texture2D* t = AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
+	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f");
+	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f");
 
 	//Start update loop
 	m_isRunning = true;

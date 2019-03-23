@@ -59,6 +59,11 @@ void Material::LoadFloat(std::string name, float v)
 	floats["material." + name] = v;
 }
 
+void Material::SetColor(float r, float g, float b)
+{
+	LoadVec3("color", r, g, b);
+}
+
 
 /*void Material::LoadCubemap(Cubemap* t, TextureUniform tu)
 {
@@ -118,15 +123,12 @@ void Material::BindMaterial()
 	shader->Bind(); //This line is kind of vital
 	auto it = textures.begin();
 
-	//TODO: improc ve this, cubemap and texture can be bind together, should not be the case
+
 	for (; it != textures.end(); it++)
 	{
 		glActiveTexture(GL_TEXTURE0 + it->first);
 		it->second->Bind();
 		shader->SetInt(textureUniforms[it->first], it->first);
-
-
-
 	}
 
 	/*for (auto cit = cubemaps.begin(); cit != cubemaps.end(); cit++)
@@ -134,9 +136,6 @@ void Material::BindMaterial()
 		glActiveTexture(GL_TEXTURE0 + cit->first);
 		cit->second->Bind();
 		shader->SetInt(textureUniforms[cit->first], cit->first);
-
-
-
 	}*/
 
 
