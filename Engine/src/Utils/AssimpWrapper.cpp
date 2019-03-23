@@ -26,8 +26,8 @@ Model* AssimpWrapper::LoadModel(const std::string& path)
 	defaultShader = AssetLoader::Instance().GetAsset<Shader>("ModelShader");
 
 	modelFolderName = FileUtils::GetLastFolderNameFromAbsolutePath(path);
-	//Logger::LogWarning("Model folder", modelFolderName);
 
+	pathToFolder = "Assets\\Models\\" + modelFolderName ;
 	Model* model = new Model();	
 
 	ProcessNode(scene->mRootNode, scene, NULL, model, false);
@@ -69,7 +69,7 @@ void AssimpWrapper::ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model
 {
 	LoadMesh(mesh, model, isAnimated);
 
-	Logger::LogInfo("Processing mesh {}", mesh->mName.C_Str());
+	//Logger::LogInfo("Processing mesh {}", mesh->mName.C_Str());
 	Material associatedMaterial = NULL;
 	//material
 	if (mesh->mMaterialIndex >= 0 && scene->mNumMaterials != 0)
@@ -82,19 +82,19 @@ void AssimpWrapper::ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model
 
 		if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
 		{
-			Logger::LogInfo("This mesh has {} diffuse", material->GetTextureCount(aiTextureType_DIFFUSE));
+			//Logger::LogInfo("This mesh has {} diffuse", material->GetTextureCount(aiTextureType_DIFFUSE));
 			LoadTextureIntoMaterial(aiTextureType_DIFFUSE, material, &associatedMaterial, textureFolder, model);
 		}
 
 		if (material->GetTextureCount(aiTextureType_NORMALS) > 0)
 		{
-			Logger::LogInfo("This mesh has {} normal", material->GetTextureCount(aiTextureType_NORMALS));
+			//Logger::LogInfo("This mesh has {} normal", material->GetTextureCount(aiTextureType_NORMALS));
 			LoadTextureIntoMaterial(aiTextureType_NORMALS, material, &associatedMaterial, textureFolder, model);
 		}
 
 		if (material->GetTextureCount(aiTextureType_EMISSIVE) > 0)
 		{
-			Logger::LogInfo("This mesh has {} normal", material->GetTextureCount(aiTextureType_NORMALS));
+			//Logger::LogInfo("This mesh has {} normal", material->GetTextureCount(aiTextureType_NORMALS));
 			LoadTextureIntoMaterial(aiTextureType_EMISSIVE, material, &associatedMaterial, textureFolder, model);
 		}
 
@@ -110,7 +110,7 @@ void AssimpWrapper::ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model
 	}
 	else
 	{
-		Logger::LogInfo("No material, applying default one {}", mesh->mMaterialIndex);
+		//Logger::LogInfo("No material, applying default one {}", mesh->mMaterialIndex);
 		associatedMaterial = Material(AssetLoader::Instance().GetAsset<Shader>("ColorOnly")); 
 		associatedMaterial.LoadVec3("color", 1,0,1);
 
@@ -234,13 +234,13 @@ void AssimpWrapper::LoadTextureIntoMaterial(aiTextureType type, aiMaterial* mate
 		material->GetTexture(type, i, &assimpPath);
 		std::string fileNameOnly = FileUtils::GetFileNameFromAbsolutePath(assimpPath.C_Str());
 		std::string finalPath = textureFolder + "\\" + fileNameOnly;
-
+		Logger::LogWarning("Trying to get texture from", finalPath);
 		Texture2D* t = AssetLoader::Instance().LoadTexture(finalPath);
 		model->allTextures.push_back(t);
 
 
 		mymaterial->Loadtexture(t, static_cast<TextureUniform>(static_cast<int>(myUniform)+i));
-		Logger::LogInfo("Loaded {} {}, counter {}", typeInString, assimpPath.C_Str(), i);
+		//Logger::LogInfo("Loaded {} {}, counter {}", typeInString, assimpPath.C_Str(), i);
 
 	}
 }

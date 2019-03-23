@@ -17,7 +17,7 @@ TestScene1::TestScene1() : Scene("TestScene1")
 
 void TestScene1::LoadAssets() {
 
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
 
 
 	
@@ -48,7 +48,7 @@ void TestScene1::Initialize() {
 	quad2->AddComponent(mr2);
 	quad2->transform.SetPosition(5, 0, 0);
 
-	GameObject* sphere = AssetLoader::Instance().GetAsset<Model>("Sphere")->CreateGameObject();
+	GameObject* nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
 	float ar = Window::Instance().GetAspectRatio();
 	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
@@ -60,11 +60,11 @@ void TestScene1::Initialize() {
 	AddGameObject(quad2); //Add objects to scene
 
 	AddGameObject(cam);
-	AddGameObject(sphere);
+	AddGameObject(nanosuit);
 
 	quad->AddChild(quad2);
 
-	sphere->PrintHierarchy();
+
 
 }
 void TestScene1::LogicUpdate() {
