@@ -130,7 +130,6 @@ void RenderingEngine::RenderBuffer(MaterialType mt)
 		Camera& cam = *Camera::GetAllCameras()[camIndex];
 
 		if (!cam.GetActive()) continue;
-
 	
 		if (previousDepth != cam.GetDepth())
 		Core::Instance().GetGraphicsAPI().ClearDepthBuffer();

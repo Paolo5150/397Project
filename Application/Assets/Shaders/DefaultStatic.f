@@ -4,6 +4,8 @@ out vec4 FragColor;
 
 in vec2 Textcoords;
 in vec3 Normal;
+in vec3 Tangent;
+in vec3 Binormal;
 in vec3 FragPosition;
 in vec3 CameraPosition;
 
@@ -25,7 +27,7 @@ void main()
    vec3 diffuseColor = texture(diffuse0,Textcoords).rgb;
    vec3 total = diffuseColor * material.color;
 
-	gl_FragColor =  vec4(total,1.0);
+	gl_FragColor =  vec4(Normal,1.0);
 
 
 } 
