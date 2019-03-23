@@ -333,6 +333,7 @@ public:
 	*/
 	virtual void Update();
 
+	void PrintHierarchy();
 
 	virtual void OnPreRender(Camera& camera,Shader* currentShader = nullptr);
 
@@ -346,5 +347,8 @@ protected:
 	GameObject* _parent;
 	std::list<GameObject*> _children;
 	std::list<Component*> _components; //Possibly Map
+
+	void PrintHierarchy(int indentation, std::string& output);
+
 };
 

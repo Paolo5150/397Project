@@ -40,7 +40,7 @@ void TestScene1::Initialize() {
 	quad->AddComponent(mr);
 
 	QuadMesh* qm2 = new QuadMesh();
-	GameObject* quad2 = new GameObject("Quad");
+	GameObject* quad2 = new GameObject("Quad2");
 	Material m2;
 	m2.LoadVec3("color", 0, 1, 0); //0 1 0->RGB(so, green color)
 	m2.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
@@ -59,7 +59,9 @@ void TestScene1::Initialize() {
 
 	AddGameObject(cam);
 
-	//quad->AddChild(quad2);
+	quad->AddChild(quad2);
+
+	quad->PrintHierarchy();
 
 }
 void TestScene1::LogicUpdate() {

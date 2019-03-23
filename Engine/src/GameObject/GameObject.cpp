@@ -271,3 +271,26 @@ void GameObject::OnPreRender(Camera& cam,Shader* currentShader )
 	for (; itc != _components.end(); itc++)
 		(*itc)->OnPreRender(cam,currentShader);
 }
+
+void GameObject::PrintHierarchy()
+{
+	std::string o = "\n";
+	PrintHierarchy(0, o);
+	Logger::LogInfo("{}", o);
+}
+
+void GameObject::PrintHierarchy(int indentation, std::string& output)
+{
+	for (int i = 0; i < indentation; i++)
+		output += "...";
+
+	output += GetName();
+
+	auto it = _children.begin();
+
+	for (; it != _children.end(); it++)
+	{
+		output += "\n";
+		(*it)->PrintHierarchy(indentation + 1, output);
+	}
+}
