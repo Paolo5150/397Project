@@ -187,9 +187,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Core\Core.h" />
+    <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Logger.h" />
     <ClInclude Include="src\Core\Timer.h" />
     <ClInclude Include="src\Core\Window.h" />
@@ -210,9 +210,9 @@
     <ClInclude Include="src\Utils\FileUtils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Core.cpp" />
+    <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Logger.cpp" />
     <ClCompile Include="src\Core\Timer.cpp" />
     <ClCompile Include="src\Core\Window.cpp" />
