@@ -17,7 +17,7 @@ TestScene1::TestScene1() : Scene("TestScene1")
 
 void TestScene1::LoadAssets() {
 
-
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
 
 
 	
@@ -40,13 +40,15 @@ void TestScene1::Initialize() {
 	quad->AddComponent(mr);
 
 	QuadMesh* qm2 = new QuadMesh();
-	GameObject* quad2 = new GameObject("Quad");
+	GameObject* quad2 = new GameObject("Quad2");
 	Material m2;
 	m2.LoadVec3("color", 0, 1, 0); //0 1 0->RGB(so, green color)
 	m2.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
 	MeshRenderer* mr2 = new MeshRenderer(qm2, m2);
 	quad2->AddComponent(mr2);
 	quad2->transform.SetPosition(5, 0, 0);
+
+	GameObject* nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
 	float ar = Window::Instance().GetAspectRatio();
 	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
@@ -58,8 +60,11 @@ void TestScene1::Initialize() {
 	AddGameObject(quad2); //Add objects to scene
 
 	AddGameObject(cam);
+	AddGameObject(nanosuit);
 
-	//quad->AddChild(quad2);
+	quad->AddChild(quad2);
+
+
 
 }
 void TestScene1::LogicUpdate() {

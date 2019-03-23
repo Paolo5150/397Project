@@ -14,6 +14,7 @@ class FileUtils
 		static std::string GetCurrentDir();
 		static void PrintFiles(std::string folder);
 		static std::string GetFileNameFromAbsolutePath(std::string path);
+		static std::string GetFileNameNoExtensionFromAbsolutePath(std::string path);
 		static std::string GetLastFolderNameFromAbsolutePath(std::string path);
 };
 

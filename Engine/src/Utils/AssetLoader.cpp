@@ -27,7 +27,15 @@ void AssetLoader::Initialize(GraphicsAPI* gAPI)
 		instance = new AssetLoader(gAPI);
 }
 
-Texture2D* AssetLoader::LoadTexture(std::string name, std::string path)
+Model* AssetLoader::LoadModel(std::string path)
+{
+	Model* m = assimpWrapper.LoadModel(path);
+	containers[typeid(Model).name()].Load(m->name, m);
+	return m;
+}
+
+
+Texture2D* AssetLoader::LoadTexture(std::string path)
 {
 	int width;
 	int height;
@@ -38,6 +46,7 @@ Texture2D* AssetLoader::LoadTexture(std::string name, std::string path)
 
 	if (data)
 	{
+		 std::string name = FileUtils::GetFileNameNoExtensionFromAbsolutePath(path);
 		 t = graphucsAPI->CreateTexture2D(name, width, height, channels, data);
 		 containers[typeid(Texture2D).name()].Load(name, t);
 		
