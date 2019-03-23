@@ -3,6 +3,8 @@
 #include "Component.h"
 #include "..\Graphics\Shader.h"
 #include "..\Core\Camera.h"
+#include "..\Components\Renderer.h"
+
 
 GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent)
 {
@@ -191,6 +193,21 @@ Component* GameObject::GetComponent(std::string componentName) const
 	}
 }
 
+Component* GameObject::GetComponentByType(std::string componentType) const
+{
+	std::list<Component*>::const_iterator it;
+	it = std::find_if(std::begin(_components), std::end(_components), [&](Component* const component) -> Component* {if (component->GetType() == componentType){ return component; } else { return nullptr; }});
+
+	if (it != std::end(_components))
+	{
+		return *it;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
 Component* GameObject::GetComponentInChild(std::string childName, std::string componentName) const
 {
 	if (HasChild(childName) == true)
@@ -292,5 +309,24 @@ void GameObject::PrintHierarchy(int indentation, std::string& output)
 	{
 		output += "\n";
 		(*it)->PrintHierarchy(indentation + 1, output);
+	}
+}
+
+void GameObject::ApplyMaterial(Material mat, MaterialType mt)
+
+{
+	Renderer* r = dynamic_cast<Renderer*>(GetComponentByType("Renderer"));	
+
+	if (r != nullptr)
+	{
+		r->SetMaterial(mat, mt);
+		//Logger::LogInfo("Applied material!");
+	}
+
+	auto it = _children.begin();
+
+	for (; it != _children.end(); it++)
+	{
+		(*it)->ApplyMaterial(mat, mt);
 	}
 }

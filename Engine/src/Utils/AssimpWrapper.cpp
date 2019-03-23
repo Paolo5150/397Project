@@ -230,7 +230,7 @@ void AssimpWrapper::LoadTextureIntoMaterial(aiTextureType type, aiMaterial* mate
 		material->GetTexture(type, i, &assimpPath);
 		std::string fileNameOnly = FileUtils::GetFileNameFromAbsolutePath(assimpPath.C_Str());
 		std::string finalPath = textureFolder + "\\" + fileNameOnly;
-		Logger::LogWarning("Trying to get texture from", finalPath);
+		//Logger::LogWarning("Trying to get texture from", finalPath);
 		Texture2D* t = AssetLoader::Instance().LoadTexture(finalPath);
 		model->allTextures.push_back(t);
 

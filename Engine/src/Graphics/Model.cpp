@@ -16,12 +16,15 @@ Model::~Model()
 	for (; it != allNodes.end(); it++)
 		delete it->second;
 
-	for (int i = 0; i < allTextures.size(); i++)
-		delete allTextures[i];
+	//Textures are deleted by the AsetLoader
+	//Meshes are deleted by the mesh renderer
 
-	auto itm = allMeshes.begin();
+	//for (int i = 0; i < allTextures.size(); i++)
+	//	delete allTextures[i];
+
+	/*auto itm = allMeshes.begin();
 	for (; itm != allMeshes.end(); itm++)
-		delete itm->second;
+		delete itm->second;*/
 
 
 	allNodes.clear();
@@ -57,8 +60,9 @@ GameObject* Model::CreateGameObject()
 	{
 		Mesh* m = new Mesh(*allMeshes[i]);
 
-		MeshRenderer* mr = new MeshRenderer(m, allMaterials[i]);
-		//Material mat;
+		MeshRenderer* mr = new MeshRenderer(allMeshes[i], allMaterials[i]); //Default material
+
+		
 		//mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 		//simplifiedMaterial.LoadVec3("color", 0.3f,0.3f,0.3f);
 	//	simplifiedMaterial.SetShader(AssetLoader::Instance().GetAsset<Shader>("StaticModelSimplifiedShader"));

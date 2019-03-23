@@ -1,6 +1,6 @@
 #pragma once
-#include "..\Core\Timer.h"
 #include "..\GameObject\GameObject.h"
+#include "..\Core\Timer.h"
 #include <map>
 #include <vector>
 #include <list>

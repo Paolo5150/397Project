@@ -18,11 +18,13 @@ TestScene1::TestScene1() : Scene("TestScene1")
 void TestScene1::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
-
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 
 	
 }
 void TestScene1::UnloadAssets() {
+	AssetLoader::Instance().Unload<Model>();
+	AssetLoader::Instance().Unload<Texture2D>();
 
 }
 void TestScene1::ExitScene() {
@@ -49,6 +51,13 @@ void TestScene1::Initialize() {
 	quad2->transform.SetPosition(5, 0, 0);
 
 	GameObject* nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
+
+	// Uncomment this to force a wood material!
+	/*Material mat;
+	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
+	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
+	nanosuit->ApplyMaterial(mat);*/
+	
 
 	float ar = Window::Instance().GetAspectRatio();
 	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);

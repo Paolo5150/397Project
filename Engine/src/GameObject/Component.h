@@ -25,6 +25,8 @@ public:
 	//-- Accessors --//
 	bool GetActive() const;
 	std::string GetName() const;
+	std::string GetType() const;
+
 	GameObject* GetParent() const;
 
 	virtual void Update(){};
@@ -32,8 +34,10 @@ public:
 	virtual void OnPreRender(Camera& cam,Shader* currentShader = nullptr){};
 
 
+
 protected:
 	std::string _name;
+	std::string _type;
 	bool _isActive;
 	GameObject* _parent;
 };

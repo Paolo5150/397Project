@@ -118,7 +118,7 @@ void RenderingEngine::RenderCurrentScene(Camera* camera, Material* simplifiedMat
 
 }
 
-void RenderingEngine::RenderBuffer()
+void RenderingEngine::RenderBuffer(MaterialType mt)
 {
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
@@ -132,7 +132,7 @@ void RenderingEngine::RenderBuffer()
 
 		Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 
-		RenderVector(*Camera::GetAllCameras()[camIndex], allRenderers);
+		RenderVector(*Camera::GetAllCameras()[camIndex], allRenderers,mt);
 
 	}
 

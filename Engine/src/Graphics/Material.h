@@ -57,6 +57,7 @@
 		void LoadMat4(std::string, glm::mat4 v);
 
 		void SetColor(float r, float g, float b);
+		void GetColor(float& r, float &g, float& b);
 
 		std::map<int, Texture2D*> textures;
 	protected:

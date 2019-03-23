@@ -5,7 +5,7 @@
 #include "..\Core\Camera.h"
 #include "..\Event\ApplicationEvents.h"
 #include "..\Graphics\RenderingEngine.h"
-
+#include "..\Utils\AssetLoader.h"
 
 
 
@@ -13,9 +13,18 @@
 Renderer::Renderer(std::string name, Material m) : Component(name) {
 
 	submitted = 0;
-	
+	_type = "Renderer";
 	isCullable = true;
 	SetMaterial(m);
+
+	//Create a ColorOnly material for all renderers
+	Material co;
+	co.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
+
+	float r, g, b;
+	m.GetColor(r, g, b);
+	co.SetColor(r, g, b);
+	SetMaterial(co, COLORONLY);
 
 }
 

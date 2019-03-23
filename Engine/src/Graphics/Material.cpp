@@ -64,6 +64,15 @@ void Material::SetColor(float r, float g, float b)
 	LoadVec3("color", r, g, b);
 }
 
+void Material::GetColor(float& r, float &g, float& b)
+{
+	glm::vec3 c = vec3s["material.color"];
+	r = c.x;
+	g = c.y;
+	b = c.z;
+}
+
+
 
 /*void Material::LoadCubemap(Cubemap* t, TextureUniform tu)
 {

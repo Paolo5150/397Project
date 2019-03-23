@@ -74,7 +74,7 @@ void Core::Shutdown()
 	m_runningApplication->AppShutdown(); //Shutdow game first
 
 	AssetLoader::Instance().Unload<Shader>(); 
-	AssetLoader::Instance().Unload<Texture2D>(); //This will be done at scene leve
+
 	graphicsAPI->Shutdown();
 	Window::Instance().Destroy();
 	glfwTerminate();

@@ -16,9 +16,8 @@ public:
 	~RenderingEngine();
 
 	void Initialize();
-	void RenderBuffer();
-
-
+	void RenderBuffer(MaterialType mt = DEFAULT);
+	
 	void RenderCurrentScene(Camera* camera, Material* simplifiedMaterial = NULL);
 	void RenderCurrentScene(Camera* camera, MaterialType mt = DEFAULT);
 	void SubmitRenderer(Renderer* rend);
