@@ -29,7 +29,9 @@ void AssetLoader::Initialize(GraphicsAPI* gAPI)
 
 Model* AssetLoader::LoadModel(std::string name, std::string path)
 {
-
+	std::string fileName = FileUtils::GetFileNameNoExtensionFromAbsolutePath(path);
+	Logger::LogWarning(fileName);
+	return nullptr;
 }
 
 
