@@ -17,7 +17,7 @@ TestScene1::TestScene1() : Scene("TestScene1")
 
 void TestScene1::LoadAssets() {
 
-
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj");
 
 
 	
@@ -48,6 +48,8 @@ void TestScene1::Initialize() {
 	quad2->AddComponent(mr2);
 	quad2->transform.SetPosition(5, 0, 0);
 
+	GameObject* sphere = AssetLoader::Instance().GetAsset<Model>("Sphere")->CreateGameObject();
+
 	float ar = Window::Instance().GetAspectRatio();
 	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
 	cam->transform.SetPosition(0, 0, 30);
@@ -58,10 +60,11 @@ void TestScene1::Initialize() {
 	AddGameObject(quad2); //Add objects to scene
 
 	AddGameObject(cam);
+	AddGameObject(sphere);
 
 	quad->AddChild(quad2);
 
-	quad->PrintHierarchy();
+	sphere->PrintHierarchy();
 
 }
 void TestScene1::LogicUpdate() {

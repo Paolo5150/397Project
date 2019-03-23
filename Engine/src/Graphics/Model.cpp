@@ -23,9 +23,6 @@ Model::~Model()
 	for (; itm != allMeshes.end(); itm++)
 		delete itm->second;
 
-	auto itmat = allMaterials.begin();
-	for (; itmat != allMaterials.end(); itmat++)
-		delete itmat->second;
 
 	allNodes.clear();
 	allTextures.clear();
@@ -54,17 +51,21 @@ std::vector<Mesh> Model::GetMeshes()
 
 GameObject* Model::CreateGameObject()
 {
-	GameObject* e = new GameObject("");
+	GameObject* e = new GameObject(name);
 
 	for (int i = 0; i < allMeshes.size(); i++)
 	{
 		Mesh* m = new Mesh(*allMeshes[i]);
 
-		MeshRenderer* mr = new MeshRenderer(m, *allMaterials[i]);
-		Material* simplifiedMaterial = new Material(*allMaterials[i]);
-		simplifiedMaterial->LoadVec3("color", 0.3f,0.3f,0.3f);
-		simplifiedMaterial->SetShader(AssetLoader::Instance().GetAsset<Shader>("StaticModelSimplifiedShader"));
-		mr->SetMaterial(*simplifiedMaterial, MaterialType::SIMPLIFIED);
+		MeshRenderer* mr = new MeshRenderer(m, allMaterials[i]);
+		Material mat;
+		mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
+		//simplifiedMaterial.LoadVec3("color", 0.3f,0.3f,0.3f);
+	//	simplifiedMaterial.SetShader(AssetLoader::Instance().GetAsset<Shader>("StaticModelSimplifiedShader"));
+		//mr->SetMaterial(*simplifiedMaterial, MaterialType::SIMPLIFIED);
+
+		mr->SetMaterial(mat);
+
 
 		GameObject* c = new GameObject(meshesNames[i]);
 		c->AddComponent(mr);

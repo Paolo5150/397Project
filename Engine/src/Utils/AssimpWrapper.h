@@ -16,8 +16,8 @@ class AssimpWrapper
 {
 public:
 	Model* LoadModel(const std::string& folderAndFilename);
-	void processNode(aiNode* node, const aiScene* scene, ModelNode* parentNode, Model* model, bool isAnimated);
-	void processMesh(aiMesh* mesh, const aiScene* scene, Model* model, bool isAnimated);
+	void ProcessNode(aiNode* node, const aiScene* scene, ModelNode* parentNode, Model* model, bool isAnimated);
+	void ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model, bool isAnimated);
 
 private:
 	//void LoadBones(aiMesh* mesh, AnimatedModel* model, std::vector<VertexBoneData>& bones_id_weights_for_each_vertex);

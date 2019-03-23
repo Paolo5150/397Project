@@ -30,7 +30,7 @@ protected:
 	std::map<std::string, ModelNode*> allNodes;
 	std::vector<Texture2D*> allTextures;
 	std::map<int, Mesh*> allMeshes;
-	std::map<int, Material*> allMaterials;
+	std::map<int, Material> allMaterials;
 	std::map<int, std::string> meshesNames;
 };
 

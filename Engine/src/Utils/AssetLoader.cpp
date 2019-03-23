@@ -30,7 +30,7 @@ void AssetLoader::Initialize(GraphicsAPI* gAPI)
 Model* AssetLoader::LoadModel(std::string path)
 {
 	Model* m = assimpWrapper.LoadModel(path);
-
+	containers[typeid(Model).name()].Load(m->name, m);
 	return m;
 }
 
