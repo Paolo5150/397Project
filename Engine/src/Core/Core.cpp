@@ -54,7 +54,7 @@ void Core::Initialize()
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\coloronly.v", "Assets\\Shaders\\coloronly.f");
 	Texture2D* t = AssetLoader::Instance().LoadTexture("wood", "Assets\\Textures\\wood.jpg");
 
-	AssetLoader::Instance().LoadModel("Test", "Assets\\Textures\\wood.jpg");
+	
 
 	//Start update loop
 	m_isRunning = true;

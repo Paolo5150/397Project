@@ -13,7 +13,7 @@ public:
 	static void Initialize(GraphicsAPI* gAPI);
 	
 	Shader* LoadShader(std::string name, std::string vertexPath, std::string fragmentPath);
-	Texture2D* LoadTexture(std::string name, std::string path);
+	Texture2D* LoadTexture(std::string path);
 	Model* LoadModel(std::string name, std::string path);
 	
 	template<class T>

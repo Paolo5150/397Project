@@ -35,7 +35,7 @@ Model* AssetLoader::LoadModel(std::string name, std::string path)
 }
 
 
-Texture2D* AssetLoader::LoadTexture(std::string name, std::string path)
+Texture2D* AssetLoader::LoadTexture(std::string path)
 {
 	int width;
 	int height;
@@ -46,6 +46,7 @@ Texture2D* AssetLoader::LoadTexture(std::string name, std::string path)
 
 	if (data)
 	{
+		std::string name = FileUtils::GetFileNameNoExtensionFromAbsolutePath(path);
 		 t = graphucsAPI->CreateTexture2D(name, width, height, channels, data);
 		 containers[typeid(Texture2D).name()].Load(name, t);
 		
