@@ -25,15 +25,15 @@ Model* AssimpWrapper::LoadModel(const std::string& path)
 	defaultShader = AssetLoader::Instance().GetAsset<Shader>("ModelShader");
 
 	modelFolderName = FileUtils::GetLastFolderNameFromAbsolutePath(path);
-	pathToFolder = "Assets\\Models\\" + modelFolderName;
+	Logger::LogWarning("Model folder", modelFolderName);
 
-	Model* model = new Model();	
+	//Model* model = new Model();	
 
-	processNode(scene->mRootNode, scene, NULL, model, false);
-	model->name = modelFolderName;
+	//processNode(scene->mRootNode, scene, NULL, model, false);
+	//model->name = modelFolderName;
 
 	import.FreeScene();
 
-	if (model != NULL)
-		return model;
+	//if (model != NULL)
+	//	return model;
 }

@@ -14,7 +14,7 @@ public:
 	
 	Shader* LoadShader(std::string name, std::string vertexPath, std::string fragmentPath);
 	Texture2D* LoadTexture(std::string path);
-	Model* LoadModel(std::string name, std::string path);
+	Model* LoadModel(std::string path);
 	
 	template<class T>
 	void Unload();

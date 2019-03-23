@@ -11,7 +11,7 @@
 
 class GameObject;
 
-class Model
+class Model : public Asset
 {
 public:
 	friend class AssimpWrapper;
