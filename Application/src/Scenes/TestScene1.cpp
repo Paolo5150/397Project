@@ -70,16 +70,12 @@ void TestScene1::Initialize() {
 	cam2->transform.RotateBy(180, 0, 1, 0);
 	cam2->RemoveAllMaskLayers();
 	cam2->AddLayerMask(Layers::GUI);
-	cam2->SetDepth(-10);
+	cam2->SetDepth(10);
 
 
 	nanosuit->SetLayer(0);
 	nanosuit->SetLayer(Layers::GUI);
 	nanosuit->transform.SetPosition(0, 0, -50);
-
-
-
-
 
 	AddGameObject(quad); //Add objects to scene
 	AddGameObject(quad2); //Add objects to scene
@@ -87,7 +83,7 @@ void TestScene1::Initialize() {
 	AddGameObject(cam);
 	AddGameObject(cam2);
 
-
+	quad->transform.Translate(0, 5, 0);
 
 	AddGameObject(nanosuit);
 
