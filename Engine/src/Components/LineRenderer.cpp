@@ -16,7 +16,6 @@ LineRenderer::LineRenderer(std::vector<Vertex> verts) : Renderer("LineRenderer")
 {
 	vertexArray = Core::Instance().GetGraphicsAPI().CreateVertexArray();
 	vertexBuffer = Core::Instance().GetGraphicsAPI().CreateVertexBuffer();
-	indexBuffer = Core::Instance().GetGraphicsAPI().CreateIndexBuffer();
 
 	Material m;
 	m.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
