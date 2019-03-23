@@ -26,6 +26,14 @@ Renderer::Renderer(std::string name, Material m) : Component(name) {
 	co.SetColor(r, g, b);
 	SetMaterial(co, COLORONLY);
 
+	//Create a NoLight material for all renderers, copy from default one (textures and color)
+
+	Material nolight(m); //Copy from default
+	nolight.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));	
+	m.GetColor(r, g, b);
+	nolight.SetColor(r, g, b);
+	SetMaterial(nolight, NOLIGHT);
+
 }
 
 
