@@ -31,6 +31,8 @@ Model* AssetLoader::LoadModel(std::string path)
 {
 	Model* m = assimpWrapper.LoadModel(path);
 	containers[typeid(Model).name()].Load(m->name, m);
+
+
 	return m;
 }
 
@@ -46,9 +48,11 @@ Texture2D* AssetLoader::LoadTexture(std::string path)
 
 	if (data)
 	{
-		 std::string name = FileUtils::GetFileNameNoExtensionFromAbsolutePath(path);
-		 t = graphucsAPI->CreateTexture2D(name, width, height, channels, data);
-		 containers[typeid(Texture2D).name()].Load(name, t);
+		 std::string namerr = FileUtils::GetFileNameNoExtensionFromAbsolutePath(path);
+		// Logger::LogError("Loaded texture", namerr);
+
+		 t = graphucsAPI->CreateTexture2D(namerr, width, height, channels, data);
+		 containers[typeid(Texture2D).name()].Load(namerr, t);
 		
 	}
 	else

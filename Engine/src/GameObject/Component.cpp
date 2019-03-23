@@ -41,6 +41,11 @@ std::string Component::GetName() const
 	return _name;
 }
 
+std::string Component::GetType() const
+{
+	return _type;
+}
+
 GameObject* Component::GetParent() const
 {
 	return _parent;

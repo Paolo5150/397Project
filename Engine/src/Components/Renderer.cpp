@@ -5,7 +5,7 @@
 #include "..\Core\Camera.h"
 #include "..\Event\ApplicationEvents.h"
 #include "..\Graphics\RenderingEngine.h"
-
+#include "..\Utils\AssetLoader.h"
 
 
 
@@ -13,9 +13,26 @@
 Renderer::Renderer(std::string name, Material m) : Component(name) {
 
 	submitted = 0;
-	
+	_type = "Renderer";
 	isCullable = true;
 	SetMaterial(m);
+
+	//Create a ColorOnly material for all renderers
+	Material co;
+	co.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
+
+	float r, g, b;
+	m.GetColor(r, g, b);
+	co.SetColor(r, g, b);
+	SetMaterial(co, COLORONLY);
+
+	//Create a NoLight material for all renderers, copy from default one (textures and color)
+
+	Material nolight(m); //Copy from default
+	nolight.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));	
+	m.GetColor(r, g, b);
+	nolight.SetColor(r, g, b);
+	SetMaterial(nolight, NOLIGHT);
 
 }
 
@@ -34,11 +51,10 @@ void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 {
 	
 	glm::mat4 mvp = cam.projectionMatrix * cam.viewMatrix * _parent->transform.GetMatrix();
-	Shader::GetCurrentShader().SetMat4("mvp", mvp);
-	Shader::GetCurrentShader().SetVec3("pos", _parent->transform.GetPosition());
-	Shader::GetCurrentShader().SetMat4("model", _parent->transform.GetMatrix());
-	Shader::GetCurrentShader().SetMat4("view", cam.viewMatrix);
-	Shader::GetCurrentShader().SetMat4("projection", cam.projectionMatrix);
+	Shader::GetCurrentShader().SetMat4("u_mvp", mvp);
+	Shader::GetCurrentShader().SetMat4("u_model", _parent->transform.GetMatrix());
+	Shader::GetCurrentShader().SetMat4("u_view", cam.viewMatrix);
+	Shader::GetCurrentShader().SetMat4("u_projection", cam.projectionMatrix);
 	//Shader::GetCurrentShader().SetFloat("heightPlane", Water::heightPlane);
 	//Shader::GetCurrentShader().SetInt("heightPlaneActive", Water::heightPlaneActive);
 	//Shader::GetCurrentShader().SetVec3("fogColor", LightManager::Instance().fogColor);
@@ -74,7 +90,7 @@ Material& Renderer::GetMaterial(MaterialType mt)
 	if (it != allMaterials.end())
 		return allMaterials[mt];
 	else
-		return allMaterials[PRIMARY];
+		return allMaterials[DEFAULT];
 
 
 }

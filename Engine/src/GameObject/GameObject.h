@@ -4,10 +4,13 @@
 #include <list>
 #include <algorithm>
 #include <string>
+#include "..\Graphics\Material.h"
 
 class Component;
 class Shader;
 class Camera;
+
+
 
 /**
 * @class GameObject
@@ -252,6 +255,18 @@ public:
 	Component* GetComponent(std::string componentName) const;
 
 	/**
+	* @brief		Retrieves a component in the GameObject by the type
+	*
+	* @pre			The GameObject must exist
+	* @post			A component in the GameObject will be retrieved, or a nullptr if there is no component
+	*
+	* @param		componentType	Type of component to search for
+	*
+	* @return		A component in the GameObject, or nullptr if there is no component with that name
+	*/
+	Component* GetComponentByType(std::string componentType) const;
+
+	/**
 	* @brief		Retrieves a component in a child of the GameObject
 	*
 	* @pre			The GameObject must exist
@@ -336,6 +351,8 @@ public:
 	void PrintHierarchy();
 
 	virtual void OnPreRender(Camera& camera,Shader* currentShader = nullptr);
+
+	void ApplyMaterial(Material mat, MaterialType mt = DEFAULT);
 
 	Transform transform;
 

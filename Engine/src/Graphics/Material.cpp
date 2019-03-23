@@ -31,25 +31,11 @@ Material::Material(Shader* s)
 Material::~Material()
 {}
 
-void Material::SetReflectivity(float r)
-{
-	reflectivity = r;
-	LoadFloat("reflectivity", reflectivity);
-}
+
 
 void Material::PreloadMaterial()
 {
-	materialGroup = OPA;
-
 	LoadVec3("color", 1,1,1);
-	LoadFloat("shininess", 32);
-	LoadFloat("UVscale", 1.0);
-	//LoadFloat("alpha", 1.0);
-	LoadFloat("textureTransparency", 0.0);
-	SetReflectivity(0.0f);
-
-
-
 }
 
 void Material::LoadVec4(std::string name, glm::vec4 v)
@@ -72,6 +58,20 @@ void Material::LoadFloat(std::string name, float v)
 {
 	floats["material." + name] = v;
 }
+
+void Material::SetColor(float r, float g, float b)
+{
+	LoadVec3("color", r, g, b);
+}
+
+void Material::GetColor(float& r, float &g, float& b)
+{
+	glm::vec3 c = vec3s["material.color"];
+	r = c.x;
+	g = c.y;
+	b = c.z;
+}
+
 
 
 /*void Material::LoadCubemap(Cubemap* t, TextureUniform tu)
@@ -132,15 +132,12 @@ void Material::BindMaterial()
 	shader->Bind(); //This line is kind of vital
 	auto it = textures.begin();
 
-	//TODO: improc ve this, cubemap and texture can be bind together, should not be the case
+
 	for (; it != textures.end(); it++)
 	{
 		glActiveTexture(GL_TEXTURE0 + it->first);
 		it->second->Bind();
 		shader->SetInt(textureUniforms[it->first], it->first);
-
-
-
 	}
 
 	/*for (auto cit = cubemaps.begin(); cit != cubemaps.end(); cit++)
@@ -148,9 +145,6 @@ void Material::BindMaterial()
 		glActiveTexture(GL_TEXTURE0 + cit->first);
 		cit->second->Bind();
 		shader->SetInt(textureUniforms[cit->first], cit->first);
-
-
-
 	}*/
 
 

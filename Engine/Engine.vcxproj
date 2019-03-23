@@ -213,6 +213,7 @@
     <ClInclude Include="src\Graphics\GraphicsAPI.h" />
     <ClInclude Include="src\Graphics\Layers.h" />
     <ClInclude Include="src\Graphics\Material.h" />
+    <ClInclude Include="src\Graphics\Materials\DefaultMaterial.h" />
     <ClInclude Include="src\Graphics\Mesh.h" />
     <ClInclude Include="src\Graphics\Model.h" />
     <ClInclude Include="src\Graphics\ModelNode.h" />
@@ -252,6 +253,7 @@
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\Graphics\API_Opengl.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
+    <ClCompile Include="src\Graphics\Materials\DefaultMaterial.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
     <ClCompile Include="src\Graphics\Model.cpp" />
     <ClCompile Include="src\Graphics\RenderingEngine.cpp" />

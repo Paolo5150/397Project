@@ -16,11 +16,10 @@ public:
 	~RenderingEngine();
 
 	void Initialize();
-	void RenderBuffer();
-
-
+	void RenderBuffer(MaterialType mt = DEFAULT);
+	
 	void RenderCurrentScene(Camera* camera, Material* simplifiedMaterial = NULL);
-	void RenderCurrentScene(Camera* camera, MaterialType mt = PRIMARY);
+	void RenderCurrentScene(Camera* camera, MaterialType mt = DEFAULT);
 	void SubmitRenderer(Renderer* rend);
 	void ClearRendererList();
 
@@ -38,7 +37,7 @@ private:
 	RenderingEngine(const RenderingEngine& e) = delete;
 
 
-	void RenderVector(Camera& cam, std::vector<Renderer*>& r, MaterialType m = MaterialType::PRIMARY);
+	void RenderVector(Camera& cam, std::vector<Renderer*>& r, MaterialType m = MaterialType::DEFAULT);
 	void RenderVector(Camera& cam, std::vector<Renderer*>& r, Material* forcedMaterial);
 
 };

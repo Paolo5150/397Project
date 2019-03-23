@@ -20,8 +20,8 @@ class Renderer : public Component
 		void SendDataToShader(Camera& cam);
 
 		void Update() override;
-		Material& GetMaterial(MaterialType materialType = PRIMARY);
-		void SetMaterial(Material m, MaterialType = PRIMARY);
+		Material& GetMaterial(MaterialType materialType = DEFAULT);
+		void SetMaterial(Material m, MaterialType = DEFAULT);
 
 		bool isCullable;
 
