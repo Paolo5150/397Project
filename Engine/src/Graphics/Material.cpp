@@ -31,25 +31,11 @@ Material::Material(Shader* s)
 Material::~Material()
 {}
 
-void Material::SetReflectivity(float r)
-{
-	reflectivity = r;
-	LoadFloat("reflectivity", reflectivity);
-}
+
 
 void Material::PreloadMaterial()
 {
-	materialGroup = OPA;
-
 	LoadVec3("color", 1,1,1);
-	LoadFloat("shininess", 32);
-	LoadFloat("UVscale", 1.0);
-	//LoadFloat("alpha", 1.0);
-	LoadFloat("textureTransparency", 0.0);
-	SetReflectivity(0.0f);
-
-
-
 }
 
 void Material::LoadVec4(std::string name, glm::vec4 v)

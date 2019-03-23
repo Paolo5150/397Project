@@ -213,6 +213,7 @@
     <ClInclude Include="src\Graphics\GraphicsAPI.h" />
     <ClInclude Include="src\Graphics\Layers.h" />
     <ClInclude Include="src\Graphics\Material.h" />
+    <ClInclude Include="src\Graphics\Materials\DefaultMaterial.h" />
     <ClInclude Include="src\Graphics\Mesh.h" />
     <ClInclude Include="src\Graphics\Model.h" />
     <ClInclude Include="src\Graphics\ModelNode.h" />

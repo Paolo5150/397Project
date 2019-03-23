@@ -74,7 +74,7 @@ Material& Renderer::GetMaterial(MaterialType mt)
 	if (it != allMaterials.end())
 		return allMaterials[mt];
 	else
-		return allMaterials[PRIMARY];
+		return allMaterials[DEFAULT];
 
 
 }

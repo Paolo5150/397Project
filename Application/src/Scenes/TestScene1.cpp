@@ -63,6 +63,7 @@ void TestScene1::Initialize() {
 	AddGameObject(nanosuit);
 
 	quad->AddChild(quad2);
+	quad->AddChild(nanosuit);
 
 
 

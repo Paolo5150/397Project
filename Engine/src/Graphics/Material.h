@@ -25,15 +25,12 @@
 
 	enum MaterialType
 	{
-		PRIMARY,
-		SIMPLIFIED
+		DEFAULT,
+		NOLIGHT,
+		COLORONLY
 	};
 
-	enum MaterialRenderingGroup
-	{
-		OPA,
-		TRANS
-	};
+
 
 	class Material
 	{
@@ -48,7 +45,7 @@
 
 		Material();
 		Material(Shader* s);
-		~Material();
+		virtual ~Material();
 
 		void BindMaterial();
 		void UnbindMaterial();
@@ -58,16 +55,11 @@
 		void LoadVec3(std::string, float x, float y, float z);
 		void LoadFloat(std::string, float v);
 		void LoadMat4(std::string, glm::mat4 v);
-		void SetReflectivity(float r);
-
-
-		MaterialRenderingGroup materialGroup;
-
 
 		std::map<int, Texture2D*> textures;
-	private:
+	protected:
 		//std::map<int, Cubemap*> cubemaps;
-		float reflectivity;
+
 
 		Shader* shader;
 		std::map<std::string, glm::vec4> vec4s;
