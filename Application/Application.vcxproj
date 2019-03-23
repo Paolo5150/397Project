@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Dependencies\soil;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -137,7 +137,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Dependencies\soil;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -171,10 +171,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Scenes\TestScene1.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Scenes\TestScene2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Scenes\TestScene1.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\pch.cpp">
@@ -183,6 +186,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Scenes\TestScene2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">

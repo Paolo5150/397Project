@@ -48,6 +48,14 @@ std::string FileUtils::ReadFileToString(std::string filePath)
 
 }
 
+std::string FileUtils::GetFileNameNoExtensionFromAbsolutePath(std::string path)
+{
+	std::string fileNameExt = GetFileNameFromAbsolutePath(path);
+	int index = fileNameExt.find_last_of(".");
+	std::string fileNameOnly = fileNameExt.substr(0, index);
+	return fileNameOnly;
+
+}
 
 
 std::string FileUtils::GetFileNameFromAbsolutePath(std::string path)

@@ -12,6 +12,11 @@ class Shader  : public Asset
 {
 public:
 
+	static Shader& GetCurrentShader()
+	{
+		return *m_currentShader;
+	}
+
 	virtual ~Shader(){
 		Logger::LogError("Shader", name, "just died");
 	};
@@ -32,6 +37,7 @@ public:
 	Shader(std::string vertexSource, std::string fragSource){};
 	unsigned shaderID;
 	bool CompileShader(unsigned int& sid, const char* source, GLenum type);
+	static Shader* m_currentShader;
 
 
 

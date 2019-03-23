@@ -1,4 +1,4 @@
-#version 430 core
+#version 330 core
 
 out vec4 FragColor; 
 
@@ -14,7 +14,7 @@ uniform Material material;
 void main()
 {
    
-FragColor =  vec4(1.0,0.0,0.0,1.0);
+gl_FragColor =  vec4(material.color,1.0);
 
 
 } 

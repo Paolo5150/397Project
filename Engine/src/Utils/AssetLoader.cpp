@@ -27,7 +27,17 @@ void AssetLoader::Initialize(GraphicsAPI* gAPI)
 		instance = new AssetLoader(gAPI);
 }
 
-Texture2D* AssetLoader::LoadTexture(std::string name, std::string path)
+Model* AssetLoader::LoadModel(std::string path)
+{
+	Model* m = assimpWrapper.LoadModel(path);
+	containers[typeid(Model).name()].Load(m->name, m);
+
+
+	return m;
+}
+
+
+Texture2D* AssetLoader::LoadTexture(std::string path)
 {
 	int width;
 	int height;
@@ -38,8 +48,11 @@ Texture2D* AssetLoader::LoadTexture(std::string name, std::string path)
 
 	if (data)
 	{
-		 t = graphucsAPI->CreateTexture2D(name, width, height, channels, data);
-		 containers[typeid(Texture2D).name()].Load(name, t);
+		 std::string namerr = FileUtils::GetFileNameNoExtensionFromAbsolutePath(path);
+		// Logger::LogError("Loaded texture", namerr);
+
+		 t = graphucsAPI->CreateTexture2D(namerr, width, height, channels, data);
+		 containers[typeid(Texture2D).name()].Load(namerr, t);
 		
 	}
 	else
@@ -54,6 +67,6 @@ Shader* AssetLoader::LoadShader(std::string name, std::string vertexPath, std::s
 	std::string fragFileContent = FileUtils::ReadFileToString(fragmentPath);
 
 	Shader* s = graphucsAPI->CreateShader(name, vertexFileContent, fragFileContent);
-	containers[typeid(Texture2D).name()].Load(name, s);
+	containers[typeid(Shader).name()].Load(name, s);
 	return s;
 }

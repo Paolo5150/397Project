@@ -26,6 +26,7 @@ public:
 	bool Render(Event* e);
 
 	GraphicsAPI& GetGraphicsAPI();
+	Application& GetRunningApplication() { return *m_runningApplication; }
 
 	~Core();
 	bool IsRunning();

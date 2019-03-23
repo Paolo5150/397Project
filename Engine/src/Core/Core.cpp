@@ -1,3 +1,4 @@
+
 #include "Core.h"
 #include "..\Event\TimerEvents.h"
 #include "Logger.h"
@@ -6,6 +7,10 @@
 #include "..\Graphics\Texture2D.h"
 
 #include "..\Utils\AssetLoader.h"
+#include "Transform.h"
+#include "..\Graphics\RenderingEngine.h"
+
+
 
 void Core::Initialize()
 {
@@ -35,45 +40,42 @@ void Core::Initialize()
 
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
-	Window::Instance().SetWindowSize(1500, 800);
+	Window::Instance().SetWindowSize(800, 600);
 
 	//Managers initialization
 	Timer::Initialize();
 
 	//Get cpplication
 	m_runningApplication = CreateApplication();
-	m_runningApplication->AppInitialize();
 	Window::Instance().SetWindowTitle(m_runningApplication->name.c_str()); //Window title -> game title
 
 	AssetLoader::Initialize(graphicsAPI);
 
-	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\coloronly.v", "Assets\\Shaders\\coloronly.f");
-	Texture2D* t = AssetLoader::Instance().LoadTexture("wood", "Assets\\Textures\\wood.jpg");
-	Logger::LogInfo("Text ", t->name);
-
+	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f");
+	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f");
 
 	//Start update loop
 	m_isRunning = true;
 }
 void Core::Run()
 {
-
+	m_runningApplication->AppInitialize();
 	while (m_isRunning)
 	{
 		// Just update the timer
 		// The timer will send out events for update, render and so on
-		Timer::Update();
 		Window::Instance().UpdateEvents();		
+		Timer::Update();
 	}
 }
 void Core::Shutdown()
 {
 
-	AssetLoader::Instance().Unload<Shader>();
-	AssetLoader::Instance().Unload<Texture2D>();
+	m_runningApplication->AppShutdown(); //Shutdow game first
+
+	AssetLoader::Instance().Unload<Shader>(); 
 
 	graphicsAPI->Shutdown();
-	m_runningApplication->AppShutdown();
 	Window::Instance().Destroy();
 	glfwTerminate();
 }
@@ -99,7 +101,9 @@ bool Core::IsRunning()
 
 bool Core::LogicUpdate(Event* e)
 {
-	Logger::LogInfo("Logic Update",1,2,44,6,7,"random number test");
+	//Logger::LogInfo("Core logic update");
+
+	m_runningApplication->AppLogicUpdate();
 	return 0;
 }
 
@@ -110,22 +114,26 @@ GraphicsAPI& Core::GetGraphicsAPI()
 
 bool Core::EngineUpdate(Event* e)
 {
+	//m_runningApplication->AppEngineUpdate();
 
 	return 0;
 }
 
 bool Core::LateUpdate(Event* e)
 {
+	m_runningApplication->AppLateUpdate();
+	RenderingEngine::Instance().ClearRendererList();
+
 	return 0;
 }
 
 
 bool Core::Render(Event* e)
 {
-	graphicsAPI->ClearColorBuffer();
-	graphicsAPI->ClearDepthBuffer();
 
-	glEnable(GL_TEXTURE_2D);
+	
+	RenderingEngine::Instance().RenderBuffer();
+	/*glEnable(GL_TEXTURE_2D);
 	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();
 	glBegin(GL_TRIANGLES);
 	glTexCoord2f(0.0, 0.0);
@@ -138,7 +146,7 @@ bool Core::Render(Event* e)
 	glVertex3f(0.0f, 0.5f, 0.0f);
 
 
-	glEnd();
+	glEnd();*/
 
 	Window::Instance().Refresh();
 	return 0;

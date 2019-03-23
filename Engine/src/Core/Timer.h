@@ -14,14 +14,14 @@ public:
 	static void SetDisplayFPS(bool dfps);
 
 private:
-	static bool displayFPS;
-	static double timerMultiplier;
-	static double delta;
-	static int FPSCounter;
-	static double FPS;
-	static double limitFPS;
-	static double now;
-	static double prev;
+	static bool m_displayFPS;
+	static double m_timerMultiplier;
+	static double m_delta;
+	static int m_FPSCounter;
+	static double m_FPS;
+	static double m_limitFPS;
+	static double m_now;
+	static double m_prev;
 
 
 
