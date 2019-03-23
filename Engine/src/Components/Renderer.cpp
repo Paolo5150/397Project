@@ -16,25 +16,41 @@ Renderer::Renderer(std::string name, Material m) : Component(name) {
 	_type = "Renderer";
 	isCullable = true;
 	SetMaterial(m);
+	CreateOtherMaterials(m);
+	
 
+}
+
+Renderer::Renderer(std::string name) : Component(name) {
+
+	submitted = 0;
+	_type = "Renderer";
+	isCullable = true;
+
+
+
+
+}
+
+void Renderer::CreateOtherMaterials(Material& defaultMat)
+{
 	//Create a ColorOnly material for all renderers
 	Material co;
 	co.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
 
 	float r, g, b;
-	m.GetColor(r, g, b);
+	defaultMat.GetColor(r, g, b);
 	co.SetColor(r, g, b);
 	SetMaterial(co, COLORONLY);
 
 	//Create a NoLight material for all renderers, copy from default one (textures and color)
 
-	Material nolight(m); //Copy from default
-	nolight.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));	
-	m.GetColor(r, g, b);
+	Material nolight(defaultMat); //Copy from default
+	nolight.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	nolight.SetColor(r, g, b);
 	SetMaterial(nolight, NOLIGHT);
-
 }
+
 
 
 void Renderer::Update()
@@ -96,4 +112,5 @@ Material& Renderer::GetMaterial(MaterialType mt)
 }
 void Renderer::SetMaterial(Material m, MaterialType mt) {
 	allMaterials[mt] = m;
+
 };

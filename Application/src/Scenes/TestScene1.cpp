@@ -1,4 +1,6 @@
 #include "Components\MeshRenderer.h"
+#include "Components\LineRenderer.h"
+
 #include "Core\CameraPerspective.h"
 #include "TestScene1.h"
 #include "Core/Logger.h"
@@ -65,6 +67,18 @@ void TestScene1::Initialize() {
 	cam->transform.RotateBy(180, 0,1,0);
 	cam->RemoveLayerMask(Layers::GUI);
 
+	GameObject* line = new GameObject("");
+	std::vector<Vertex> vs;
+	vs.push_back(Vertex(-1, -1,0));
+	vs.push_back(Vertex(1, 1, 0));
+	vs.push_back(Vertex(1, -1, 0));
+	vs.push_back(Vertex(2, -1, 0));
+
+
+
+	LineRenderer* lr = new LineRenderer(vs);
+	line->AddComponent(lr);
+
 
 	//AddGameObject(quad); //Add objects to scene
 	//AddGameObject(quad2); //Add objects to scene
@@ -72,7 +86,7 @@ void TestScene1::Initialize() {
 	AddGameObject(cam);
 	quad->transform.Translate(0, 5, 0);
 	AddGameObject(nanosuit);
-
+	AddGameObject(line);
 	quad->AddChild(quad2);
 
 	quad->PrintHierarchy();

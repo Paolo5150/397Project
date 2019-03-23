@@ -187,6 +187,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\LineRenderer.h" />
     <ClInclude Include="src\Components\MeshRenderer.h" />
     <ClInclude Include="src\Components\Renderer.h" />
     <ClInclude Include="src\Core\Camera.h" />
@@ -237,6 +238,7 @@
     <ClInclude Include="src\Utils\Maths.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\LineRenderer.cpp" />
     <ClCompile Include="src\Components\MeshRenderer.cpp" />
     <ClCompile Include="src\Components\Renderer.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />

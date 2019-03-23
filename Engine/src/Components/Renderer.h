@@ -10,6 +10,8 @@ class Renderer : public Component
 	public:
 		friend class RenderingEngine;
 		Renderer(std::string name, Material m);
+		Renderer(std::string name);
+
 		virtual ~Renderer() {};
 
 		virtual void Render(Camera& cam) = 0;
@@ -30,6 +32,7 @@ class Renderer : public Component
 
 	private:
 		bool submitted;
+		void CreateOtherMaterials(Material& defaultMat);
 
 
 	};
