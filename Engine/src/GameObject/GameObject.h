@@ -42,7 +42,7 @@ public:
 	* @param		layer		The rendering layer the GameObject is on
 	* @param		parent		the GameObject that this GameObject is a child of, nullptr if it has no parent
 	*/
-	GameObject(std::string name, bool isActive = true, unsigned int layer = 0, GameObject* parent = nullptr);
+	GameObject(std::string name, bool isActive = true, unsigned int layer = 1, GameObject* parent = nullptr);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//-- Deconstructors --//
@@ -95,7 +95,7 @@ public:
 	* @param		layer		Layer of the GameObject, must be greater than 0
 	* @param		includeChildren		Whether to set all children to the same layer
 	*/
-	void SetLayer(unsigned int layer, bool includeChildren = false);
+	void SetLayer(unsigned int layer, bool includeChildren = true);
 
 	/**
 	* @brief		Sets the parent of the GameObject to the specified parameter.

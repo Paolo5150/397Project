@@ -18,8 +18,6 @@ enum CAMERA_TYPE
 	ORTHOGONAL
 };
 
-class Camera_Orthogonal;
-class Camera_Perspective;
 
 class Camera : public GameObject
 {
@@ -35,6 +33,7 @@ public:
 	unsigned GetCullingMask() { return cullingMask; };
 	void AddLayerMask(unsigned layer) { cullingMask |= layer; };
 	void RemoveLayerMask(unsigned layer){ cullingMask = cullingMask & (~layer); }
+	void RemoveAllMaskLayers() { cullingMask = 0; }
 
 	void UpdateViewMatrix();
 	void Update() override;

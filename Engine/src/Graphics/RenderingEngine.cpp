@@ -123,16 +123,20 @@ void RenderingEngine::RenderBuffer(MaterialType mt)
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 
+	int previousDepth = 0;
 	//Render opaque
 	for (int camIndex = 0; camIndex < Camera::GetAllCameras().size(); camIndex++)
 	{
-		if (!Camera::GetAllCameras()[camIndex]->GetActive()) continue;
-		//Render skybox here when ready
-	
+		Camera& cam = *Camera::GetAllCameras()[camIndex];
 
+		if (!cam.GetActive()) continue;
+
+	
+		if (previousDepth != cam.GetDepth())
 		Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 
-		RenderVector(*Camera::GetAllCameras()[camIndex], allRenderers,mt);
+		RenderVector(cam, allRenderers,mt);
+		previousDepth = cam.GetDepth();
 
 	}
 

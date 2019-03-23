@@ -68,13 +68,16 @@ void GameObject::SetActive(bool active, bool includeChildren)
 
 void GameObject::SetLayer(unsigned int layer, bool includeChildren)
 {
+	if (layer == 0)
+		_layer = 0;
+	else
 	_layer |= layer;
 
 	if (includeChildren == true)
 	{
 		for (auto it = std::begin(_children); it != std::end(_children); it++)
 		{
-			(*it)->SetLayer(layer);
+			(*it)->SetLayer(layer, includeChildren);
 		}
 	}
 }

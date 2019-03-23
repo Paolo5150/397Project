@@ -13,7 +13,7 @@ public:
 	virtual void LogicUpdate() override;
 	virtual void EngineUpdate() override;
 
-	GameObject* cam;
+	Camera* cam;
 	GameObject* quad;
 
 };

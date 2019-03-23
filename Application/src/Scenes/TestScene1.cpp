@@ -53,26 +53,45 @@ void TestScene1::Initialize() {
 	GameObject* nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
 	// Uncomment this to force a wood material!
-	/*Material mat;
+	Material mat;
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
-	nanosuit->ApplyMaterial(mat);*/
+	nanosuit->ApplyMaterial(mat);
 	
 
 	float ar = Window::Instance().GetAspectRatio();
 	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
 	cam->transform.SetPosition(0, 0, 30);
 	cam->transform.RotateBy(180, 0,1,0);
+	cam->RemoveLayerMask(Layers::GUI);
+
+	Camera*  cam2 = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
+	cam2->transform.SetPosition(0, 0, 30);
+	cam2->transform.RotateBy(180, 0, 1, 0);
+	cam2->RemoveAllMaskLayers();
+	cam2->AddLayerMask(Layers::GUI);
+	cam2->SetDepth(-10);
+
+
+	nanosuit->SetLayer(0);
+	nanosuit->SetLayer(Layers::GUI);
+	nanosuit->transform.SetPosition(0, 0, -50);
+
+
+
 
 
 	AddGameObject(quad); //Add objects to scene
 	AddGameObject(quad2); //Add objects to scene
 
 	AddGameObject(cam);
+	AddGameObject(cam2);
+
+
+
 	AddGameObject(nanosuit);
 
 	quad->AddChild(quad2);
-	quad2->AddChild(nanosuit);
 
 	quad->PrintHierarchy();
 
@@ -84,7 +103,8 @@ void TestScene1::LogicUpdate() {
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
 
-	quad->transform.RotateBy(0.5f, 0,1,1);	
+	quad->transform.RotateBy(1.5f, 0,0,1);	
+	quad->transform.Translate(0, 0, -0.1f);
 
 	
 
