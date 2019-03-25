@@ -128,11 +128,11 @@ void GameObject::AddChild(GameObject* child)
 
 void GameObject::AddComponent(Component* component)
 {
-	if (HasComponent(component->GetName()) == false)
-	{
+	//if (HasComponent(component->GetName()) == false)
+	//{
 		component->SetParent(this);
 		_components.push_back(component);
-	}
+	//}
 }
 
 void GameObject::AddComponentToChild(Component* component)

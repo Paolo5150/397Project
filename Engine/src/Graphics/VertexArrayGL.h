@@ -35,6 +35,13 @@ public:
 		glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
 	}
 
+	virtual void RenderArrayLines(unsigned size)
+	{
+		glBindVertexArray(m_id);
+		glDrawArrays(GL_LINE_STRIP, 0,size );
+	}
+
+
 protected:
 	unsigned m_id;
 

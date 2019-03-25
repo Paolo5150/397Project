@@ -71,8 +71,6 @@ void LineRenderer::SetVertices(std::vector<Vertex> verts)
 
 void LineRenderer::Render(Camera& cam)
 {
-	SendDataToShader(cam);
-	vertexArray->Bind();
-	glDrawArrays(GL_LINE_STRIP, 0, vertices.size());
-	//vertexArray->RenderArrayTriangles(mesh->indices.size());
+	vertexArray->RenderArrayLines(vertices.size());
+
 }

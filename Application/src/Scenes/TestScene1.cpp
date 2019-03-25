@@ -1,5 +1,5 @@
 #include "Components\MeshRenderer.h"
-#include "Components\LineRenderer.h"
+#include "Prefabs\Axis.h"
 
 #include "Core\CameraPerspective.h"
 #include "TestScene1.h"
@@ -67,17 +67,7 @@ void TestScene1::Initialize() {
 	cam->transform.RotateBy(180, 0,1,0);
 	cam->RemoveLayerMask(Layers::GUI);
 
-	GameObject* line = new GameObject("");
-	std::vector<Vertex> vs;
-	vs.push_back(Vertex(-1, -1,0));
-	vs.push_back(Vertex(1, 1, 0));
-	vs.push_back(Vertex(1, -1, 0));
-	vs.push_back(Vertex(2, -1, 0));
-
-
-
-	LineRenderer* lr = new LineRenderer(vs);
-	line->AddComponent(lr);
+	AddGameObject(new Axis());
 
 
 	//AddGameObject(quad); //Add objects to scene
@@ -85,8 +75,8 @@ void TestScene1::Initialize() {
 
 	AddGameObject(cam);
 	quad->transform.Translate(0, 5, 0);
-	AddGameObject(nanosuit);
-	AddGameObject(line);
+	//AddGameObject(nanosuit);
+
 	quad->AddChild(quad2);
 
 	quad->PrintHierarchy();
@@ -103,6 +93,7 @@ void TestScene1::LogicUpdate() {
 	quad->transform.Translate(0, 0, -0.1f);
 	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
 	
+
 
 	Scene::LogicUpdate(); //Must be last statement!
 }

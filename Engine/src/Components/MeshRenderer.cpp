@@ -94,6 +94,6 @@ Mesh* MeshRenderer::GetMesh()
 
 void MeshRenderer::Render(Camera& cam)
 {	
-	SendDataToShader(cam);
+
 	vertexArray->RenderArrayTriangles(mesh->indices.size());
 }
