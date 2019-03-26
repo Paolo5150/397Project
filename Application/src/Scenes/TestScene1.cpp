@@ -16,6 +16,7 @@ PointLight* pLight;
 DirectionalLight* dirLight;
 
 
+
 TestScene1::TestScene1() : Scene("TestScene1")
 {
 
@@ -75,10 +76,6 @@ void TestScene1::Initialize() {
 	AddGameObject(cam);
 
 	AddGameObject(nanosuit);
-
-
-
-
 
 
 }
