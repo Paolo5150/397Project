@@ -55,7 +55,11 @@ layout (std140, binding = 2) uniform AllPointLights
 
 uniform Material material;
 uniform sampler2D diffuse0;
+uniform sampler2D normal0;
 uniform vec3 AmbientLight;
+uniform int enableNormalMap;
+
+vec3 NormalToUse;
 
 vec3 CalculatePointLights();
 vec3 CalculateDirectionalLights();
@@ -64,6 +68,14 @@ void main()
 {
    
    vec3 diffuseColor = texture(diffuse0,Textcoords).rgb;
+   vec3 normalMap = vec3(0,0,0);
+   normalMap = texture(normal0,Textcoords).rgb *2.0 -1.0;
+   
+   NormalToUse = Normal;
+   if(normalMap.b > 0)
+   {
+	NormalToUse = normalMap;
+   }
    
    vec3 DirLights = CalculateDirectionalLights();
    vec3 PointLights = CalculatePointLights();
@@ -84,7 +96,7 @@ vec3 CalculateDirectionalLights()
 		//Specular
 		vec3 lightdir = normalize(allDirLights[i].rotation);
 		vec3 fragToCam = normalize(CameraPosition - FragPosition);
-		vec3 reflection = reflect(lightdir,Normal);
+		vec3 reflection = reflect(lightdir,NormalToUse);
 		
 		float spec = pow(max(dot(fragToCam, reflection), 0.0),material.shininess );
 		vec3 specular =  spec * allDirLights[i].specularColor ; 
@@ -92,7 +104,7 @@ vec3 CalculateDirectionalLights()
 		
 		//diffuse
 		lightdir = normalize(allDirLights[i].rotation);
-		float d = max(0.0,dot(-lightdir,Normal));
+		float d = max(0.0,dot(-lightdir,NormalToUse));
 		vec3 diffuseColor = allDirLights[i].diffuseColor * d;
 		diffuseColor *= allDirLights[i].intensity;
 		totalColor += diffuseColor;	
@@ -116,7 +128,7 @@ vec3 CalculatePointLights()
 		float attenuation = allPointLights[i].intensity / distance ;
 		vec3 lightdir = normalize(lightToFrag);
 		vec3 fragToCam = normalize(CameraPosition - FragPosition);
-		vec3 reflection = reflect(lightdir,Normal);
+		vec3 reflection = reflect(lightdir,NormalToUse);
 		
 		float spec = pow(max(dot(fragToCam, reflection), 0.0),material.shininess );
 		vec3 specular =  spec * allPointLights[i].specularColor ; 
@@ -125,7 +137,7 @@ vec3 CalculatePointLights()
 		//diffuse
 		
 		
-		float d = max(0.0,dot(-normalize(lightdir),Normal));
+		float d = max(0.0,dot(-normalize(lightdir),NormalToUse));
 		vec3 diffuseColor = allPointLights[i].diffuseColor * d;		
 		totalColor += diffuseColor * attenuation ;	
 	}

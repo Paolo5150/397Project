@@ -38,6 +38,8 @@ void Material::PreloadMaterial()
 	LoadVec3("color", 1,1,1);
 	LoadFloat("shininess", 30.0f);
 
+
+
 }
 
 void Material::LoadVec4(std::string name, glm::vec4 v)
