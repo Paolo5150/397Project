@@ -53,8 +53,11 @@ void Core::Initialize()
 
 	AssetLoader::Initialize(graphicsAPI);
 
+	//Load shsders
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f");
 	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f");
+	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f");
+
 
 	//Load basic shapes
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj");

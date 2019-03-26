@@ -1,4 +1,5 @@
 #include "Material.h"
+#include "..\Utils\AssetLoader.h"
 
 std::string Material::textureUniforms[] = {
 	"diffuse0",
@@ -109,7 +110,10 @@ void Material::Loadtexture(Texture2D* t, TextureUniform tu)
 		return;
 
 	if (tu == NORMAL0 || tu == NORMAL1)
-		hasNormalMap = 1;
+	{
+		shader = AssetLoader::Instance().GetAsset < Shader>("DefaultStaticNormalMap");
+
+	}
 	//Check if texture is already loaded
 	auto it = textures.begin();
 
