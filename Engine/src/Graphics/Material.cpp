@@ -107,6 +107,9 @@ void Material::Loadtexture(Texture2D* t, TextureUniform tu)
 {
 	if (textures.size() >= 16)
 		return;
+
+	if (tu == NORMAL0 || tu == NORMAL1)
+		hasNormalMap = 1;
 	//Check if texture is already loaded
 	auto it = textures.begin();
 
@@ -136,6 +139,7 @@ void Material::BindMaterial()
 	shader->Bind(); //This line is kind of vital
 	auto it = textures.begin();
 
+	shader->SetFloat("u_hasNormalMap", hasNormalMap);
 
 	for (; it != textures.end(); it++)
 	{
