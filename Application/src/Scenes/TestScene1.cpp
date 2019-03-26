@@ -59,7 +59,7 @@ void TestScene1::Initialize() {
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
 
 	DirectionalLight* dirLight = new DirectionalLight();
-	dirLight->SetDiffuseColor(1, 0, 0);
+	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(0, -90, 0);
 	
 
