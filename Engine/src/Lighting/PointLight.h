@@ -10,7 +10,8 @@ public:
 	PointLight();
 	~PointLight();
 
-	float constant;
-	float quadratic;
-	float linear;
+	void Update() override;
+
+
+private:
 };

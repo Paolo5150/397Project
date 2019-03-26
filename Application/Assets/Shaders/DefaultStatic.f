@@ -36,9 +36,6 @@ struct PointLight
 	vec3 diffuseColor;
 	vec3 specularColor;
 	float intensity;
-	float constant;
-	float linear;
-	float quadratic;
 
 };
 
@@ -60,7 +57,7 @@ uniform Material material;
 uniform sampler2D diffuse0;
 uniform vec3 AmbientLight;
 
-
+vec3 CalculatePointLights();
 vec3 CalculateDirectionalLights();
 
 void main()
@@ -69,8 +66,9 @@ void main()
    vec3 diffuseColor = texture(diffuse0,Textcoords).rgb;
    
    vec3 DirLights = CalculateDirectionalLights();
+   vec3 PointLights = CalculatePointLights();
 
-   vec3 total = (AmbientLight + DirLights) * diffuseColor* material.color;
+   vec3 total = (AmbientLight + DirLights + PointLights) * diffuseColor* material.color;
 	gl_FragColor =  vec4(total,1.0);
 
 } 
@@ -100,5 +98,37 @@ vec3 CalculateDirectionalLights()
 		totalColor += diffuseColor;	
 	
 	}
+	return totalColor;
+}
+
+vec3 CalculatePointLights()
+{
+	vec3 totalColor = vec3(0,0,0);
+
+	int i = 0;
+	for(; i < MAX_LIGHTS; i++)
+	{
+	if(i >= activePointLights) break;
+	
+		//Specular
+		vec3 lightToFrag = FragPosition - allPointLights[i].position;
+		float distance = length(lightToFrag);
+		float attenuation = allPointLights[i].intensity / distance ;
+		vec3 lightdir = normalize(lightToFrag);
+		vec3 fragToCam = normalize(CameraPosition - FragPosition);
+		vec3 reflection = reflect(lightdir,Normal);
+		
+		float spec = pow(max(dot(fragToCam, reflection), 0.0),material.shininess );
+		vec3 specular =  spec * allPointLights[i].specularColor ; 
+		totalColor += specular * attenuation;
+		
+		//diffuse
+		
+		
+		float d = max(0.0,dot(-normalize(lightdir),Normal));
+		vec3 diffuseColor = allPointLights[i].diffuseColor * d;		
+		totalColor += diffuseColor * attenuation ;	
+	}
+
 	return totalColor;
 }

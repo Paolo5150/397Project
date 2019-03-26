@@ -56,6 +56,10 @@ void Core::Initialize()
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f");
 	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f");
 
+	//Load basic shapes
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj");
+
+
 	//Start update loop
 	m_isRunning = true;
 }

@@ -12,6 +12,8 @@
 
 
 GameObject* nanosuit;
+PointLight* pLight;
+DirectionalLight* dirLight;
 
 TestScene1::TestScene1() : Scene("TestScene1")
 {
@@ -56,11 +58,17 @@ void TestScene1::Initialize() {
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
 	//Lights
-	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
+	//LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
 
-	DirectionalLight* dirLight = new DirectionalLight();
+	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(0, -90, 0);
+
+	pLight = new PointLight();
+	pLight->SetDiffuseColor(1, 1, 1);
+	pLight->transform.Translate(-15, 0, -15);
+
+
 	
 
 
@@ -83,6 +91,8 @@ void TestScene1::Initialize() {
 	//AddGameObject(quad2); //Add objects to scene
 
 	AddGameObject(dirLight);
+	AddGameObject(pLight);
+
 	AddGameObject(cam);
 	quad->transform.Translate(0, 5, 0);
 	AddGameObject(nanosuit);
@@ -102,7 +112,13 @@ void TestScene1::LogicUpdate() {
 	quad->transform.RotateBy(1.5f, 0,0,0);	
 	quad->transform.Translate(0, 0, -0.1f);
 	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
-	
+	pLight->transform.Translate(0.05f, 0, 0);
+
+	/*static float timer = 0;
+	timer += Timer::GetDeltaS();
+
+	if (timer > 3)
+		dirLight->SetActive(false);*/
 
 
 	Scene::LogicUpdate(); //Must be last statement!

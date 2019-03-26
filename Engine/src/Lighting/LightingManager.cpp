@@ -7,7 +7,7 @@
 #include "..\Core\CameraOrthogonal.h"
 
 
-static int POINT_LIGHT_SIZE = 80; //Size in bytes + offsets
+static int POINT_LIGHT_SIZE = 64; //Size in bytes + offsets
 static int DIRECTIONAL_LIGHT_SIZE = 128;
 
 
@@ -129,10 +129,8 @@ void LightManager::UpdateUBOs()
 	glBufferSubData(GL_UNIFORM_BUFFER, (MAX_LIGHTS * DIRECTIONAL_LIGHT_SIZE), 4, &totalDirLights);
 
 
-	//alldirectionalLights.clear();
-
 	//Update point lights UBO
-	/*totalPointLights = allPointLights.size();
+	totalPointLights = allPointLights.size();
 	auto it2 = allPointLights.begin();
 	glBindBuffer(GL_UNIFORM_BUFFER, pointLightUBO);
 
@@ -151,19 +149,14 @@ void LightManager::UpdateUBOs()
 		glBufferSubData(GL_UNIFORM_BUFFER, 48 + i * POINT_LIGHT_SIZE, 12,&(*it2)->GetSpecularColor());
 		glBufferSubData(GL_UNIFORM_BUFFER, 60 + i * POINT_LIGHT_SIZE, 4, &(*it2)->GetIntensity());
 
-		glBufferSubData(GL_UNIFORM_BUFFER, 64 + i * POINT_LIGHT_SIZE, 4, (const void*)&(*it2)->constant);
-		glBufferSubData(GL_UNIFORM_BUFFER, 68 + i * POINT_LIGHT_SIZE, 4, (const void*)&(*it2)->linear);
-		glBufferSubData(GL_UNIFORM_BUFFER, 72 + i * POINT_LIGHT_SIZE, 8, (const void*)&(*it2)->quadratic); //Write 8 to add 4 bytes of padding
+
 
 
 		i++;
-	}*/
+	}
 
 	glBufferSubData(GL_UNIFORM_BUFFER, (MAX_LIGHTS * POINT_LIGHT_SIZE), 4, &totalPointLights);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-	//allPointLights.clear();
-
-
 }
 
 void LightManager::Update()
