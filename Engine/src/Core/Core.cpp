@@ -9,6 +9,7 @@
 #include "..\Utils\AssetLoader.h"
 #include "Transform.h"
 #include "..\Graphics\RenderingEngine.h"
+#include "..\Lighting\LightingManager.h"
 
 
 
@@ -44,6 +45,7 @@ void Core::Initialize()
 
 	//Managers initialization
 	Timer::Initialize();
+	LightManager::Instance().Initialize();
 
 	//Get cpplication
 	m_runningApplication = CreateApplication();
@@ -131,7 +133,7 @@ bool Core::LateUpdate(Event* e)
 bool Core::Render(Event* e)
 {
 
-	
+	LightManager::Instance().Update();
 	RenderingEngine::Instance().RenderBuffer();
 	/*glEnable(GL_TEXTURE_2D);
 	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();

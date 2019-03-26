@@ -8,6 +8,7 @@
 #include "Prefabs\Quad.h"
 #include "Core\Window.h"
 #include "Utils\AssetLoader.h"
+#include "Lighting\LightingManager.h"
 
 
 GameObject* nanosuit;
@@ -54,6 +55,12 @@ void TestScene1::Initialize() {
 
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
+	//Lights
+	DirectionalLight* dirLight = new DirectionalLight();
+	dirLight->SetDiffuseColor(1, 0, 0);
+	
+
+
 	// Uncomment this to force a wood material!
 	Material mat;
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
@@ -67,15 +74,15 @@ void TestScene1::Initialize() {
 	cam->transform.RotateBy(180, 0,1,0);
 	cam->RemoveLayerMask(Layers::GUI);
 
-	AddGameObject(new Axis());
-
+	//AddGameObject(new Axis());
 
 	//AddGameObject(quad); //Add objects to scene
 	//AddGameObject(quad2); //Add objects to scene
 
+	AddGameObject(dirLight);
 	AddGameObject(cam);
 	quad->transform.Translate(0, 5, 0);
-	//AddGameObject(nanosuit);
+	AddGameObject(nanosuit);
 
 	quad->AddChild(quad2);
 

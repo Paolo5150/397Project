@@ -4,7 +4,7 @@ class Camera_Orthogonal : public Camera
 {
 
 	friend class Camera;
-private:
+public:
 	Camera_Orthogonal(float l, float r, float b, float t, float n, float f) : Camera("Camera_Orthogonal"){
 
 		camerType = ORTHOGONAL;
@@ -25,7 +25,7 @@ private:
 	float bottom;
 	float top;
 
-	bool OnScreenResize(Event* e) {}; // Currently not implemented
+	bool OnScreenResize(Event* e) { return 0; }; // Currently not implemented
 
 
 
