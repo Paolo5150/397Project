@@ -58,6 +58,7 @@ layout (std140, binding = 2) uniform AllPointLights
 
 uniform Material material;
 uniform sampler2D diffuse0;
+uniform vec3 AmbientLight;
 
 
 vec3 CalculateDirectionalLights();
@@ -66,10 +67,11 @@ void main()
 {
    
    vec3 diffuseColor = texture(diffuse0,Textcoords).rgb;
-   vec3 total = diffuseColor * material.color;
+   
    vec3 DirLights = CalculateDirectionalLights();
 
-	gl_FragColor =  vec4(DirLights,1.0);
+   vec3 total = (AmbientLight + DirLights) * diffuseColor* material.color;
+	gl_FragColor =  vec4(total,1.0);
 
 } 
 

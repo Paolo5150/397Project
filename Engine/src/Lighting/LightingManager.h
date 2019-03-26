@@ -24,6 +24,8 @@ public:
 	glm::vec3 fogColor;
 	void SetFogEnable(bool enable);
 	bool GetFogEnable();
+	void SetAmbientLight(float r, float g, float b);
+
 
 
 
@@ -35,6 +37,7 @@ private:
 	void UpdateUBOs();
 	std::list<DirectionalLight*> alldirectionalLights;
 	std::list<PointLight*> allPointLights;
+	glm::vec3 ambientLight;
 	//std::vector<FrameBuffer*> shadowMaps;
 	bool fogEnabled;
 

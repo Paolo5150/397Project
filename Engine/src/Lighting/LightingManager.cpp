@@ -186,10 +186,10 @@ void LightManager::Update()
 void LightManager::UpdateShader(Shader& shader)
 {
 
-	/*shader.Bind(); //This line is kind of vital
-
+	shader.Bind(); //This line is kind of vital
+	shader.SetVec3("AmbientLight", ambientLight);
 	//Load shadow maps
-	std::string uniformName = "shadowMap[";
+	/*std::string uniformName = "shadowMap[";
 
 	shader.SetInt("shadowMapCount", shadowMaps.size());
 	//TODO: improc ve this, cubemap and texture can be bind together, should not be the case
@@ -255,5 +255,13 @@ void LightManager::RemoveLight(Light *l)
 				it++;
 		}
 	}
+
+}
+
+void LightManager::SetAmbientLight(float r, float g, float b)
+{
+	ambientLight.x = r;
+	ambientLight.y = g;
+	ambientLight.z = b;
 
 }

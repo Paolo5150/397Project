@@ -56,8 +56,11 @@ void TestScene1::Initialize() {
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
 	//Lights
+	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
+
 	DirectionalLight* dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 0, 0);
+	dirLight->transform.SetRotation(0, -90, 0);
 	
 
 
@@ -96,7 +99,7 @@ void TestScene1::LogicUpdate() {
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
 
-	quad->transform.RotateBy(1.5f, 0,0,1);	
+	quad->transform.RotateBy(1.5f, 0,0,0);	
 	quad->transform.Translate(0, 0, -0.1f);
 	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
 	

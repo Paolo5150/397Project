@@ -3,7 +3,7 @@
 
 DirectionalLight::DirectionalLight(bool castShadows) : Light("DirectionalLight",DIRECTIONAL)
 {
-	transform.SetRotation(0, 90, 0);	
+	transform.SetRotation(90, 0, 0);	
 	//shadowMap = NULL;
 
 	//if (castShadows)
