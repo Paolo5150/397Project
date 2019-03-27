@@ -2,6 +2,7 @@
 #include <string>
 #include <GLFW\glfw3.h>
 #include "Logger.h"
+#include "Window.h"
 
 /**
 * @class Input
@@ -28,10 +29,11 @@ public:
 	* @pre			GLFW must be initialised
 	* @post			glfwSetKeyCallback is intialised in reference to the window input
 	*
-	* @param		window		GLFWwindow pointer to reference for the KeyCallback
-	* @param		logErrors	Enables glfwSetErrorCallback, which logs glfw errors to the Logger
+	* @param		window			GLFWwindow pointer to reference for the KeyCallback
+	* @param		disableCursor	Sets the cursor to GLFW_CURSOR_DISABLED
+	* @param		logErrors		Enables glfwSetErrorCallback, which logs glfw errors to the Logger
 	*/
-	static void Init(GLFWwindow* window, bool disableCursor, bool logErrors = false);
+	static void Init(GLFWwindow* window = Window::Instance().window, bool disableCursor = false, bool logErrors = false);
 
 	/**
 	* @brief		Facade that calls glfwPollEvents(), this should be called regularly
@@ -66,7 +68,7 @@ public:
 	* @brief		Returns whether the key specified was released within the last update
 	*
 	* @pre			The GameObject must exist.
-	* @post			The true or false, depending on the value stored in keys[key] will be retreived
+	* @post			The true or false, depending on the value stored in prevKeys[keys] and keys[key] will be retreived
 	*
 	* @return		true if prevKeys[key] equals GLFW_PRESS or GLFW_REPEAT and keys[key] equals GLFW_REALEASE, else false
 	*/
@@ -93,42 +95,42 @@ public:
 	static bool GetKeyUp(int key);
 
 	/**
-	* @brief		Returns whether the key specified equals GLFW_PRESS
+	* @brief		Returns whether the mouse button specified equals GLFW_PRESS
 	*
 	* @pre			The GameObject must exist.
-	* @post			The true or false, depending on the value stored in keys[key] will be retreived
+	* @post			The true or false, depending on the value stored in mouseButtons[button] will be retreived
 	*
-	* @return		true if keys[key] equals GLFW_PRESS, else false
+	* @return		true if mouseButtons[button] equals GLFW_PRESS, else false
 	*/
-	static bool GetMousePressed(int button);
+	//static bool GetMousePressed(int button);
 
 	/**
-	* @brief		Returns whether the key specified was released within the last update
+	* @brief		Returns whether the mouse button specified was released within the last update
 	*
 	* @pre			The GameObject must exist.
-	* @post			The true or false, depending on the value stored in keys[key] will be retreived
+	* @post			The true or false, depending on the value stored in prevMouseButtons[button] and mouseButtons[button] will be retreived
 	*
-	* @return		true if prevKeys[key] equals GLFW_PRESS or GLFW_REPEAT and keys[key] equals GLFW_REALEASE, else false
+	* @return		true if prevMouseButtons[button] equals GLFW_PRESS and mouseButtons[button] equals GLFW_REALEASE, else false
 	*/
-	static bool GetMouseReleased(int button);
+	//static bool GetMouseReleased(int button);
 
 	/**
-	* @brief		Returns whether the key specified equals GLFW_REPEAT
+	* @brief		Returns whether the mouse button specified equals GLFW_PRESS
 	*
 	* @pre			The GameObject must exist.
-	* @post			The true or false, depending on the value stored in keys[key] will be retreived
+	* @post			The true or false, depending on the value stored in mouseButtons[button] will be retreived
 	*
-	* @return		true if keys[key] equals GLFW_REPEAT, else false
+	* @return		true if mouseButtons[button] equals GLFW_PRESS, else false
 	*/
 	static bool GetMouseDown(int button);
 
 	/**
-	* @brief		Returns whether the key specified equals GLFW_RELEASE
+	* @brief		Returns whether the mouse button specified equals GLFW_RELEASE
 	*
 	* @pre			The GameObject must exist.
-	* @post			The true or false, depending on the value stored in keys[key] will be retreived
+	* @post			The true or false, depending on the value stored in mouseButtons[button] will be retreived
 	*
-	* @return		true if keys[key] equals GLFW_RELEASE, else false
+	* @return		true if mouseButtons[button] equals GLFW_RELEASE, else false
 	*/
 	static bool GetMouseUp(int button);
 
@@ -186,15 +188,15 @@ public:
 private:
 	static int prevKeys[400]; //Stores the previous value of the keys
 	static int keys[400]; //Stores the last updated value of the keys
-	static int prevMouseButtons[8]; //Stores the previous value of the mouse buttons
+	//static int prevMouseButtons[8]; //Stores the previous value of the mouse buttons
 	static int mouseButtons[8]; //Stores the last update value of the mouse buttons
 
-	static double mouseX;
-	static double mouseY;
-	static double deltaMouseX;
-	static double deltaMouseY;
+	static double mouseX; //Position of the mouse along the X-axis
+	static double mouseY; //Position of the mouse along the Y-axis
+	static double deltaMouseX; //Delta between this positon and the last position of the mouse along the X-axis
+	static double deltaMouseY; //Delta between this positon and the last position of the mouse along the Y-axis
 
-	static bool cursorInWindow;
+	static bool cursorInWindow; //Whether the cursor is currently in the window
 
 //---- Private Member Functions ----//
 	//-- GLFW Callbacks --//

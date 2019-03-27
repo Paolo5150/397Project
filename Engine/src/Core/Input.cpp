@@ -35,6 +35,7 @@ void Input::Init(GLFWwindow* window, bool disableCursor, bool logErrors)
 	{
 		prevKeys[i] = 0;
 		keys[i] = 0;
+		mouseButtons[i] = 0;
 	}
 
 	Logger::LogInfo("Input initialised");
@@ -51,14 +52,14 @@ void Input::Update()
 		}
 	}
 
-	for (int i = 0; i < 8; i++)
+	/*for (int i = 0; i < 8; i++)
 	{
 		prevMouseButtons[i] = mouseButtons[i];
 		if (mouseButtons[i] == GLFW_PRESS)
 		{
 			mouseButtons[i] = 0;
 		}
-	}
+	}*/
 
 	deltaMouseX = 0;
 	deltaMouseY = 0;
@@ -134,29 +135,29 @@ bool Input::GetKeyUp(int key)
 	}
 }
 
-bool Input::GetMousePressed(int button)
-{
-	if (mouseButtons[button] == GLFW_PRESS)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool Input::GetMouseReleased(int button)
-{
-	if ((prevMouseButtons[button] == GLFW_PRESS || prevMouseButtons[button] == GLFW_REPEAT) && mouseButtons[button] == GLFW_RELEASE)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
+//bool Input::GetMousePressed(int button)
+//{
+//	if (mouseButtons[button] == GLFW_PRESS)
+//	{
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//}
+//
+//bool Input::GetMouseReleased(int button)
+//{
+//	if ((prevMouseButtons[button] == GLFW_PRESS || prevMouseButtons[button] == GLFW_REPEAT) && mouseButtons[button] == GLFW_RELEASE)
+//	{
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//}
 
 bool Input::GetMouseDown(int button)
 {
@@ -211,7 +212,7 @@ bool Input::GetCursorInWindow()
 //-----Private-----//
 int Input::prevKeys[400];
 int Input::keys[400];
-int Input::prevMouseButtons[8];
+//int Input::prevMouseButtons[8];
 int Input::mouseButtons[8];
 
 double Input::mouseX;

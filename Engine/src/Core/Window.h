@@ -8,6 +8,7 @@
 	{
 	public:
 		friend class Core; //Core will initialize the window
+		friend class Input;
 		static Window& Instance();
 
 
