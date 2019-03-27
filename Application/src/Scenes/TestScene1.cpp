@@ -48,8 +48,8 @@ void TestScene1::Initialize() {
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
 
 	dirLight = new DirectionalLight();
-	dirLight->SetDiffuseColor(1, 0, 0);
-	dirLight->transform.SetRotation(0, -90, 0);
+	dirLight->SetDiffuseColor(1, 1, 1);
+	dirLight->transform.SetRotation(90, 0, 0);
 
 	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
@@ -72,7 +72,7 @@ void TestScene1::Initialize() {
 
 	AddGameObject(dirLight);
 	AddGameObject(pLight);
-
+	
 	AddGameObject(cam);
 
 	AddGameObject(nanosuit);

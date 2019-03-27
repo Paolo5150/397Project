@@ -8,7 +8,7 @@
 class Texture2D : public Asset
 {
 public:
-
+	unsigned GetID() { return id; }
 	virtual void Bind() = 0;
 	virtual ~Texture2D(){};
 
