@@ -76,9 +76,9 @@ void main()
 
 	Textcoords = inTextcoords;
 	HasNormalMap = u_hasNormalMap;
-	Normal = vec3(u_model * vec4(normalize(inNormals),0.0));
-	Tangent = vec3(u_model * vec4(normalize(inTangent),0.0));
-	Binormal = vec3(u_model * vec4(normalize(-inBinormal),0.0));
+	Normal = mat3(transpose(inverse(u_model))) * normalize(inNormals);
+	Tangent =  mat3(transpose(inverse(u_model))) * normalize(inTangent);
+	Binormal =  mat3(transpose(inverse(u_model))) * normalize(inBinormal);
 
 	CameraPosition = u_cameraPosition;
 	FragPosition = fragPos.xyz;

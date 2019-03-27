@@ -26,6 +26,8 @@ void TestScene1::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\normalTest.jpg");
+
 
 	
 }
@@ -55,12 +57,14 @@ void TestScene1::Initialize() {
 	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
 	pLight->transform.Translate(-15, 0, -15);
-
+	pLight->SetIntensity(100.0f);
 
 	// Uncomment this to force a wood material!
 	Material mat;
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
+	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("normalTest"),TextureUniform::NORMAL0);
+
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->transform.Translate(0, 0, -20);
 	nanosuit->transform.SetRotation(-45, 0, 0);

@@ -74,7 +74,7 @@ void main()
    
    vec3 diffuseColor = texture(diffuse0,Textcoords).rgb;
 
-    vec3 normalMap = texture(normal0,Textcoords).rgb *2.0 -1.0;
+    vec3 normalMap = texture(normal0,Textcoords ).rgb *2.0 -1.0;
    
 	NormalToUse = normalMap;
 	FragPosToUse = FragPositionTS;
