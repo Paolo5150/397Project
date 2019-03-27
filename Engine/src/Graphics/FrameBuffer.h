@@ -4,14 +4,14 @@
 class FrameBuffer 
 {
 public:
-	FrameBuffer(int w, int h, bool hasColorAttachment = true);
-	virtual ~FrameBuffer();
-	virtual void Bind();
-	virtual void Unbind();
+	FrameBuffer(int w, int h, bool hasColorAttachment = true){};
+	virtual ~FrameBuffer(){};
+	virtual void Bind() = 0;
+	virtual void Unbind() = 0;
 
 	Texture2D* GetColorTexture(){ return colortexture; };
 	Texture2D* GetDepthTexture(){ return depthTexture; };
-	void ResizeTexture(int w, int h);
+	virtual void ResizeTexture(int w, int h) = 0;
 
 protected:
 

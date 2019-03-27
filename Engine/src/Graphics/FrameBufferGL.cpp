@@ -34,10 +34,10 @@ FrameBufferGL::FrameBufferGL(int w, int h, bool hasColorAttachment) : FrameBuffe
 
 
 }
-/*
+
 void FrameBufferGL::ResizeTexture(int w, int h)
 {
-	V2_ERROR("Frame buffer resized");
+
 	this->width = w;
 	this->height = h;
 
@@ -56,10 +56,9 @@ void FrameBufferGL::ResizeTexture(int w, int h)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	}
 
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-}*/
+}
 
 void FrameBufferGL::Bind()
 {

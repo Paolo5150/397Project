@@ -6,6 +6,7 @@
 #include "VertexArray.h"
 #include "Vertex.h"
 #include "UniformBuffer.h"
+#include "FrameBuffer.h"
 
 class Shader;
 class Texture2D;
@@ -40,6 +41,8 @@ public:
 	virtual VertexArray* CreateVertexArray() = 0;
 
 	virtual UniformBuffer* CreateUniformBuffer(unsigned totalSize, unsigned binding) = 0;
+	virtual FrameBuffer* CreateFrameBuffer(int w, int h, bool hasColorAttachment = true) = 0;
+
 
 
 

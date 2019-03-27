@@ -3,6 +3,7 @@
 #include "VertexArrayGL.h"
 #include "ArrayBufferGL.h"
 #include "UniformBufferGL.h"
+#include "FrameBufferGL.h"
 
 API_Opengl::API_Opengl()
 {
@@ -86,6 +87,11 @@ VertexArray* API_Opengl::CreateVertexArray()
 UniformBuffer* API_Opengl::CreateUniformBuffer(unsigned totalSize, unsigned binding)
 {
 	return new UniformBufferGL(totalSize, binding);
+}
+
+FrameBuffer* API_Opengl::CreateFrameBuffer(int w, int h, bool hasColorAttachment)
+{
+	return new FrameBufferGL(w, h, hasColorAttachment);
 }
 
 
