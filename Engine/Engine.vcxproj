@@ -223,6 +223,8 @@
     <ClInclude Include="src\Graphics\ShaderGL.h" />
     <ClInclude Include="src\Graphics\Texture2D.h" />
     <ClInclude Include="src\Graphics\Texture2DGL.h" />
+    <ClInclude Include="src\Graphics\UniformBuffer.h" />
+    <ClInclude Include="src\Graphics\UniformBufferGL.h" />
     <ClInclude Include="src\Graphics\Vertex.h" />
     <ClInclude Include="src\Graphics\VertexArray.h" />
     <ClInclude Include="src\Graphics\VertexArrayGL.h" />
@@ -268,6 +270,7 @@
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\ShaderGL.cpp" />
     <ClCompile Include="src\Graphics\Texture2DGL.cpp" />
+    <ClCompile Include="src\Graphics\UniformBufferGL.cpp" />
     <ClCompile Include="src\Lighting\DirectionalLight.cpp" />
     <ClCompile Include="src\Lighting\Light.cpp" />
     <ClCompile Include="src\Lighting\LightingManager.cpp" />

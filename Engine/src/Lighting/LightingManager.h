@@ -3,6 +3,7 @@
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "..\GameObject\GameObject.h"
+#include "..\Graphics\UniformBuffer.h"
 #include <list>
 #include <vector>
 
@@ -43,6 +44,10 @@ private:
 
 	GLuint directionalLightUBO;
 	GLuint pointLightUBO;
+
+	UniformBuffer* direcionalLightsBuffer;
+	UniformBuffer* pointLightsBuffer;
+
 
 	std::vector<float> pointLightReset;
 	std::vector<float> dirLightReset;

@@ -2,6 +2,7 @@
 #include "Texture2DGL.h"
 #include "VertexArrayGL.h"
 #include "ArrayBufferGL.h"
+#include "UniformBufferGL.h"
 
 API_Opengl::API_Opengl()
 {
@@ -81,4 +82,10 @@ VertexArray* API_Opengl::CreateVertexArray()
 {
 	return new VertexArrayGL();
 }
+
+UniformBuffer* API_Opengl::CreateUniformBuffer(unsigned totalSize, unsigned binding)
+{
+	return new UniformBufferGL(totalSize, binding);
+}
+
 

@@ -45,7 +45,7 @@ void TestScene1::Initialize() {
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
 	//Lights
-	//LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
+	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);

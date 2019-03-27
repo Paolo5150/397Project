@@ -5,6 +5,7 @@
 #include "ArrayBuffer.h"
 #include "VertexArray.h"
 #include "Vertex.h"
+#include "UniformBuffer.h"
 
 class Shader;
 class Texture2D;
@@ -37,6 +38,8 @@ public:
 	virtual ArrayBuffer<Vertex>* CreateVertexBuffer() = 0;
 	virtual ArrayBuffer<unsigned>* CreateIndexBuffer() = 0;
 	virtual VertexArray* CreateVertexArray() = 0;
+
+	virtual UniformBuffer* CreateUniformBuffer(unsigned totalSize, unsigned binding) = 0;
 
 
 

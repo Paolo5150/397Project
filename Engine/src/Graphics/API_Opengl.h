@@ -21,6 +21,7 @@ public:
 	ArrayBuffer<Vertex>* CreateVertexBuffer() override;
 	ArrayBuffer<unsigned>* CreateIndexBuffer() override;
 	VertexArray* CreateVertexArray() override;
+	UniformBuffer* CreateUniformBuffer(unsigned totalSize, unsigned binding) override;
 
 
 };

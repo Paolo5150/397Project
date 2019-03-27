@@ -5,6 +5,7 @@
 #include "..\Graphics\RenderingEngine.h"
 #include "..\Utils\Maths.h"
 #include "..\Core\CameraOrthogonal.h"
+#include "..\Core\Core.h"
 
 
 static int POINT_LIGHT_SIZE = 64; //Size in bytes + offsets
@@ -19,17 +20,15 @@ LightManager& LightManager::Instance()
 
 LightManager::~LightManager()
 {
-	glDeleteBuffers(1, &pointLightUBO);
-	glDeleteBuffers(1, &directionalLightUBO);
-	delete shadowCamera;
 
+	delete shadowCamera;
+	delete direcionalLightsBuffer;
+	delete pointLightsBuffer;
 
 }
 
 void LightManager::Initialize()
-{
-
-	
+{	
 	shadowCamera = new Camera_Orthogonal(-500, 500, -500, 500, 0.1, 2000.0);
 	shadowCamera->RemoveLayerMask(Layers::GUI);
 	shadowCamera->RemoveLayerMask(Layers::TERRAIN);
@@ -37,33 +36,20 @@ void LightManager::Initialize()
 	shadowCamera->SetActive(false);
 	fogEnabled = false;
 	fogColor = glm::vec3(0.5, 0.5, 0.7);
-
-
+	
 
 	//simplifiedMaterial.SetShader(AssetManager::ShaderManager::GetShaderByName("colorOnly"));
 
 	//Directional light UBO
-	glGenBuffers(1, &directionalLightUBO);
-
 	int directional_total_size = (MAX_LIGHTS * DIRECTIONAL_LIGHT_SIZE) + 4;
-
-	glBindBuffer(GL_UNIFORM_BUFFER, directionalLightUBO);
-	glBufferData(GL_UNIFORM_BUFFER, directional_total_size, NULL, GL_DYNAMIC_DRAW);
-
-	glBindBufferRange(GL_UNIFORM_BUFFER, UBOLibrary::DIRECTIONAL_LIGHTS, directionalLightUBO, 0, directional_total_size);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	direcionalLightsBuffer = Core::Instance().GetGraphicsAPI().CreateUniformBuffer(directional_total_size, UBOLibrary::DIRECTIONAL_LIGHTS);
 
 
 	//Directional light UBO
-	glGenBuffers(1, &pointLightUBO);
-
 	int point_total_size = (MAX_LIGHTS * POINT_LIGHT_SIZE) + 4;
+	pointLightsBuffer = Core::Instance().GetGraphicsAPI().CreateUniformBuffer(point_total_size, UBOLibrary::POINT_LIGHTS);
 
-	glBindBuffer(GL_UNIFORM_BUFFER, pointLightUBO);
-	glBufferData(GL_UNIFORM_BUFFER, point_total_size, NULL, GL_DYNAMIC_DRAW);
 
-	glBindBufferRange(GL_UNIFORM_BUFFER, UBOLibrary::POINT_LIGHTS, pointLightUBO, 0, point_total_size);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 
 }
@@ -87,7 +73,8 @@ void LightManager::UpdateUBOs()
 
 	//Update Directional lights UBO
 	auto it = alldirectionalLights.begin();
-	glBindBuffer(GL_UNIFORM_BUFFER, directionalLightUBO);
+	//glBindBuffer(GL_UNIFORM_BUFFER, directionalLightUBO);
+	direcionalLightsBuffer->Bind();
 	int i = 0;
 
 	
@@ -115,24 +102,24 @@ void LightManager::UpdateUBOs()
 
 			shadowMaps.push_back((*it)->shadowMap);
 		}*/
-		glBufferSubData(GL_UNIFORM_BUFFER, 0 + i * DIRECTIONAL_LIGHT_SIZE, 64, glm::value_ptr((shadowCamera->projectionMatrix * shadowCamera->viewMatrix)));
-		glBufferSubData(GL_UNIFORM_BUFFER, 64 + i * DIRECTIONAL_LIGHT_SIZE, 16, &(*it)->transform.GetPosition());
-		glBufferSubData(GL_UNIFORM_BUFFER, 64 + 16 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->transform.GetLocalFront());
-		glBufferSubData(GL_UNIFORM_BUFFER, 64 + 32 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->GetDiffuseColor());
-		glBufferSubData(GL_UNIFORM_BUFFER, 64 + 48 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->GetSpecularColor());
-		glBufferSubData(GL_UNIFORM_BUFFER, 64 + 60 + i * DIRECTIONAL_LIGHT_SIZE, 4, &(*it)->GetIntensity());
+		direcionalLightsBuffer->AddDataRange(0 + i * DIRECTIONAL_LIGHT_SIZE, 64, glm::value_ptr((shadowCamera->projectionMatrix * shadowCamera->viewMatrix)));
+		direcionalLightsBuffer->AddDataRange(64 + i * DIRECTIONAL_LIGHT_SIZE, 16, &(*it)->transform.GetPosition());
+		direcionalLightsBuffer->AddDataRange(64 + 16 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->transform.GetLocalFront());
+		direcionalLightsBuffer->AddDataRange(64 + 32 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->GetDiffuseColor());
+		direcionalLightsBuffer->AddDataRange(64 + 48 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->GetSpecularColor());
+		direcionalLightsBuffer->AddDataRange(64 + 60 + i * DIRECTIONAL_LIGHT_SIZE, 4, &(*it)->GetIntensity());
 
 		i++;
 	}
 
 	//shadowCamera->isActive = 0;
-	glBufferSubData(GL_UNIFORM_BUFFER, (MAX_LIGHTS * DIRECTIONAL_LIGHT_SIZE), 4, &totalDirLights);
+	direcionalLightsBuffer->AddDataRange( (MAX_LIGHTS * DIRECTIONAL_LIGHT_SIZE), 4, &totalDirLights);
 
 
 	//Update point lights UBO
 	totalPointLights = allPointLights.size();
 	auto it2 = allPointLights.begin();
-	glBindBuffer(GL_UNIFORM_BUFFER, pointLightUBO);
+	pointLightsBuffer->Bind();
 
 	i = 0;
 	for (; it2 != allPointLights.end(); it2++)
@@ -143,20 +130,16 @@ void LightManager::UpdateUBOs()
 			continue;
 		}
 
-		glBufferSubData(GL_UNIFORM_BUFFER, 0 + i * POINT_LIGHT_SIZE, 16, &(*it2)->transform.GetPosition());
-		glBufferSubData(GL_UNIFORM_BUFFER, 16 + i * POINT_LIGHT_SIZE, 12,&(*it2)->transform.GetRotation());
-		glBufferSubData(GL_UNIFORM_BUFFER, 32 + i * POINT_LIGHT_SIZE, 12,&(*it2)->GetDiffuseColor());
-		glBufferSubData(GL_UNIFORM_BUFFER, 48 + i * POINT_LIGHT_SIZE, 12,&(*it2)->GetSpecularColor());
-		glBufferSubData(GL_UNIFORM_BUFFER, 60 + i * POINT_LIGHT_SIZE, 4, &(*it2)->GetIntensity());
-
-
-
-
+		pointLightsBuffer->AddDataRange(0 + i * POINT_LIGHT_SIZE, 16, &(*it2)->transform.GetPosition());
+		pointLightsBuffer->AddDataRange(16 + i * POINT_LIGHT_SIZE, 12, &(*it2)->transform.GetRotation());
+		pointLightsBuffer->AddDataRange(32 + i * POINT_LIGHT_SIZE, 12, &(*it2)->GetDiffuseColor());
+		pointLightsBuffer->AddDataRange(48 + i * POINT_LIGHT_SIZE, 12, &(*it2)->GetSpecularColor());
+		pointLightsBuffer->AddDataRange(60 + i * POINT_LIGHT_SIZE, 4, &(*it2)->GetIntensity());
 		i++;
 	}
 
-	glBufferSubData(GL_UNIFORM_BUFFER, (MAX_LIGHTS * POINT_LIGHT_SIZE), 4, &totalPointLights);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	pointLightsBuffer->AddDataRange((MAX_LIGHTS * POINT_LIGHT_SIZE), 4, &totalPointLights);
+	
 }
 
 void LightManager::Update()
