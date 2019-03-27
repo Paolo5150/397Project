@@ -5,6 +5,7 @@
 #include "..\Event\ApplicationEvents.h"
 #include "..\Components\Renderer.h"
 #include "..\Core\Camera.h"
+#include "..\Lighting\LightingManager.h"
 
 #include <algorithm>
 std::vector<Renderer*> RenderingEngine::allRenderers;
@@ -153,7 +154,7 @@ void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, Mater
 	{
 		if (cam.GetCullingMask() & r[i]->_parent->GetLayer()) //Check for culling mask
 		{
-			//V2Core::LightManager::Instance().UpdateShader(r[i]->GetMaterial(m).GetShader());
+			LightManager::Instance().UpdateShader(r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).BindMaterial();
 			r[i]->OnPreRender(cam,&r[i]->GetMaterial(m).GetShader()); //Change to get root->OnPrerender
 			r[i]->Render(cam);

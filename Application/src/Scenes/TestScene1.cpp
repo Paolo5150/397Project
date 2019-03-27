@@ -8,9 +8,14 @@
 #include "Prefabs\Quad.h"
 #include "Core\Window.h"
 #include "Utils\AssetLoader.h"
+#include "Lighting\LightingManager.h"
 
 
 GameObject* nanosuit;
+PointLight* pLight;
+DirectionalLight* dirLight;
+
+
 
 TestScene1::TestScene1() : Scene("TestScene1")
 {
@@ -35,24 +40,21 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-	QuadMesh* qm = new QuadMesh();
-	quad = new GameObject("Quad");
-	Material m;
-	m.LoadVec3("color", 1,0,0); // 1 0 0 -> RGB (so, red color)
-	m.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
-	MeshRenderer* mr = new MeshRenderer(qm, m);
-	quad->AddComponent(mr);
 
-	QuadMesh* qm2 = new QuadMesh();
-	GameObject* quad2 = new GameObject("Quad2");
-	Material m2;
-	m2.LoadVec3("color", 0, 1, 0); //0 1 0->RGB(so, green color)
-	m2.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
-	MeshRenderer* mr2 = new MeshRenderer(qm2, m2);
-	quad2->AddComponent(mr2);
-	quad2->transform.SetPosition(5, 0, 0);
-
+	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
+
+	//Lights
+	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
+
+	dirLight = new DirectionalLight();
+	dirLight->SetDiffuseColor(1, 0, 0);
+	dirLight->transform.SetRotation(0, -90, 0);
+
+	pLight = new PointLight();
+	pLight->SetDiffuseColor(1, 1, 1);
+	pLight->transform.Translate(-15, 0, -15);
+
 
 	// Uncomment this to force a wood material!
 	Material mat;
@@ -67,19 +69,13 @@ void TestScene1::Initialize() {
 	cam->transform.RotateBy(180, 0,1,0);
 	cam->RemoveLayerMask(Layers::GUI);
 
-	AddGameObject(new Axis());
 
-
-	//AddGameObject(quad); //Add objects to scene
-	//AddGameObject(quad2); //Add objects to scene
+	AddGameObject(dirLight);
+	AddGameObject(pLight);
 
 	AddGameObject(cam);
-	quad->transform.Translate(0, 5, 0);
-	//AddGameObject(nanosuit);
 
-	quad->AddChild(quad2);
-
-	quad->PrintHierarchy();
+	AddGameObject(nanosuit);
 
 
 }
@@ -89,10 +85,15 @@ void TestScene1::LogicUpdate() {
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
 
-	quad->transform.RotateBy(1.5f, 0,0,1);	
-	quad->transform.Translate(0, 0, -0.1f);
+
 	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
-	
+	pLight->transform.Translate(0.05f, 0, 0);
+
+	/*static float timer = 0;
+	timer += Timer::GetDeltaS();
+
+	if (timer > 3)
+		dirLight->SetActive(false);*/
 
 
 	Scene::LogicUpdate(); //Must be last statement!

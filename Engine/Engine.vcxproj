@@ -223,9 +223,15 @@
     <ClInclude Include="src\Graphics\ShaderGL.h" />
     <ClInclude Include="src\Graphics\Texture2D.h" />
     <ClInclude Include="src\Graphics\Texture2DGL.h" />
+    <ClInclude Include="src\Graphics\UniformBuffer.h" />
+    <ClInclude Include="src\Graphics\UniformBufferGL.h" />
     <ClInclude Include="src\Graphics\Vertex.h" />
     <ClInclude Include="src\Graphics\VertexArray.h" />
     <ClInclude Include="src\Graphics\VertexArrayGL.h" />
+    <ClInclude Include="src\Lighting\DirectionalLight.h" />
+    <ClInclude Include="src\Lighting\Light.h" />
+    <ClInclude Include="src\Lighting\LightingManager.h" />
+    <ClInclude Include="src\Lighting\PointLight.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Prefabs\Axis.h" />
     <ClInclude Include="src\Prefabs\Quad.h" />
@@ -237,6 +243,7 @@
     <ClInclude Include="src\Utils\AssimpWrapper.h" />
     <ClInclude Include="src\Utils\FileUtils.h" />
     <ClInclude Include="src\Utils\Maths.h" />
+    <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\LineRenderer.cpp" />
@@ -263,6 +270,11 @@
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\ShaderGL.cpp" />
     <ClCompile Include="src\Graphics\Texture2DGL.cpp" />
+    <ClCompile Include="src\Graphics\UniformBufferGL.cpp" />
+    <ClCompile Include="src\Lighting\DirectionalLight.cpp" />
+    <ClCompile Include="src\Lighting\Light.cpp" />
+    <ClCompile Include="src\Lighting\LightingManager.cpp" />
+    <ClCompile Include="src\Lighting\PointLight.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

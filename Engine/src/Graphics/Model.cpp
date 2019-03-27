@@ -22,9 +22,9 @@ Model::~Model()
 	//for (int i = 0; i < allTextures.size(); i++)
 	//	delete allTextures[i];
 
-	/*auto itm = allMeshes.begin();
+	auto itm = allMeshes.begin();
 	for (; itm != allMeshes.end(); itm++)
-		delete itm->second;*/
+		delete itm->second;
 
 
 	allNodes.clear();
@@ -60,7 +60,7 @@ GameObject* Model::CreateGameObject()
 	{
 		Mesh* m = new Mesh(*allMeshes[i]);
 
-		MeshRenderer* mr = new MeshRenderer(allMeshes[i], allMaterials[i]); //Default material
+		MeshRenderer* mr = new MeshRenderer(m, allMaterials[i]); //Default material
 
 		
 		//mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));

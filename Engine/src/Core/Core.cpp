@@ -9,6 +9,7 @@
 #include "..\Utils\AssetLoader.h"
 #include "Transform.h"
 #include "..\Graphics\RenderingEngine.h"
+#include "..\Lighting\LightingManager.h"
 
 
 
@@ -44,6 +45,7 @@ void Core::Initialize()
 
 	//Managers initialization
 	Timer::Initialize();
+	LightManager::Instance().Initialize();
 
 	//Get cpplication
 	m_runningApplication = CreateApplication();
@@ -51,8 +53,13 @@ void Core::Initialize()
 
 	AssetLoader::Initialize(graphicsAPI);
 
+	//Load shsders
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f");
 	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f");
+	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f");
+
+	//Load basic shapes
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj");
 
 	//Start update loop
 	m_isRunning = true;
@@ -131,7 +138,7 @@ bool Core::LateUpdate(Event* e)
 bool Core::Render(Event* e)
 {
 
-	
+	LightManager::Instance().Update();
 	RenderingEngine::Instance().RenderBuffer();
 	/*glEnable(GL_TEXTURE_2D);
 	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();

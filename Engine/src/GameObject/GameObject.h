@@ -75,7 +75,7 @@ public:
 	* @param		active		State of the GameObject
 	* @param		includeChildren		Whether to set all children to the same state
 	*/
-	void SetActive(bool active, bool includeChildren = false);
+	void SetActive(bool active, bool includeChildren = true);
 
 	/**
 	* @brief		Signal that the objet will be destroyed in the next late update

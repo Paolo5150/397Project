@@ -69,6 +69,7 @@
 		std::map<std::string, glm::vec3> vec3s;
 		std::map<std::string, float> floats;
 		std::map<std::string, glm::mat4> mat4s;
+		int hasNormalMap;
 
 		void PreloadMaterial();
 		static std::string textureUniforms[];

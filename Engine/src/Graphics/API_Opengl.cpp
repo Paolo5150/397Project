@@ -2,6 +2,7 @@
 #include "Texture2DGL.h"
 #include "VertexArrayGL.h"
 #include "ArrayBufferGL.h"
+#include "UniformBufferGL.h"
 
 API_Opengl::API_Opengl()
 {
@@ -25,7 +26,7 @@ void API_Opengl::Initialize()
 	//glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-	glClearColor(0, 0, 0, 1);
+	glClearColor(0.3f, 0.3f, 0.3f, 1);
 }
 
 void API_Opengl::ClearColorBuffer()
@@ -81,4 +82,10 @@ VertexArray* API_Opengl::CreateVertexArray()
 {
 	return new VertexArrayGL();
 }
+
+UniformBuffer* API_Opengl::CreateUniformBuffer(unsigned totalSize, unsigned binding)
+{
+	return new UniformBufferGL(totalSize, binding);
+}
+
 
