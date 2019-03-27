@@ -60,6 +60,10 @@ void Core::Initialize()
 
 	//Load basic shapes
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj");
+
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj");
+
 
 	//Start update loop
 	m_isRunning = true;

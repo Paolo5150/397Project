@@ -9,8 +9,7 @@ layout(location = 5) in vec3 inBinormal;
 
 out vec2 Textcoords;
 out vec3 Normal;
-out vec3 Tangent;
-out vec3 Binormal;
+
 out vec3 FragPosition;
 out vec3 CameraPosition;
 
@@ -32,9 +31,7 @@ gl_Position = u_projection * u_view * fragPos;
 
 Textcoords = inTextcoords;
 
-Normal = vec3(u_model * vec4(normalize(inNormals),0.0));
-Tangent = vec3(u_model * vec4(normalize(inTangent),0.0));
-Binormal = vec3(u_model * vec4(normalize(-inBinormal),0.0));
+Normal = mat3(transpose(inverse(u_model))) * normalize(inNormals);
 
 CameraPosition = u_cameraPosition;
 FragPosition = fragPos.xyz;

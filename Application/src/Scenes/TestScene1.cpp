@@ -42,7 +42,7 @@ void TestScene1::Initialize() {
 
 
 	
-	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
+	nanosuit = AssetLoader::Instance().GetAsset<Model>("Quad")->CreateGameObject();
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
@@ -50,6 +50,7 @@ void TestScene1::Initialize() {
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(90, 0, 0);
+	//dirLight->SetIntensity(0.5f);
 
 	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
@@ -61,7 +62,11 @@ void TestScene1::Initialize() {
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
 	nanosuit->ApplyMaterial(mat);
-	nanosuit->transform.Translate(0, -10, -15);
+	nanosuit->transform.Translate(0, 0, -20);
+	nanosuit->transform.SetRotation(-45, 0, 0);
+
+	nanosuit->transform.SetScale(10,10,10);
+
 
 	float ar = Window::Instance().GetAspectRatio();
 	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
@@ -86,7 +91,7 @@ void TestScene1::LogicUpdate() {
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
 
 
-	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
+	//nanosuit->transform.RotateBy(0.5f, 1, 1, 1);
 	pLight->transform.Translate(0.05f, 0, 0);
 
 	/*static float timer = 0;

@@ -5,8 +5,6 @@ out vec4 FragColor;
 
 in vec2 Textcoords;
 in vec3 Normal;
-in vec3 Tangent;
-in vec3 Binormal;
 in vec3 FragPosition;
 in vec3 CameraPosition;
 
