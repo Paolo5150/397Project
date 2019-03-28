@@ -157,8 +157,8 @@ vec3 CalculatePointLights(vec3 nm)
 		
 		//diffuse
 		
-		vec3 lightToFrag = FragPosition - allPointLights[i].position;
-		float d = max(0.0,dot(-normalize(lightdir),nm));
+		
+		float d = max(0.5,dot(-normalize(lightdir),nm));
 		vec3 diffuseColor = allPointLights[i].diffuseColor * d;		
 		totalColor += diffuseColor * attenuation ;	
 	}

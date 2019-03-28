@@ -68,6 +68,7 @@ void Renderer::Update()
 
 void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 {
+	Logger::LogInfo("Prerender called on", _parent->GetName());
 	
 	glm::mat4 mvp = cam.projectionMatrix * cam.viewMatrix * _parent->transform.GetMatrix();
 	Shader::GetCurrentShader().SetMat4("u_mvp", mvp);

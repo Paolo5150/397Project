@@ -46,7 +46,7 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-	//Timer::SetDisplayFPS(true);
+	Timer::SetDisplayFPS(true);
 	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
@@ -87,11 +87,11 @@ void TestScene1::Initialize() {
 	w->transform.SetScale(30, 30, 1);
 	w->mainCamera = dynamic_cast<CameraPerspective*>(cam);
 
-	w->PrintHierarchy();
-	AddGameObject(w);
+	nanosuit->PrintHierarchy();
+	//AddGameObject(w);
 
 	AddGameObject(dirLight);
-	AddGameObject(pLight);
+	//AddGameObject(pLight);
 	
 	AddGameObject(cam);
 	
@@ -109,7 +109,7 @@ void TestScene1::LogicUpdate() {
 
 
 	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
-	pLight->transform.Translate(0.05f, 0, 0);
+	//pLight->transform.Translate(0.05f, 0, 0);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();

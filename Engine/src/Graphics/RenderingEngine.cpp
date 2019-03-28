@@ -101,6 +101,8 @@ void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, Mater
 			//Logger::LogWarning("Rendering", r[i]->GetParent()->GetName());
 			LightManager::Instance().UpdateShader(r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).BindMaterial();
+			Logger::LogWarning("Prerender", r[i]->GetParent()->GetName());
+
 			r[i]->_parent->GetRoot()->OnPreRender(cam,&r[i]->GetMaterial(m).GetShader()); 
 			r[i]->Render(cam);
 			r[i]->_parent->GetRoot()->OnPostRender(cam, &r[i]->GetMaterial(m).GetShader());
@@ -116,7 +118,6 @@ void RenderingEngine::RenderVectorOverrideColor(Camera& cam, std::vector<Rendere
 	{
 		if (cam.GetCullingMask() & r[i]->_parent->GetLayer()) //Check for culling mask
 		{
-			//Logger::LogWarning("Rendering", r[i]->GetParent()->GetName());
 			LightManager::Instance().UpdateShader(r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).BindMaterial();
 			r[i]->GetMaterial(m).SetColor(color.x, color.y, color.z);
