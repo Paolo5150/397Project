@@ -28,8 +28,8 @@ Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 
 	int w, h;
 	Window::Instance().GetWindowSize(w, h);
-	refractionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);
-	reflectionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);
+	refractionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w/2, h/2);
+	reflectionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w/2, h/2);
 
 	material = new Material();
 	material->SetShader(AssetLoader::Instance().GetAsset<Shader>("Water"));
