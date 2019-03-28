@@ -46,7 +46,7 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-	Timer::SetDisplayFPS(true);
+	//Timer::SetDisplayFPS(true);
 	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
@@ -55,13 +55,14 @@ void TestScene1::Initialize() {
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(90, 0, 0);
-	dirLight->SetIntensity(0.5f);
+	dirLight->transform.SetRotation(70, 0, 0);
+	dirLight->SetIntensity(1.0f);
 
-/*	pLight = new PointLight();
+
+	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
-	pLight->transform.Translate(-15, 0, -15);
-	pLight->SetIntensity(20.0f);*/
+	pLight->transform.Translate(-15, 10, -15);
+	pLight->SetIntensity(20.0f);
 
 	// Uncomment this to force a wood material!
 	Material mat;
@@ -69,7 +70,8 @@ void TestScene1::Initialize() {
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
 	mat.LoadFloat("shininess", 30.0f);
 
-	nanosuit->ApplyMaterial(mat);
+	//nanosuit->ApplyMaterial(mat);
+	nanosuit->ApplyColor(1, 1, 1);
 	nanosuit->transform.Translate(0, 0, -20);
 	//nanosuit->transform.SetRotation(-45, 0, 0);
 	nanosuit->transform.SetScale(2,2,2);
@@ -89,7 +91,7 @@ void TestScene1::Initialize() {
 	AddGameObject(w);
 
 	AddGameObject(dirLight);
-	//AddGameObject(pLight);
+	AddGameObject(pLight);
 	
 	AddGameObject(cam);
 	
@@ -107,7 +109,7 @@ void TestScene1::LogicUpdate() {
 
 
 	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
-	//pLight->transform.Translate(0.05f, 0, 0);
+	pLight->transform.Translate(0.05f, 0, 0);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();

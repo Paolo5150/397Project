@@ -19,12 +19,14 @@ public:
 	FrameBuffer* refractionBuffer;
 	FrameBuffer* reflectionBuffer;
 	CameraPerspective* mainCamera;
+	void OnPreRender(Camera& camera, Shader* currentShader = nullptr) override;
 
 private:
 
 	CameraPerspective* waterCamera;
 	MeshRenderer* meshRenderer;
 	Material* material;
+	float timer;
 
 
 

@@ -18,7 +18,7 @@ Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 	Texture2D* waterNormal = normalMap;
 	Texture2D* waterDudv = distortion;
 
-
+	timer = 9;
 	waterCamera = new CameraPerspective(60, Window::Instance().GetAspectRatio(), 0.1, 500000);
 	waterCamera->RemoveAllMaskLayers();
 	waterCamera->AddLayerMask(Layers::DEFAULT);
@@ -41,8 +41,10 @@ Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 	material->Loadtexture(waterDudv, TextureUniform::SPECIAL0);
 
 	transform.SetRotation(-90, 0, 0);
-	material->LoadFloat("shininess", 100.0f);
-	material->LoadFloat("UVscale", 4.0f);
+	material->LoadFloat("shininess", 500.0f);
+	material->SetColor(0.8f, 0.8f, 1.0f);
+
+	material->LoadFloat("UVscale", 10.0f);
 	
 	GameObject* quadModel = AssetLoader::Instance().GetAsset<Model>("Quad")->CreateGameObject();
 	//Logger::LogError("Quadmodel", quadModel->GetName());
@@ -63,6 +65,9 @@ Water::~Water()
 void Water::Update()
 {
 	GameObject::Update();
+
+	timer += Timer::GetDeltaS();
+	
 	Water::heightPlane = transform.GetPosition().y;
 	Water::heightPlaneActive = 1;
 
@@ -75,7 +80,7 @@ void Water::Update()
 	waterCamera->transform = mainCamera->transform;
 	waterCamera->Update();
 	//Logger::LogInfo("Wat cam", mainCamera->transform.VectorsToString());
-	RenderingEngine::Instance().RenderBuffer(waterCamera, MaterialType::NOLIGHT);
+	RenderingEngine::Instance().RenderBuffer(waterCamera, MaterialType::COLORONLY);
 
 	refractionBuffer->Unbind();
 
@@ -94,7 +99,7 @@ void Water::Update()
 	waterCamera->transform.LookAt(waterCamera->transform.GetPosition() + ref);
 	waterCamera->Update();
 
-	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera, glm::vec3(0.0f,0.0f,0.0f),MaterialType::NOLIGHT);
+	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera,glm::vec3(1,1,1),MaterialType::DEFAULT);
 
 	reflectionBuffer->Unbind();
 	Water::heightPlaneActive = 0;
@@ -102,6 +107,14 @@ void Water::Update()
 	waterCamera->SetActive(0);
 
 
+}
+
+void Water::OnPreRender(Camera& camera, Shader* currentShader)
+{
+	//Logger::LogInfo("Water pre render");
+	GameObject::OnPreRender(camera, currentShader);
+
+	currentShader->SetFloat("timer", timer);
 }
 /*
 bool Water::HandleEvent(Event &ev)

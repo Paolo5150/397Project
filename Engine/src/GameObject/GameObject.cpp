@@ -349,6 +349,26 @@ GameObject* GameObject::GetRoot()
 	}
 }
 
+void GameObject::ApplyColor(float r, float g, float b)
+{
+	Renderer* rend = dynamic_cast<Renderer*>(GetComponentByType("Renderer"));
+
+	if (rend != nullptr)
+	{
+		rend->GetMaterial(MaterialType::DEFAULT).SetColor(r, g, b);
+		rend->GetMaterial(MaterialType::NOLIGHT).SetColor(r, g, b);
+		rend->GetMaterial(MaterialType::COLORONLY).SetColor(r, g, b);
+		//Logger::LogInfo("Applied material!");
+	}
+
+	auto it = _children.begin();
+
+	for (; it != _children.end(); it++)
+	{
+		(*it)->ApplyColor(r,g,b);
+	}
+}
+
 
 void GameObject::ApplyMaterial(Material mat, MaterialType mt)
 

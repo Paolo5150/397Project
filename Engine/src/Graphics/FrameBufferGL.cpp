@@ -37,7 +37,7 @@ FrameBufferGL::FrameBufferGL(int w, int h, bool hasColorAttachment) : FrameBuffe
 
 void FrameBufferGL::ResizeTexture(int w, int h)
 {
-
+	
 	this->width = w;
 	this->height = h;
 

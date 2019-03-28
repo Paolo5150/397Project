@@ -357,6 +357,8 @@ public:
 	GameObject* GetRoot();
 
 	void ApplyMaterial(Material mat, MaterialType mt = DEFAULT);
+	void ApplyColor(float r, float g, float b);
+
 
 	Transform transform;
 
