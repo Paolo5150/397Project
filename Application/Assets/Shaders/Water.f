@@ -92,7 +92,7 @@ void main()
    vec3 PointLights = CalculatePointLights();
 
    vec3 total = (AmbientLight + DirLights + PointLights) * reflectionColor* material.color;
-   total = reflectionColor * vec3(0.5f,0,0);
+   total = reflectionColor;
 	gl_FragColor =  vec4(total,1.0);
 
 } 

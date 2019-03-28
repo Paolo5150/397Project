@@ -358,6 +358,7 @@ void GameObject::ApplyMaterial(Material mat, MaterialType mt)
 	if (r != nullptr)
 	{
 		r->SetMaterial(mat, mt);
+		
 		//Logger::LogInfo("Applied material!");
 	}
 

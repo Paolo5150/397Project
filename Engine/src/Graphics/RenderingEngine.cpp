@@ -83,7 +83,12 @@ void RenderingEngine::RenderBuffer(MaterialType mt)
 	Core::Instance().GetGraphicsAPI().ResetTextures();
 }
 
+void RenderingEngine::RenderBufferOverrideColor(Camera* camera, glm::vec3 color, MaterialType mt )
+{
+	RenderVectorOverrideColor(*camera, allRenderers, color, mt);
 
+	Core::Instance().GetGraphicsAPI().ResetTextures();
+}
 
 
 void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, MaterialType m)
@@ -99,6 +104,25 @@ void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, Mater
 			r[i]->_parent->OnPreRender(cam,&r[i]->GetMaterial(m).GetShader()); 
 			r[i]->Render(cam);
 			r[i]->_parent->OnPostRender(cam, &r[i]->GetMaterial(m).GetShader()); 
+			r[i]->GetMaterial(m).UnbindMaterial();
+		}
+	}
+}
+
+void RenderingEngine::RenderVectorOverrideColor(Camera& cam, std::vector<Renderer*>& r, glm::vec3 color, MaterialType m)
+{
+
+	for (int i = 0; i < r.size(); i++)
+	{
+		if (cam.GetCullingMask() & r[i]->_parent->GetLayer()) //Check for culling mask
+		{
+			//Logger::LogWarning("Rendering", r[i]->GetParent()->GetName());
+			LightManager::Instance().UpdateShader(r[i]->GetMaterial(m).GetShader());
+			r[i]->GetMaterial(m).BindMaterial();
+			r[i]->GetMaterial(m).SetColor(color.x, color.y, color.z);
+			r[i]->_parent->OnPreRender(cam, &r[i]->GetMaterial(m).GetShader());
+			r[i]->Render(cam);
+			r[i]->_parent->OnPostRender(cam, &r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).UnbindMaterial();
 		}
 	}
