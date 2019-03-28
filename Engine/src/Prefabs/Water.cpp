@@ -66,17 +66,18 @@ void Water::Update()
 	Water::heightPlane = transform.GetPosition().y;
 	Water::heightPlaneActive = 1;
 
-	//waterCamera->SetActive(1);
+	waterCamera->SetActive(1);
 	//Refraction
-	/*refractionBuffer->Bind();
+	refractionBuffer->Bind();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 
 	waterCamera->transform = mainCamera->transform;
 	waterCamera->Update();
+	//Logger::LogInfo("Wat cam", mainCamera->transform.VectorsToString());
 	RenderingEngine::Instance().RenderBuffer(waterCamera, MaterialType::COLORONLY);
 
-	refractionBuffer->Unbind();*/
+	refractionBuffer->Unbind();
 
 	//Reflection
 	Water::heightPlaneActive = -1;
@@ -86,15 +87,14 @@ void Water::Update()
 
 	glm::vec3 ref = glm::reflect(mainCamera->transform.GetLocalFront(), glm::vec3(0, 1, 0));
 
+
 	float heightDiff = transform.GetPosition().y - mainCamera->transform.GetPosition().y;
 	waterCamera->transform.SetPosition(glm::vec3(mainCamera->transform.GetPosition().x, mainCamera->transform.GetPosition().y + heightDiff * 2.0, mainCamera->transform.GetPosition().z));
 
 	waterCamera->transform.LookAt(waterCamera->transform.GetPosition() + ref);
 	waterCamera->Update();
-	Logger::LogInfo("START WATER REND");
-	RenderingEngine::Instance().RenderBuffer();
-	Logger::LogInfo("END WATER REND");
 
+	RenderingEngine::Instance().RenderBuffer(waterCamera, MaterialType::COLORONLY);
 
 	reflectionBuffer->Unbind();
 	Water::heightPlaneActive = 0;

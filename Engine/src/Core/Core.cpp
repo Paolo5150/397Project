@@ -135,7 +135,7 @@ bool Core::EngineUpdate(Event* e)
 
 bool Core::LateUpdate(Event* e)
 {
-	Logger::LogInfo("Core late update");
+	//Logger::LogInfo("Core late update");
 
 	m_runningApplication->AppLateUpdate();
 	RenderingEngine::Instance().ClearRendererList();

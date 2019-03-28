@@ -40,6 +40,7 @@ out vec3 FragPositionTS;
 out vec3 CameraPositionTS;
 out vec3 dirLightsTS[MAX_LIGHTS];
 out vec3 pointLightsTS[MAX_LIGHTS];
+out vec4 clipSpace;
 
 uniform mat4 u_mvp;
 uniform mat4 u_projection;
@@ -72,7 +73,8 @@ void main()
 
 	vec4 fragPos = u_model * vec4(inPosition,1);
 
-	gl_Position = u_projection * u_view * fragPos;
+	clipSpace =  u_mvp * vec4(inPosition,1.0);
+	gl_Position = clipSpace;
 
 	Textcoords = inTextcoords;
 	HasNormalMap = u_hasNormalMap;

@@ -14,6 +14,7 @@ in vec3 CameraPositionTS;
 in float HasNormalMap;
 in vec3 dirLightsTS[MAX_LIGHTS];
 in vec3 pointLightsTS[MAX_LIGHTS];
+in vec4 clipSpace;
 
 struct Material
 {
@@ -74,9 +75,10 @@ vec3 CalculateDirectionalLights();
 
 void main()
 {
+   vec2 ndc = (clipSpace.xy / clipSpace.w) / 2.0 + 0.5;
    
-   vec3 reflectionColor = texture(reflection0,Textcoords).rgb;
-   vec3 refractionColor = texture(refraction0,Textcoords).rgb;
+   vec3 reflectionColor = texture(reflection0,vec2(ndc.x,1.0 - ndc.y)).rgb;
+   vec3 refractionColor = texture(refraction0,ndc).rgb;
 
     vec3 normalMap = texture(normal0,Textcoords * material.UVScale).rgb *2.0 -1.0;
 	vec3 distortionMap = texture(special0,Textcoords * material.UVScale).rgb *2.0 -1.0;
@@ -90,8 +92,8 @@ void main()
    vec3 PointLights = CalculatePointLights();
 
    vec3 total = (AmbientLight + DirLights + PointLights) * reflectionColor* material.color;
-   total = reflectionColor * vec3(1,0,0);
-	gl_FragColor =  vec4(reflectionColor,1.0);
+   total = reflectionColor * vec3(0.5f,0,0);
+	gl_FragColor =  vec4(total,1.0);
 
 } 
 

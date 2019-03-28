@@ -70,9 +70,9 @@ void TestScene1::Initialize() {
 	mat.LoadFloat("shininess", 30.0f);
 
 	nanosuit->ApplyMaterial(mat);
-	nanosuit->transform.Translate(0, -10, -20);
-	nanosuit->transform.SetRotation(-45, 0, 0);
-	nanosuit->transform.SetScale(10,10,10);
+	nanosuit->transform.Translate(0, 0, -20);
+	//nanosuit->transform.SetRotation(-45, 0, 0);
+	nanosuit->transform.SetScale(2,2,2);
 
 
 	float ar = Window::Instance().GetAspectRatio();
@@ -80,9 +80,8 @@ void TestScene1::Initialize() {
 	cam->transform.SetPosition(0,30, 30);
 	cam->transform.SetRotation(-30, 180, 0);
 	cam->RemoveLayerMask(Layers::GUI);
-
 	Water* w = new Water(AssetLoader::Instance().GetAsset<Texture2D>("water_normal"), AssetLoader::Instance().GetAsset<Texture2D>("dudv"));
-	w->transform.SetPosition(0, -10, -20);
+	w->transform.SetPosition(0, 0, -20);
 	w->transform.SetScale(30, 30, 1);
 	w->mainCamera = dynamic_cast<CameraPerspective*>(cam);
 
@@ -107,7 +106,7 @@ void TestScene1::LogicUpdate() {
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
 
 
-	//nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
+	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
 	//pLight->transform.Translate(0.05f, 0, 0);
 
 	/*static float timer = 0;

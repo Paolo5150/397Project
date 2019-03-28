@@ -93,7 +93,7 @@ void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, Mater
 	{
 		if (cam.GetCullingMask() & r[i]->_parent->GetLayer()) //Check for culling mask
 		{			
-			Logger::LogWarning("Rendering", r[i]->GetParent()->GetName());
+			//Logger::LogWarning("Rendering", r[i]->GetParent()->GetName());
 			LightManager::Instance().UpdateShader(r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).BindMaterial();
 			r[i]->_parent->OnPreRender(cam,&r[i]->GetMaterial(m).GetShader()); 
