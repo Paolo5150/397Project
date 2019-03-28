@@ -46,7 +46,7 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-	Timer::SetDisplayFPS(true);
+	//Timer::SetDisplayFPS(true);
 	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
@@ -55,32 +55,38 @@ void TestScene1::Initialize() {
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(70, 0, 0);
-	dirLight->SetIntensity(1.0f);
+	dirLight->transform.SetRotation(90, 0, 0);
 
+
+
+	dirLight->SetIntensity(2.0f);
+	dirLight->Update();
+	Logger::LogWarning(dirLight->transform.VectorsToString());
 
 	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
 	pLight->transform.Translate(-15, 10, -15);
 	pLight->SetIntensity(20.0f);
+	pLight->SetActive(false);
 
 	// Uncomment this to force a wood material!
 	Material mat;
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
-	mat.LoadFloat("shininess", 30.0f);
+	mat.LoadFloat("shininess", 100.0f);
 
-	//nanosuit->ApplyMaterial(mat);
+	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 	nanosuit->transform.Translate(0, 0, -20);
-	//nanosuit->transform.SetRotation(-45, 0, 0);
+	//nanosuit->transform.SetRotation(70, 180, 0);
+	//nanosuit->transform.RotateBy(70, 1, 0, 0);
 	nanosuit->transform.SetScale(2,2,2);
 
 
 	float ar = Window::Instance().GetAspectRatio();
 	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
-	cam->transform.SetPosition(0,30, 30);
-	cam->transform.SetRotation(-30, 180, 0);
+	cam->transform.SetPosition(0,35, 30);
+	cam->transform.SetRotation(30, 180, 0);
 	cam->RemoveLayerMask(Layers::GUI);
 	Water* w = new Water(AssetLoader::Instance().GetAsset<Texture2D>("water_normal"), AssetLoader::Instance().GetAsset<Texture2D>("dudv"));
 	w->transform.SetPosition(0, 0, -20);
@@ -91,7 +97,7 @@ void TestScene1::Initialize() {
 	AddGameObject(w);
 
 	AddGameObject(dirLight);
-	//AddGameObject(pLight);
+	AddGameObject(pLight);
 	
 	AddGameObject(cam);
 	
@@ -109,7 +115,9 @@ void TestScene1::LogicUpdate() {
 
 
 	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
-	//pLight->transform.Translate(0.05f, 0, 0);
+	//Logger::LogWarning(nanosuit->transform.VectorsToString());
+
+	pLight->transform.Translate(0.05f, 0, 0);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();

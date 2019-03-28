@@ -101,7 +101,7 @@ void Water::Update()
 	waterCamera->transform.LookAt(waterCamera->transform.GetPosition() + ref);
 	waterCamera->Update();
 
-	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera,glm::vec3(1),MaterialType::COLORONLY);
+	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera,glm::vec3(0),MaterialType::COLORONLY);
 
 	reflectionBuffer->Unbind();
 	Water::heightPlaneActive = 0;

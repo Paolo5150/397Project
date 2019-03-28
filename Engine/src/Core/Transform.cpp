@@ -51,10 +51,21 @@ void Transform::SetRotation(float x, float y, float z)
 	rotation.x = x;
 	rotation.y = y;
 	rotation.z = z;
-	rotationMatrix = glm::mat4();
-	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.x), glm::vec3(1, 0, 0));
-	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.y), glm::vec3(0, 1, 0));
-	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.z), glm::vec3(0, 0, 1));
+	glm::quat q;
+	q = glm::rotate(q, glm::radians(rotation));
+	rotationMatrix = glm::toMat4(q);	
+
+}
+
+void Transform::RotateBy(float angle, glm::vec3 axis)
+{
+	rotation += axis * angle;
+	SetRotation(rotation);
+}
+
+void Transform::RotateBy(float angle, int x, int y, int z)
+{
+	RotateBy(angle, glm::vec3(x, y, z));
 }
 void Transform::SetPosition(float x, float y, float z)
 {
@@ -243,19 +254,7 @@ void  Transform::LookAt(glm::vec3 target)
 
 }
 
-void Transform::RotateBy(float angle, glm::vec3 axis)
-{
-	rotation += axis * angle;
-	rotationMatrix = glm::mat4();
-	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.x), glm::vec3(1, 0, 0));
-	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.y), glm::vec3(0, 1, 0));
-	rotationMatrix = glm::rotate(rotationMatrix, glm::radians(rotation.z), glm::vec3(0, 0, 1));
-}
 
-void Transform::RotateBy(float angle, int x, int y, int z)
-{
-	RotateBy(angle, glm::vec3(x, y, z));
-}
 
 
 
