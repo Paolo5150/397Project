@@ -81,7 +81,7 @@ void Timer::Update()
 		if (st >= 1)
 		{
 			st = 0;
-
+			Logger::LogInfo("FPS", m_FPSCounter);
 			m_FPSCounter = 0;
 		}
 	}
