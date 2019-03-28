@@ -19,7 +19,7 @@ public:
 	FrameBuffer* refractionBuffer;
 	FrameBuffer* reflectionBuffer;
 	CameraPerspective* mainCamera;
-	void OnPreRender(Camera& camera, Shader* currentShader = nullptr) override;
+	void OnPreRender(Camera& camera, Shader* currentShader = nullptr) ;
 
 private:
 

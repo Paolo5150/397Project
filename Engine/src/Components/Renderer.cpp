@@ -68,13 +68,16 @@ void Renderer::Update()
 
 void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 {
-	Logger::LogInfo("Prerender called on", _parent->GetName());
+	//Logger::LogInfo("Prerender called on", _parent->GetName());
 	
 	glm::mat4 mvp = cam.projectionMatrix * cam.viewMatrix * _parent->transform.GetMatrix();
 	Shader::GetCurrentShader().SetMat4("u_mvp", mvp);
 	Shader::GetCurrentShader().SetMat4("u_model", _parent->transform.GetMatrix());
 	Shader::GetCurrentShader().SetMat4("u_view", cam.viewMatrix);
 	Shader::GetCurrentShader().SetMat4("u_projection", cam.projectionMatrix);
+
+	for (unsigned i = 0; i < preRenderCallbacks.size(); i++)
+		preRenderCallbacks[i](cam, currentShader);
 	//Shader::GetCurrentShader().SetFloat("heightPlane", Water::heightPlane);
 	//Shader::GetCurrentShader().SetInt("heightPlaneActive", Water::heightPlaneActive);
 	//Shader::GetCurrentShader().SetVec3("fogColor", LightManager::Instance().fogColor);
@@ -96,6 +99,15 @@ void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 	Shader::GetCurrentShader().SetVec3("camPosition", cam.transform.GetPosition());*/
 }
 
+void Renderer::AddPreRenderCallback(std::function<void(Camera&, Shader*)> cb)
+{
+	preRenderCallbacks.push_back(cb);
+}
+void Renderer::AddPostRenderCallback(std::function<void(Camera&, Shader*)> cb)
+{
+	postRenderCallbacks.push_back(cb);
+
+}
 
 void Renderer::SendDataToShader(Camera& cam)
 {

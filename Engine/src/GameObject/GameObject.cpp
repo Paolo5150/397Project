@@ -294,27 +294,7 @@ void GameObject::EngineUpdate()
 		(*itc)->EngineUpdate();
 }
 
-void GameObject::OnPreRender(Camera& cam,Shader* currentShader )
-{
-	auto it = _children.begin();
-	for (; it != _children.end(); it++)
-		(*it)->OnPreRender(cam,currentShader);
 
-	auto itc = _components.begin();
-	for (; itc != _components.end(); itc++)
-		(*itc)->OnPreRender(cam,currentShader);
-}
-
-void GameObject::OnPostRender(Camera& cam, Shader* currentShader)
-{
-	auto it = _children.begin();
-	for (; it != _children.end(); it++)
-		(*it)->OnPostRender(cam, currentShader);
-
-	auto itc = _components.begin();
-	for (; itc != _components.end(); itc++)
-		(*itc)->OnPostRender(cam, currentShader);
-}
 
 void GameObject::PrintHierarchy()
 {

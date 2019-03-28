@@ -351,9 +351,6 @@ public:
 
 	void PrintHierarchy();
 
-	virtual void OnPreRender(Camera& camera,Shader* currentShader = nullptr);
-	virtual void OnPostRender(Camera& camera, Shader* currentShader = nullptr);
-
 	GameObject* GetRoot();
 
 	void ApplyMaterial(Material mat, MaterialType mt = DEFAULT);

@@ -2,8 +2,11 @@
 #include "..\GameObject\Component.h"
 #include "..\Graphics\Material.h"
 #include <map>
+#include <functional>
+#include <vector>
 
 class Camera;
+class Shader;
 
 class Renderer : public Component
 	{
@@ -27,10 +30,18 @@ class Renderer : public Component
 		Material& GetMaterial(MaterialType materialType = DEFAULT);
 		void SetMaterial(Material m, MaterialType = DEFAULT);
 
+		void AddPreRenderCallback(std::function<void(Camera&, Shader*)> cb);
+		void AddPostRenderCallback(std::function<void(Camera&, Shader*)> cb);
+
+
 		bool isCullable;
 
 	protected:
 		std::map<int, Material> allMaterials;
+		std::vector<std::function<void(Camera&, Shader*)>> preRenderCallbacks;
+		std::vector<std::function<void(Camera&, Shader*)>> postRenderCallbacks;
+
+
 
 	private:
 		bool submitted;

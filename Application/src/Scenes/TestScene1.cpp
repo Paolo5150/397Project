@@ -88,7 +88,7 @@ void TestScene1::Initialize() {
 	w->mainCamera = dynamic_cast<CameraPerspective*>(cam);
 
 	nanosuit->PrintHierarchy();
-	//AddGameObject(w);
+	AddGameObject(w);
 
 	AddGameObject(dirLight);
 	//AddGameObject(pLight);
