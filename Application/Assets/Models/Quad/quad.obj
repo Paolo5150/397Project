@@ -1,7 +1,7 @@
 # Blender v2.79 (sub 0) OBJ File: 'ship.blend'
 # www.blender.org
 mtllib ship.mtl
-o Cube
+o QuadMesh
 v -1 -1 0
 v 1 -1 0
 v 1 1 0

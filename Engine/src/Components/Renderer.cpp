@@ -51,9 +51,7 @@ void Renderer::CreateOtherMaterials(Material& defaultMat)
 	SetMaterial(nolight, NOLIGHT);
 }
 
-
-
-void Renderer::Update()
+void Renderer::EngineUpdate()
 {
 	if (_isActive)
 	{
@@ -61,6 +59,11 @@ void Renderer::Update()
 		submitted = true;
 	}
 
+}
+
+void Renderer::Update()
+{
+	
 }
 
 void Renderer::OnPreRender(Camera& cam, Shader* currentShader )

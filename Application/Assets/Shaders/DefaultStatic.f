@@ -12,6 +12,7 @@ struct Material
 {
 vec3 color;
 float shininess;
+float UVScale;
 };
 
 // Light buffers
@@ -61,7 +62,7 @@ vec3 CalculateDirectionalLights();
 void main()
 {
    
-   vec3 diffuseColor = texture(diffuse0,Textcoords).rgb;
+   vec3 diffuseColor = texture(diffuse0,Textcoords * material.UVScale).rgb;
    
    vec3 DirLights = CalculateDirectionalLights();
    vec3 PointLights = CalculatePointLights();

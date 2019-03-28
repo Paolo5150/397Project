@@ -281,6 +281,19 @@ void GameObject::Update()
 		(*itc)->Update();
 }
 
+void GameObject::EngineUpdate()
+{
+
+
+	auto it = _children.begin();
+	for (; it != _children.end(); it++)
+		(*it)->EngineUpdate();
+
+	auto itc = _components.begin();
+	for (; itc != _components.end(); itc++)
+		(*itc)->EngineUpdate();
+}
+
 void GameObject::OnPreRender(Camera& cam,Shader* currentShader )
 {
 	auto it = _children.begin();
@@ -290,6 +303,17 @@ void GameObject::OnPreRender(Camera& cam,Shader* currentShader )
 	auto itc = _components.begin();
 	for (; itc != _components.end(); itc++)
 		(*itc)->OnPreRender(cam,currentShader);
+}
+
+void GameObject::OnPostRender(Camera& cam, Shader* currentShader)
+{
+	auto it = _children.begin();
+	for (; it != _children.end(); it++)
+		(*it)->OnPostRender(cam, currentShader);
+
+	auto itc = _components.begin();
+	for (; itc != _components.end(); itc++)
+		(*itc)->OnPostRender(cam, currentShader);
 }
 
 void GameObject::PrintHierarchy()
@@ -314,6 +338,17 @@ void GameObject::PrintHierarchy(int indentation, std::string& output)
 		(*it)->PrintHierarchy(indentation + 1, output);
 	}
 }
+
+GameObject* GameObject::GetRoot()
+{
+	if (_parent == nullptr)
+		return this;
+	else
+	{
+		return _parent->GetRoot();
+	}
+}
+
 
 void GameObject::ApplyMaterial(Material mat, MaterialType mt)
 

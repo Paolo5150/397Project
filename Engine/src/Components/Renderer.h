@@ -22,6 +22,8 @@ class Renderer : public Component
 		void SendDataToShader(Camera& cam);
 
 		void Update() override;
+		void EngineUpdate() override;
+
 		Material& GetMaterial(MaterialType materialType = DEFAULT);
 		void SetMaterial(Material m, MaterialType = DEFAULT);
 

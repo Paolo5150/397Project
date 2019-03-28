@@ -70,7 +70,6 @@ GameObject* Model::CreateGameObject()
 
 		//mr->SetMaterial(mat);
 
-
 		GameObject* c = new GameObject(meshesNames[i]);
 		c->AddComponent(mr);
 		e->AddChild(c);

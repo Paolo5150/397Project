@@ -59,8 +59,10 @@ layout (std140, binding = 2) uniform AllPointLights
 };
 
 uniform Material material;
-uniform sampler2D diffuse0;
+uniform sampler2D refraction0;
+uniform sampler2D reflection0;
 uniform sampler2D normal0;
+uniform sampler2D special0; //Distortionmap
 uniform vec3 AmbientLight;
 
 vec3 NormalToUse;
@@ -73,9 +75,11 @@ vec3 CalculateDirectionalLights();
 void main()
 {
    
-   vec3 diffuseColor = texture(diffuse0,Textcoords).rgb;
+   vec3 reflectionColor = texture(reflection0,Textcoords).rgb;
+   vec3 refractionColor = texture(refraction0,Textcoords).rgb;
 
     vec3 normalMap = texture(normal0,Textcoords * material.UVScale).rgb *2.0 -1.0;
+	vec3 distortionMap = texture(special0,Textcoords * material.UVScale).rgb *2.0 -1.0;
    
 	NormalToUse = normalMap;
 	FragPosToUse = FragPositionTS;
@@ -85,8 +89,9 @@ void main()
    vec3 DirLights = CalculateDirectionalLights();
    vec3 PointLights = CalculatePointLights();
 
-   vec3 total = (AmbientLight + DirLights + PointLights) * diffuseColor* material.color;
-	gl_FragColor =  vec4(total,1.0);
+   vec3 total = (AmbientLight + DirLights + PointLights) * reflectionColor* material.color;
+   total = reflectionColor * vec3(1,0,0);
+	gl_FragColor =  vec4(reflectionColor,1.0);
 
 } 
 

@@ -31,7 +31,7 @@ gl_Position = u_projection * u_view * fragPos;
 
 Textcoords = inTextcoords;
 
-Normal = mat3(transpose(inverse(u_model))) * normalize(inNormals);
+Normal = normalize(mat3(transpose(inverse(u_model))) * normalize(inNormals));
 
 CameraPosition = u_cameraPosition;
 FragPosition = fragPos.xyz;

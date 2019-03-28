@@ -237,6 +237,7 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Prefabs\Axis.h" />
     <ClInclude Include="src\Prefabs\Quad.h" />
+    <ClInclude Include="src\Prefabs\Water.h" />
     <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Scene\SceneManager.h" />
     <ClInclude Include="src\Utils\Asset.h" />
@@ -286,6 +287,7 @@
     </ClCompile>
     <ClCompile Include="src\Prefabs\Axis.cpp" />
     <ClCompile Include="src\Prefabs\Quad.cpp" />
+    <ClCompile Include="src\Prefabs\Water.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Utils\AssetContainer.cpp" />

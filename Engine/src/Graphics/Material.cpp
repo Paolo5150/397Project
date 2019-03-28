@@ -11,9 +11,10 @@ std::string Material::textureUniforms[] = {
 	"ambient0",
 	"specular0",
 	"reflection0",
+	"refraction0",
 	"special0",
-	"special0",
-	"special0" };
+	"special1",
+	"special2" };
 
 
 Material::Material()
@@ -38,6 +39,8 @@ void Material::PreloadMaterial()
 {
 	LoadVec3("color", 1,1,1);
 	LoadFloat("shininess", 30.0f);
+	LoadFloat("UVScale", 1.0f);
+
 
 
 
@@ -104,16 +107,14 @@ void Material::GetColor(float& r, float &g, float& b)
 		cubemaps[tu] = t;
 }*/
 
+
+
 void Material::Loadtexture(Texture2D* t, TextureUniform tu)
 {
 	if (textures.size() >= 16)
 		return;
 
-	if (tu == NORMAL0 || tu == NORMAL1)
-	{
-		shader = AssetLoader::Instance().GetAsset < Shader>("DefaultStaticNormalMap");
 
-	}
 	//Check if texture is already loaded
 	auto it = textures.begin();
 
@@ -142,8 +143,6 @@ void Material::BindMaterial()
 {
 	shader->Bind(); //This line is kind of vital
 	auto it = textures.begin();
-
-	shader->SetFloat("u_hasNormalMap", hasNormalMap);
 
 	for (; it != textures.end(); it++)
 	{

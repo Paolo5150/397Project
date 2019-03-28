@@ -9,6 +9,7 @@
 #include "Core\Window.h"
 #include "Utils\AssetLoader.h"
 #include "Lighting\LightingManager.h"
+#include "Prefabs\Water.h"
 
 
 GameObject* nanosuit;
@@ -28,6 +29,9 @@ void TestScene1::LoadAssets() {
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\normalTest.jpg");
 
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dudv.png");
+
 
 	
 }
@@ -44,7 +48,7 @@ void TestScene1::Initialize() {
 
 
 	
-	nanosuit = AssetLoader::Instance().GetAsset<Model>("Quad")->CreateGameObject();
+	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
@@ -52,39 +56,47 @@ void TestScene1::Initialize() {
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(90, 0, 0);
-	//dirLight->SetIntensity(0.5f);
+	dirLight->SetIntensity(0.5f);
 
-	pLight = new PointLight();
+/*	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
 	pLight->transform.Translate(-15, 0, -15);
-	pLight->SetIntensity(100.0f);
+	pLight->SetIntensity(20.0f);*/
 
 	// Uncomment this to force a wood material!
 	Material mat;
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
-	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("normalTest"),TextureUniform::NORMAL0);
+	mat.LoadFloat("shininess", 30.0f);
 
 	nanosuit->ApplyMaterial(mat);
-	nanosuit->transform.Translate(0, 0, -20);
+	nanosuit->transform.Translate(0, -10, -20);
 	nanosuit->transform.SetRotation(-45, 0, 0);
-
 	nanosuit->transform.SetScale(10,10,10);
 
 
 	float ar = Window::Instance().GetAspectRatio();
 	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
-	cam->transform.SetPosition(0, 0, 5);
-	cam->transform.RotateBy(180, 0,1,0);
+	cam->transform.SetPosition(0,30, 30);
+	cam->transform.SetRotation(-30, 180, 0);
 	cam->RemoveLayerMask(Layers::GUI);
 
+	Water* w = new Water(AssetLoader::Instance().GetAsset<Texture2D>("water_normal"), AssetLoader::Instance().GetAsset<Texture2D>("dudv"));
+	w->transform.SetPosition(0, -10, -20);
+	w->transform.SetScale(30, 30, 1);
+	w->mainCamera = dynamic_cast<CameraPerspective*>(cam);
+
+	w->PrintHierarchy();
+	AddGameObject(w);
 
 	AddGameObject(dirLight);
-	AddGameObject(pLight);
+	//AddGameObject(pLight);
 	
 	AddGameObject(cam);
-
+	
 	AddGameObject(nanosuit);
+
+
 
 
 }
@@ -95,8 +107,8 @@ void TestScene1::LogicUpdate() {
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
 
 
-	//nanosuit->transform.RotateBy(0.5f, 1, 1, 1);
-	pLight->transform.Translate(0.05f, 0, 0);
+	//nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
+	//pLight->transform.Translate(0.05f, 0, 0);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();
@@ -107,6 +119,4 @@ void TestScene1::LogicUpdate() {
 
 	Scene::LogicUpdate(); //Must be last statement!
 }
-void TestScene1::EngineUpdate() {
-	//Scene::EngineUpdate();
-}
+

@@ -11,7 +11,7 @@ public:
 	virtual void ExitScene() override;
 	virtual void Initialize() override;
 	virtual void LogicUpdate() override;
-	virtual void EngineUpdate() override;
+
 
 	Camera* cam;
 	GameObject* quad;

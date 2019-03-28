@@ -18,6 +18,7 @@
 		AMBIENT0,
 		SPECULAR0,
 		REFLECITON0,
+		REFRACTION0,
 		SPECIAL0,
 		SPECIAL1,
 		SPECIAL2,
@@ -41,6 +42,7 @@
 
 		std::string name;
 		void Loadtexture(Texture2D* t, TextureUniform tu = DIFFUSE0);
+
 		//void LoadCubemap(Cubemap* t, TextureUniform tu = DIFFUSE0);
 
 		Material();
