@@ -42,7 +42,7 @@ Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 
 	transform.SetRotation(-90, 0, 0);
 	material->LoadFloat("shininess", 500.0f);
-	material->SetColor(0.8f, 0.8f, 1.0f);
+	material->SetColor(1.0f, 1.0f, 1.0f);
 
 	material->LoadFloat("UVscale", 10.0f);
 	
@@ -99,7 +99,7 @@ void Water::Update()
 	waterCamera->transform.LookAt(waterCamera->transform.GetPosition() + ref);
 	waterCamera->Update();
 
-	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera,glm::vec3(1,1,1),MaterialType::DEFAULT);
+	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera,glm::vec3(0),MaterialType::COLORONLY);
 
 	reflectionBuffer->Unbind();
 	Water::heightPlaneActive = 0;

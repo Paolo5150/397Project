@@ -83,8 +83,8 @@ void main()
 	
 	vec2 totalDistortion = 0.005 * dudvTexture + 0.005 * dudvTexture2;
    
-   vec3 reflectionColor = texture(reflection0,totalDistortion + vec2(ndc.x,1.0 - ndc.y)).rgb;
-   vec3 refractionColor = texture(refraction0,totalDistortion + ndc).rgb;
+   vec3 reflectionColor = texture(reflection0,totalDistortion/400 + vec2(ndc.x,1.0 - ndc.y)).rgb;
+   vec3 refractionColor = texture(refraction0,totalDistortion/400 + ndc).rgb;
 
     vec3 normalMap = texture(normal0,totalDistortion + Textcoords * material.UVScale).rgb *2.0 -1.0;
     vec3 normalMap2 = texture(normal0,totalDistortion - Textcoords * material.UVScale*1.5f).rgb *2.0 -1.0;
