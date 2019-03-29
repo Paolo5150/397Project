@@ -1,7 +1,7 @@
 #include "Components\MeshRenderer.h"
 #include "Prefabs\Axis.h"
 
-#include "Core\CameraPerspective.h"
+#include "Core\MainCamera.h"
 #include "TestScene1.h"
 #include "Core/Logger.h"
 #include "Scene/SceneManager.h"
@@ -10,8 +10,11 @@
 #include "Utils\AssetLoader.h"
 #include "Lighting\LightingManager.h"
 #include "Prefabs\Water.h"
+#include "Core\Input.h"
+#include "GLFW\glfw3.h"
 
 
+MainCamera* cam;
 GameObject* nanosuit;
 PointLight* pLight;
 DirectionalLight* dirLight;
@@ -41,12 +44,13 @@ void TestScene1::UnloadAssets() {
 
 }
 void TestScene1::ExitScene() {
+	glfwTerminate();
 	Scene::ExitScene();
 
 }
 void TestScene1::Initialize() {
 
-	//Timer::SetDisplayFPS(true);
+		//Timer::SetDisplayFPS(true);
 	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
@@ -83,7 +87,7 @@ void TestScene1::Initialize() {
 
 
 	float ar = Window::Instance().GetAspectRatio();
-	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
+	cam = new MainCamera(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
 	cam->transform.SetPosition(0,35, 30);
 	cam->transform.SetRotation(30, 180, 0);
 
@@ -93,7 +97,7 @@ void TestScene1::Initialize() {
 	Water* w = new Water(AssetLoader::Instance().GetAsset<Texture2D>("water_normal"), AssetLoader::Instance().GetAsset<Texture2D>("dudv"));
 	w->transform.SetPosition(0, 0, -20);
 	w->transform.SetScale(30, 30, 1);
-	w->mainCamera = dynamic_cast<CameraPerspective*>(cam);
+	w->mainCamera = dynamic_cast<MainCamera*>(cam);
 
 	nanosuit->PrintHierarchy();
 	AddGameObject(w);
@@ -105,16 +109,17 @@ void TestScene1::Initialize() {
 	
 	AddGameObject(nanosuit);
 
-
+	Input::Init(true, true);
 
 
 }
 void TestScene1::LogicUpdate() {
-
+	
 	//Logger::LogInfo("Test scene 1 update");
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
 
+	cam->UpdateControls();
 	
 	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
 	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.5f);
@@ -128,7 +133,7 @@ void TestScene1::LogicUpdate() {
 	if (timer > 3)
 		dirLight->SetActive(false);*/
 
-
+	Input::Update();
 	Scene::LogicUpdate(); //Must be last statement!
 }
 

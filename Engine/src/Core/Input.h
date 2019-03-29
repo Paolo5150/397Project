@@ -31,12 +31,12 @@ public:
 	*
 	* @param		window			GLFWwindow pointer to reference for the KeyCallback
 	* @param		disableCursor	Sets the cursor to GLFW_CURSOR_DISABLED
-	* @param		logErrors		Enables glfwSetErrorCallback, which logs glfw errors to the Logger
+	* @param		logGlfwErrors		Enables glfwSetErrorCallback, which logs glfw errors to the Logger
 	*/
-	static void Init(GLFWwindow* window = Window::Instance().window, bool disableCursor = false, bool logErrors = false);
+	static void Init(bool disableCursor = false, bool logGlfwErrors = false);
 
 	/**
-	* @brief		Facade that calls glfwPollEvents(), this should be called regularly
+	* @brief		Calls glfwPollEvents(), which updates the states of the keys, this should be called regularly
 	*/
 	static void Update();
 
@@ -93,26 +93,6 @@ public:
 	* @return		true if keys[key] equals GLFW_RELEASE, else false
 	*/
 	static bool GetKeyUp(int key);
-
-	/**
-	* @brief		Returns whether the mouse button specified equals GLFW_PRESS
-	*
-	* @pre			The GameObject must exist.
-	* @post			The true or false, depending on the value stored in mouseButtons[button] will be retreived
-	*
-	* @return		true if mouseButtons[button] equals GLFW_PRESS, else false
-	*/
-	//static bool GetMousePressed(int button);
-
-	/**
-	* @brief		Returns whether the mouse button specified was released within the last update
-	*
-	* @pre			The GameObject must exist.
-	* @post			The true or false, depending on the value stored in prevMouseButtons[button] and mouseButtons[button] will be retreived
-	*
-	* @return		true if prevMouseButtons[button] equals GLFW_PRESS and mouseButtons[button] equals GLFW_REALEASE, else false
-	*/
-	//static bool GetMouseReleased(int button);
 
 	/**
 	* @brief		Returns whether the mouse button specified equals GLFW_PRESS
@@ -188,7 +168,6 @@ public:
 private:
 	static int prevKeys[400]; //Stores the previous value of the keys
 	static int keys[400]; //Stores the last updated value of the keys
-	//static int prevMouseButtons[8]; //Stores the previous value of the mouse buttons
 	static int mouseButtons[8]; //Stores the last update value of the mouse buttons
 
 	static double mouseX; //Position of the mouse along the X-axis

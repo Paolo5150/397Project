@@ -2,9 +2,11 @@
 #include "Input.h"
 
 //-----Public-----//
-void Input::Init(GLFWwindow* window, bool disableCursor, bool logErrors)
+void Input::Init(bool disableCursor, bool logGlfwErrors)
 {
-	if (logErrors == true)
+	GLFWwindow* window = Window::Instance().window;
+
+	if (logGlfwErrors == true)
 	{
 		Logger::LogInfo("Initialising GLFW Error Callback");
 		glfwSetErrorCallback(Error_Callback);
@@ -35,6 +37,10 @@ void Input::Init(GLFWwindow* window, bool disableCursor, bool logErrors)
 	{
 		prevKeys[i] = 0;
 		keys[i] = 0;
+	}
+
+	for (int i = 0; i < 8; i++)
+	{
 		mouseButtons[i] = 0;
 	}
 
@@ -48,18 +54,9 @@ void Input::Update()
 		prevKeys[i] = keys[i];
 		if (keys[i] == GLFW_PRESS)
 		{
-			keys[i] = 0;
+			keys[i] = GLFW_REPEAT;
 		}
 	}
-
-	/*for (int i = 0; i < 8; i++)
-	{
-		prevMouseButtons[i] = mouseButtons[i];
-		if (mouseButtons[i] == GLFW_PRESS)
-		{
-			mouseButtons[i] = 0;
-		}
-	}*/
 
 	deltaMouseX = 0;
 	deltaMouseY = 0;
@@ -135,30 +132,6 @@ bool Input::GetKeyUp(int key)
 	}
 }
 
-//bool Input::GetMousePressed(int button)
-//{
-//	if (mouseButtons[button] == GLFW_PRESS)
-//	{
-//		return true;
-//	}
-//	else
-//	{
-//		return false;
-//	}
-//}
-//
-//bool Input::GetMouseReleased(int button)
-//{
-//	if ((prevMouseButtons[button] == GLFW_PRESS || prevMouseButtons[button] == GLFW_REPEAT) && mouseButtons[button] == GLFW_RELEASE)
-//	{
-//		return true;
-//	}
-//	else
-//	{
-//		return false;
-//	}
-//}
-
 bool Input::GetMouseDown(int button)
 {
 	if (mouseButtons[button] == GLFW_PRESS)
@@ -212,7 +185,6 @@ bool Input::GetCursorInWindow()
 //-----Private-----//
 int Input::prevKeys[400];
 int Input::keys[400];
-//int Input::prevMouseButtons[8];
 int Input::mouseButtons[8];
 
 double Input::mouseX;
