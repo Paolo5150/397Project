@@ -21,7 +21,7 @@ public:
 	void OnPreRender(Camera& camera, Shader* currentShader = nullptr) ;
 
 private:
-
+	bool ResizeFrameBuffers(Event* e);
 	CameraPerspective* waterCamera;
 	MeshRenderer* meshRenderer;
 	Material* material;

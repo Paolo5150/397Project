@@ -11,6 +11,7 @@
 Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 {
 	
+	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>(std::bind(&Water::ResizeFrameBuffers, this, std::placeholders::_1));
 
 	Texture2D* waterNormal = normalMap;
 	Texture2D* waterDudv = distortion;
@@ -25,8 +26,8 @@ Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 
 	int w, h;
 	Window::Instance().GetWindowSize(w, h);
-	refractionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w/2, h/2);
-	reflectionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w/2, h/2);
+	refractionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);
+	reflectionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);
 
 	material = new Material();
 	material->SetShader(AssetLoader::Instance().GetAsset<Shader>("Water"));
@@ -79,7 +80,7 @@ void Water::Update()
 	waterCamera->transform = mainCamera->transform;
 	waterCamera->Update();
 	//Logger::LogInfo("Wat cam", mainCamera->transform.VectorsToString());
-	RenderingEngine::Instance().RenderBuffer(waterCamera, MaterialType::NOLIGHT);
+	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera, glm::vec3(0.4f),MaterialType::NOLIGHT);
 
 	refractionBuffer->Unbind();
 
@@ -114,6 +115,16 @@ void Water::OnPreRender(Camera& camera, Shader* currentShader)
 
 
 }
+
+bool Water::ResizeFrameBuffers(Event* e)
+{
+	WindowResizeEvent* wc = dynamic_cast<WindowResizeEvent*>(e);
+
+	refractionBuffer->ResizeTexture(wc->width, wc->height);
+	reflectionBuffer->ResizeTexture(wc->width, wc->height);
+	return 0;
+}
+
 /*
 bool Water::HandleEvent(Event &ev)
 {
