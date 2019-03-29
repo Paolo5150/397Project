@@ -190,6 +190,7 @@ void AssimpWrapper::LoadMesh(aiMesh* mesh, Model* model, bool isanimated)
 	meshReturn->vertices = vertices;
 	meshReturn->indices = indices;
 	meshReturn->bones_id_weights_for_each_vertex = bones_id_weights_for_each_vertex;
+	meshReturn->CalculateNormals();
 
 	int index = model->allMeshes.size();
 	model->allMeshes[index] = meshReturn;

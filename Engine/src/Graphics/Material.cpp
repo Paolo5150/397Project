@@ -1,4 +1,5 @@
 #include "Material.h"
+#include "..\Utils\AssetLoader.h"
 
 std::string Material::textureUniforms[] = {
 	"diffuse0",
@@ -10,9 +11,10 @@ std::string Material::textureUniforms[] = {
 	"ambient0",
 	"specular0",
 	"reflection0",
+	"refraction0",
 	"special0",
-	"special0",
-	"special0" };
+	"special1",
+	"special2" };
 
 
 Material::Material()
@@ -36,6 +38,12 @@ Material::~Material()
 void Material::PreloadMaterial()
 {
 	LoadVec3("color", 1,1,1);
+	LoadFloat("shininess", 30.0f);
+	LoadFloat("UVScale", 1.0f);
+
+
+
+
 }
 
 void Material::LoadVec4(std::string name, glm::vec4 v)
@@ -99,10 +107,14 @@ void Material::GetColor(float& r, float &g, float& b)
 		cubemaps[tu] = t;
 }*/
 
+
+
 void Material::Loadtexture(Texture2D* t, TextureUniform tu)
 {
 	if (textures.size() >= 16)
 		return;
+
+
 	//Check if texture is already loaded
 	auto it = textures.begin();
 
@@ -131,7 +143,6 @@ void Material::BindMaterial()
 {
 	shader->Bind(); //This line is kind of vital
 	auto it = textures.begin();
-
 
 	for (; it != textures.end(); it++)
 	{

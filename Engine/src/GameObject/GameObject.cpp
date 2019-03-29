@@ -128,11 +128,11 @@ void GameObject::AddChild(GameObject* child)
 
 void GameObject::AddComponent(Component* component)
 {
-	if (HasComponent(component->GetName()) == false)
-	{
+	//if (HasComponent(component->GetName()) == false)
+	//{
 		component->SetParent(this);
 		_components.push_back(component);
-	}
+	//}
 }
 
 void GameObject::AddComponentToChild(Component* component)
@@ -281,16 +281,20 @@ void GameObject::Update()
 		(*itc)->Update();
 }
 
-void GameObject::OnPreRender(Camera& cam,Shader* currentShader )
+void GameObject::EngineUpdate()
 {
+
+
 	auto it = _children.begin();
 	for (; it != _children.end(); it++)
-		(*it)->OnPreRender(cam,currentShader);
+		(*it)->EngineUpdate();
 
 	auto itc = _components.begin();
 	for (; itc != _components.end(); itc++)
-		(*itc)->OnPreRender(cam,currentShader);
+		(*itc)->EngineUpdate();
 }
+
+
 
 void GameObject::PrintHierarchy()
 {
@@ -315,6 +319,37 @@ void GameObject::PrintHierarchy(int indentation, std::string& output)
 	}
 }
 
+GameObject* GameObject::GetRoot()
+{
+	if (_parent == nullptr)
+		return this;
+	else
+	{
+		return _parent->GetRoot();
+	}
+}
+
+void GameObject::ApplyColor(float r, float g, float b)
+{
+	Renderer* rend = dynamic_cast<Renderer*>(GetComponentByType("Renderer"));
+
+	if (rend != nullptr)
+	{
+		rend->GetMaterial(MaterialType::DEFAULT).SetColor(r, g, b);
+		rend->GetMaterial(MaterialType::NOLIGHT).SetColor(r, g, b);
+		rend->GetMaterial(MaterialType::COLORONLY).SetColor(r, g, b);
+		//Logger::LogInfo("Applied material!");
+	}
+
+	auto it = _children.begin();
+
+	for (; it != _children.end(); it++)
+	{
+		(*it)->ApplyColor(r,g,b);
+	}
+}
+
+
 void GameObject::ApplyMaterial(Material mat, MaterialType mt)
 
 {
@@ -323,6 +358,7 @@ void GameObject::ApplyMaterial(Material mat, MaterialType mt)
 	if (r != nullptr)
 	{
 		r->SetMaterial(mat, mt);
+		
 		//Logger::LogInfo("Applied material!");
 	}
 

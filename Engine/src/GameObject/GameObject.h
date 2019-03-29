@@ -42,7 +42,7 @@ public:
 	* @param		layer		The rendering layer the GameObject is on
 	* @param		parent		the GameObject that this GameObject is a child of, nullptr if it has no parent
 	*/
-	GameObject(std::string name, bool isActive = true, unsigned int layer = 1, GameObject* parent = nullptr);
+	GameObject(std::string name, bool isActive = true, unsigned int layer = Layers::DEFAULT, GameObject* parent = nullptr);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//-- Deconstructors --//
@@ -75,7 +75,7 @@ public:
 	* @param		active		State of the GameObject
 	* @param		includeChildren		Whether to set all children to the same state
 	*/
-	void SetActive(bool active, bool includeChildren = false);
+	void SetActive(bool active, bool includeChildren = true);
 
 	/**
 	* @brief		Signal that the objet will be destroyed in the next late update
@@ -347,12 +347,15 @@ public:
 	* @return		none
 	*/
 	virtual void Update();
+	virtual void EngineUpdate();
 
 	void PrintHierarchy();
 
-	virtual void OnPreRender(Camera& camera,Shader* currentShader = nullptr);
+	GameObject* GetRoot();
 
 	void ApplyMaterial(Material mat, MaterialType mt = DEFAULT);
+	void ApplyColor(float r, float g, float b);
+
 
 	Transform transform;
 

@@ -17,9 +17,9 @@ public:
 
 	void Initialize();
 	void RenderBuffer(MaterialType mt = DEFAULT);
-	
-	void RenderCurrentScene(Camera* camera, Material* simplifiedMaterial = NULL);
-	void RenderCurrentScene(Camera* camera, MaterialType mt = DEFAULT);
+	void RenderBuffer(Camera* camera, MaterialType mt = DEFAULT);	
+	void RenderBufferOverrideColor(Camera* camera, glm::vec3 color, MaterialType mt = DEFAULT);
+
 	void SubmitRenderer(Renderer* rend);
 	void ClearRendererList();
 
@@ -38,6 +38,8 @@ private:
 
 
 	void RenderVector(Camera& cam, std::vector<Renderer*>& r, MaterialType m = MaterialType::DEFAULT);
-	void RenderVector(Camera& cam, std::vector<Renderer*>& r, Material* forcedMaterial);
+	void RenderVectorOverrideColor(Camera& cam, std::vector<Renderer*>& r, glm::vec3 color,MaterialType m = MaterialType::DEFAULT);
+
+	//void RenderVector(Camera& cam, std::vector<Renderer*>& r, Material* forcedMaterial);
 
 };

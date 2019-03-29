@@ -24,7 +24,7 @@ public:
 	virtual void ExitScene() = 0;
 	virtual void Initialize() = 0;
 	virtual void LogicUpdate() = 0;
-	virtual void EngineUpdate() = 0;
+	virtual void EngineUpdate();
 	virtual void LateUpdate() ;
 
 	bool GetIsReady() { return m_isReady; };

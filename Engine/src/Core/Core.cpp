@@ -9,6 +9,7 @@
 #include "..\Utils\AssetLoader.h"
 #include "Transform.h"
 #include "..\Graphics\RenderingEngine.h"
+#include "..\Lighting\LightingManager.h"
 
 
 
@@ -44,6 +45,7 @@ void Core::Initialize()
 
 	//Managers initialization
 	Timer::Initialize();
+	LightManager::Instance().Initialize();
 
 	//Get cpplication
 	m_runningApplication = CreateApplication();
@@ -51,8 +53,21 @@ void Core::Initialize()
 
 	AssetLoader::Initialize(graphicsAPI);
 
+	//Load shsders
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f");
 	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f");
+	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f");
+	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f");
+
+	AssetLoader::Instance().LoadShader("Water", "Assets\\Shaders\\Water.v", "Assets\\Shaders\\Water.f");
+
+
+	//Load basic shapes
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj");
+
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj");
+
 
 	//Start update loop
 	m_isRunning = true;
@@ -114,13 +129,16 @@ GraphicsAPI& Core::GetGraphicsAPI()
 
 bool Core::EngineUpdate(Event* e)
 {
-	//m_runningApplication->AppEngineUpdate();
+	//Logger::LogInfo("Core engine update");
+	m_runningApplication->AppEngineUpdate();
 
 	return 0;
 }
 
 bool Core::LateUpdate(Event* e)
 {
+	//Logger::LogInfo("Core late update");
+
 	m_runningApplication->AppLateUpdate();
 	RenderingEngine::Instance().ClearRendererList();
 
@@ -130,8 +148,9 @@ bool Core::LateUpdate(Event* e)
 
 bool Core::Render(Event* e)
 {
+	//Logger::LogInfo("Core rendering");
 
-	
+	LightManager::Instance().Update();
 	RenderingEngine::Instance().RenderBuffer();
 	/*glEnable(GL_TEXTURE_2D);
 	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();

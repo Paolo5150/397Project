@@ -187,6 +187,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\LineRenderer.h" />
     <ClInclude Include="src\Components\MeshRenderer.h" />
     <ClInclude Include="src\Components\Renderer.h" />
     <ClInclude Include="src\Core\Camera.h" />
@@ -211,6 +212,8 @@
     <ClInclude Include="src\Graphics\API_Opengl.h" />
     <ClInclude Include="src\Graphics\ArrayBuffer.h" />
     <ClInclude Include="src\Graphics\ArrayBufferGL.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer.h" />
+    <ClInclude Include="src\Graphics\FrameBufferGL.h" />
     <ClInclude Include="src\Graphics\GraphicsAPI.h" />
     <ClInclude Include="src\Graphics\Layers.h" />
     <ClInclude Include="src\Graphics\Material.h" />
@@ -223,11 +226,19 @@
     <ClInclude Include="src\Graphics\ShaderGL.h" />
     <ClInclude Include="src\Graphics\Texture2D.h" />
     <ClInclude Include="src\Graphics\Texture2DGL.h" />
+    <ClInclude Include="src\Graphics\UniformBuffer.h" />
+    <ClInclude Include="src\Graphics\UniformBufferGL.h" />
     <ClInclude Include="src\Graphics\Vertex.h" />
     <ClInclude Include="src\Graphics\VertexArray.h" />
     <ClInclude Include="src\Graphics\VertexArrayGL.h" />
+    <ClInclude Include="src\Lighting\DirectionalLight.h" />
+    <ClInclude Include="src\Lighting\Light.h" />
+    <ClInclude Include="src\Lighting\LightingManager.h" />
+    <ClInclude Include="src\Lighting\PointLight.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Prefabs\Axis.h" />
     <ClInclude Include="src\Prefabs\Quad.h" />
+    <ClInclude Include="src\Prefabs\Water.h" />
     <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Scene\SceneManager.h" />
     <ClInclude Include="src\Utils\Asset.h" />
@@ -236,8 +247,10 @@
     <ClInclude Include="src\Utils\AssimpWrapper.h" />
     <ClInclude Include="src\Utils\FileUtils.h" />
     <ClInclude Include="src\Utils\Maths.h" />
+    <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\LineRenderer.cpp" />
     <ClCompile Include="src\Components\MeshRenderer.cpp" />
     <ClCompile Include="src\Components\Renderer.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
@@ -254,6 +267,7 @@
     <ClCompile Include="src\GameObject\Component.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\Graphics\API_Opengl.cpp" />
+    <ClCompile Include="src\Graphics\FrameBufferGL.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Materials\DefaultMaterial.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
@@ -262,13 +276,20 @@
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\ShaderGL.cpp" />
     <ClCompile Include="src\Graphics\Texture2DGL.cpp" />
+    <ClCompile Include="src\Graphics\UniformBufferGL.cpp" />
+    <ClCompile Include="src\Lighting\DirectionalLight.cpp" />
+    <ClCompile Include="src\Lighting\Light.cpp" />
+    <ClCompile Include="src\Lighting\LightingManager.cpp" />
+    <ClCompile Include="src\Lighting\PointLight.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Prefabs\Axis.cpp" />
     <ClCompile Include="src\Prefabs\Quad.cpp" />
+    <ClCompile Include="src\Prefabs\Water.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Utils\AssetContainer.cpp" />

@@ -45,7 +45,7 @@ void Camera::UpdateOrdererdCameras()
 
 	std::sort(allCamerasVector.begin(), allCamerasVector.end(), [](Camera* l, Camera* r) {
 
-		return l->GetDepth() > r->GetDepth();
+		return l->GetDepth() < r->GetDepth();
 	});
 
 

@@ -38,9 +38,8 @@ void Mesh::CalculateNormals()
 
 		for (unsigned int i = 0; i < indices.size() - 2; i += 3)
 		{
-
+			//Normals
 			glm::vec3 v1v2 = vertices[indices[i + 1]].position - vertices[indices[i]].position;
-
 			glm::vec3 v1v3 = vertices[indices[i + 2]].position - vertices[indices[i]].position;
 			glm::vec3 cross = glm::normalize(glm::cross(v1v2, v1v3));
 
@@ -49,8 +48,7 @@ void Mesh::CalculateNormals()
 			vertices[indices[i + 1]].normal = cross;
 			vertices[indices[i + 2]].normal = cross;
 
-
-
+			//Tangent and binormal
 			glm::vec2 deltaUV1 = vertices[indices[i + 1]].UV - vertices[indices[i]].UV;
 			glm::vec2 deltaUV2 = vertices[indices[i + 2]].UV - vertices[indices[i]].UV;
 

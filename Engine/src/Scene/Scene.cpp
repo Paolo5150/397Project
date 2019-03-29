@@ -38,9 +38,18 @@ void Scene::LateUpdate()
 		}
 		else
 			it++;
-	}
+	}	
+}
 
-	
+void Scene::EngineUpdate()
+{
+	//Logger::LogError("Updating", m_allGameObjects.size());
+	auto it = m_allGameObjects.begin();
+
+	for (; it != m_allGameObjects.end(); it++)
+	{
+		(*it)->EngineUpdate();
+	}
 }
 
 void Scene::LogicUpdate()
