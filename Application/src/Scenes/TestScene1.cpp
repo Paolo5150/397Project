@@ -55,7 +55,7 @@ void TestScene1::Initialize() {
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(45, 0, 0);
+	dirLight->transform.SetRotation(45, 180, 0);
 
 
 
