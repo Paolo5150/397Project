@@ -76,19 +76,18 @@ vec3 CalculateDirectionalLights(vec3 nm);
 
 void main()
 {
-   vec2 ndc = (clipSpace.xy / clipSpace.w) / 2.0 + 0.5;
+    vec2 ndc = (clipSpace.xy / clipSpace.w) / 2.0 + 0.5;
    
-   vec2 dudvTexture = texture(special0,vec2(Textcoords.x + timer/50.0f,Textcoords.y + timer/50.0f) * material.UVScale*4.0).rg * 2.0 - 1.0;
+    vec2 dudvTexture = texture(special0,vec2(Textcoords.x + timer/50.0f,Textcoords.y + timer/50.0f) * material.UVScale*4.0).rg * 2.0 - 1.0;
 	vec2 dudvTexture2 = texture(special0,vec2(Textcoords.x - timer/50.0f,Textcoords.y + timer/50.0f) * material.UVScale*4.0).rg * 2.0 - 1.0;
 	
 	vec2 totalDistortion = 0.005 * dudvTexture + 0.005 * dudvTexture2;
    
-   vec3 reflectionColor = texture(reflection0,totalDistortion/400 + vec2(ndc.x,1.0 - ndc.y)).rgb;
-   vec3 refractionColor = texture(refraction0,totalDistortion/400 + ndc).rgb;
+    vec3 reflectionColor = texture(reflection0,totalDistortion/400 + vec2(ndc.x,1.0 - ndc.y)).rgb;
+    vec3 refractionColor = texture(refraction0,totalDistortion/400 + ndc).rgb;
 
     vec3 normalMap = texture(normal0,totalDistortion + Textcoords * material.UVScale).rgb *2.0 -1.0;
     vec3 normalMap2 = texture(normal0,totalDistortion - Textcoords * material.UVScale*1.5f).rgb *2.0 -1.0;
-	
 	
    
 	NormalToUse = normalMap;
@@ -96,10 +95,10 @@ void main()
 	CamPosToUse = CameraPositionTS;
 
    
-   vec3 DirLights = CalculateDirectionalLights(normalMap) * CalculateDirectionalLights(normalMap2);
-   vec3 PointLights = CalculatePointLights(normalMap) * CalculatePointLights(normalMap2);
+    vec3 DirLights = CalculateDirectionalLights(normalMap) * CalculateDirectionalLights(normalMap2);
+    vec3 PointLights = CalculatePointLights(normalMap) * CalculatePointLights(normalMap2);
 
-   vec3 total = (AmbientLight + DirLights + PointLights) * reflectionColor* material.color;
+    vec3 total = (AmbientLight + DirLights + PointLights) * refractionColor* material.color;
 
 	gl_FragColor =  vec4(total,1.0);
 

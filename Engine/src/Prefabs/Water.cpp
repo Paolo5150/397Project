@@ -79,7 +79,7 @@ void Water::Update()
 	waterCamera->transform = mainCamera->transform;
 	waterCamera->Update();
 	//Logger::LogInfo("Wat cam", mainCamera->transform.VectorsToString());
-	RenderingEngine::Instance().RenderBuffer(waterCamera, MaterialType::COLORONLY);
+	RenderingEngine::Instance().RenderBuffer(waterCamera, MaterialType::NOLIGHT);
 
 	refractionBuffer->Unbind();
 
@@ -90,7 +90,6 @@ void Water::Update()
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 
 	glm::vec3 ref = glm::reflect(mainCamera->transform.GetLocalFront(), glm::vec3(0, 1, 0));
-
 
 	float heightDiff = transform.GetPosition().y - mainCamera->transform.GetPosition().y;
 	waterCamera->transform.SetPosition(glm::vec3(mainCamera->transform.GetPosition().x, mainCamera->transform.GetPosition().y + heightDiff * 2.0, mainCamera->transform.GetPosition().z));
