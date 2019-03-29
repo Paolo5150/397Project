@@ -6,6 +6,7 @@
 #include "..\Event\ApplicationEvents.h"
 #include "..\Graphics\RenderingEngine.h"
 #include "..\Utils\AssetLoader.h"
+#include "..\Lighting\LightingManager.h"
 
 
 
@@ -76,6 +77,8 @@ void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 	Shader::GetCurrentShader().SetMat4("u_view", cam.viewMatrix);
 	Shader::GetCurrentShader().SetMat4("u_projection", cam.projectionMatrix);
 	Shader::GetCurrentShader().SetVec3("u_cameraPosition", cam.transform.GetPosition());
+	Shader::GetCurrentShader().SetVec4("u_clippingPlane", LightManager::Instance().GetClippingPlane());
+
 
 
 	for (unsigned i = 0; i < preRenderCallbacks.size(); i++)

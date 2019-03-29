@@ -23,6 +23,7 @@ public:
 	VertexArray* CreateVertexArray() override;
 	UniformBuffer* CreateUniformBuffer(unsigned totalSize, unsigned binding) override;
 	FrameBuffer* CreateFrameBuffer(int w, int h, bool hasColorAttachment = true) override;
+	void SetClipPlaneActive(bool hasColorAttachment) override;
 
 
 

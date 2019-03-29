@@ -26,6 +26,9 @@ public:
 	void SetFogEnable(bool enable);
 	bool GetFogEnable();
 	void SetAmbientLight(float r, float g, float b);
+	glm::vec4& GetClippingPlane(){ return clippingPlane; }
+	void SetClippingPlane(glm::vec4 cp){ clippingPlane = cp; }
+
 
 
 
@@ -41,7 +44,7 @@ private:
 	glm::vec3 ambientLight;
 	//std::vector<FrameBuffer*> shadowMaps;
 	bool fogEnabled;
-
+	glm::vec4 clippingPlane;
 	GLuint directionalLightUBO;
 	GLuint pointLightUBO;
 

@@ -11,8 +11,7 @@
 class Water : public GameObject
 {
 public:
-	static float heightPlane;
-	static int heightPlaneActive;
+
 	Water(Texture2D* normalMap, Texture2D* distortion);
 	~Water();
 	void Update() override;

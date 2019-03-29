@@ -47,7 +47,7 @@ uniform mat4 u_view;
 uniform mat4 u_model;
 uniform vec3 u_cameraPosition;
 uniform float u_hasNormalMap;
-
+uniform vec4 u_clippingPlane;
 
 
 //All directional lights
@@ -71,7 +71,7 @@ void main()
 
 
 	vec4 fragPos = u_model * vec4(inPosition,1);
-
+	gl_ClipDistance[0] = dot( fragPos,u_clippingPlane);
 	gl_Position = u_projection * u_view * fragPos;
 
 	Textcoords = inTextcoords;

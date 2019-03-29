@@ -42,6 +42,8 @@ public:
 
 	virtual UniformBuffer* CreateUniformBuffer(unsigned totalSize, unsigned binding) = 0;
 	virtual FrameBuffer* CreateFrameBuffer(int w, int h, bool hasColorAttachment = true) = 0;
+	virtual void SetClipPlaneActive(bool hasColorAttachment) = 0;
+
 
 
 

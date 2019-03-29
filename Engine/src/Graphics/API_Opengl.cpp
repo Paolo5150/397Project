@@ -95,4 +95,12 @@ FrameBuffer* API_Opengl::CreateFrameBuffer(int w, int h, bool hasColorAttachment
 	return new FrameBufferGL(w, h, hasColorAttachment);
 }
 
+void  API_Opengl::SetClipPlaneActive(bool ac)
+{
+	if (ac)
+		glEnable(GL_CLIP_DISTANCE0);
+	else
+		glDisable(GL_CLIP_DISTANCE0);
+}
+
 

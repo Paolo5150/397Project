@@ -5,10 +5,7 @@
 #include "..\Core\Core.h"
 #include "..\Utils\Maths.h"
 #include "..\Graphics\RenderingEngine.h"
-
-
-float Water::heightPlane;
-int Water::heightPlaneActive;
+#include "..\Lighting\LightingManager.h"
 
 
 Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
@@ -67,14 +64,14 @@ Water::~Water()
 void Water::Update()
 {
 	GameObject::Update();
-
+	Core::Instance().GetGraphicsAPI().SetClipPlaneActive(true);
 	timer += Timer::GetDeltaS();
 	
-	Water::heightPlane = transform.GetPosition().y;
-	Water::heightPlaneActive = 1;
+
 
 	waterCamera->SetActive(1);
 	//Refraction
+	LightManager::Instance().SetClippingPlane(glm::vec4(0, -1, 0, transform.GetPosition().y));
 	refractionBuffer->Bind();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
@@ -87,7 +84,7 @@ void Water::Update()
 	refractionBuffer->Unbind();
 
 	//Reflection
-	Water::heightPlaneActive = -1;
+	
 	reflectionBuffer->Bind();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
@@ -100,12 +97,12 @@ void Water::Update()
 
 	waterCamera->transform.LookAt(waterCamera->transform.GetPosition() + ref);
 	waterCamera->Update();
-
+	LightManager::Instance().SetClippingPlane(glm::vec4(0, 1, 0, -transform.GetPosition().y));
 	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera,glm::vec3(0),MaterialType::COLORONLY);
 
 	reflectionBuffer->Unbind();
-	Water::heightPlaneActive = 0;
 
+	Core::Instance().GetGraphicsAPI().SetClipPlaneActive(false);
 	waterCamera->SetActive(0);
 
 
@@ -114,9 +111,9 @@ void Water::Update()
 void Water::OnPreRender(Camera& camera, Shader* currentShader)
 {
 	//Logger::LogInfo("Water pre render");
-
-
 	currentShader->SetFloat("timer", timer);
+
+
 }
 /*
 bool Water::HandleEvent(Event &ev)
