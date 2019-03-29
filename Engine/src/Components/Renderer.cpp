@@ -75,6 +75,8 @@ void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 	Shader::GetCurrentShader().SetMat4("u_model", _parent->transform.GetMatrix());
 	Shader::GetCurrentShader().SetMat4("u_view", cam.viewMatrix);
 	Shader::GetCurrentShader().SetMat4("u_projection", cam.projectionMatrix);
+	Shader::GetCurrentShader().SetVec3("u_cameraPosition", cam.transform.GetPosition());
+
 
 	for (unsigned i = 0; i < preRenderCallbacks.size(); i++)
 		preRenderCallbacks[i](cam, currentShader);

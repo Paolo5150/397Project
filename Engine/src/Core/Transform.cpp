@@ -240,8 +240,8 @@ void  Transform::LookAt(glm::vec3 target)
 		localUp = glm::vec3(0.0, 1.0, 0.0); //y-axis is the general up 
 	}
 	localUp = glm::normalize(localUp);
-	localRight = glm::normalize(glm::cross(localUp, localFront));
-	localUp = glm::normalize(glm::cross(localFront, localRight));
+	localRight = glm::normalize(glm::cross(localFront,localUp ));
+	localUp = glm::normalize(glm::cross(localRight,localFront ));
 
 	rotationMatrix = glm::mat4(localRight.x, localRight.y, localRight.z, 0.0f,
 		localUp.x, localUp.y, localUp.z, 0.0f,

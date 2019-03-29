@@ -55,25 +55,24 @@ void TestScene1::Initialize() {
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(90, 0, 0);
+	dirLight->transform.SetRotation(45, 0, 0);
 
 
 
 	dirLight->SetIntensity(2.0f);
 	dirLight->Update();
-	Logger::LogWarning(dirLight->transform.VectorsToString());
 
 	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
 	pLight->transform.Translate(-15, 10, -15);
 	pLight->SetIntensity(20.0f);
-	pLight->SetActive(false);
+
 
 	// Uncomment this to force a wood material!
 	Material mat;
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
-	mat.LoadFloat("shininess", 100.0f);
+	mat.LoadFloat("shininess", 1000.0f);
 
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
@@ -87,7 +86,10 @@ void TestScene1::Initialize() {
 	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
 	cam->transform.SetPosition(0,35, 30);
 	cam->transform.SetRotation(30, 180, 0);
+
+	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
+
 	Water* w = new Water(AssetLoader::Instance().GetAsset<Texture2D>("water_normal"), AssetLoader::Instance().GetAsset<Texture2D>("dudv"));
 	w->transform.SetPosition(0, 0, -20);
 	w->transform.SetScale(30, 30, 1);
@@ -113,8 +115,9 @@ void TestScene1::LogicUpdate() {
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
 
-
+	
 	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
+	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.5f);
 	//Logger::LogWarning(nanosuit->transform.VectorsToString());
 
 	pLight->transform.Translate(0.05f, 0, 0);
