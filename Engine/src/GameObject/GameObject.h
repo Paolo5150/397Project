@@ -355,7 +355,7 @@ public:
 
 	void ApplyMaterial(Material mat, MaterialType mt = DEFAULT);
 	void ApplyColor(float r, float g, float b);
-
+	void SetIsStatic(bool st, bool includeChildren = true);
 
 	Transform transform;
 
@@ -367,6 +367,7 @@ protected:
 	GameObject* _parent;
 	std::list<GameObject*> _children;
 	std::list<Component*> _components; //Possibly Map
+	bool _isStatic;
 
 	void PrintHierarchy(int indentation, std::string& output);
 

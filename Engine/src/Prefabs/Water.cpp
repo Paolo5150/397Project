@@ -49,6 +49,7 @@ Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 	mr->AddPreRenderCallback(std::bind(&Water::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
 	//Logger::LogError("Quadmodel", quadModel->GetName());
 	AddChild(quadModel);
+	SetIsStatic(true);
 	SetLayer(0);
 	SetLayer(Layers::WATER);
 	ApplyMaterial(*material);

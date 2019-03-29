@@ -46,7 +46,7 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-	//Timer::SetDisplayFPS(true);
+	Timer::SetDisplayFPS(true);
 	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
@@ -56,6 +56,7 @@ void TestScene1::Initialize() {
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(45, 180, 0);
+	dirLight->SetIsStatic(true);
 
 
 
@@ -66,7 +67,7 @@ void TestScene1::Initialize() {
 	pLight->SetDiffuseColor(1, 1, 1);
 	pLight->transform.Translate(-15, 10, -15);
 	pLight->SetIntensity(20.0f);
-
+	pLight->SetActive(false);
 
 	// Uncomment this to force a wood material!
 	Material mat;
@@ -99,7 +100,7 @@ void TestScene1::Initialize() {
 	AddGameObject(w);
 
 	AddGameObject(dirLight);
-	AddGameObject(pLight);
+	//AddGameObject(pLight);
 	
 	AddGameObject(cam);
 	
@@ -120,7 +121,7 @@ void TestScene1::LogicUpdate() {
 	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.5f);
 	//Logger::LogWarning(nanosuit->transform.VectorsToString());
 
-	pLight->transform.Translate(0.05f, 0, 0);
+	//pLight->transform.Translate(0.05f, 0, 0);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();

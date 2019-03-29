@@ -12,6 +12,8 @@ public:
 	static float GetDeltaS();
 	static float GetTimeS();
 	static void SetDisplayFPS(bool dfps);
+	static long long& GetTickCount();
+
 
 private:
 	static bool m_displayFPS;
@@ -22,6 +24,7 @@ private:
 	static double m_limitFPS;
 	static double m_now;
 	static double m_prev;
+	static long long tickCount;
 
 
 
