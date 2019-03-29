@@ -98,7 +98,7 @@ void Water::Update()
 	waterCamera->transform.LookAt(waterCamera->transform.GetPosition() + ref);
 	waterCamera->Update();
 	LightManager::Instance().SetClippingPlane(glm::vec4(0, 1, 0, -transform.GetPosition().y));
-	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera,glm::vec3(0),MaterialType::COLORONLY);
+	RenderingEngine::Instance().RenderBuffer(waterCamera,MaterialType::NOLIGHT);
 
 	reflectionBuffer->Unbind();
 

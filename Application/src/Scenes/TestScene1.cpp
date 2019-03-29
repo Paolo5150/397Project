@@ -91,7 +91,7 @@ void TestScene1::Initialize() {
 	cam->RemoveLayerMask(Layers::GUI);
 
 	Water* w = new Water(AssetLoader::Instance().GetAsset<Texture2D>("water_normal"), AssetLoader::Instance().GetAsset<Texture2D>("dudv"));
-	w->transform.SetPosition(0, 22, -20);
+	w->transform.SetPosition(0, 0, -20);
 	w->transform.SetScale(30, 30, 1);
 	w->mainCamera = dynamic_cast<CameraPerspective*>(cam);
 
