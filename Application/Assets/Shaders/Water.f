@@ -97,8 +97,11 @@ void main()
    
     vec3 DirLights = CalculateDirectionalLights(normalMap) * CalculateDirectionalLights(normalMap2);
     vec3 PointLights = CalculatePointLights(normalMap) * CalculatePointLights(normalMap2);
+	
+	vec3 camToFrag = normalize(FragPosition - CameraPosition); 
+	vec3 textureMix = mix(reflectionColor,refractionColor,dot(camToFrag,-Normal));
 
-    vec3 total = (AmbientLight + DirLights + PointLights) * refractionColor* material.color;
+    vec3 total = (AmbientLight + DirLights + PointLights) * reflectionColor* material.color;
 
 	gl_FragColor =  vec4(total,1.0);
 
