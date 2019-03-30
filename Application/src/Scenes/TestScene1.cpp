@@ -1,7 +1,7 @@
 #include "Components\MeshRenderer.h"
 #include "Prefabs\Axis.h"
 
-#include "Core\CameraPerspective.h"
+#include "Core\MainCamera.h"
 #include "TestScene1.h"
 #include "Core/Logger.h"
 #include "Scene/SceneManager.h"
@@ -11,7 +11,10 @@
 #include "Lighting\LightingManager.h"
 #include "Prefabs\Water.h"
 
+#include "GLFW\glfw3.h"
 
+
+MainCamera* cam;
 GameObject* nanosuit;
 PointLight* pLight;
 DirectionalLight* dirLight;
@@ -42,7 +45,7 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-	//Timer::SetDisplayFPS(true);
+		//Timer::SetDisplayFPS(true);
 	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
@@ -74,13 +77,13 @@ void TestScene1::Initialize() {
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 	nanosuit->transform.Translate(0, 0, -20);
-	//nanosuit->transform.SetRotation(70, 180, 0);
-	//nanosuit->transform.RotateBy(70, 1, 0, 0);
+	nanosuit->transform.SetRotation(0, 0, 0);
+	//nanosuit->transform.RotateBy(45, 1, 0, 0);
 	nanosuit->transform.SetScale(2,2,2);
 
 
 	float ar = Window::Instance().GetAspectRatio();
-	cam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
+	cam = new MainCamera(20.0f, 20.0f, 60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
 	cam->transform.SetPosition(0,35, 30);
 	cam->transform.SetRotation(30, 180, 0);
 
@@ -90,7 +93,7 @@ void TestScene1::Initialize() {
 	Water* w = new Water();
 	w->transform.SetPosition(0, 0, -20);
 	w->transform.SetScale(30, 30, 1);
-	w->mainCamera = dynamic_cast<CameraPerspective*>(cam);
+	w->mainCamera = dynamic_cast<MainCamera*>(cam);
 
 	w->PrintHierarchy();
 	AddGameObject(w);
@@ -107,17 +110,19 @@ void TestScene1::Initialize() {
 
 }
 void TestScene1::LogicUpdate() {
-
+	
 	//Logger::LogInfo("Test scene 1 update");
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
+	//Logger::LogInfo("Cam up", cam->transform.VectorsToString());
+	//cam->transform.RotateBy(0.5f, cam->transform.GetLocalUp());
+	//cam->transform.LookAt(nanosuit->transform.GetPosition());
+	nanosuit->transform.RotateBy(0.1f,0,1,0);
 
-	
-	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
 	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.5f);
 	//Logger::LogWarning(nanosuit->transform.VectorsToString());
 
-	//pLight->transform.Translate(0.05f, 0, 0);
+	pLight->transform.Translate(0.05f, 0, 0);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();
