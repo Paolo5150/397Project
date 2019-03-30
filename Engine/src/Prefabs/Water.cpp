@@ -44,11 +44,11 @@ Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 
 	material->LoadFloat("UVscale", 10.0f);
 	
-	GameObject* quadModel = AssetLoader::Instance().GetAsset<Model>("Quad")->CreateGameObject();
-	MeshRenderer* mr = dynamic_cast<MeshRenderer*>(quadModel->GetChild("QuadMesh")->GetComponentByType("Renderer"));
+	AssetLoader::Instance().GetAsset<Model>("Quad")->PopulateGameObject(this);
+	MeshRenderer* mr = dynamic_cast<MeshRenderer*>(GetChild("QuadMesh")->GetComponentByType("Renderer"));
 	mr->AddPreRenderCallback(std::bind(&Water::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
 	//Logger::LogError("Quadmodel", quadModel->GetName());
-	AddChild(quadModel);
+
 	SetIsStatic(true);
 	SetLayer(0);
 	SetLayer(Layers::WATER);

@@ -46,7 +46,7 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-	Timer::SetDisplayFPS(true);
+	//Timer::SetDisplayFPS(true);
 	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
@@ -66,7 +66,7 @@ void TestScene1::Initialize() {
 	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
 	pLight->transform.Translate(-15, 10, -15);
-	pLight->SetIntensity(20.0f);
+	pLight->SetIntensity(10.0f);
 	pLight->SetActive(false);
 
 	// Uncomment this to force a wood material!
@@ -96,7 +96,7 @@ void TestScene1::Initialize() {
 	w->transform.SetScale(30, 30, 1);
 	w->mainCamera = dynamic_cast<CameraPerspective*>(cam);
 
-	nanosuit->PrintHierarchy();
+	w->PrintHierarchy();
 	AddGameObject(w);
 
 	AddGameObject(dirLight);
