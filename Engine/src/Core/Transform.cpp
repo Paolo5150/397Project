@@ -58,8 +58,8 @@ void Transform::RotateBy(float angle, glm::vec3 axis)
 
 
 	localFront = glm::normalize(glm::rotate(localFront, glm::radians(angle), axis));
-	localRight = glm::cross(normalize(localFront), glm::vec3(0, 1, 0));
-	localUp = glm::cross(localRight, localFront);
+	localRight = glm::normalize(glm::cross(normalize(localFront), glm::vec3(0, 1, 0)));
+	localUp = glm::normalize(glm::cross(localRight, localFront));
 
 	rotationQuat = glm::rotate(rotationQuat, glm::radians(angle), axis);
 	rotationMatrix = glm::toMat4(rotationQuat);

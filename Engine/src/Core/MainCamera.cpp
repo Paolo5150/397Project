@@ -14,7 +14,7 @@ void MainCamera::Update()
 
 void MainCamera::UpdateControls()
 {
-		//Logger::LogInfo("Mose delta", Input::GetDeltaMousePosX());
+		
 		//Handle rotation
 		this->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * 5.0f, glm::vec3(0,1,0));
 		this->transform.RotateBy(Input::GetDeltaMousePosY()* Timer::GetDeltaS() * 5.0f, transform.GetLocalRight());

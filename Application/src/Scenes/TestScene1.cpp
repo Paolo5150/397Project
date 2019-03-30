@@ -81,8 +81,8 @@ void TestScene1::Initialize() {
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 	nanosuit->transform.Translate(0, 0, -20);
-	//nanosuit->transform.SetRotation(45, 0, 0);
-	nanosuit->transform.RotateBy(45, 1, 0, 0);
+	nanosuit->transform.SetRotation(0, 0, 0);
+	//nanosuit->transform.RotateBy(45, 1, 0, 0);
 	nanosuit->transform.SetScale(2,2,2);
 
 
@@ -109,7 +109,7 @@ void TestScene1::Initialize() {
 	
 	AddGameObject(nanosuit);
 
-	Input::Init(true, true);
+
 
 
 }
@@ -122,7 +122,7 @@ void TestScene1::LogicUpdate() {
 	//cam->transform.RotateBy(0.5f, cam->transform.GetLocalUp());
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	nanosuit->transform.RotateBy(0.1f,0,1,0);
-	
+
 	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.5f);
 	//Logger::LogWarning(nanosuit->transform.VectorsToString());
 

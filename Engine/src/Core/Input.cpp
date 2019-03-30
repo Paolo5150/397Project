@@ -8,7 +8,7 @@ void Input::Init(bool disableCursor, bool logGlfwErrors)
 
 	if (logGlfwErrors == true)
 	{
-		Logger::LogInfo("Initialising GLFW Error Callback");
+		Logger::LogError("Initialising GLFW Error Callback");
 		glfwSetErrorCallback(Error_Callback);
 	}
 
@@ -44,6 +44,10 @@ void Input::Init(bool disableCursor, bool logGlfwErrors)
 		mouseButtons[i] = 0;
 	}
 
+	mouseX = 0;
+	mouseY = 0;
+	deltaMouseX = 0;
+	deltaMouseY = 0;
 	Logger::LogInfo("Input initialised");
 }
 
@@ -60,6 +64,7 @@ void Input::Update()
 
 	deltaMouseX = 0;
 	deltaMouseY = 0;
+	
 
 }
 
@@ -208,6 +213,7 @@ void Input::Key_Callback(GLFWwindow* window, int key, int scancode, int action, 
 
 void Input::Cursor_Pos_Callback(GLFWwindow* window, double xpos, double ypos)
 {
+
 	deltaMouseX = mouseX - xpos;
 	deltaMouseY = mouseY - ypos;
 	mouseX = xpos;

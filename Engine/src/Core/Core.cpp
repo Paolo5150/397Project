@@ -42,7 +42,7 @@ void Core::Initialize()
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
 	Window::Instance().SetWindowSize(800, 600);
-
+	Input::Init(true, true);
 	//Managers initialization
 	Timer::Initialize();
 	LightManager::Instance().Initialize();
@@ -81,7 +81,7 @@ void Core::Run()
 		// The timer will send out events for update, render and so on
 		Window::Instance().UpdateEvents();		
 		Timer::Update();
-		//Input::Update();
+		
 	}
 }
 void Core::Shutdown()
@@ -142,7 +142,7 @@ bool Core::LateUpdate(Event* e)
 
 	m_runningApplication->AppLateUpdate();
 	RenderingEngine::Instance().ClearRendererList();
-
+	Input::Update();
 	return 0;
 }
 
