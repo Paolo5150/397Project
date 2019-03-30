@@ -10,7 +10,7 @@
 #include "Utils\AssetLoader.h"
 #include "Lighting\LightingManager.h"
 #include "Prefabs\Water.h"
-#include "Core\Input.h"
+
 #include "GLFW\glfw3.h"
 
 
@@ -81,8 +81,8 @@ void TestScene1::Initialize() {
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 	nanosuit->transform.Translate(0, 0, -20);
-	//nanosuit->transform.SetRotation(70, 180, 0);
-	//nanosuit->transform.RotateBy(70, 1, 0, 0);
+	//nanosuit->transform.SetRotation(45, 0, 0);
+	nanosuit->transform.RotateBy(45, 1, 0, 0);
 	nanosuit->transform.SetScale(2,2,2);
 
 
@@ -118,14 +118,15 @@ void TestScene1::LogicUpdate() {
 	//Logger::LogInfo("Test scene 1 update");
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
-
-	cam->UpdateControls();
+	//Logger::LogInfo("Cam up", cam->transform.VectorsToString());
+	//cam->transform.RotateBy(0.5f, cam->transform.GetLocalUp());
+	//cam->transform.LookAt(nanosuit->transform.GetPosition());
+	nanosuit->transform.RotateBy(0.1f,0,1,0);
 	
-	nanosuit->transform.RotateBy(0.5f, 0, 1, 0);
 	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.5f);
 	//Logger::LogWarning(nanosuit->transform.VectorsToString());
 
-	pLight->transform.Translate(0.05f, 0, 0);
+	pLight->transform.Translate(0.01f, 0, 0);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();
@@ -133,7 +134,7 @@ void TestScene1::LogicUpdate() {
 	if (timer > 3)
 		dirLight->SetActive(false);*/
 
-	Input::Update();
+
 	Scene::LogicUpdate(); //Must be last statement!
 }
 

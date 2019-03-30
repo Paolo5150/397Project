@@ -30,7 +30,7 @@ public:
 	void RotateBy(float angle, int x, int y, int z);
 
 
-	void SetRotation(glm::vec3 r);
+
 	void SetPosition(glm::vec3 r);
 	void SetScale(glm::vec3 r);
 	void LookAt(glm::vec3 target);
@@ -52,7 +52,7 @@ private:
 	glm::vec3 position;
 	glm::vec3 scale;
 	glm::vec3 rotation;
-
+	glm::quat rotationQuat;
 
 	glm::vec3 localFront;
 	glm::vec3 localRight;

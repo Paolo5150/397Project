@@ -10,7 +10,7 @@
 #include "Transform.h"
 #include "..\Graphics\RenderingEngine.h"
 #include "..\Lighting\LightingManager.h"
-
+#include "Input.h"
 
 
 void Core::Initialize()
@@ -81,6 +81,7 @@ void Core::Run()
 		// The timer will send out events for update, render and so on
 		Window::Instance().UpdateEvents();		
 		Timer::Update();
+		//Input::Update();
 	}
 }
 void Core::Shutdown()

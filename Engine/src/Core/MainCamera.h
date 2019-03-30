@@ -8,11 +8,9 @@ public:
 	MainCamera(float fieldOfView, float aspectRatio, float nearPlane, float farPlane);
 
 	void UpdateControls();
+	void Update() override;
 
-	void SetActive(bool active);
-	bool GetActive() const;
 
-private:
-	bool _isActive;
+
 };
 

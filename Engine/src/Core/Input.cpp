@@ -61,7 +61,6 @@ void Input::Update()
 	deltaMouseX = 0;
 	deltaMouseY = 0;
 
-	glfwPollEvents();
 }
 
 void Input::SetCursorMode(GLFWwindow* window, std::string mode)
