@@ -27,17 +27,17 @@ void AssetLoader::Initialize(GraphicsAPI* gAPI)
 		instance = new AssetLoader(gAPI);
 }
 
-Model* AssetLoader::LoadModel(std::string path)
+Model* AssetLoader::LoadModel(std::string path, bool preserve)
 {
 	Model* m = assimpWrapper.LoadModel(path);
-	containers[typeid(Model).name()].Load(m->name, m);
-
+	containers[typeid(Model).name()].Load(m->name, m);	
+	m->preserve = preserve;	
 
 	return m;
 }
 
 
-Texture2D* AssetLoader::LoadTexture(std::string path)
+Texture2D* AssetLoader::LoadTexture(std::string path, bool preserve )
 {
 	int width;
 	int height;
@@ -52,6 +52,7 @@ Texture2D* AssetLoader::LoadTexture(std::string path)
 		// Logger::LogError("Loaded texture", namerr);
 
 		 t = graphucsAPI->CreateTexture2D(namerr, width, height, channels, data);
+		 t->preserve = preserve;
 		 containers[typeid(Texture2D).name()].Load(namerr, t);
 		
 	}
@@ -61,12 +62,13 @@ Texture2D* AssetLoader::LoadTexture(std::string path)
 	return tt;
 }
 
-Shader* AssetLoader::LoadShader(std::string name, std::string vertexPath, std::string fragmentPath)
+Shader* AssetLoader::LoadShader(std::string name, std::string vertexPath, std::string fragmentPath, bool preserve )
 {
 	std::string vertexFileContent = FileUtils::ReadFileToString(vertexPath);
 	std::string fragFileContent = FileUtils::ReadFileToString(fragmentPath);
 
 	Shader* s = graphucsAPI->CreateShader(name, vertexFileContent, fragFileContent);
+	s->preserve = preserve;
 	containers[typeid(Shader).name()].Load(name, s);
 	return s;
 }

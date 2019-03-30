@@ -4,6 +4,7 @@
 #include "..\Graphics\Shader.h"
 #include "..\Core\Camera.h"
 #include "..\Components\Renderer.h"
+#include "..\Core\Timer.h"
 
 
 GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent)
@@ -12,6 +13,7 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 	SetActive(isActive);
 	SetLayer(layer);
 	SetParent(parent);
+
 }
 
 GameObject::~GameObject()
@@ -62,6 +64,19 @@ void GameObject::SetActive(bool active, bool includeChildren)
 		for (auto it = std::begin(_children); it != std::end(_children); it++)
 		{
 			(*it)->SetActive(active,includeChildren);
+		}
+	}
+}
+
+void GameObject::SetIsStatic(bool st, bool includeChildren)
+{
+	_isStatic = st;
+
+	if (includeChildren == true)
+	{
+		for (auto it = std::begin(_children); it != std::end(_children); it++)
+		{
+			(*it)->SetIsStatic(st, includeChildren);
 		}
 	}
 }
@@ -270,7 +285,10 @@ bool GameObject::ChildHasComponent(std::string childName, std::string componentN
 
 void GameObject::Update()
 {
-	transform.Update();
+	if (Timer::GetTickCount() == 0 || !_isStatic)
+	{
+		transform.Update();
+	}
 
 	auto it = _children.begin();
 	for (; it != _children.end(); it++)

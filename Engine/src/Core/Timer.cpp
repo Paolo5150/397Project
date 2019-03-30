@@ -12,7 +12,7 @@ double Timer::m_FPS;
 double Timer::m_limitFPS;
 double Timer::m_now;
 double Timer::m_prev;
-
+long long Timer::tickCount;
 
 void Timer::Initialize()
 {
@@ -25,6 +25,7 @@ void Timer::Initialize()
 	m_prev = glfwGetTime();
 	m_timerMultiplier = 1.0;
 	m_displayFPS = 0;
+	tickCount = 0;
 }
 
 float Timer::GetDeltaS()
@@ -40,6 +41,11 @@ void Timer::SetDisplayFPS(bool dfps)
 float Timer::GetTimeS()
 {
 	return glfwGetTime()* m_timerMultiplier;
+}
+
+long long& Timer::GetTickCount()
+{
+	return tickCount;
 }
 
 
@@ -69,7 +75,7 @@ void Timer::Update()
 		EventDispatcher::Instance().DispatchEvent(new RenderEvent());
 		EventDispatcher::Instance().DispatchEvent(new LateUpdateEvent());
 
-
+		tickCount++;
 	}
 
 	m_FPSCounter++;

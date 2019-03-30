@@ -13,6 +13,8 @@ class Water : public GameObject
 public:
 
 	Water(Texture2D* normalMap, Texture2D* distortion);
+	Water();
+
 	~Water();
 	void Update() override;
 	FrameBuffer* refractionBuffer;
@@ -26,6 +28,7 @@ private:
 	MeshRenderer* meshRenderer;
 	Material* material;
 	float timer;
+	void Initialize(Texture2D* normalMap = nullptr, Texture2D* distortion = nullptr);
 
 
 
