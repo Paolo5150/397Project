@@ -78,7 +78,7 @@ void TestScene1::Initialize() {
 	nanosuit->ApplyColor(1, 1, 1);
 	nanosuit->transform.Translate(0, 0, -20);
 	nanosuit->transform.SetRotation(0, 0, 0);
-	//nanosuit->transform.RotateBy(45, 1, 0, 0);
+	nanosuit->transform.RotateBy(45, 1, 0, 0);
 	nanosuit->transform.SetScale(2,2,2);
 
 
@@ -117,10 +117,11 @@ void TestScene1::LogicUpdate() {
 	//Logger::LogInfo("Cam up", cam->transform.VectorsToString());
 	//cam->transform.RotateBy(0.5f, cam->transform.GetLocalUp());
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
-	nanosuit->transform.RotateBy(0.1f,0,1,0);
 
-	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.5f);
-	//Logger::LogWarning(nanosuit->transform.VectorsToString());
+	nanosuit->transform.RotateBy(0.5f,0,1,0);
+
+	nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalUp() * 0.2f);
+	Logger::LogInfo(cam->transform.ToString());
 
 	pLight->transform.Translate(0.05f, 0, 0);
 

@@ -47,22 +47,24 @@ void Transform::SetRotation(float x, float y, float z)
 	rotationQuat = glm::quat(glm::radians(rotation));
 	rotationMatrix = glm::toMat4(rotationQuat);
 
-	localFront = glm::normalize(rotationMatrix* glm::vec4(0, 0, 1, 0));
-	localRight = glm::normalize(glm::cross(normalize(localFront), glm::vec3(0, 1, 0)));
-	localUp = glm::normalize(glm::cross(localRight, localFront));
+	localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
+	localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
+	localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
 
 }
 
 void Transform::RotateBy(float angle, glm::vec3 axis)
 {
+	rotation += angle * axis;
 
-
-	localFront = glm::normalize(glm::rotate(localFront, glm::radians(angle), axis));
-	localRight = glm::normalize(glm::cross(normalize(localFront), glm::vec3(0, 1, 0)));
-	localUp = glm::normalize(glm::cross(localRight, localFront));
-
-	rotationQuat = glm::rotate(rotationQuat, glm::radians(angle), axis);
+	glm::quat q(axis * glm::radians(angle));
+	rotationQuat = q * rotationQuat;
 	rotationMatrix = glm::toMat4(rotationQuat);
+
+	localFront = glm::normalize(rotationQuat * glm::vec3(0,0,1));
+	localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
+	localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
+
 	
 }
 
@@ -96,9 +98,7 @@ void Transform::UpdateVectors()
 		modelMatrix = parent->GetMatrix()  * GetTranslateMatrix()* GetRotationMatrix() * GetScaleMatrix();
 	}
 
-	//localFront = glm::normalize(GetGlobalRotation() * glm::vec4(0, 0, 1, 0));
-	//localRight = glm::normalize(glm::cross(normalize(localFront), glm::vec3(0, 1, 0)));
-	//localUp = glm::normalize(glm::cross(localRight, localFront));
+
 }
 
 
