@@ -18,7 +18,7 @@ public:
 	}
 
 	virtual ~Shader(){
-		Logger::LogError("Shader", name, "just died");
+
 	};
 
 

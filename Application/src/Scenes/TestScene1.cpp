@@ -27,12 +27,6 @@ void TestScene1::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\normalTest.jpg");
-
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg");
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dudv.png");
-
-
 	
 }
 void TestScene1::UnloadAssets() {
@@ -41,6 +35,8 @@ void TestScene1::UnloadAssets() {
 
 }
 void TestScene1::ExitScene() {
+	Logger::LogError("Scene asset clean up");
+
 	Scene::ExitScene();
 
 }
@@ -91,7 +87,7 @@ void TestScene1::Initialize() {
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
 
-	Water* w = new Water(AssetLoader::Instance().GetAsset<Texture2D>("water_normal"), AssetLoader::Instance().GetAsset<Texture2D>("dudv"));
+	Water* w = new Water();
 	w->transform.SetPosition(0, 0, -20);
 	w->transform.SetScale(30, 30, 1);
 	w->mainCamera = dynamic_cast<CameraPerspective*>(cam);

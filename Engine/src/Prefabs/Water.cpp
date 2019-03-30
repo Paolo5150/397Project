@@ -12,11 +12,21 @@ Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 {
 	
 	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>(std::bind(&Water::ResizeFrameBuffers, this, std::placeholders::_1));
+	Initialize(normalMap, distortion);
 
-	Texture2D* waterNormal = normalMap;
-	Texture2D* waterDudv = distortion;
 
-	timer = 9;
+	
+}
+
+Water::Water() : GameObject("Water")
+{
+
+	Initialize(AssetLoader::Instance().GetAsset<Texture2D>("water_normal"), AssetLoader::Instance().GetAsset<Texture2D>("dudv"));
+}
+
+void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
+{
+	timer = 0;
 	waterCamera = new CameraPerspective(60, Window::Instance().GetAspectRatio(), 0.1, 500000);
 	waterCamera->RemoveAllMaskLayers();
 	waterCamera->AddLayerMask(Layers::DEFAULT);
@@ -33,21 +43,23 @@ Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 	material->SetShader(AssetLoader::Instance().GetAsset<Shader>("Water"));
 
 
+	material->Loadtexture(normalMap, TextureUniform::NORMAL0);
+	material->Loadtexture(distortion, TextureUniform::SPECIAL0);
+
+
 	material->Loadtexture(refractionBuffer->GetColorTexture(), TextureUniform::REFRACTION0);
 	material->Loadtexture(reflectionBuffer->GetColorTexture(), TextureUniform::REFLECITON0);
-	material->Loadtexture(waterNormal, TextureUniform::NORMAL0);
-	material->Loadtexture(waterDudv, TextureUniform::SPECIAL0);
+
 
 	transform.SetRotation(-90, 0, 0);
 	material->LoadFloat("shininess", 1000.0f);
 	material->SetColor(1.0f, 1.0f, 1.0f);
 
 	material->LoadFloat("UVscale", 10.0f);
-	
+
 	AssetLoader::Instance().GetAsset<Model>("Quad")->PopulateGameObject(this);
 	MeshRenderer* mr = dynamic_cast<MeshRenderer*>(GetChild("QuadMesh")->GetComponentByType("Renderer"));
 	mr->AddPreRenderCallback(std::bind(&Water::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
-	//Logger::LogError("Quadmodel", quadModel->GetName());
 
 	SetIsStatic(true);
 	SetLayer(0);
@@ -69,7 +81,6 @@ void Water::Update()
 	Core::Instance().GetGraphicsAPI().SetClipPlaneActive(true);
 	timer += Timer::GetDeltaS();
 	
-
 
 	waterCamera->SetActive(1);
 	//Refraction

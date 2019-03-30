@@ -54,19 +54,23 @@ void Core::Initialize()
 	AssetLoader::Initialize(graphicsAPI);
 
 	//Load shsders
-	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f");
-	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f");
-	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f");
-	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f");
+	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f",true);
+	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f", true);
+	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f", true);
+	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
 
-	AssetLoader::Instance().LoadShader("Water", "Assets\\Shaders\\Water.v", "Assets\\Shaders\\Water.f");
+	AssetLoader::Instance().LoadShader("Water", "Assets\\Shaders\\Water.v", "Assets\\Shaders\\Water.f", true);
+
+	//Load textures
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dudv.png", true);
 
 
 	//Load basic shapes
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj", true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", true);
 
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", true);
 
 
 	//Start update loop
@@ -88,7 +92,12 @@ void Core::Shutdown()
 
 	m_runningApplication->AppShutdown(); //Shutdow game first
 
-	AssetLoader::Instance().Unload<Shader>(); 
+	Logger::LogError("Engine asset clean up");
+	AssetLoader::Instance().UnloadPreserved<Shader>(); 
+	AssetLoader::Instance().UnloadPreserved<Texture2D>();
+	AssetLoader::Instance().UnloadPreserved<Model>();
+
+
 
 	graphicsAPI->Shutdown();
 	Window::Instance().Destroy();

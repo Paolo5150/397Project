@@ -245,6 +245,7 @@
     <ClInclude Include="src\Utils\AssetLoader.h" />
     <ClInclude Include="src\Utils\AssimpWrapper.h" />
     <ClInclude Include="src\Utils\FileUtils.h" />
+    <ClInclude Include="src\Utils\GameAssetFactory.h" />
     <ClInclude Include="src\Utils\Maths.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
@@ -294,6 +295,7 @@
     <ClCompile Include="src\Utils\AssetLoader.cpp" />
     <ClCompile Include="src\Utils\AssimpWrapper.cpp" />
     <ClCompile Include="src\Utils\FileUtils.cpp" />
+    <ClCompile Include="src\Utils\GameAssetFactory.cpp" />
     <ClCompile Include="src\Utils\Maths.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
