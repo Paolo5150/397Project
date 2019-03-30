@@ -66,7 +66,7 @@ void TestScene1::Initialize() {
 	pLight->SetDiffuseColor(1, 1, 1);
 	pLight->transform.Translate(-15, 10, -15);
 	pLight->SetIntensity(10.0f);
-	pLight->SetActive(false);
+
 
 	// Uncomment this to force a wood material!
 	Material mat;
@@ -77,8 +77,8 @@ void TestScene1::Initialize() {
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 	nanosuit->transform.Translate(0, 0, -20);
-	nanosuit->transform.SetRotation(0, 0, 0);
-	nanosuit->transform.RotateBy(45, 1, 0, 0);
+	nanosuit->transform.SetRotation(45, 0, 0);
+
 	nanosuit->transform.SetScale(2,2,2);
 
 
@@ -118,10 +118,10 @@ void TestScene1::LogicUpdate() {
 	//cam->transform.RotateBy(0.5f, cam->transform.GetLocalUp());
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 
-	nanosuit->transform.RotateBy(0.5f,0,1,0);
+	nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
 
-	nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalUp() * 0.2f);
-	Logger::LogInfo(cam->transform.ToString());
+	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalUp() * 0.2f);
+	//Logger::LogInfo(cam->transform.ToString());
 
 	pLight->transform.Translate(0.05f, 0, 0);
 
