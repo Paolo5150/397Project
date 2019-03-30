@@ -22,6 +22,8 @@ public:
 
 	std::vector<Mesh> GetMeshes();
 	virtual GameObject* CreateGameObject();
+	virtual void PopulateGameObject(GameObject* go);
+
 	std::string name;
 
 protected:

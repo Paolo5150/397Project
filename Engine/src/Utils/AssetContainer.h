@@ -6,6 +6,7 @@
 class AssetContainer
 {
 public:
+	
 	AssetContainer(){};
 	~AssetContainer(){};
 
@@ -16,6 +17,7 @@ public:
 	T* GetAsset(std::string name);
 
 	void Unload();
+	void UnloadPreserved();
 
 	std::string GetAssetType();
 

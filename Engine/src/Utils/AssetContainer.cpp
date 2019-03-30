@@ -4,9 +4,16 @@ void AssetContainer::Unload()
 {
 	auto it = assets.begin();
 
-	for (; it != assets.end(); it++)
+	for (; it != assets.end();)
 	{
-		delete it->second;
+		if (!it->second->preserve)
+		{
+			delete it->second;
+			it = assets.erase(it);
+
+		}
+		else
+			it++;
 	}
 
 
@@ -15,4 +22,15 @@ void AssetContainer::Unload()
 void AssetContainer::Load(std::string name, Asset* asset)
 {
 	assets[name] = asset;
+}
+
+void AssetContainer::UnloadPreserved()
+{
+	auto it = assets.begin();
+
+	for (; it != assets.end(); it++)
+	{
+		if (it->second->preserve)
+			delete it->second;
+	}
 }

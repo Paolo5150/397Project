@@ -50,6 +50,22 @@ std::vector<Mesh> Model::GetMeshes()
 }
 
 
+void Model::PopulateGameObject(GameObject* go)
+{
+
+
+	for (int i = 0; i < allMeshes.size(); i++)
+	{
+		Mesh* m = new Mesh(*allMeshes[i]);
+
+		MeshRenderer* mr = new MeshRenderer(m, allMaterials[i]); //Default material
+		GameObject* c = new GameObject(meshesNames[i]);
+		c->AddComponent(mr);
+		go->AddChild(c);
+
+	}
+
+}
 
 
 GameObject* Model::CreateGameObject()

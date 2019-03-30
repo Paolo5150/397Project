@@ -30,12 +30,6 @@ void TestScene1::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\normalTest.jpg");
-
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg");
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dudv.png");
-
-
 	
 }
 void TestScene1::UnloadAssets() {
@@ -44,7 +38,8 @@ void TestScene1::UnloadAssets() {
 
 }
 void TestScene1::ExitScene() {
-	glfwTerminate();
+	Logger::LogError("Scene asset clean up");
+
 	Scene::ExitScene();
 
 }
@@ -60,6 +55,7 @@ void TestScene1::Initialize() {
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(45, 180, 0);
+	dirLight->SetIsStatic(true);
 
 
 
@@ -69,8 +65,8 @@ void TestScene1::Initialize() {
 	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
 	pLight->transform.Translate(-15, 10, -15);
-	pLight->SetIntensity(20.0f);
-
+	pLight->SetIntensity(10.0f);
+	pLight->SetActive(false);
 
 	// Uncomment this to force a wood material!
 	Material mat;
@@ -94,16 +90,16 @@ void TestScene1::Initialize() {
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
 
-	Water* w = new Water(AssetLoader::Instance().GetAsset<Texture2D>("water_normal"), AssetLoader::Instance().GetAsset<Texture2D>("dudv"));
+	Water* w = new Water();
 	w->transform.SetPosition(0, 0, -20);
 	w->transform.SetScale(30, 30, 1);
 	w->mainCamera = dynamic_cast<MainCamera*>(cam);
 
-	nanosuit->PrintHierarchy();
+	w->PrintHierarchy();
 	AddGameObject(w);
 
 	AddGameObject(dirLight);
-	AddGameObject(pLight);
+	//AddGameObject(pLight);
 	
 	AddGameObject(cam);
 	
@@ -126,7 +122,7 @@ void TestScene1::LogicUpdate() {
 	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.5f);
 	//Logger::LogWarning(nanosuit->transform.VectorsToString());
 
-	pLight->transform.Translate(0.01f, 0, 0);
+	pLight->transform.Translate(0.05f, 0, 0);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();
