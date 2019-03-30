@@ -87,7 +87,7 @@ void TestScene1::Initialize() {
 
 
 	float ar = Window::Instance().GetAspectRatio();
-	cam = new MainCamera(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
+	cam = new MainCamera(20.0f, 20.0f, 60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
 	cam->transform.SetPosition(0,35, 30);
 	cam->transform.SetRotation(30, 180, 0);
 
