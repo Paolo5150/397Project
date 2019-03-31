@@ -76,7 +76,7 @@ void TestScene1::Initialize() {
 
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
-	nanosuit->transform.Translate(0, 0, -20);
+	nanosuit->transform.Translate(0, -20, 40);
 	nanosuit->transform.SetRotation(45, 0, 0);
 
 	nanosuit->transform.SetScale(2,2,2);
@@ -98,6 +98,7 @@ void TestScene1::Initialize() {
 	w->PrintHierarchy();
 	AddGameObject(w);
 
+	cam->AddChild(nanosuit);
 	AddGameObject(dirLight);
 	//AddGameObject(pLight);
 	
@@ -118,10 +119,10 @@ void TestScene1::LogicUpdate() {
 	//cam->transform.RotateBy(0.5f, cam->transform.GetLocalUp());
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 
-	nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
+	//nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
 
-	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalUp() * 0.2f);
-	//Logger::LogInfo(cam->transform.ToString());
+	nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.2f);
+	Logger::LogInfo(cam->transform.ToString());
 
 	pLight->transform.Translate(0.05f, 0, 0);
 

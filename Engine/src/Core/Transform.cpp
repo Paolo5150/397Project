@@ -54,16 +54,16 @@ void Transform::SetRotation(float x, float y, float z)
 }
 
 void Transform::RotateBy(float angle, glm::vec3 axis)
-{
-	rotation += angle * axis;
+{	
 
 	glm::quat q(axis * glm::radians(angle));
 	rotationQuat = q * rotationQuat;
 	rotationMatrix = glm::toMat4(rotationQuat);
 
-	localFront = glm::normalize(rotationQuat * glm::vec3(0,0,1));
-	localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
-	localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
+	localFront = glm::normalize(q * localFront);
+	localRight = glm::normalize(q * localRight);
+	localUp = glm::normalize(q * localUp);
+	rotation = glm::degrees(glm::eulerAngles(rotationQuat));
 
 	
 }
