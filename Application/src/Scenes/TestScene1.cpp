@@ -121,7 +121,7 @@ void TestScene1::LogicUpdate() {
 
 	//nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
 
-	nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.2f);
+	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.2f);
 	Logger::LogInfo(cam->transform.ToString());
 
 	pLight->transform.Translate(0.05f, 0, 0);
