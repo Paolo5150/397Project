@@ -216,8 +216,16 @@ void Input::Cursor_Pos_Callback(GLFWwindow* window, double xpos, double ypos)
 
 	deltaMouseX = mouseX - xpos;
 	deltaMouseY = mouseY - ypos;
+	//Logger::LogWarning("Delta",deltaMouseX,deltaMouseY);
 	mouseX = xpos;
 	mouseY = ypos;
+	if (!cursorInWindow)
+	{
+		Logger::LogWarning("Reset");
+
+		deltaMouseX = 0;
+		deltaMouseY = 0;
+	}
 }
 
 void Input::Mouse_Button_Callback(GLFWwindow* window, int button, int action, int mods)
@@ -230,10 +238,16 @@ void Input::Cursor_Enter_Callback(GLFWwindow* window, int entered)
 	if (entered) //Cursor has entered the window
 	{
 		cursorInWindow = true;
+		deltaMouseX = 0;
+		deltaMouseY = 0;
 	}
 	else //Cursor has left the window
 	{
 		cursorInWindow = false;
+		//Logger::LogWarning("Reset in curesor enter");
+
+		deltaMouseX = 0;
+		deltaMouseY = 0;
 	}
 }
 
