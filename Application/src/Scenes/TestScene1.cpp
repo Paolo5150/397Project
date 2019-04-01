@@ -5,7 +5,7 @@
 #include "TestScene1.h"
 #include "Core/Logger.h"
 #include "Scene/SceneManager.h"
-#include "Prefabs\Quad.h"
+
 #include "Core\Window.h"
 #include "Utils\AssetLoader.h"
 #include "Lighting\LightingManager.h"
@@ -76,7 +76,7 @@ void TestScene1::Initialize() {
 
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
-	nanosuit->transform.Translate(0, -20, 40);
+	nanosuit->transform.Translate(0, -10, 15);
 	nanosuit->transform.SetRotation(45, 0, 0);
 
 	nanosuit->transform.SetScale(2,2,2);
@@ -101,7 +101,9 @@ void TestScene1::Initialize() {
 	cam->AddChild(nanosuit);
 	AddGameObject(dirLight);
 	//AddGameObject(pLight);
-	
+	Axis* a = new Axis();
+	a->transform.SetScale(10, 10, 10);
+	AddGameObject(a);
 	AddGameObject(cam);
 	
 	AddGameObject(nanosuit);
@@ -122,7 +124,7 @@ void TestScene1::LogicUpdate() {
 	//nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
 
 	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.2f);
-	Logger::LogInfo(cam->transform.ToString());
+	//Logger::LogInfo(cam->transform.ToString());
 
 	pLight->transform.Translate(0.05f, 0, 0);
 

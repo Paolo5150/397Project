@@ -16,5 +16,7 @@ vec4 fragPos = u_model * vec4(inPosition,1);
 
 gl_ClipDistance[0] = dot( fragPos,u_clippingPlane);
 
+
+
 gl_Position = u_projection * u_view * fragPos;
 }
