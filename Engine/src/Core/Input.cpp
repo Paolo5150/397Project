@@ -8,7 +8,7 @@ void Input::Init(bool disableCursor, bool logGlfwErrors)
 
 	if (logGlfwErrors == true)
 	{
-		Logger::LogError("Initialising GLFW Error Callback");
+		Logger::LogInfo("Initialising GLFW Error Callback");
 		glfwSetErrorCallback(Error_Callback);
 	}
 

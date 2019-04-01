@@ -101,7 +101,7 @@ void main()
 	vec3 camToFrag = normalize(FragPosition - CameraPosition); 
 	vec3 textureMix = mix(reflectionColor,refractionColor,dot(camToFrag,-Normal));
 
-    vec3 total = (AmbientLight + DirLights + PointLights) * reflectionColor* material.color;
+    vec3 total = (AmbientLight + DirLights + PointLights) * textureMix* material.color;
 
 	gl_FragColor =  vec4(total,1.0);
 

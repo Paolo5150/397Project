@@ -58,18 +58,19 @@ void Core::Initialize()
 	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f", true);
 	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f", true);
 	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
-
+	AssetLoader::Instance().LoadShader("Terrain", "Assets\\Shaders\\Terrain.v", "Assets\\Shaders\\Terrain.f", true);
 	AssetLoader::Instance().LoadShader("Water", "Assets\\Shaders\\Water.v", "Assets\\Shaders\\Water.f", true);
 
 	//Load textures
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dudv.png", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\grass.jpg", true);
+
 
 
 	//Load basic shapes
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj", true);
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", true);
-
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", true);
 
 

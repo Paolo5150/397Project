@@ -10,6 +10,7 @@
 #include "Utils\AssetLoader.h"
 #include "Lighting\LightingManager.h"
 #include "Prefabs\Water.h"
+#include "Prefabs\Terrain.h"
 
 #include "GLFW\glfw3.h"
 
@@ -18,7 +19,7 @@ MainCamera* cam;
 GameObject* nanosuit;
 PointLight* pLight;
 DirectionalLight* dirLight;
-
+Terrain* terrain;
 
 
 TestScene1::TestScene1() : Scene("TestScene1")
@@ -45,9 +46,11 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-		//Timer::SetDisplayFPS(true);
+		Timer::SetDisplayFPS(true);
 	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
+
+	terrain = new Terrain(100);
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
@@ -76,7 +79,7 @@ void TestScene1::Initialize() {
 
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
-	nanosuit->transform.Translate(0, -10, 15);
+	nanosuit->transform.Translate(0, 10, -15);
 	nanosuit->transform.SetRotation(45, 0, 0);
 
 	nanosuit->transform.SetScale(2,2,2);
@@ -91,21 +94,21 @@ void TestScene1::Initialize() {
 	cam->RemoveLayerMask(Layers::GUI);
 
 	Water* w = new Water();
-	w->transform.SetPosition(0, 0, -20);
+	w->transform.SetPosition(0, 5, -20);
 	w->transform.SetScale(30, 30, 1);
 	w->mainCamera = dynamic_cast<MainCamera*>(cam);
 
 	w->PrintHierarchy();
 	AddGameObject(w);
 
-	cam->AddChild(nanosuit);
+
 	AddGameObject(dirLight);
 	//AddGameObject(pLight);
 	Axis* a = new Axis();
 	a->transform.SetScale(10, 10, 10);
 	AddGameObject(a);
 	AddGameObject(cam);
-	
+	AddGameObject(terrain);
 	AddGameObject(nanosuit);
 
 
