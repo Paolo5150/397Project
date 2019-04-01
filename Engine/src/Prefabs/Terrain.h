@@ -7,16 +7,19 @@ class Terrain : public GameObject
 {
 public:
 
-	Terrain(unsigned size);
+	Terrain(int size);
 	~Terrain(){};
 	void ApplyHeightMap(std::string texturePaty, float maxHeight);
-	void GenerateFaultFormation();
-
+	bool GenerateFaultFormation(int iterations, int minHeight, int maxHeight, float weight, bool random);
 	void OnPreRender(Camera& cam, Shader* s);
 
 private:
 	Material* material;
 	MeshRenderer* meshRenderer;
 
-	unsigned size;
+	void NormaliseTerrain(float* heightData, int dataWidth, int dataHeight);
+	void AddFilter(float* heightData, float weight, int size);
+	void FilterPass(float* dataP, int increment, float weight, int size);
+
+	int terrainSize;
 };

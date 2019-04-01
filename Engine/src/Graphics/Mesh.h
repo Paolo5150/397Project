@@ -42,7 +42,7 @@
 		virtual ~Mesh();
 		std::vector<Vertex> vertices;
 		std::vector<unsigned> indices;
-		std::vector<MeshFace> meshFaces;
+
 		glm::vec3 GetCenter();
 		std::vector<VertexBoneData> bones_id_weights_for_each_vertex;
 		void CalculateNormals();

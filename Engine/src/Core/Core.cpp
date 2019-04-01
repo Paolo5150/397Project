@@ -65,6 +65,7 @@ void Core::Initialize()
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dudv.png", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\grass.jpg", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\ground.jpg", true);
 
 
 

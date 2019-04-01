@@ -87,9 +87,9 @@ void MeshRenderer::Initialize()
 	vertexArray->Unbind();
 }
 
-Mesh* MeshRenderer::GetMesh()
+Mesh& MeshRenderer::GetMesh()
 {
-	return mesh;
+	return *mesh;
 }
 
 void MeshRenderer::Render(Camera& cam)

@@ -46,14 +46,14 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-		Timer::SetDisplayFPS(true);
+		//Timer::SetDisplayFPS(true);
 	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
 
-	terrain = new Terrain(100);
+
 
 	//Lights
-	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
+	LightManager::Instance().SetAmbientLight(0.0f, 0.0f, 0.0f);
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
@@ -94,9 +94,14 @@ void TestScene1::Initialize() {
 	cam->RemoveLayerMask(Layers::GUI);
 
 	Water* w = new Water();
-	w->transform.SetPosition(0, 5, -20);
+	w->transform.SetPosition(0, 0, 0);
 	w->transform.SetScale(30, 30, 1);
 	w->mainCamera = dynamic_cast<MainCamera*>(cam);
+
+	terrain = new Terrain(225);
+	terrain->ApplyHeightMap("Assets\\Textures\\hm2.jpg",80);
+	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
+	terrain->transform.SetScale(5 ,1, 5);
 
 	w->PrintHierarchy();
 	AddGameObject(w);

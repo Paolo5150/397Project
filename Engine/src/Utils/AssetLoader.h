@@ -16,6 +16,8 @@ public:
 	
 	Shader* LoadShader(std::string name, std::string vertexPath, std::string fragmentPath, bool preserve = false);
 	Texture2D* LoadTexture(std::string path,bool preserve = false);
+	void ReadHeightmapData(std::string path, unsigned char* &dataOut, int& widthOut, int& heightOut);
+
 	Model* LoadModel(std::string path, bool preserve = false);
 	
 	template<class T>

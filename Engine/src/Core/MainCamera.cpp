@@ -54,6 +54,14 @@ void MainCamera::UpdateControls()
 	{
 		this->transform.SetPosition(this->transform.GetPosition() - (GetMovementSpeed() * Timer::GetDeltaS() * this->transform.GetLocalUp()));
 	}
+
+	if (Input::GetKeyDown(GLFW_KEY_KP_ADD))
+		_movementSpeed++;
+	else if (Input::GetKeyDown(GLFW_KEY_KP_SUBTRACT))
+		_movementSpeed--;
+
+
+
 }
 
 void MainCamera::SetMovementSpeed(float speed)

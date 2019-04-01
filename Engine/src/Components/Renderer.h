@@ -27,6 +27,7 @@ class Renderer : public Component
 		void Update() override;
 		void EngineUpdate() override;
 
+		
 		Material& GetMaterial(MaterialType materialType = DEFAULT);
 		void SetMaterial(Material m, MaterialType = DEFAULT);
 

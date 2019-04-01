@@ -72,3 +72,13 @@ Shader* AssetLoader::LoadShader(std::string name, std::string vertexPath, std::s
 	containers[typeid(Shader).name()].Load(name, s);
 	return s;
 }
+
+void AssetLoader::ReadHeightmapData(std::string path, unsigned char* &dataOut, int& widthOut, int& heightOut)
+{
+	if (FileUtils::IsFileThere(path))
+		dataOut = SOIL_load_image(path.c_str(), &widthOut, &heightOut, 0, SOIL_LOAD_L);
+	else
+	{
+		Logger::LogError("ERROR: Heightmap not available at", path);
+	}
+}

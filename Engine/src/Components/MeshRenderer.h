@@ -14,17 +14,17 @@ class MeshRenderer : public Renderer
 		~MeshRenderer();
 		MeshRenderer(Mesh* m, Material mat, bool isCullable = true);
 		void Render(Camera& cam) override;
-		Mesh* GetMesh();
+		Mesh& GetMesh();
 		void SetMesh(Mesh* m);
 
 
+		ArrayBuffer<Vertex>* vertexBuffer;
 	private:
 		Mesh* mesh;
 
 
 		GLuint VBO_bones;
 
-		ArrayBuffer<Vertex>* vertexBuffer;
 		ArrayBuffer<unsigned>* indexBuffer;	
 		VertexArray* vertexArray;
 
