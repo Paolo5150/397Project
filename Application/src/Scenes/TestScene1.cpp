@@ -136,11 +136,11 @@ void TestScene1::LogicUpdate() {
 
 	//pLight->transform.Translate(0.05f, 0, 0);
 
-	static float timer = 0;
+	/*static float timer = 0;
 	timer += Timer::GetDeltaS();
 
 	if (timer > 5)
-		SceneManager::Instance().LoadNewScene("TestScene2");
+		SceneManager::Instance().LoadNewScene("TestScene2");*/
 
 
 	Scene::LogicUpdate(); //Must be last statement!
