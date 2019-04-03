@@ -25,7 +25,7 @@ public:
 	virtual void PopulateGameObject(GameObject* go);
 
 	std::string name;
-
+	std::map<int, Mesh*>& GetMEshesMap(){ return allMeshes; };
 protected:
 
 	ModelNode* rootNode;

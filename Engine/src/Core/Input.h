@@ -166,6 +166,7 @@ public:
 
 
 private:
+
 	static int prevKeys[400]; //Stores the previous value of the keys
 	static int keys[400]; //Stores the last updated value of the keys
 	static int mouseButtons[8]; //Stores the last update value of the mouse buttons

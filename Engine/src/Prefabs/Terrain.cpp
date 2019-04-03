@@ -2,7 +2,7 @@
 #include "..\Utils\AssetLoader.h"
 #include "..\Graphics\Layers.h"
 #include "..\Utils\Maths.h"
-
+#include "..\Lighting\LightingManager.h"
 
 Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 {
@@ -11,13 +11,23 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 	Material material;
 	material.SetShader(AssetLoader::Instance().GetAsset<Shader>("Terrain"));
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("ground"));
-	material.LoadFloat("UVScale", 18.0f);
+	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("grass"),TextureUniform::DIFFUSE1);
+	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rock"),TextureUniform::DIFFUSE2);
+	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hm1"), TextureUniform::SPECIAL0);
+	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rockNormal"), TextureUniform::NORMAL0);
+
+	
+
+	material.LoadFloat("UVScale", 5.0f);
+	material.LoadFloat("shininess", 18.0f);
+
 
 	SetLayer(0);
 	SetLayer(Layers::TERRAIN);
 
 	Mesh*m = new GridMesh(size, size);
 	meshRenderer = new MeshRenderer(m, material);
+	meshRenderer->SetMaterial(material, MaterialType::NOLIGHT);
 	meshRenderer->AddPreRenderCallback(std::bind(&Terrain::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
 	meshRenderer->isCullable = false;
 
@@ -26,6 +36,10 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 
 void Terrain::OnPreRender(Camera& cam, Shader* s)
 {
+	s->SetFloat("u_maxHeight", maxHeight);
+	s->SetFloat("u_nearPlane", LightManager::Instance().GetShadowMapsCount());
+
+	LightManager::Instance().UpdateShader(meshRenderer->GetMaterial().GetShader());
 
 }
 
@@ -150,7 +164,7 @@ unsigned char* getColorAtPixel(unsigned char* image, size_t x, size_t y, size_t 
 
 void Terrain::ApplyHeightMap(std::string texturePath, float maxHeight)
 {
-	
+	this->maxHeight = maxHeight;
 	int width, height;
 	unsigned char* terrainData = SOIL_load_image(texturePath.c_str(), &width, &height, 0, SOIL_LOAD_L);
 
@@ -186,17 +200,22 @@ void Terrain::ApplyHeightMap(std::string texturePath, float maxHeight)
 
 		stbi_image_free(terrainData);
 
-
+		float min = 50000;
+		float max = -5000;
 		for (int j = 0; j < terrainSize; j++)
 		{
 			for (int i = 0; i < terrainSize; i++)
 			{
 				int inted = ((j)*width) + i;
-
 				meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y = heights[(width * (width * j / terrainSize)) + (width * i / terrainSize)] * maxHeight;
+				min = meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y < min ? meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y : min;
+				max = meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y > max ? meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y : max;
+
 			}
 		}
-		//Logger::LogInfo("Center", Maths::Vec3ToString(meshRenderer->GetMesh().GetCenter()));
+
+
+
 		meshRenderer->GetMesh().CalculateNormals();
 		meshRenderer->vertexBuffer->AddData(meshRenderer->GetMesh().vertices);
 		transform.Translate(-meshRenderer->GetMesh().GetCenter().x, -meshRenderer->GetMesh().GetCenter().y, -meshRenderer->GetMesh().GetCenter().z);

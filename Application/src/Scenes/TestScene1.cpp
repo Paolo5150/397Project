@@ -46,24 +46,23 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-		//Timer::SetDisplayFPS(true);
+	Timer::SetDisplayFPS(true);
 	
 	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
-
-
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.0f, 0.0f, 0.0f);
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(45, 180, 0);
-	dirLight->SetIsStatic(true);
+	dirLight->transform.SetRotation(30, 180, 0);
+	dirLight->SetIntensity(1.0f);
 
+	DirectionalLight* dirLight2 = new DirectionalLight(false);
+	dirLight2->SetDiffuseColor(1, 1, 1);
+	dirLight2->transform.SetRotation(90, 0, 0);
+	dirLight2->SetIntensity(0.5f);
 
-
-	dirLight->SetIntensity(2.0f);
-	dirLight->Update();
 
 	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
@@ -74,40 +73,42 @@ void TestScene1::Initialize() {
 	// Uncomment this to force a wood material!
 	Material mat;
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
+
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
 	mat.LoadFloat("shininess", 1000.0f);
 
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
-	nanosuit->transform.Translate(0, 10, -15);
+	nanosuit->transform.Translate(0, -100, -15);
 	nanosuit->transform.SetRotation(45, 0, 0);
 
 	nanosuit->transform.SetScale(2,2,2);
 
-
 	float ar = Window::Instance().GetAspectRatio();
-	cam = new MainCamera(20.0f, 20.0f, 60.0f, Window::Instance().GetAspectRatio(), 0.1f, 1000.0f);
+	cam = new MainCamera(20.0f, 20.0f, 60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
 	cam->transform.SetPosition(0,35, 30);
 	cam->transform.SetRotation(30, 180, 0);
-
+	LightManager::Instance().sceneMainCamera = cam; //Need to change this
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
 
 	Water* w = new Water();
-	w->transform.SetPosition(0, 0, 0);
-	w->transform.SetScale(30, 30, 1);
+	w->transform.SetPosition(670, -130, 585);
+	w->transform.SetScale(1000, 1000, 1);
 	w->mainCamera = dynamic_cast<MainCamera*>(cam);
 
-	terrain = new Terrain(225);
-	terrain->ApplyHeightMap("Assets\\Textures\\hm2.jpg",80);
+	terrain = new Terrain(256);
+	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg",100);
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
 	terrain->transform.SetScale(5 ,1, 5);
+	terrain->transform.Translate(0, -100, 0);
 
 	w->PrintHierarchy();
 	AddGameObject(w);
 
-
 	AddGameObject(dirLight);
+	AddGameObject(dirLight2);
+
 	//AddGameObject(pLight);
 	Axis* a = new Axis();
 	a->transform.SetScale(10, 10, 10);
@@ -115,7 +116,6 @@ void TestScene1::Initialize() {
 	AddGameObject(cam);
 	AddGameObject(terrain);
 	AddGameObject(nanosuit);
-
 
 
 

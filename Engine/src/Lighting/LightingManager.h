@@ -28,11 +28,7 @@ public:
 	void SetAmbientLight(float r, float g, float b);
 	glm::vec4& GetClippingPlane(){ return clippingPlane; }
 	void SetClippingPlane(glm::vec4 cp){ clippingPlane = cp; }
-
-
-
-
-
+	int GetShadowMapsCount(){ return shadowMaps.size(); }
 
 private:
 	int totalDirLights;
@@ -42,7 +38,7 @@ private:
 	std::list<DirectionalLight*> alldirectionalLights;
 	std::list<PointLight*> allPointLights;
 	glm::vec3 ambientLight;
-	//std::vector<FrameBuffer*> shadowMaps;
+	std::vector<FrameBuffer*> shadowMaps;
 	bool fogEnabled;
 	glm::vec4 clippingPlane;
 	GLuint directionalLightUBO;
@@ -54,8 +50,6 @@ private:
 
 	std::vector<float> pointLightReset;
 	std::vector<float> dirLightReset;
-
-	GameObject* directionalLightShadowCam;
 	Camera* shadowCamera;
 
 	Material simplifiedMaterial;

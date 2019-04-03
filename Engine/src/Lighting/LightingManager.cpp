@@ -31,14 +31,13 @@ void LightManager::Initialize()
 {	
 	shadowCamera = new Camera_Orthogonal(-500, 500, -500, 500, 0.1, 2000.0);
 	shadowCamera->RemoveLayerMask(Layers::GUI);
-	shadowCamera->RemoveLayerMask(Layers::TERRAIN);
+
 	shadowCamera->RemoveLayerMask(Layers::WATER);
 	shadowCamera->SetActive(false);
 	fogEnabled = false;
 	fogColor = glm::vec3(0.5, 0.5, 0.7);
-	
+	sceneMainCamera = nullptr;
 
-	//simplifiedMaterial.SetShader(AssetManager::ShaderManager::GetShaderByName("colorOnly"));
 
 	//Directional light UBO
 	int directional_total_size = (MAX_LIGHTS * DIRECTIONAL_LIGHT_SIZE) + 4;
@@ -67,13 +66,14 @@ void LightManager::SetFogEnable(bool fe)
 
 void LightManager::UpdateUBOs()
 {
+	if (sceneMainCamera == nullptr) return;
 
 	totalDirLights = alldirectionalLights.size();
-	//shadowMaps.clear();
+	shadowMaps.clear();
 
 	//Update Directional lights UBO
 	auto it = alldirectionalLights.begin();
-	//glBindBuffer(GL_UNIFORM_BUFFER, directionalLightUBO);
+
 	direcionalLightsBuffer->Bind();
 	int i = 0;
 
@@ -87,21 +87,21 @@ void LightManager::UpdateUBOs()
 			continue;
 		}
 
-		/*if ((*it)->GetIsCastingShadow())
+		if ((*it)->GetIsCastingShadow())
 		{
 
 			//Create shadow map
 			(*it)->shadowMap->Bind();
 			glClear(GL_DEPTH_BUFFER_BIT);
-			directionalLightShadowCam->transform.position = sceneMainCamera->transform.position - (*it)->direction * 500.0f;
-			directionalLightShadowCam->transform.LookAt(directionalLightShadowCam->transform.position + (*it)->direction);
+			shadowCamera->transform.SetPosition(sceneMainCamera->transform.GetPosition() - (*it)->transform.GetLocalFront() * 500.0f);
+			shadowCamera->transform.LookAt(shadowCamera->transform.GetPosition() + (*it)->transform.GetLocalFront());
 			shadowCamera->UpdateViewMatrix();
-			RenderingEngine::Instance().RenderCurrentScene(shadowCamera, &simplifiedMaterial);
+			RenderingEngine::Instance().RenderBuffer(shadowCamera, MaterialType::COLORONLY);
 			(*it)->shadowMap->Unbind();
 
 
 			shadowMaps.push_back((*it)->shadowMap);
-		}*/
+		}
 		direcionalLightsBuffer->AddDataRange(0 + i * DIRECTIONAL_LIGHT_SIZE, 64, glm::value_ptr((shadowCamera->projectionMatrix * shadowCamera->viewMatrix)));
 		direcionalLightsBuffer->AddDataRange(64 + i * DIRECTIONAL_LIGHT_SIZE, 16, &(*it)->transform.GetPosition());
 		direcionalLightsBuffer->AddDataRange(64 + 16 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->transform.GetLocalFront());
@@ -147,13 +147,13 @@ void LightManager::Update()
 	UpdateUBOs();
 
 	//Deactivate textures here
-	/*for (int i = 0; i < shadowMaps.size(); i++)
+	for (int i = 0; i < shadowMaps.size(); i++)
 	{
 		glActiveTexture(GL_TEXTURE0 + (i + 10));
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	glActiveTexture(GL_TEXTURE0);*/
+	glActiveTexture(GL_TEXTURE0);
 }
 
 // From GL_TEXTURE30 onwards -> SHADOWS
@@ -166,7 +166,7 @@ void LightManager::UpdateShader(Shader& shader)
 	shader.Bind(); //This line is kind of vital
 	shader.SetVec3("AmbientLight", ambientLight);
 	//Load shadow maps
-	/*std::string uniformName = "shadowMap[";
+	std::string uniformName = "shadowMap[";
 
 	shader.SetInt("shadowMapCount", shadowMaps.size());
 	//TODO: improc ve this, cubemap and texture can be bind together, should not be the case
@@ -180,7 +180,7 @@ void LightManager::UpdateShader(Shader& shader)
 		ss << ']';
 		shader.SetInt(ss.str(), (i + 30));
 		shadowMaps[i]->GetDepthTexture()->Bind();
-	}*/
+	}
 }
 
 void LightManager::SubscirbeLight(Light* l)

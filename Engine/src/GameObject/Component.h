@@ -35,9 +35,6 @@ public:
 	virtual void OnPreRender(Camera& cam,Shader* currentShader = nullptr){};
 	virtual void OnPostRender(Camera& cam, Shader* currentShader = nullptr){};
 
-
-
-
 protected:
 	std::string _name;
 	std::string _type;

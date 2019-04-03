@@ -42,7 +42,7 @@ void Core::Initialize()
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
 	Window::Instance().SetWindowSize(800, 600);
-	Input::Init(true, true);
+	Input::Init(false, true);
 	//Managers initialization
 	Timer::Initialize();
 	LightManager::Instance().Initialize();
@@ -53,6 +53,7 @@ void Core::Initialize()
 
 	AssetLoader::Initialize(graphicsAPI);
 
+	//Assets loaded here are available to all scenes.
 	//Load shsders
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f",true);
 	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f", true);
@@ -63,10 +64,12 @@ void Core::Initialize()
 
 	//Load textures
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rockNormal.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dudv.png", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\grass.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\ground.jpg", true);
-
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rock.jpg", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm1.png", true);
 
 
 	//Load basic shapes

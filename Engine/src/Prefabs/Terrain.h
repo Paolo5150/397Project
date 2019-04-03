@@ -21,5 +21,6 @@ private:
 	void AddFilter(float* heightData, float weight, int size);
 	void FilterPass(float* dataP, int increment, float weight, int size);
 
+	int maxHeight;
 	int terrainSize;
 };

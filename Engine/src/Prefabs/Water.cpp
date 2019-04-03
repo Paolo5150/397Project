@@ -52,10 +52,10 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 
 
 	transform.SetRotation(-90, 0, 0);
-	material->LoadFloat("shininess", 1000.0f);
-	material->SetColor(1.0f, 1.0f, 1.0f);
+	material->LoadFloat("shininess", 200.0f);
+	material->SetColor(0.8, 0.8f, 1.0f);
 
-	material->LoadFloat("UVscale", 10.0f);
+	material->LoadFloat("UVscale", 25.0f);
 
 	AssetLoader::Instance().GetAsset<Model>("Quad")->PopulateGameObject(this);
 	MeshRenderer* mr = dynamic_cast<MeshRenderer*>(GetChild("QuadMesh")->GetComponentByType("Renderer"));
@@ -92,7 +92,7 @@ void Water::Update()
 	waterCamera->transform = mainCamera->transform;
 	waterCamera->Update();
 	//Logger::LogInfo("Wat cam", mainCamera->transform.VectorsToString());
-	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera, glm::vec3(0.4f),MaterialType::NOLIGHT);
+	RenderingEngine::Instance().RenderBuffer(waterCamera);
 
 	refractionBuffer->Unbind();
 
@@ -110,7 +110,7 @@ void Water::Update()
 	waterCamera->transform.LookAt(waterCamera->transform.GetPosition() + ref);
 	waterCamera->Update();
 	LightManager::Instance().SetClippingPlane(glm::vec4(0, 1, 0, -transform.GetPosition().y));
-	RenderingEngine::Instance().RenderBuffer(waterCamera,MaterialType::NOLIGHT);
+	RenderingEngine::Instance().RenderBuffer(waterCamera);
 
 	reflectionBuffer->Unbind();
 

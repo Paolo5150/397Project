@@ -78,17 +78,17 @@ void main()
 {
     vec2 ndc = (clipSpace.xy / clipSpace.w) / 2.0 + 0.5;
    
-    vec2 dudvTexture = texture(special0,vec2(Textcoords.x + timer/50.0f,Textcoords.y + timer/50.0f) * material.UVScale*4.0).rg * 2.0 - 1.0;
-	vec2 dudvTexture2 = texture(special0,vec2(Textcoords.x - timer/50.0f,Textcoords.y + timer/50.0f) * material.UVScale*4.0).rg * 2.0 - 1.0;
+    vec2 dudvTexture = texture(special0,vec2(Textcoords.x + timer/50.0f,Textcoords.y + timer/50.0f) * material.UVScale*3.0).rg * 2.0 - 1.0;
+	vec2 dudvTexture2 = texture(special0,vec2(Textcoords.x - timer/50.0f,Textcoords.y + timer/50.0f) * material.UVScale*3.0).rg * 2.0 - 1.0;
 	
 	vec2 totalDistortion = 0.005 * dudvTexture + 0.005 * dudvTexture2;
    
-    vec3 reflectionColor = texture(reflection0,totalDistortion + vec2(ndc.x,1.0 - ndc.y)).rgb;
-    vec3 refractionColor = texture(refraction0,totalDistortion + ndc).rgb;
+    vec3 reflectionColor = texture(reflection0,totalDistortion*1.5f + vec2(ndc.x,1.0 - ndc.y)).rgb;
+    vec3 refractionColor = texture(refraction0,totalDistortion*2.0f + ndc).rgb;
 
-    vec3 normalMap = texture(normal0,totalDistortion + Textcoords * material.UVScale).rgb *2.0 -1.0;
-    vec3 normalMap2 = texture(normal0,totalDistortion - Textcoords * material.UVScale*1.5f).rgb *2.0 -1.0;
-	
+    vec3 normalMap = normalize(texture(normal0,(totalDistortion + Textcoords + vec2(timer/150,timer/130)) * material.UVScale).rgb *2.0 -1.0);
+    vec3 normalMap2 = normalize(texture(normal0,(totalDistortion - Textcoords + vec2(timer/130,-timer/150))* material.UVScale).rgb *2.0 -1.0);
+
    
 	NormalToUse = normalMap;
 	FragPosToUse = FragPositionTS;
@@ -101,7 +101,7 @@ void main()
 	vec3 camToFrag = normalize(FragPosition - CameraPosition); 
 	vec3 textureMix = mix(reflectionColor,refractionColor,dot(camToFrag,-Normal));
 
-    vec3 total = (AmbientLight + DirLights + PointLights) * textureMix* material.color;
+    vec3 total = (AmbientLight + DirLights + PointLights) * textureMix;
 
 	gl_FragColor =  vec4(total,1.0);
 
@@ -121,7 +121,7 @@ vec3 CalculateDirectionalLights(vec3 nm)
 		vec3 fragToCam = normalize(CamPosToUse - FragPosToUse);
 		vec3 reflection = reflect(lightdir,nm);
 		
-		float spec = pow(max(dot(fragToCam, reflection), 0.0),material.shininess );
+		float spec = pow(max(1.01 * dot(fragToCam, reflection), 0.0),material.shininess );
 		vec3 specular =  spec * allDirLights[i].specularColor ; 
 		totalColor+=specular;
 		
