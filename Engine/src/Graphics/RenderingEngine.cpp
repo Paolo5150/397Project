@@ -108,6 +108,7 @@ void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, Mater
 			r[i]->Render(cam);
 			r[i]->OnPostRender(cam, &r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).UnbindMaterial();
+			r[i]->submitted = 0;
 		}
 	}
 }
@@ -126,15 +127,14 @@ void RenderingEngine::RenderVectorOverrideColor(Camera& cam, std::vector<Rendere
 			r[i]->Render(cam);
 			r[i]->OnPostRender(cam, &r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).UnbindMaterial();
+			r[i]->submitted = 0;
+
 		}
 	}
 }
 
 void RenderingEngine::ClearRendererList()
 {
-	for (int i = 0; i < allRenderers.size(); i++)
-		allRenderers[i]->submitted = 0;
-
 	allRenderers.clear();
 
 }

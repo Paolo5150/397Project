@@ -12,6 +12,7 @@ class Renderer : public Component
 	{
 	public:
 		friend class RenderingEngine;
+
 		Renderer(std::string name, Material m);
 		Renderer(std::string name);
 
@@ -41,11 +42,11 @@ class Renderer : public Component
 		std::map<int, Material> allMaterials;
 		std::vector<std::function<void(Camera&, Shader*)>> preRenderCallbacks;
 		std::vector<std::function<void(Camera&, Shader*)>> postRenderCallbacks;
+		bool submitted;
 
 
 
 	private:
-		bool submitted;
 		void CreateOtherMaterials(Material& defaultMat);
 
 

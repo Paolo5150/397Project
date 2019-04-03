@@ -27,7 +27,7 @@ void TestScene2::Initialize() {
 
 }
 void TestScene2::LogicUpdate() {
-	//Logger::LogInfo("Updating scene", name);
+	Logger::LogInfo("Updating scene", name);
 
 	Scene::LogicUpdate();
 }
