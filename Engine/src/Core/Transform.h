@@ -6,8 +6,6 @@ class Transform
 {
 public:
 
-
-
 	Transform* parent;
 
 	Transform();

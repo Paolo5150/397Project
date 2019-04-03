@@ -50,7 +50,7 @@ public:
 	*
 	* @param		mode		Sets the cursor mode to "normal", "hidden", or "disabled" based on input, value must be lowercase
 	*/
-	static void SetCursorMode(GLFWwindow* window, std::string mode);
+	static void SetCursorMode(std::string mode);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//-- Accessors --//
@@ -166,7 +166,7 @@ public:
 
 
 private:
-
+	static GLFWwindow* window;
 	static int prevKeys[400]; //Stores the previous value of the keys
 	static int keys[400]; //Stores the last updated value of the keys
 	static int mouseButtons[8]; //Stores the last update value of the mouse buttons

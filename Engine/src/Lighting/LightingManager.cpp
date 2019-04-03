@@ -31,7 +31,7 @@ void LightManager::Initialize()
 {	
 	shadowCamera = new Camera_Orthogonal(-500, 500, -500, 500, 0.1, 2000.0);
 	shadowCamera->RemoveLayerMask(Layers::GUI);
-
+	shadowCamera->RemoveLayerMask(Layers::TERRAIN);
 	shadowCamera->RemoveLayerMask(Layers::WATER);
 	shadowCamera->SetActive(false);
 	fogEnabled = false;

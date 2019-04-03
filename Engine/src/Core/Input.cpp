@@ -4,7 +4,7 @@
 //-----Public-----//
 void Input::Init(bool disableCursor, bool logGlfwErrors)
 {
-	GLFWwindow* window = Window::Instance().window;
+	window = Window::Instance().window;
 
 	if (logGlfwErrors == true)
 	{
@@ -26,11 +26,11 @@ void Input::Init(bool disableCursor, bool logGlfwErrors)
 
 	if (disableCursor == true)
 	{
-		SetCursorMode(window, "disabled");
+		SetCursorMode("disabled");
 	}
 	else
 	{
-		SetCursorMode(window, "normal");
+		SetCursorMode("normal");
 	}
 
 	for (int i = 0; i < 400; i++)
@@ -68,7 +68,7 @@ void Input::Update()
 
 }
 
-void Input::SetCursorMode(GLFWwindow* window, std::string mode)
+void Input::SetCursorMode(std::string mode)
 {
 	if (mode == "normal")
 	{
@@ -190,7 +190,7 @@ bool Input::GetCursorInWindow()
 int Input::prevKeys[400];
 int Input::keys[400];
 int Input::mouseButtons[8];
-
+GLFWwindow* Input::window;
 double Input::mouseX;
 double Input::mouseY;
 double Input::deltaMouseX;
