@@ -73,6 +73,8 @@ void Core::Initialize()
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rock.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm1.png", true);
 	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\ClearSky", true);
+	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet", true);
+
 
 
 

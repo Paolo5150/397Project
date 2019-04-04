@@ -47,7 +47,7 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
-	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("ClearSky"));
+	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
 	Timer::SetDisplayFPS(true);
 	
@@ -58,8 +58,9 @@ void TestScene1::Initialize() {
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(30, 180, 0);
+	dirLight->transform.SetRotation(30, 117, 0);
 	dirLight->SetIntensity(1.0f);
+	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
