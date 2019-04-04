@@ -78,10 +78,8 @@ vec3 CalculateDirectionalLights();
 
 
 vec3 NormalToUse;
-vec3 FragPosToUse;
-vec3 CamPosToUse;
 
-vec3 dirToUse;
+
 
 float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -97,8 +95,8 @@ vec3 GenerateTerrainColor()
     float regionWeight = 0.0;
     
 
-    regionMin = -0.2f;
-    regionMax = 0.3f;
+    regionMin = -0.5f;
+    regionMax = 0.4f;
     regionRange = regionMax - regionMin;
     regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
     regionWeight = max(0.0, regionWeight);
@@ -114,10 +112,11 @@ vec3 GenerateTerrainColor()
 	
 	
     regionMin = 0.1f;
-    regionMax = 0.5f;
+    regionMax = 0.4f;
     regionRange = regionMax - regionMin;
     regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
     regionWeight = max(0.0, regionWeight);
+	
     terrainColor += regionWeight * texture(diffuse1,Textcoords * material.UVScale).rgb;
 
     return terrainColor;
@@ -129,11 +128,7 @@ void main()
 {
    vec3 blendColor = texture(special0,Textcoords).rgb;
    
-   vec3 sandColor = texture(diffuse0,Textcoords * material.UVScale).rgb;
-   vec3 grassColor = texture(diffuse1,Textcoords * material.UVScale).rgb * blendColor.r;
-   vec3 rockColor = texture(diffuse2,Textcoords * material.UVScale).rgb * (1.0 - blendColor.r);
-   
- vec3 colorRatio = vec3(1,1,1) * max(0.0f,(HeightRatio+0.2f));
+	vec3 colorRatio = vec3(1,1,1) * max(0.0f,(max(HeightRatio+0.5f,1.0)));
 
    vec3 DirLights =  CalculateDirectionalLights();   
    vec3 PointLights = CalculatePointLights();
@@ -142,7 +137,9 @@ void main()
 	float shadowAlpha = max(0.0,(500 - length(FragPosition - CameraPosition)) / 500.0);
 	float shadowColor = (1.0  - shadowFactor* shadowAlpha )  ;
    
-   vec3 total =  shadowColor* colorRatio *(AmbientLight + DirLights + PointLights) * GenerateTerrainColor() * material.color;
+    NormalToUse = normalize(texture(normal0,Textcoords*15).rgb);    
+   vec3 terrainColor =  GenerateTerrainColor();
+   vec3 total =  shadowColor* colorRatio *(AmbientLight + DirLights + PointLights) * terrainColor* material.color;
 
 	gl_FragColor =  vec4(total,1.0);
 
@@ -163,7 +160,7 @@ float ShadowCalculation()
 
 		float currentDepth = projCoords.z;
 
-		float bias = 0.005;
+		float bias = 0.002;
 		shadow += currentDepth - bias > closestDepth  ? 0.7 : 0.0; 
 	
 
@@ -183,9 +180,9 @@ vec3 CalculateDirectionalLights()
 	if(i >= activeDirectionalLights) break;
 
 		//Specular
-		vec3 lightdir = normalize(allDirLights[i].rotation);
-		vec3 fragToCam = normalize(CameraPosition - FragPosition);
-		vec3 reflection = reflect(lightdir,Normal);
+		vec3 lightdir = normalize(dirLightsTS[i]);
+		vec3 fragToCam = normalize(CameraPositionTS - FragPositionTS);
+		vec3 reflection = reflect(lightdir,NormalToUse);
 		float spec = pow(max(dot(fragToCam, reflection), 0.0),material.shininess );
 		vec3 specular =  spec * allDirLights[i].specularColor ; 
 		

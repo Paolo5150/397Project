@@ -59,7 +59,7 @@ void TestScene1::Initialize() {
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(30, 117, 0);
-	dirLight->SetIntensity(1.0f);
+	dirLight->SetIntensity(0.7f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
@@ -103,9 +103,9 @@ void TestScene1::Initialize() {
 	w->mainCamera = dynamic_cast<MainCamera*>(cam);
 
 	terrain = new Terrain(256);
-	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg",100);
+	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg",1500);
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
-	terrain->transform.SetScale(5 ,1, 5);
+	terrain->transform.SetScale(100 ,1, 100);
 	terrain->transform.Translate(0, -100, 0);
 
 
@@ -134,7 +134,7 @@ void TestScene1::LogicUpdate() {
 	//cam->transform.RotateBy(0.5f, cam->transform.GetLocalUp());
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 
-	//nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
+	nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
 
 	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.2f);
 	//Logger::LogInfo(cam->transform.ToString());

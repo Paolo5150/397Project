@@ -49,7 +49,8 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 
 	material->Loadtexture(normalMap, TextureUniform::NORMAL0);
 	material->Loadtexture(distortion, TextureUniform::SPECIAL0);
-	material->LoadCubemap(&SceneManager::Instance().GetCurrentScene().GetSkyBox()->GetCubeMap());
+	if (SceneManager::Instance().GetCurrentScene().GetSkyBox() != nullptr)
+		material->LoadCubemap(&SceneManager::Instance().GetCurrentScene().GetSkyBox()->GetCubeMap());
 
 	material->Loadtexture(refractionBuffer->GetColorTexture(), TextureUniform::REFRACTION0);
 	material->Loadtexture(reflectionBuffer->GetColorTexture(), TextureUniform::REFLECITON0);

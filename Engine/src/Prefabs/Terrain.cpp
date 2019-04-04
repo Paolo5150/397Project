@@ -18,7 +18,7 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 
 	
 
-	material.LoadFloat("UVScale", 5.0f);
+	material.LoadFloat("UVScale", 50.0f);
 	material.LoadFloat("shininess", 18.0f);
 
 
