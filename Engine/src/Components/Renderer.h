@@ -20,7 +20,9 @@ class Renderer : public Component
 
 		virtual void Render(Camera& cam) = 0;
 		
-		void OnPreRender(Camera& cam, Shader* currentShader = nullptr) override;
+		virtual void OnPreRender(Camera& cam, Shader* currentShader = nullptr) ;
+		virtual void OnPostRender(Camera& cam, Shader* currentShader = nullptr);
+
 
 
 		void SendDataToShader(Camera& cam);

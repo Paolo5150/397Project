@@ -67,6 +67,13 @@ void Renderer::Update()
 	
 }
 
+void Renderer::OnPostRender(Camera& cam, Shader* currentShader )
+{
+	for (unsigned i = 0; i < postRenderCallbacks.size(); i++)
+		postRenderCallbacks[i](cam, currentShader);
+}
+
+
 void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 {
 	//Logger::LogInfo("Prerender called on", _parent->GetName());

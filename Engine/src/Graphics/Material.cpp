@@ -14,7 +14,8 @@ std::string Material::textureUniforms[] = {
 	"refraction0",
 	"special0",
 	"special1",
-	"special2" };
+	"special2",
+	"cubemap0"};
 
 
 Material::Material()
@@ -82,7 +83,7 @@ void Material::GetColor(float& r, float &g, float& b)
 
 
 
-/*void Material::LoadCubemap(Cubemap* t, TextureUniform tu)
+void Material::LoadCubemap(CubeMap* t, TextureUniform tu)
 {
 
 	//Check if texture is already loaded
@@ -96,16 +97,8 @@ void Material::GetColor(float& r, float &g, float& b)
 		}
 	}
 
-	//Check to see if the uniform is already loaded, in case save to next slot in map
-	auto un = cubemaps.find(tu);
-
-	if (un != cubemaps.end())
-	{
-		cubemaps[(tu + 1)] = t;
-	}
-	else
-		cubemaps[tu] = t;
-}*/
+	cubemaps[tu] = t;
+}
 
 
 
@@ -116,7 +109,7 @@ void Material::Loadtexture(Texture2D* t, TextureUniform tu)
 
 
 	//Check if texture is already loaded
-	auto it = textures.begin();
+	/*auto it = textures.begin();
 
 	for (; it != textures.end(); it++)
 	{
@@ -124,7 +117,7 @@ void Material::Loadtexture(Texture2D* t, TextureUniform tu)
 		{
 			return;
 		}
-	}
+	}*/
 
 	//Check to see if the uniform is already loaded, in case save to next slot in map
 	auto un = textures.find(tu);
@@ -151,12 +144,13 @@ void Material::BindMaterial()
 		shader->SetInt(textureUniforms[it->first], it->first);
 	}
 
-	/*for (auto cit = cubemaps.begin(); cit != cubemaps.end(); cit++)
+	for (auto cit = cubemaps.begin(); cit != cubemaps.end(); cit++)
 	{
+		//Logger::LogInfo("Binding a cubemap");
 		glActiveTexture(GL_TEXTURE0 + cit->first);
 		cit->second->Bind();
 		shader->SetInt(textureUniforms[cit->first], cit->first);
-	}*/
+	}
 
 
 	auto vit = vec3s.begin();
@@ -206,12 +200,12 @@ void Material::UnbindMaterial()
 
 	}
 
-	/*for (auto cit = cubemaps.begin(); cit != cubemaps.end(); cit++)
+	for (auto cit = cubemaps.begin(); cit != cubemaps.end(); cit++)
 	{
 		glActiveTexture(GL_TEXTURE0 + cit->first);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 		shader->SetInt(textureUniforms[cit->first], cit->first);
-	}*/
+	}
 
 	glActiveTexture(GL_TEXTURE0);
 

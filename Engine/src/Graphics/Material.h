@@ -2,6 +2,7 @@
 
 #include "Texture2D.h"
 #include"Shader.h"
+#include "CubeMap.h"
 #include <map>
 
 
@@ -22,6 +23,7 @@
 		SPECIAL0,
 		SPECIAL1,
 		SPECIAL2,
+		CUBEMAP0
 	};
 
 	enum MaterialType
@@ -43,7 +45,7 @@
 		std::string name;
 		void Loadtexture(Texture2D* t, TextureUniform tu = DIFFUSE0);
 
-		//void LoadCubemap(Cubemap* t, TextureUniform tu = DIFFUSE0);
+		void LoadCubemap(CubeMap* t, TextureUniform tu = CUBEMAP0);
 
 		Material();
 		Material(Shader* s);
@@ -63,7 +65,7 @@
 
 		std::map<int, Texture2D*> textures;
 	protected:
-		//std::map<int, Cubemap*> cubemaps;
+		std::map<int, CubeMap*> cubemaps;
 
 
 		Shader* shader;

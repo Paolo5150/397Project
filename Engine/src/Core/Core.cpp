@@ -61,6 +61,8 @@ void Core::Initialize()
 	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
 	AssetLoader::Instance().LoadShader("Terrain", "Assets\\Shaders\\Terrain.v", "Assets\\Shaders\\Terrain.f", true);
 	AssetLoader::Instance().LoadShader("Water", "Assets\\Shaders\\Water.v", "Assets\\Shaders\\Water.f", true);
+	AssetLoader::Instance().LoadShader("Skybox", "Assets\\Shaders\\Skybox.v", "Assets\\Shaders\\Skybox.f", true);
+
 
 	//Load textures
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", true);
@@ -70,6 +72,8 @@ void Core::Initialize()
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\ground.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rock.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm1.png", true);
+	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\ClearSky", true);
+
 
 
 	//Load basic shapes

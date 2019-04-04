@@ -1,6 +1,7 @@
 #pragma once
 #include "..\GameObject\GameObject.h"
 #include "..\Core\Timer.h"
+#include "..\Graphics\SkyBox.h"
 #include <map>
 #include <vector>
 #include <list>
@@ -28,7 +29,7 @@ public:
 	virtual void LateUpdate() ;
 
 	bool GetIsReady() { return m_isReady; };
-
+	Skybox* GetSkyBox(){ return skybox; }
 	std::string name;
 
 
@@ -37,6 +38,7 @@ protected:
 	// List of gameobjects
 	std::list<GameObject*> m_allGameObjects;
 	bool m_isReady;
+	Skybox* skybox;
 
 private:
 

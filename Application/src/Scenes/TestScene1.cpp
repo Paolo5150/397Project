@@ -11,8 +11,9 @@
 #include "Lighting\LightingManager.h"
 #include "Prefabs\Water.h"
 #include "Prefabs\Terrain.h"
+#include "Graphics\CubeMap.h"
+#include "Graphics\SkyBox.h"
 
-#include "GLFW\glfw3.h"
 
 
 MainCamera* cam;
@@ -45,6 +46,8 @@ void TestScene1::ExitScene() {
 
 }
 void TestScene1::Initialize() {
+
+	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("ClearSky"));
 
 	Timer::SetDisplayFPS(true);
 	
@@ -88,6 +91,7 @@ void TestScene1::Initialize() {
 	cam = new MainCamera(20.0f, 20.0f, 60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
 	cam->transform.SetPosition(0,35, 30);
 	cam->transform.SetRotation(30, 180, 0);
+
 	LightManager::Instance().sceneMainCamera = cam; //Need to change this
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
@@ -103,13 +107,13 @@ void TestScene1::Initialize() {
 	terrain->transform.SetScale(5 ,1, 5);
 	terrain->transform.Translate(0, -100, 0);
 
-	w->PrintHierarchy();
+
 	AddGameObject(w);
 
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 
-	//AddGameObject(pLight);
+	AddGameObject(pLight);
 	Axis* a = new Axis();
 	a->transform.SetScale(10, 10, 10);
 	AddGameObject(a);
@@ -134,7 +138,7 @@ void TestScene1::LogicUpdate() {
 	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.2f);
 	//Logger::LogInfo(cam->transform.ToString());
 
-	//pLight->transform.Translate(0.05f, 0, 0);
+	pLight->transform.Translate(0.05f, 0, 0);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();

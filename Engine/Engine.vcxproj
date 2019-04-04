@@ -213,6 +213,8 @@
     <ClInclude Include="src\Graphics\API_Opengl.h" />
     <ClInclude Include="src\Graphics\ArrayBuffer.h" />
     <ClInclude Include="src\Graphics\ArrayBufferGL.h" />
+    <ClInclude Include="src\Graphics\CubeMap.h" />
+    <ClInclude Include="src\Graphics\CubeMapGL.h" />
     <ClInclude Include="src\Graphics\FrameBuffer.h" />
     <ClInclude Include="src\Graphics\FrameBufferGL.h" />
     <ClInclude Include="src\Graphics\GraphicsAPI.h" />
@@ -225,6 +227,7 @@
     <ClInclude Include="src\Graphics\RenderingEngine.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Graphics\ShaderGL.h" />
+    <ClInclude Include="src\Graphics\SkyBox.h" />
     <ClInclude Include="src\Graphics\Texture2D.h" />
     <ClInclude Include="src\Graphics\Texture2DGL.h" />
     <ClInclude Include="src\Graphics\UniformBuffer.h" />
@@ -238,6 +241,7 @@
     <ClInclude Include="src\Lighting\PointLight.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Prefabs\Axis.h" />
+    <ClInclude Include="src\Prefabs\CubeMesh.h" />
     <ClInclude Include="src\Prefabs\GridMesh.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
     <ClInclude Include="src\Prefabs\Water.h" />
@@ -271,7 +275,10 @@
     <ClCompile Include="src\GameObject\Component.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\Graphics\API_Opengl.cpp" />
+    <ClCompile Include="src\Graphics\CubeMapGL.cpp" />
     <ClCompile Include="src\Graphics\FrameBufferGL.cpp" />
+    <ClCompile Include="src\Graphics\SkyBox.cpp" />
+    <ClCompile Include="src\Prefabs\CubeMesh.cpp" />
     <ClCompile Include="src\Prefabs\GridMesh.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Materials\DefaultMaterial.cpp" />

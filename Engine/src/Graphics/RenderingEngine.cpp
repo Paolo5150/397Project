@@ -52,6 +52,7 @@ void RenderingEngine::SubmitRenderer(Renderer* rend)
 
 void RenderingEngine::RenderBuffer(Camera* cam,MaterialType mt)
 {
+
 	RenderVector(*cam, allRenderers, mt);
 	
 	Core::Instance().GetGraphicsAPI().ResetTextures();
@@ -62,7 +63,6 @@ void RenderingEngine::RenderBuffer(MaterialType mt)
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 
-	//Logger::LogInfo("Render buffer of",allRenderers.size());
 
 
 	int previousDepth = 0;
@@ -85,6 +85,8 @@ void RenderingEngine::RenderBuffer(MaterialType mt)
 
 void RenderingEngine::RenderBufferOverrideColor(Camera* camera, glm::vec3 color, MaterialType mt )
 {
+	
+
 	RenderVectorOverrideColor(*camera, allRenderers, color, mt);
 
 	Core::Instance().GetGraphicsAPI().ResetTextures();
@@ -100,11 +102,9 @@ void RenderingEngine::RenderVector(Camera& cam, std::vector<Renderer*>& r, Mater
 		{			
 			//Logger::LogWarning("Rendering", r[i]->GetParent()->GetName());
 			
-			r[i]->GetMaterial(m).BindMaterial();
-			
-			r[i]->OnPreRender(cam, &r[i]->GetMaterial(m).GetShader());
-			r[i]->OnPreRender(cam, &r[i]->GetMaterial(m).GetShader());
+			r[i]->GetMaterial(m).BindMaterial();		
 
+			r[i]->OnPreRender(cam, &r[i]->GetMaterial(m).GetShader());
 			r[i]->Render(cam);
 			r[i]->OnPostRender(cam, &r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).UnbindMaterial();

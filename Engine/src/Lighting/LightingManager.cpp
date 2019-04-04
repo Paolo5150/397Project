@@ -33,6 +33,8 @@ void LightManager::Initialize()
 	shadowCamera->RemoveLayerMask(Layers::GUI);
 	shadowCamera->RemoveLayerMask(Layers::TERRAIN);
 	shadowCamera->RemoveLayerMask(Layers::WATER);
+	shadowCamera->RemoveLayerMask(Layers::SKYBOX);
+
 	shadowCamera->SetActive(false);
 	fogEnabled = false;
 	fogColor = glm::vec3(0.5, 0.5, 0.7);

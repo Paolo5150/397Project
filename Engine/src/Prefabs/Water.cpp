@@ -6,6 +6,7 @@
 #include "..\Utils\Maths.h"
 #include "..\Graphics\RenderingEngine.h"
 #include "..\Lighting\LightingManager.h"
+#include "..\Scene\SceneManager.h"
 
 
 Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
@@ -31,6 +32,9 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	waterCamera->RemoveAllMaskLayers();
 	waterCamera->AddLayerMask(Layers::DEFAULT);
 	waterCamera->AddLayerMask(Layers::TERRAIN);
+
+
+
 	waterCamera->SetActive(false);
 
 
@@ -45,7 +49,7 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 
 	material->Loadtexture(normalMap, TextureUniform::NORMAL0);
 	material->Loadtexture(distortion, TextureUniform::SPECIAL0);
-
+	material->LoadCubemap(&SceneManager::Instance().GetCurrentScene().GetSkyBox()->GetCubeMap());
 
 	material->Loadtexture(refractionBuffer->GetColorTexture(), TextureUniform::REFRACTION0);
 	material->Loadtexture(reflectionBuffer->GetColorTexture(), TextureUniform::REFLECITON0);
@@ -137,16 +141,3 @@ bool Water::ResizeFrameBuffers(Event* e)
 	return 0;
 }
 
-/*
-bool Water::HandleEvent(Event &ev)
-{
-
-
-	//V2_INFO("Resizing");
-	WindowResizeEvent& wc = static_cast<WindowResizeEvent&>(ev);
-
-	//refractionBuffer->ResizeTexture(wc.width, wc.height);
-	//reflectionBuffer->ResizeTexture(wc.width, wc.height);
-
-	return 0;
-}*/

@@ -4,6 +4,7 @@
 #include "ArrayBufferGL.h"
 #include "UniformBufferGL.h"
 #include "FrameBufferGL.h"
+#include "CubeMapGL.h"
 
 API_Opengl::API_Opengl()
 {
@@ -101,6 +102,12 @@ void  API_Opengl::SetClipPlaneActive(bool ac)
 		glEnable(GL_CLIP_DISTANCE0);
 	else
 		glDisable(GL_CLIP_DISTANCE0);
+}
+
+
+CubeMap* API_Opengl::CreateCubeMap(std::string name, unsigned char* data[6], int width[6], int height[6])
+{
+	return new CubeMapGL(name, data,width,height);
 }
 
 

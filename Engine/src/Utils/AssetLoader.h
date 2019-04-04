@@ -5,6 +5,7 @@
 #include "AssetContainer.h"
 #include "..\Graphics\Model.h"
 #include "AssimpWrapper.h"
+#include "..\Graphics\CubeMap.h"
 
 class AssetLoader
 {
@@ -16,6 +17,10 @@ public:
 	
 	Shader* LoadShader(std::string name, std::string vertexPath, std::string fragmentPath, bool preserve = false);
 	Texture2D* LoadTexture(std::string path,bool preserve = false);
+	CubeMap* LoadCubeMap(std::string pathToFolder, bool preserve = false,
+		std::string top = "top.jpg", std::string bottom = "bottom.jpg", 
+		std::string left = "left.jpg", std::string right = "right.jpg",
+		std::string front = "front.jpg", std::string back = "back.jpg");
 	void ReadHeightmapData(std::string path, unsigned char* &dataOut, int& widthOut, int& heightOut);
 
 	Model* LoadModel(std::string path, bool preserve = false);

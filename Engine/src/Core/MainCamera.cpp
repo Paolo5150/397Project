@@ -55,6 +55,11 @@ void MainCamera::UpdateControls()
 		this->transform.SetPosition(this->transform.GetPosition() - (GetMovementSpeed() * Timer::GetDeltaS() * this->transform.GetLocalUp()));
 	}
 
+	if (Input::GetKeyDown(GLFW_KEY_T) == true)
+		Input::SetCursorMode("normal");
+	else if (Input::GetKeyDown(GLFW_KEY_Y) == true)
+		Input::SetCursorMode("disabled");
+
 	if (Input::GetKeyDown(GLFW_KEY_KP_ADD))
 		_movementSpeed++;
 	else if (Input::GetKeyDown(GLFW_KEY_KP_SUBTRACT))

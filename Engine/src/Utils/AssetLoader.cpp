@@ -73,6 +73,43 @@ Shader* AssetLoader::LoadShader(std::string name, std::string vertexPath, std::s
 	return s;
 }
 
+
+CubeMap* AssetLoader::LoadCubeMap(std::string pathToFolder,bool preserve,std::string top, std::string bottom, std::string left, std::string right, std::string front, std::string back)
+{
+	CubeMap* c = nullptr;
+	//Push back order matters
+	std::vector<std::string> faces;
+	faces.push_back(right);
+	faces.push_back(left);
+	faces.push_back(top);
+	faces.push_back(bottom);
+	faces.push_back(back);
+	faces.push_back(front);
+
+
+	unsigned char* data[6];
+	int width[6];
+	int height[6];
+
+	for (unsigned int i = 0; i < 6; i++)
+	{
+		std::string absolutePathToTexture = pathToFolder + "\\" + faces[i];
+		data[i] = SOIL_load_image(absolutePathToTexture.c_str(),&width[i] ,&height[i], 0, 0);
+		Logger::LogInfo("Loaded cubemap texture",absolutePathToTexture);
+
+		if (!data[i])
+			Logger::LogError("Something went wrong while loading CUBEMAP TEXTURE: {}, {}", faces[i], SOIL_last_result());
+	}
+
+	std::string folderName = FileUtils::GetLastFolderNameFromAbsolutePath(pathToFolder + "\\");
+	c = graphucsAPI->CreateCubeMap(folderName, data,width,height);
+	c->preserve = preserve;
+	containers[typeid(CubeMap).name()].Load(folderName, c);
+
+	return c;
+}
+
+
 void AssetLoader::ReadHeightmapData(std::string path, unsigned char* &dataOut, int& widthOut, int& heightOut)
 {
 	if (FileUtils::IsFileThere(path))

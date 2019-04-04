@@ -24,6 +24,8 @@ public:
 	UniformBuffer* CreateUniformBuffer(unsigned totalSize, unsigned binding) override;
 	FrameBuffer* CreateFrameBuffer(int w, int h, bool hasColorAttachment = true) override;
 	void SetClipPlaneActive(bool hasColorAttachment) override;
+	virtual CubeMap* CreateCubeMap(std::string name, unsigned char* data[6], int width[6], int height[6]) override;
+
 
 
 

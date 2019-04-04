@@ -32,8 +32,7 @@ public:
 	virtual void Update(){};
 	virtual void EngineUpdate(){};
 	virtual void OnAttach(){};
-	virtual void OnPreRender(Camera& cam,Shader* currentShader = nullptr){};
-	virtual void OnPostRender(Camera& cam, Shader* currentShader = nullptr){};
+
 
 protected:
 	std::string _name;

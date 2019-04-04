@@ -4,6 +4,7 @@
 
 Scene::Scene(std::string n) : name(n)
 {
+	skybox = nullptr;
 }
 void Scene::AddGameObject(GameObject* go)
 {
@@ -44,6 +45,9 @@ void Scene::LateUpdate()
 void Scene::EngineUpdate()
 {
 	//Logger::LogError("Updating", m_allGameObjects.size());
+	if (skybox != nullptr)
+		skybox->EngineUpdate();
+
 	auto it = m_allGameObjects.begin();
 
 	for (; it != m_allGameObjects.end(); it++)
