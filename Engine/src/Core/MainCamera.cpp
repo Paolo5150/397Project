@@ -66,7 +66,7 @@ void MainCamera::UpdateControls()
 		_movementSpeed--;
 
 
-	Logger::LogInfo(transform.ToString());
+//	Logger::LogInfo(transform.ToString());
 }
 
 void MainCamera::SetMovementSpeed(float speed)
