@@ -90,7 +90,7 @@ void TestScene1::Initialize() {
 
 	float ar = Window::Instance().GetAspectRatio();
 	cam = new MainCamera(20.0f, 20.0f, 60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
-	cam->transform.SetPosition(0,35, 30);
+	cam->transform.SetPosition(0,35, 0);
 	cam->transform.SetRotation(30, 180, 0);
 
 	LightManager::Instance().sceneMainCamera = cam; //Need to change this
@@ -98,15 +98,14 @@ void TestScene1::Initialize() {
 	cam->RemoveLayerMask(Layers::GUI);
 
 	Water* w = new Water();
-	w->transform.SetPosition(670, -130, 585);
-	w->transform.SetScale(1000, 1000, 1);
+
 	w->mainCamera = dynamic_cast<MainCamera*>(cam);
 
 	terrain = new Terrain(256);
-	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg",1500);
+	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
-	terrain->transform.SetScale(100 ,1, 100);
-	terrain->transform.Translate(0, -100, 0);
+	terrain->transform.SetScale(5 ,120, 5);
+	terrain->transform.Translate(0, 0, 0);
 
 
 	AddGameObject(w);
@@ -122,6 +121,11 @@ void TestScene1::Initialize() {
 	AddGameObject(terrain);
 	AddGameObject(nanosuit);
 
+	int x, y, z;
+	terrain->GetCenter(x, y, z);
+	cam->transform.SetPosition(0, 20, 0);
+	w->transform.SetPosition(x, 25, z);
+	w->transform.SetScale(1000, 1000, 1);
 
 
 }
@@ -140,6 +144,9 @@ void TestScene1::LogicUpdate() {
 	//Logger::LogInfo(cam->transform.ToString());
 
 	pLight->transform.Translate(0.05f, 0, 0);
+	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+	//Logger::LogInfo("H ", h);
+	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 10, cam->transform.GetPosition().z);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();

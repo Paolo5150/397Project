@@ -17,6 +17,7 @@ in vec3 pointLightsTS[MAX_LIGHTS];
 in vec4 fragLightSpaces[MAX_LIGHTS];
 in vec4 clipSpace;
 in float HeightRatio;
+in vec3 vertexColor;
 
 struct Material
 {
@@ -128,7 +129,7 @@ void main()
 {
    vec3 blendColor = texture(special0,Textcoords).rgb;
    
-	vec3 colorRatio = vec3(1,1,1) * max(0.0f,(max(HeightRatio+0.5f,1.0)));
+	vec3 colorRatio = vec3(max(0.4,HeightRatio));
 
    vec3 DirLights =  CalculateDirectionalLights();   
    vec3 PointLights = CalculatePointLights();
@@ -139,7 +140,7 @@ void main()
    
     NormalToUse = normalize(texture(normal0,Textcoords*15).rgb);    
    vec3 terrainColor =  GenerateTerrainColor();
-   vec3 total =  shadowColor* colorRatio *(AmbientLight + DirLights + PointLights) * terrainColor* material.color;
+   vec3 total =  shadowColor* colorRatio *(AmbientLight + DirLights + PointLights) * terrainColor* material.color * vertexColor;
 
 	gl_FragColor =  vec4(total,1.0);
 

@@ -16,7 +16,7 @@ class MeshRenderer : public Renderer
 		void Render(Camera& cam) override;
 		Mesh& GetMesh();
 		void SetMesh(Mesh* m);
-
+		void RefreshVertices();
 
 		ArrayBuffer<Vertex>* vertexBuffer;
 	private:

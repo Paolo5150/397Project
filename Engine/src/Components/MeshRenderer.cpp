@@ -35,6 +35,11 @@ void MeshRenderer::SetMesh(Mesh* m)
 	Initialize();
 }
 
+void MeshRenderer::RefreshVertices(){
+	vertexBuffer->AddData(mesh->vertices);
+
+}
+
 
 void MeshRenderer::Initialize()
 {

@@ -3,6 +3,7 @@
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec3 inNormals;
 layout(location = 2) in vec2 inTextcoords;
+layout(location = 3) in vec3 inColor;
 layout(location = 4) in vec3 inTangent;
 layout(location = 5) in vec3 inBinormal;
 
@@ -43,6 +44,7 @@ out vec3 pointLightsTS[MAX_LIGHTS];
 out vec4 clipSpace;
 out float HeightRatio;
 out vec4 fragLightSpaces[MAX_LIGHTS];
+out vec3 vertexColor;
 
 uniform mat4 u_mvp;
 uniform mat4 u_projection;
@@ -73,9 +75,9 @@ layout (std140, binding = 2) uniform AllPointLights
 void main()
 {
 
-
+	vertexColor = inColor;
 	vec4 fragPos = u_model * vec4(inPosition,1);
-	HeightRatio = inPosition.y/u_maxHeight;
+	HeightRatio = inPosition.y;
 	gl_ClipDistance[0] = dot( fragPos,u_clippingPlane);
 
 	clipSpace =  u_mvp * vec4(inPosition,1.0);

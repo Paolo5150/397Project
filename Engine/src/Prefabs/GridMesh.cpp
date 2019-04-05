@@ -25,6 +25,7 @@ void GridMesh::Initialize()
 			Vertex v;
 			v.position = glm::vec3(x, 0, z);
 			//v.normal = glm::vec3(0, 1, 0);
+			v.color = glm::vec3(1, 1, 1);
 			v.UV.x = x / (float)(sizeX - 1);
 			v.UV.y = z / (float)(sizeZ - 1);
 			vertices.push_back(v);
@@ -58,5 +59,6 @@ void GridMesh::Initialize()
 		counter++;
 	}
 
+	Logger::LogInfo("End of grid mesh, size", vertices.size());
 	CalculateNormals();
 }

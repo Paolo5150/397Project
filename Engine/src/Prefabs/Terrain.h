@@ -9,9 +9,11 @@ public:
 
 	Terrain(int size);
 	~Terrain(){};
-	void ApplyHeightMap(std::string texturePaty, float maxHeight);
-	bool GenerateFaultFormation(int iterations, int minHeight, int maxHeight, float weight, bool random);
+	void ApplyHeightMap(std::string texturePaty);
+	bool GenerateFaultFormation(int iterations, int minHeight, float weight, bool random);
 	void OnPreRender(Camera& cam, Shader* s);
+	void GetCenter(int& x, int& y,int& z);
+	float GetHeightAt(int x, int z);
 
 private:
 	Material* material;

@@ -20,6 +20,7 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 
 	material.LoadFloat("UVScale", 50.0f);
 	material.LoadFloat("shininess", 18.0f);
+	material.LoadFloat("u_maxHeight", transform.GetScale().y);
 
 
 	SetLayer(0);
@@ -36,14 +37,74 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 
 void Terrain::OnPreRender(Camera& cam, Shader* s)
 {
-	s->SetFloat("u_maxHeight", maxHeight);
+	s->SetFloat("u_maxHeight", transform.GetScale().y);
 	s->SetFloat("u_nearPlane", LightManager::Instance().GetShadowMapsCount());
 
 	LightManager::Instance().UpdateShader(meshRenderer->GetMaterial().GetShader());
 
 }
 
-bool Terrain::GenerateFaultFormation(int iterations, int minHeight, int maxHeight, float weight, bool random)
+float TriangleBaric(glm::vec3 p1, glm::vec3 p2,glm::vec3 p3, glm::vec2 pos)
+{
+	float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
+	float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
+	float l2 = ((p3.z - p3.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z) )/ det;
+	float l3 = 1.0f - l1 - l2;
+	return l1 * p1.y + l2 * p2.y + l3 * p3.y;
+}
+
+float Terrain::GetHeightAt(int worldX, int worldZ)
+{
+	transform.Update();
+
+	glm::vec3 local = glm::inverse(transform.GetMatrix()) * glm::vec4(worldZ, 0, worldX, 1.0);
+
+	int index = local.z * terrainSize + local.x;
+	glm::vec3 v = (meshRenderer->GetMesh().vertices[index ].position);
+	v = transform.GetMatrix() * glm::vec4(v.x, v.y, v.z, 1.0);
+
+	int terrainZ = worldX/transform.GetScale().x - transform.GetPosition().x;
+	int terrainX = worldZ/ transform.GetScale().z - transform.GetPosition().z;
+
+	float gridSuqareSize = terrainSize / (float)meshRenderer->GetMesh().vertices.size()-1;
+
+	int gridX = -glm::floor(terrainX / gridSuqareSize);
+	int gridZ = -glm::floor(terrainZ / gridSuqareSize);
+
+
+	float h1 = TriangleBaric(meshRenderer->GetMesh().vertices[gridZ * terrainSize + gridX].position,
+		meshRenderer->GetMesh().vertices[gridZ * terrainSize + gridX+1].position,
+		meshRenderer->GetMesh().vertices[(gridZ+1) * terrainSize + gridX].position,
+		glm::vec2(worldX / transform.GetScale().x, worldZ/ transform.GetScale().x));
+
+	float h2 = TriangleBaric(meshRenderer->GetMesh().vertices[gridZ * terrainSize + gridX].position,
+		meshRenderer->GetMesh().vertices[gridZ * terrainSize + gridX + 1].position,
+		meshRenderer->GetMesh().vertices[(gridZ + 1) * terrainSize + gridX+1].position,
+		glm::vec2(worldX / transform.GetScale().x, worldZ / transform.GetScale().x));
+
+	return ((h1 + h2)/2) * transform.GetScale().y;
+	
+}
+
+
+void Terrain::GetCenter(int& x, int& y,int& z)
+{
+	transform.Update();
+
+	int xr = this->terrainSize / 2;
+	int xz = terrainSize / 2;
+	glm::vec3 v = (meshRenderer->GetMesh().vertices[((xz) *terrainSize) + xr].position);
+	v = transform.GetMatrix() * glm::vec4(v.x, v.y, v.z, 1.0);
+
+	x = v.x;
+	y = v.y;
+	z = v.z;
+
+
+}
+
+
+bool Terrain::GenerateFaultFormation(int iterations, int minHeight, float weight, bool random)
 {
 	int x1, x2, z1, z2;
 	float* heights = NULL;
@@ -162,9 +223,9 @@ unsigned char* getColorAtPixel(unsigned char* image, size_t x, size_t y, size_t 
 	return (image + (y * width + x) *1);
 }
 
-void Terrain::ApplyHeightMap(std::string texturePath, float maxHeight)
+void Terrain::ApplyHeightMap(std::string texturePath)
 {
-	this->maxHeight = maxHeight;
+
 	int width, height;
 	unsigned char* terrainData = SOIL_load_image(texturePath.c_str(), &width, &height, 0, SOIL_LOAD_L);
 
@@ -207,7 +268,7 @@ void Terrain::ApplyHeightMap(std::string texturePath, float maxHeight)
 			for (int i = 0; i < terrainSize; i++)
 			{
 				int inted = ((j)*width) + i;
-				meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y = heights[(width * (width * j / terrainSize)) + (width * i / terrainSize)] * maxHeight;
+				meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y = heights[(width * (width * j / terrainSize)) + (width * i / terrainSize)] ;
 				min = meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y < min ? meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y : min;
 				max = meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y > max ? meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y : max;
 
@@ -218,7 +279,7 @@ void Terrain::ApplyHeightMap(std::string texturePath, float maxHeight)
 
 		meshRenderer->GetMesh().CalculateNormals();
 		meshRenderer->vertexBuffer->AddData(meshRenderer->GetMesh().vertices);
-		transform.Translate(-meshRenderer->GetMesh().GetCenter().x, -meshRenderer->GetMesh().GetCenter().y, -meshRenderer->GetMesh().GetCenter().z);
+		//transform.Translate(-meshRenderer->GetMesh().GetCenter().x, -meshRenderer->GetMesh().GetCenter().y, -meshRenderer->GetMesh().GetCenter().z);
 		delete[] heights;
 	}
 }

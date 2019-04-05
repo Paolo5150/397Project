@@ -60,7 +60,7 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	material->LoadFloat("shininess", 200.0f);
 	material->SetColor(0.8, 0.8f, 1.0f);
 
-	material->LoadFloat("UVscale", 25.0f);
+	material->LoadFloat("UVscale", 30.0f);
 
 	AssetLoader::Instance().GetAsset<Model>("Quad")->PopulateGameObject(this);
 	MeshRenderer* mr = dynamic_cast<MeshRenderer*>(GetChild("QuadMesh")->GetComponentByType("Renderer"));
