@@ -99,8 +99,6 @@ void Terrain::GetCenter(int& x, int& y,int& z)
 	x = v.x;
 	y = v.y;
 	z = v.z;
-
-
 }
 
 

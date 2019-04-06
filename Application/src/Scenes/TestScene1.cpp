@@ -121,7 +121,7 @@ void TestScene1::Initialize() {
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(0, 20, 0);
-	w->transform.SetPosition(x, 25, z);
+	w->transform.SetPosition(x, 40, z);
 	w->transform.SetScale(1000, 1000, 1);
 
 
