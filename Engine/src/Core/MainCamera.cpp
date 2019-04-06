@@ -26,6 +26,10 @@ void MainCamera::UpdateControls()
 	this->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
 	this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
 
+	if (glm::dot(transform.GetLocalFront(), glm::vec3(0, -1, 0)) > 0.8 || glm::dot(transform.GetLocalFront(), glm::vec3(0, 1, 0)) > 0.8)
+		this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), -transform.GetLocalRight());
+
+
 	//Handle forward and backward movement
 	if (Input::GetKeyDown(GLFW_KEY_W) == true && Input::GetKeyDown(GLFW_KEY_S) == false)
 	{
@@ -66,7 +70,7 @@ void MainCamera::UpdateControls()
 	else if (Input::GetKeyDown(GLFW_KEY_KP_SUBTRACT))
 		_movementSpeed--;
 
-//	Logger::LogInfo(transform.ToString());
+	//Logger::LogInfo(transform.ToString());
 }
 
 void MainCamera::SetMovementSpeed(float speed)

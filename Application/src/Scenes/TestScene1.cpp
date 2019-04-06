@@ -118,6 +118,8 @@ void TestScene1::Initialize() {
 	AddGameObject(terrain);
 	AddGameObject(nanosuit);
 
+	nanosuit->transform.SetPosition(200, terrain->GetHeightAt(200, 200), 200);
+
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(0, 20, 0);

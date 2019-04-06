@@ -70,7 +70,7 @@ void RenderingEngine::RenderBuffer(MaterialType mt)
 	for (int camIndex = 0; camIndex < Camera::GetAllCameras().size(); camIndex++)
 	{
 		Camera& cam = *Camera::GetAllCameras()[camIndex];
-		Logger::LogInfo("Cam name", cam.GetName());
+
 		if (!cam.GetActive()) continue;
 	
 		if (previousDepth != cam.GetDepth())
