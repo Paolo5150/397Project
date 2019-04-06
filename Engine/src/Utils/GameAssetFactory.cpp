@@ -25,4 +25,6 @@ InternalAsset* GameAssetFactory::Create(std::string type, std::string name)
 		return new GameObject(name);
 	else if (type == "Material")
 		return new Material();
+	else if (type == "Model")
+		return AssetLoader::Instance().GetAsset<Model>(name)->CreateGameObject();
 }

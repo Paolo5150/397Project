@@ -52,7 +52,7 @@ void TestScene1::Initialize() {
 
 	Timer::SetDisplayFPS(true);
 	
-	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
+	nanosuit = (GameObject*)GameAssetFactory::Create("Model", "Nanosuit");
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.0f, 0.0f, 0.0f);
