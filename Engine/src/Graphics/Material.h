@@ -35,7 +35,7 @@
 
 
 
-	class Material
+	class Material : public InternalAsset
 	{
 
 	public:

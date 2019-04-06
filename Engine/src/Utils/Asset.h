@@ -11,3 +11,11 @@ public:
 	bool preserve;
 
 };
+
+class InternalAsset : public Asset
+{
+public:
+	InternalAsset(){};
+	virtual ~InternalAsset(){ /*Logger::LogInfo("Delete asset", name);*/ };
+
+};

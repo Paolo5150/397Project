@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "..\Graphics\Shader.h"
 
-class Component
+class Component : public InternalAsset
 {
 public:
 //---- Public Member Functions ----//

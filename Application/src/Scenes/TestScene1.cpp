@@ -90,15 +90,14 @@ void TestScene1::Initialize() {
 	nanosuit->transform.SetScale(2,2,2);
 
 	float ar = Window::Instance().GetAspectRatio();
-	cam = (MainCamera*)GameAssetFactory::Create<MainCamera>();
+	cam = (MainCamera*)GameAssetFactory::Create("MainCamera");
 	cam->transform.SetPosition(0,35, 0);
 	cam->transform.SetRotation(30, 180, 0);
-
 	
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
 
-	Water* w = (Water*)GameAssetFactory::Create<Water>();
+	Water* w = (Water*)GameAssetFactory::Create("Water");
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string>
 #include "..\Graphics\Material.h"
+#include "..\Utils\Asset.h"
 
 class Component;
 class Shader;
@@ -26,7 +27,7 @@ class Camera;
 *
 * @bug No known bugs.
 */
-class GameObject
+class GameObject : public InternalAsset
 {
 public:
 //---- Public Member Functions ----//
