@@ -68,8 +68,6 @@ void LightManager::SetFogEnable(bool fe)
 
 void LightManager::UpdateUBOs()
 {
-	if (sceneMainCamera == nullptr) return;
-
 	totalDirLights = alldirectionalLights.size();
 	shadowMaps.clear();
 
@@ -146,6 +144,12 @@ void LightManager::UpdateUBOs()
 
 void LightManager::Update()
 {
+	if (sceneMainCamera == nullptr)
+	{
+		sceneMainCamera = Camera::GetCameraByName("Main Camera");
+		if (sceneMainCamera == nullptr)
+			return;
+	}
 	UpdateUBOs();
 
 	//Deactivate textures here

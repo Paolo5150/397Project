@@ -93,18 +93,15 @@ void TestScene1::Initialize() {
 	cam->transform.SetPosition(0,35, 0);
 	cam->transform.SetRotation(30, 180, 0);
 
-	LightManager::Instance().sceneMainCamera = cam; //Need to change this
+	
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
 
 	Water* w = new Water();
-
-	w->mainCamera = dynamic_cast<MainCamera*>(cam);
-
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
-	terrain->transform.SetScale(5 ,120, 5);
+	terrain->transform.SetScale(7 ,160, 7);
 	terrain->transform.Translate(0, 0, 0);
 
 

@@ -20,6 +20,17 @@ Camera::Camera(std::string name) : GameObject(name)
 
 }
 
+Camera* Camera::GetCameraByName(std::string name)
+{
+	for (int i = 0; i < GetAllCameras().size(); i++)
+	{
+		if (GetAllCameras()[i]->GetName() == name)
+			return GetAllCameras()[i];
+	}
+
+	return nullptr;
+}
+
 void Camera::Update()
 {
 	GameObject::Update();

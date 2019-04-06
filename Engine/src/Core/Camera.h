@@ -30,6 +30,8 @@ public:
 		return allCamerasVector;
 	};
 
+	static Camera* GetCameraByName(std::string name);
+
 	unsigned GetCullingMask() { return cullingMask; };
 	void AddLayerMask(unsigned layer) { cullingMask |= layer; };
 	void RemoveLayerMask(unsigned layer){ cullingMask = cullingMask & (~layer); }

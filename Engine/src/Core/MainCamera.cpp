@@ -3,6 +3,7 @@
 
 MainCamera::MainCamera(float moveSpeed, float rotationSpeed, float fieldOfView, float aspectRatio, float nearPlane, float farPlane) : CameraPerspective(fieldOfView, aspectRatio, nearPlane, farPlane)
 {
+	this->SetName("Main Camera");
 	_movementSpeed = moveSpeed;
 	_rotationSpeed = rotationSpeed;
 }
@@ -64,7 +65,6 @@ void MainCamera::UpdateControls()
 		_movementSpeed++;
 	else if (Input::GetKeyDown(GLFW_KEY_KP_SUBTRACT))
 		_movementSpeed--;
-
 
 //	Logger::LogInfo(transform.ToString());
 }

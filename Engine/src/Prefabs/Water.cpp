@@ -7,34 +7,30 @@
 #include "..\Graphics\RenderingEngine.h"
 #include "..\Lighting\LightingManager.h"
 #include "..\Scene\SceneManager.h"
+#include "..\Core\MainCamera.h"
 
 
 Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 {
 	
 	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>(std::bind(&Water::ResizeFrameBuffers, this, std::placeholders::_1));
-	Initialize(normalMap, distortion);
-
-
-	
+	Initialize(normalMap, distortion);	
 }
 
 Water::Water() : GameObject("Water")
 {
-
 	Initialize(AssetLoader::Instance().GetAsset<Texture2D>("water_normal"), AssetLoader::Instance().GetAsset<Texture2D>("dudv"));
 }
 
 void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 {
+	mainCamera = nullptr;
+
 	timer = 0;
 	waterCamera = new CameraPerspective(60, Window::Instance().GetAspectRatio(), 0.1, 500000);
 	waterCamera->RemoveAllMaskLayers();
 	waterCamera->AddLayerMask(Layers::DEFAULT);
 	waterCamera->AddLayerMask(Layers::TERRAIN);
-
-
-
 	waterCamera->SetActive(false);
 
 
@@ -82,6 +78,13 @@ Water::~Water()
 
 void Water::Update()
 {
+	if (mainCamera == nullptr)
+	{
+		mainCamera = dynamic_cast<MainCamera*>(Camera::GetCameraByName("Main Camera"));
+		if (mainCamera == nullptr)
+			return;
+	}
+
 	GameObject::Update();
 	Core::Instance().GetGraphicsAPI().SetClipPlaneActive(true);
 	timer += Timer::GetDeltaS();
