@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "..\Core\Logger.h"
-
+#include "..\Utils\GameAssetFactory.h"
 Scene::Scene(std::string n) : name(n)
 {
 	skybox = nullptr;
@@ -78,4 +78,5 @@ void Scene::ExitScene()
 	}
 
 	m_allGameObjects.clear();
+	GameAssetFactory::Instance().CleanUp();
 }

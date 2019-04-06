@@ -19,6 +19,13 @@ GameAssetFactory::~GameAssetFactory()
 
 }
 
+void GameAssetFactory::CleanUp()
+{
+	for (int i = 0; i < toBeDeletedASsets.size(); i++)
+		delete toBeDeletedASsets[i];
+}
+
+
 InternalAsset* GameAssetFactory::Create(std::string type, std::string name)
 {
 
@@ -30,7 +37,11 @@ InternalAsset* GameAssetFactory::Create(std::string type, std::string name)
 	else if (type == "GameObject")
 		return new GameObject(name);
 	else if (type == "Material")
-		return new Material();
+	{
+		Material*m = new Material();
+		toBeDeletedASsets.push_back(m);
+		m;
+	}
 	else if (type == "Model")
 		return AssetLoader::Instance().GetAsset<Model>(name)->CreateGameObject();
 }

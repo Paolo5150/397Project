@@ -1,7 +1,7 @@
 #pragma once
 #include "..\GameObject\GameObject.h"
 #include "AssetLoader.h"
-
+#include <vector>
 
 class GameAssetFactory
 {
@@ -15,6 +15,7 @@ public:
 
 
 private:
+	std::vector<InternalAsset*> toBeDeletedASsets;
 	GameAssetFactory();
 };
 
