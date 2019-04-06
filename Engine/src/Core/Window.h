@@ -20,6 +20,7 @@
 		void GetWindowSize(int& w, int& h);
 		void SetWindowTitle(std::string title);
 
+		GLFWwindow * window;
 
 	private:
 		static void OnClose(GLFWwindow* win);
@@ -27,7 +28,6 @@
 		static void Initialize();
 		static Window instance;
 
-		GLFWwindow * window;
 		Window();
 		~Window();
 	};

@@ -4,6 +4,7 @@
 #include "..\Event\EventDispatcher.h"
 #include "..\Event\WindowEvents.h"
 
+
 Window Window::instance;
 
 Window& Window::Instance()
@@ -26,10 +27,12 @@ void Window::Initialize()
 	glfwWindowHint(GLFW_DOUBLEBUFFER, true);
 	instance.window = glfwCreateWindow(800, 600, "", NULL, NULL);
 	glfwMakeContextCurrent(instance.window);
+
 	
 	glfwSetWindowCloseCallback(instance.window, OnClose);
 	glfwSetWindowSizeCallback(instance.window, OnResize);
 	glfwSwapInterval(0);
+
 }
 
 Window::Window()

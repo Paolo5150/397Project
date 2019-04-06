@@ -11,6 +11,9 @@
 #include "..\Graphics\RenderingEngine.h"
 #include "..\Lighting\LightingManager.h"
 #include "Input.h"
+#include "imgui.h"
+#include "..\GUI\imgui_impl_glfw.h"
+#include "..\GUI\imgui_impl_opengl3.h"
 
 
 void Core::Initialize()
@@ -43,6 +46,11 @@ void Core::Initialize()
 	// Set up windows after flew initialization (and after the context has been set).
 	Window::Instance().SetWindowSize(800, 600);
 	Input::Init(false, true);
+
+	ImGui::CreateContext();
+	ImGui_ImplGlfw_InitForOpenGL(Window::Instance().window, false);
+	ImGui_ImplOpenGL3_Init("#version 430");
+
 	//Managers initialization
 	Timer::Initialize();
 	LightManager::Instance().Initialize();
@@ -176,6 +184,8 @@ bool Core::Render(Event* e)
 
 	LightManager::Instance().Update();
 	RenderingEngine::Instance().RenderBuffer();
+
+
 	/*glEnable(GL_TEXTURE_2D);
 	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();
 	glBegin(GL_TRIANGLES);
@@ -190,7 +200,14 @@ bool Core::Render(Event* e)
 
 
 	glEnd();*/
-
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+	ImGui::Begin("Hello, world!");
+	ImGui::Text("Dio cane");
+	ImGui::End();
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	Window::Instance().Refresh();
 	return 0;
 }

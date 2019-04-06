@@ -100,7 +100,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(SolutionDir)PCH\$(ProjectName)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -146,7 +146,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(SolutionDir)PCH\$(ProjectName)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -235,6 +235,14 @@
     <ClInclude Include="src\Graphics\Vertex.h" />
     <ClInclude Include="src\Graphics\VertexArray.h" />
     <ClInclude Include="src\Graphics\VertexArrayGL.h" />
+    <ClInclude Include="src\GUI\imconfig.h" />
+    <ClInclude Include="src\GUI\imgui.h" />
+    <ClInclude Include="src\GUI\imgui_impl_glfw.h" />
+    <ClInclude Include="src\GUI\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\GUI\imgui_internal.h" />
+    <ClInclude Include="src\GUI\imstb_rectpack.h" />
+    <ClInclude Include="src\GUI\imstb_textedit.h" />
+    <ClInclude Include="src\GUI\imstb_truetype.h" />
     <ClInclude Include="src\Lighting\DirectionalLight.h" />
     <ClInclude Include="src\Lighting\Light.h" />
     <ClInclude Include="src\Lighting\LightingManager.h" />
@@ -278,6 +286,12 @@
     <ClCompile Include="src\Graphics\CubeMapGL.cpp" />
     <ClCompile Include="src\Graphics\FrameBufferGL.cpp" />
     <ClCompile Include="src\Graphics\SkyBox.cpp" />
+    <ClCompile Include="src\GUI\imgui.cpp" />
+    <ClCompile Include="src\GUI\imgui_demo.cpp" />
+    <ClCompile Include="src\GUI\imgui_draw.cpp" />
+    <ClCompile Include="src\GUI\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\GUI\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\GUI\imgui_widgets.cpp" />
     <ClCompile Include="src\Prefabs\CubeMesh.cpp" />
     <ClCompile Include="src\Prefabs\GridMesh.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
