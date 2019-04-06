@@ -1,5 +1,6 @@
 #pragma once
 #include "..\GameObject\GameObject.h"
+#include "AssetLoader.h"
 class GameAssetFactory
 {
 public:
@@ -7,7 +8,7 @@ public:
 	~GameAssetFactory();
 
 	template <class T>
-	GameObject* Create(std::string name);
+	static GameObject* Create(std::string name = "");
 
 
 private:
@@ -15,4 +16,12 @@ private:
 };
 
 template <class T>
-GameObject* Create(std::string name);
+GameObject* GameAssetFactory::Create(std::string name)
+{
+	std::string typeName = typeid(T).name();
+
+	if (typeName == "Model")
+		return AssetLoader::Instance().GetAsset<Model>(name)->CreateGameObject();
+	else
+		return new T();
+}

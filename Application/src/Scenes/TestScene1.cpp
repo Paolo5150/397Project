@@ -13,6 +13,7 @@
 #include "Prefabs\Terrain.h"
 #include "Graphics\CubeMap.h"
 #include "Graphics\SkyBox.h"
+#include "Utils\GameAssetFactory.h"
 
 
 
@@ -89,7 +90,7 @@ void TestScene1::Initialize() {
 	nanosuit->transform.SetScale(2,2,2);
 
 	float ar = Window::Instance().GetAspectRatio();
-	cam = new MainCamera(20.0f, 20.0f, 60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
+	cam = (MainCamera*)GameAssetFactory::Create<MainCamera>();
 	cam->transform.SetPosition(0,35, 0);
 	cam->transform.SetRotation(30, 180, 0);
 
@@ -97,7 +98,7 @@ void TestScene1::Initialize() {
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
 
-	Water* w = new Water();
+	Water* w = (Water*)GameAssetFactory::Create<Water>();
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);

@@ -5,8 +5,8 @@
 class MainCamera : public CameraPerspective
 {
 public:
-	MainCamera(float moveSpeed, float rotationSpeed, float fieldOfView, float aspectRatio, float nearPlane, float farPlane);
-	MainCamera(float fieldOfView, float aspectRatio, float nearPlane, float farPlane);
+	MainCamera();
+
 
 	void UpdateControls();
 	void Update() override;

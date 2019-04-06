@@ -1,18 +1,14 @@
 #include "MainCamera.h"
 #include "Timer.h"
 
-MainCamera::MainCamera(float moveSpeed, float rotationSpeed, float fieldOfView, float aspectRatio, float nearPlane, float farPlane) : CameraPerspective(fieldOfView, aspectRatio, nearPlane, farPlane)
+MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f)
 {
 	this->SetName("Main Camera");
-	_movementSpeed = moveSpeed;
-	_rotationSpeed = rotationSpeed;
+	_movementSpeed = 20;
+	_rotationSpeed = 20;
 }
 
-MainCamera::MainCamera(float fieldOfView, float aspectRatio, float nearPlane, float farPlane) : CameraPerspective(fieldOfView, aspectRatio, nearPlane, farPlane)
-{
-	_movementSpeed = 20.0f;
-	_rotationSpeed = 20.0f;
-}
+
 
 void MainCamera::Update()
 {
