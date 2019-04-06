@@ -6,15 +6,16 @@
 class GameAssetFactory
 {
 public:
-	GameAssetFactory();
+	static GameAssetFactory Instance();
 	~GameAssetFactory();
 
 
-	static InternalAsset* Create(std::string type,std::string name = "");
+	InternalAsset* Create(std::string type,std::string name = "");
+	void CleanUp();
 
 
 private:
-
+	GameAssetFactory();
 };
 
 

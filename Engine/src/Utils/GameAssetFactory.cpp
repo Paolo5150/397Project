@@ -4,6 +4,12 @@
 #include "..\Core\MainCamera.h"
 
 
+GameAssetFactory GameAssetFactory::Instance()
+{
+	static GameAssetFactory instance;
+	return instance;
+}
+
 GameAssetFactory::GameAssetFactory()
 {
 
