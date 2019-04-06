@@ -120,9 +120,10 @@ void RenderingEngine::RenderVectorOverrideColor(Camera& cam, std::vector<Rendere
 	{
 		if (cam.GetCullingMask() & r[i]->_parent->GetLayer()) //Check for culling mask
 		{
-			LightManager::Instance().UpdateShader(r[i]->GetMaterial(m).GetShader());
+			
 			r[i]->GetMaterial(m).BindMaterial();
 			r[i]->GetMaterial(m).SetColor(color.x, color.y, color.z);
+			r[i]->GetMaterial(m).GetShader().SetVec3("AmbientLight", LightManager::Instance().GetAmbientLight());
 			r[i]->OnPreRender(cam, &r[i]->GetMaterial(m).GetShader());
 			r[i]->Render(cam);
 			r[i]->OnPostRender(cam, &r[i]->GetMaterial(m).GetShader());

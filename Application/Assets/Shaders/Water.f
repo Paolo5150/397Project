@@ -79,16 +79,16 @@ void main()
 {
     vec2 ndc = (clipSpace.xy / clipSpace.w) / 2.0 + 0.5;
    
-    vec2 dudvTexture = texture(special0,vec2(Textcoords.x + timer/50.0f,Textcoords.y + timer/50.0f) * material.UVScale*3.0).rg * 2.0 - 1.0;
-	vec2 dudvTexture2 = texture(special0,vec2(Textcoords.x - timer/50.0f,Textcoords.y + timer/50.0f) * material.UVScale*3.0).rg * 2.0 - 1.0;
+    vec2 dudvTexture = texture(special0,vec2(Textcoords.x + timer/200.0f,Textcoords.y + timer/200.0f) * material.UVScale*3.0).rg * 2.0 - 1.0;
+	vec2 dudvTexture2 = texture(special0,vec2(Textcoords.x - timer/200.0f,Textcoords.y + timer/200.0f) * material.UVScale*3.0).rg * 2.0 - 1.0;
 	
 	vec2 totalDistortion = 0.005 * dudvTexture + 0.005 * dudvTexture2;
    
     vec3 reflectionColor = texture(reflection0,totalDistortion*1.5f + vec2(ndc.x,1.0 - ndc.y)).rgb;
     vec3 refractionColor = texture(refraction0,totalDistortion*2.0f + ndc).rgb;
 
-    vec3 normalMap = normalize(texture(normal0,(totalDistortion + Textcoords + vec2(timer/150,timer/130)) * material.UVScale).rgb *2.0 -1.0);
-    vec3 normalMap2 = normalize(texture(normal0,(totalDistortion - Textcoords + vec2(timer/130,-timer/150))* material.UVScale).rgb *2.0 -1.0);
+    vec3 normalMap = normalize(texture(normal0,(totalDistortion + Textcoords + vec2(timer/5000,timer/3000)) * material.UVScale).rgb *2.0 -1.0);
+    vec3 normalMap2 = normalize(texture(normal0,(totalDistortion - Textcoords + vec2(timer/3000,-timer/5000))* material.UVScale).rgb *2.0 -1.0);
 
 	vec3 FragToCam = normalize(FragPosition - CameraPosition);
     vec3 cubemap = texture(cubemap0,reflect(FragToCam,Normal)).rgb;
@@ -103,7 +103,7 @@ void main()
 	
 	
 	
-	vec3 totalRef = mix(cubemap,reflectionColor,0.5f);
+	vec3 totalRef = mix(cubemap,reflectionColor,0.7f);
 	vec3 textureMix = mix(totalRef,refractionColor,dot(camToFrag,-Normal));
 
     vec3 total = (AmbientLight + DirLights + PointLights) * textureMix;

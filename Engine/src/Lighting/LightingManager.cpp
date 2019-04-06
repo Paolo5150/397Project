@@ -166,11 +166,10 @@ void LightManager::Update()
 // Between 20 and 30 -> reflection
 
 //Send shadow maps to current shader
-void LightManager::UpdateShader(Shader& shader)
+void LightManager::SendShadowToShader(Shader& shader)
 {
 
 	shader.Bind(); //This line is kind of vital
-	shader.SetVec3("AmbientLight", ambientLight);
 	//Load shadow maps
 	std::string uniformName = "shadowMap[";
 

@@ -127,7 +127,7 @@ float ShadowCalculation();
 
 void main()
 {
-   vec3 blendColor = texture(special0,Textcoords).rgb;
+
    
 	vec3 colorRatio = vec3(max(0.4,HeightRatio));
 

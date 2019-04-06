@@ -65,7 +65,7 @@ void TestScene1::Initialize() {
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
-	dirLight2->transform.SetRotation(90, 0, 0);
+	dirLight2->transform.SetRotation(90, -120, 0);
 	dirLight2->SetIntensity(0.5f);
 
 
@@ -101,7 +101,7 @@ void TestScene1::Initialize() {
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
-	terrain->transform.SetScale(7 ,160, 7);
+	terrain->transform.SetScale(15 ,300, 15);
 	terrain->transform.Translate(0, 0, 0);
 
 
@@ -122,9 +122,9 @@ void TestScene1::Initialize() {
 
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
-	cam->transform.SetPosition(0, 20, 0);
-	w->transform.SetPosition(x, 40, z);
-	w->transform.SetScale(1000, 1000, 1);
+	cam->transform.SetPosition(x, y,z);
+	w->transform.SetPosition(x, 100, z);
+	w->transform.SetScale(2000, 2000, 1);
 
 
 }
@@ -145,7 +145,7 @@ void TestScene1::LogicUpdate() {
 	pLight->transform.Translate(0.05f, 0, 0);
 	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
 	//Logger::LogInfo("H ", h);
-	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 10, cam->transform.GetPosition().z);
+	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();
