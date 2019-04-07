@@ -407,5 +407,14 @@
     <ClInclude Include="src\GUI\imgui_impl_opengl3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\GUI\GUIElements\GUIManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\GUIElements\GUIObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\GUIElements\GUIText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

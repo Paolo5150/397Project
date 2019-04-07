@@ -61,6 +61,27 @@ void Core::Initialize()
 
 	AssetLoader::Initialize(graphicsAPI);
 
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	int x, y;
+	Window::Instance().GetWindowSize(x, y);
+	ImGui::SetNextWindowSize(ImVec2(x, y));
+	ImGui::Begin("Hello, world!", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
+		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
+
+	ImVec2 pos = ImGui::GetCursorScreenPos();
+
+	ImGui::Text("Loading...");
+	//ImGui::Image((ImTextureID)AssetLoader::Instance().GetAsset<Texture2D>("grass")->GetID(), ImVec2(200, 200),ImVec2(0,0),
+	//					ImVec2(1,1),ImVec4(1,1,1,1),ImVec4(0,0,0,0));
+
+	ImGui::End();
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	Window::Instance().Refresh();
 	//Assets loaded here are available to all scenes.
 	//Load shsders
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f",true);
@@ -186,28 +207,8 @@ bool Core::Render(Event* e)
 	RenderingEngine::Instance().RenderBuffer();
 
 
-	/*glEnable(GL_TEXTURE_2D);
-	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();
-	glBegin(GL_TRIANGLES);
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-0.5f, -0.5f, 0.0f);
+	
 
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(0.5f, -0.5f, 0.0f);
-
-	glTexCoord2f(0.5, 1.0);
-	glVertex3f(0.0f, 0.5f, 0.0f);
-
-
-	glEnd();*/
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
-	ImGui::Begin("Hello, world!");
-	ImGui::Text("Dio cane");
-	ImGui::End();
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	Window::Instance().Refresh();
 	return 0;
 }
