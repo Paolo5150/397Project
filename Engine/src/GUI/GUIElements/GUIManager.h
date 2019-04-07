@@ -24,19 +24,25 @@ public:
 	void Refresh();
 
 	template <class T>
-	void AddGUIObject(T* gobj);
+	void AddGUIObject(T* gobj, bool preserve = false);
 	void SetBackgroundColor(float r, float g, float b, float a);
 
 
 private:
 	bool OnSceneChange(Event* e);
 	std::map<std::string,std::list<GUIObject*>> allGUI;
+	std::map<std::string, std::list<GUIObject*>> allGUIPreserved;
+
 	GUIManager(){};
 };
 
 template <class T>
-void GUIManager::AddGUIObject(T* gobj)
+void GUIManager::AddGUIObject(T* gobj, bool preserve)
 {
 	std::string type = typeid(T).name();
-	allGUI[type].push_back(gobj);
+	if (!preserve)
+		allGUI[type].push_back(gobj);
+	else
+		allGUIPreserved[type].push_back(gobj);
+
 }

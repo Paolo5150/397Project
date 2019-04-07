@@ -82,7 +82,7 @@ void main()
     vec2 dudvTexture = texture(special0,vec2(Textcoords.x + timer/200.0f,Textcoords.y + timer/200.0f) * material.UVScale*3.0).rg * 2.0 - 1.0;
 	vec2 dudvTexture2 = texture(special0,vec2(Textcoords.x - timer/200.0f,Textcoords.y + timer/200.0f) * material.UVScale*3.0).rg * 2.0 - 1.0;
 	
-	vec2 totalDistortion = 0.005 * dudvTexture + 0.005 * dudvTexture2;
+	vec2 totalDistortion = 0.008 * dudvTexture + 0.008* dudvTexture2;
    
     vec3 reflectionColor = texture(reflection0,totalDistortion*1.5f + vec2(ndc.x,1.0 - ndc.y)).rgb;
     vec3 refractionColor = texture(refraction0,totalDistortion*2.0f + ndc).rgb;

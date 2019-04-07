@@ -68,7 +68,6 @@ void Core::Initialize()
 		0 + 50, 0 + 50,
 		wx - 100, wy - 50));
 	LoadBasicAssets();
-
 	
 	loading->_message = "Loading scene (and what a scene that is)...";
 	GUIManager::Instance().Render(1, 1);
@@ -99,7 +98,6 @@ void Core::Shutdown()
 
 	m_runningApplication->AppShutdown(); //Shutdow game first
 
-	Logger::LogError("Engine asset clean up");
 	AssetLoader::Instance().UnloadPreserved<Shader>(); 
 	AssetLoader::Instance().UnloadPreserved<Texture2D>();
 	AssetLoader::Instance().UnloadPreserved<Model>();
@@ -168,9 +166,7 @@ bool Core::Render(Event* e)
 
 	LightManager::Instance().Update();
 	RenderingEngine::Instance().RenderBuffer();
-	GUIManager::Instance().Render();
-
-	
+	GUIManager::Instance().Render();	
 
 	Window::Instance().Refresh();
 	return 0;
@@ -178,9 +174,6 @@ bool Core::Render(Event* e)
 
 void Core::LoadBasicAssets()
 {
-
-
-	GUIManager::Instance().Render(1, 1);
 
 	loading->_message = "Loading textures...";
 	GUIManager::Instance().Render(1, 1);

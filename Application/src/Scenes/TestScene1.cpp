@@ -15,6 +15,8 @@
 #include "Graphics\SkyBox.h"
 #include "Utils\GameAssetFactory.h"
 
+#include "GUI\GUIElements\GUIText.h"
+#include "GUI\GUIElements\GUIManager.h"
 
 
 MainCamera* cam;
@@ -104,7 +106,6 @@ void TestScene1::Initialize() {
 	terrain->transform.SetScale(15 ,300, 15);
 	terrain->transform.Translate(0, 0, 0);
 
-
 	AddGameObject(w);
 
 	AddGameObject(dirLight);
@@ -147,6 +148,7 @@ void TestScene1::LogicUpdate() {
 	//Logger::LogInfo("H ", h);
 	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
+	
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();
 

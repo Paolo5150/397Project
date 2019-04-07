@@ -54,9 +54,22 @@ void GUIManager::SetBackgroundColor(float r, float g, float b, float a)
 
 void GUIManager::Refresh()
 {
+
 	//Render text
 	auto it = allGUI[typeid(GUIText).name()].begin();
 	for (; it != allGUI[typeid(GUIText).name()].end(); it++)
+	{
+		if ((*it)->isActive)
+		{
+			ImGui::GetWindowDrawList()->AddText(Maths::vec2ToImVec2((*it)->position),
+				ImGui::GetColorU32(Maths::vec4ToImVec4(((GUIText*)(*it))->_color))
+				, ((GUIText*)(*it))->_message.c_str());
+		}
+
+	}
+
+	it = allGUIPreserved[typeid(GUIText).name()].begin();
+	for (; it != allGUIPreserved[typeid(GUIText).name()].end(); it++)
 	{
 		if ((*it)->isActive)
 		{
@@ -119,6 +132,13 @@ void GUIManager::Shutdown()
 		delete (*it);
 
 	allGUI[typeid(GUIText).name()].clear();
+
+	it = allGUIPreserved[typeid(GUIText).name()].begin();
+	for (; it != allGUIPreserved[typeid(GUIText).name()].end(); it++)
+		delete (*it);
+
+	allGUIPreserved[typeid(GUIText).name()].clear();
+
 
 	it = allGUI[typeid(GUIImage).name()].begin();
 	for (; it != allGUI[typeid(GUIImage).name()].end(); it++)

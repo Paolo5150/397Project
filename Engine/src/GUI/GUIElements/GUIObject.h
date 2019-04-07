@@ -7,7 +7,9 @@
 class GUIObject : public InternalAsset
 {
 public:
-	GUIObject() {};
+	GUIObject() {
+		isActive = 1;
+	};
 	virtual ~GUIObject(){};
 	glm::vec2 position;
 	glm::vec2 size;

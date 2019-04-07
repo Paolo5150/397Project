@@ -61,12 +61,12 @@ void SceneManager::LoadNewScene(std::string sceneName)
 		m_currentScene->m_isReady = false;
 	}
 
+	EventDispatcher::Instance().DispatchEvent(new SceneChangedEvent(m_currentScene));
 	m_currentScene = it->second;
 
 	m_currentScene->LoadAssets();
 	m_currentScene->Initialize();
 	m_currentScene->m_isReady = true;
-	EventDispatcher::Instance().DispatchEvent(new SceneChangedEvent(m_currentScene));
 }
 
 void SceneManager::DestroyAllScenes()
