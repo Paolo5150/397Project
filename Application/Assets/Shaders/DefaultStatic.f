@@ -13,6 +13,7 @@ struct Material
 vec3 color;
 float shininess;
 float UVScale;
+float reflectivness;
 };
 
 // Light buffers
@@ -55,6 +56,7 @@ uniform Material material;
 uniform sampler2D diffuse0;
 uniform sampler2D normal0;
 uniform vec3 AmbientLight;
+uniform samplerCube cubemap0;
 
 vec3 CalculatePointLights();
 vec3 CalculateDirectionalLights();
@@ -64,11 +66,17 @@ void main()
    
    vec3 diffuseColor = texture(diffuse0,Textcoords * material.UVScale).rgb;
    
+   vec3 CamToFrag = normalize(FragPosition - CameraPosition);
+   vec3 reflection = reflect(CamToFrag,Normal);
+   vec3 skyboxColor = texture(cubemap0,reflection).rgb;
+   
    vec3 DirLights = CalculateDirectionalLights();
    vec3 PointLights = CalculatePointLights();
 
    vec3 total = (AmbientLight + DirLights + PointLights) * diffuseColor* material.color;
-	gl_FragColor =  vec4(total,1.0);
+   
+   vec3 mixTotal = mix(total,skyboxColor,material.reflectivness);
+	gl_FragColor =  vec4(mixTotal,1.0);
 
 } 
 

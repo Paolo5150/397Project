@@ -61,7 +61,7 @@ void TestScene1::Initialize() {
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(10, 120, 0);
+	dirLight->transform.SetRotation(10, 117, 0);
 	dirLight->SetIntensity(0.9f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
@@ -82,12 +82,15 @@ void TestScene1::Initialize() {
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
+	mat.LoadCubemap(&skybox->GetCubeMap());
+
 	mat.LoadFloat("shininess", 1000.0f);
+	mat.LoadFloat("reflectivness", 1.0);
+
 
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 	nanosuit->transform.Translate(0, -100, -15);
-
 
 	nanosuit->transform.SetScale(2,2,2);
 

@@ -1,5 +1,8 @@
 #include "Material.h"
 #include "..\Utils\AssetLoader.h"
+#include "..\Scene\Scene.h"
+#include "..\Scene\SceneManager.h"
+#include "SkyBox.h"
 
 std::string Material::textureUniforms[] = {
 	"diffuse0",
@@ -41,9 +44,7 @@ void Material::PreloadMaterial()
 	LoadVec3("color", 1,1,1);
 	LoadFloat("shininess", 30.0f);
 	LoadFloat("UVScale", 1.0f);
-
-
-
+	LoadFloat("reflectivness", 0.0f);
 
 }
 
