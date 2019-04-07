@@ -20,7 +20,8 @@ public:
 
 	void Initialize();
 	void Shutdown();
-	void Render(bool forceRefresh = false);
+	void Render(bool forceRefresh = false, bool forceClear = false);
+	void Refresh();
 
 	template <class T>
 	void AddGUIObject(T* gobj);
@@ -37,6 +38,5 @@ template <class T>
 void GUIManager::AddGUIObject(T* gobj)
 {
 	std::string type = typeid(T).name();
-	Logger::LogError("Type", type);
 	allGUI[type].push_back(gobj);
 }

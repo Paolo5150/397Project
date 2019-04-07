@@ -1,8 +1,9 @@
 #include "GUIManager.h"
 #include "..\..\Core\Window.h"
 #include "GUIText.h"
-
 #include "..\..\Event\ApplicationEvents.h"
+#include "..\..\Core\Core.h"
+#include <thread>
 
 
 GUIManager& GUIManager::Instance()
@@ -34,26 +35,56 @@ void GUIManager::Initialize()
 
 		allGUI[typeid(GUIImage).name()].clear();
 
-		Logger::LogError("Guimanager cleared gui");
+
 		return 0;
 	});
 }
 
 bool GUIManager::OnSceneChange(Event* e)
 {
-	Logger::LogError("Scene changed in gui manager");
+
 	return false;
 }
 
 void GUIManager::SetBackgroundColor(float r, float g, float b, float a)
 {
 	ImGui::SetNextWindowBgAlpha(a);
-	
+	//Need to find a way to change color...
+}
+
+void GUIManager::Refresh()
+{
+	//Render text
+	auto it = allGUI[typeid(GUIText).name()].begin();
+	for (; it != allGUI[typeid(GUIText).name()].end(); it++)
+	{
+		if ((*it)->isActive)
+		{
+			ImGui::GetWindowDrawList()->AddText(Maths::vec2ToImVec2((*it)->position),
+				ImGui::GetColorU32(Maths::vec4ToImVec4(((GUIText*)(*it))->_color))
+				, ((GUIText*)(*it))->_message.c_str());
+		}
+
+	}
+
+	it = allGUI[typeid(GUIImage).name()].begin();
+	for (; it != allGUI[typeid(GUIImage).name()].end(); it++)
+	{
+		if ((*it)->isActive)
+		{
+			ImGui::GetWindowDrawList()->AddImage(((GUIImage*)(*it))->GetTextureID(),
+				Maths::vec2ToImVec2((*it)->position), Maths::vec2ToImVec2((*it)->position + (*it)->size));
+		}
+
+	}
 }
 
 
-void GUIManager::Render(bool forceRefresh)
+void GUIManager::Render(bool forceRefresh, bool forceClear)
 {
+	if (forceClear)
+		Core::Instance().GetGraphicsAPI().ClearColorBuffer();
+
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -69,31 +100,7 @@ void GUIManager::Render(bool forceRefresh)
 
 	ImGui::SetWindowFontScale(1.5);
 	
-	//Render text
-	auto it = allGUI[typeid(GUIText).name()].begin();
-	for (; it != allGUI[typeid(GUIText).name()].end(); it++)
-	{
-		if ((*it)->isActive)
-		{
-			ImGui::GetWindowDrawList()->AddText(Maths::vec2ToImVec2((*it)->position),
-			ImGui::GetColorU32(Maths::vec4ToImVec4(((GUIText*)(*it))->_color))
-			, ((GUIText*)(*it))->_message.c_str());
-		}
-
-	}
-
-	it = allGUI[typeid(GUIImage).name()].begin();
-	for (; it != allGUI[typeid(GUIImage).name()].end(); it++)
-	{
-		if ((*it)->isActive)
-		{
-			ImGui::GetWindowDrawList()->AddImage(((GUIImage*)(*it))->GetTextureID(),
-				Maths::vec2ToImVec2((*it)->position), Maths::vec2ToImVec2((*it)->position + (*it)->size));
-		}
-
-	}
-	//ImGui::Image((ImTextureID)AssetLoader::Instance().GetAsset<Texture2D>("grass")->GetID(), ImVec2(200, 200),ImVec2(0,0),
-	//					ImVec2(1,1),ImVec4(1,1,1,1),ImVec4(0,0,0,0));
+	Refresh();
 
 	ImGui::End();
 	ImGui::Render();
@@ -107,9 +114,22 @@ void GUIManager::Render(bool forceRefresh)
 void GUIManager::Shutdown()
 {
 	// Cleanup
+	auto it = allGUI[typeid(GUIText).name()].begin();
+	for (; it != allGUI[typeid(GUIText).name()].end(); it++)
+		delete (*it);
+
+	allGUI[typeid(GUIText).name()].clear();
+
+	it = allGUI[typeid(GUIImage).name()].begin();
+	for (; it != allGUI[typeid(GUIImage).name()].end(); it++)
+		delete (*it);
+
+	allGUI[typeid(GUIImage).name()].clear();
+
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-	allGUI.clear();
+	
 }
 
