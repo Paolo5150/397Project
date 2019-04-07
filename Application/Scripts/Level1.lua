@@ -1,0 +1,2 @@
+CreateAsset("Water");
+--print("Yes!");
