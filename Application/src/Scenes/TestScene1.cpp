@@ -97,6 +97,11 @@ void TestScene1::Initialize() {
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
 
+	std::string file = "Scripts\\Level1.lua";
+	Logger::LogInfo("Attempting to open file \"", file, "\"");
+	Lua::RunLua(file);
+	//Water* w = (Water*)Lua::GetCreatedAsset(0);
+
 	Water* w = (Water*)GameAssetFactory::Instance().Create("Water");
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
