@@ -57,18 +57,18 @@ void TestScene1::Initialize() {
 	nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 
 	//Lights
-	LightManager::Instance().SetAmbientLight(0.0f, 0.0f, 0.0f);
+	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(30, 117, 0);
-	dirLight->SetIntensity(0.7f);
+	dirLight->transform.SetRotation(10, 120, 0);
+	dirLight->SetIntensity(0.9f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
 	dirLight2->transform.SetRotation(90, -120, 0);
-	dirLight2->SetIntensity(0.5f);
+	dirLight2->SetIntensity(0.6f);
 
 
 	pLight = new PointLight();
@@ -87,7 +87,7 @@ void TestScene1::Initialize() {
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 	nanosuit->transform.Translate(0, -100, -15);
-	nanosuit->transform.SetRotation(45, 0, 0);
+
 
 	nanosuit->transform.SetScale(2,2,2);
 
