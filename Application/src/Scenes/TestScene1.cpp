@@ -144,11 +144,24 @@ void TestScene1::LogicUpdate() {
 	//cam->transform.RotateBy(0.5f, cam->transform.GetLocalUp());
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 
-	nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
-	nanosuit->transform.Translate(0.2f,0.0f,0.0f);
+	//nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
 
 
-	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.2f);
+
+	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
+	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));
+	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
+	int s = glm::sign(cross.y);
+
+	nanosuit->transform.RotateBy(yAngle * s, 0,1,0);
+
+	glm::vec3 np = nanosuit->transform.GetPosition();
+	np += nanosuit->transform.GetLocalFront() * 0.5f;
+	float y = terrain->GetHeightAt(np.x, np.z);
+	nanosuit->transform.SetPosition(np.x, y, np.z);
+
+
+
 	//Logger::LogInfo(cam->transform.ToString());
 
 	pLight->transform.Translate(0.05f, 0, 0);
