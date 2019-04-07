@@ -59,10 +59,10 @@ void Core::Initialize()
 
 	int wx, wy;
 	Window::Instance().GetWindowSize(wx, wy);
-	GUIManager::Instance().AddGUIObject<GUIText>(new GUIText("Loading...",wx - 200,wy - 50));
+	GUIManager::Instance().AddGUIObject<GUIText>(new GUIText("Loading...",wx - 180,wy - 50));
 	GUIManager::Instance().AddGUIObject<GUIImage>(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("logo"),
-		0 + 20, 0 + 20,
-		wx - 20,wy - 20));
+		0 + 50, 0 + 50,
+		wx - 100,wy - 50));
 	GUIManager::Instance().Render(true);
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", true);
@@ -108,6 +108,9 @@ void Core::Run()
 		// The timer will send out events for update, render and so on
 		Window::Instance().UpdateEvents();		
 		Timer::Update();
+
+		if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
+			m_isRunning = false;
 		
 	}
 }
