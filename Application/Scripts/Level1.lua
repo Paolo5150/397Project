@@ -1,2 +1,0 @@
-CreateAsset("Water");
---print("Yes!");
