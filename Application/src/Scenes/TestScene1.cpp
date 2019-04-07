@@ -61,14 +61,14 @@ void TestScene1::Initialize() {
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(10, 117, 0);
-	dirLight->SetIntensity(0.9f);
+	dirLight->transform.SetRotation(35, 117, 0);
+	dirLight->SetIntensity(0.65f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
 	dirLight2->transform.SetRotation(90, -120, 0);
-	dirLight2->SetIntensity(0.6f);
+	dirLight2->SetIntensity(0.4f);
 
 
 	pLight = new PointLight();
@@ -90,7 +90,6 @@ void TestScene1::Initialize() {
 
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
-	nanosuit->transform.Translate(0, -100, -15);
 
 	nanosuit->transform.SetScale(2,2,2);
 
@@ -127,6 +126,10 @@ void TestScene1::Initialize() {
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(x, y,z);
+
+	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
+
+
 	w->transform.SetPosition(x, 100, z);
 	w->transform.SetScale(2000, 2000, 1);
 
@@ -142,6 +145,8 @@ void TestScene1::LogicUpdate() {
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 
 	nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
+	nanosuit->transform.Translate(0.2f,0.0f,0.0f);
+
 
 	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.2f);
 	//Logger::LogInfo(cam->transform.ToString());
