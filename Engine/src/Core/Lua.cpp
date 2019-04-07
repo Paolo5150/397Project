@@ -35,10 +35,26 @@ void Lua::RunLua(std::string fileName)
 //Executes the script in a lua file, exits with code 2 if opening script fails
 void Lua::ExecuteLuaScript(lua_State*& L, std::string fileName)
 {
-	if (luaL_dofile(L, fileName.c_str())) //Attempt to open and execute file, if it returns 1 then log an error
+	//if (luaL_dofile(L, fileName.c_str())) //Attempt to open and execute file, if it returns 1 then log an error
+	//{
+	//	Logger::LogError("Lua: Failed to open script");
+	//	Logger::LogError("Lua: ", lua_tostring(L, -1));
+	//	lua_pop(L, 1);
+	//}
+
+	int error = luaL_loadfile(L, fileName.c_str());
+
+	if (error) //Attempt to open and execute file, if it returns 1 then log an error
 	{
 		Logger::LogError("Lua: Failed to open script");
 		Logger::LogError("Lua: ", lua_tostring(L, -1));
+		lua_pop(L, 1);
+	}
+	else
+	{
+		luabind::object compiledScript(luabind::from_stack(L, -1));
+		luabind::call_function<void>(compiledScript); //Call the script.
+
 		lua_pop(L, 1);
 	}
 }

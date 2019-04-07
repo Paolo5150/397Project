@@ -14,7 +14,7 @@
 #include "Graphics\CubeMap.h"
 #include "Graphics\SkyBox.h"
 #include "Utils\GameAssetFactory.h"
-
+#include "Core\Lua.h"
 
 
 MainCamera* cam;
