@@ -19,10 +19,7 @@ RenderingEngine& RenderingEngine::Instance()
 
 RenderingEngine::RenderingEngine()
 {
-	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){		
-		ClearRendererList();
-		return 0;
-	});
+
 }
 
 
@@ -33,7 +30,11 @@ RenderingEngine::~RenderingEngine()
 
 void RenderingEngine::Initialize()
 {
-
+	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
+		Logger::LogError("RE scene changed");
+		ClearRendererList();
+		return 0;
+	});
 }
 
 

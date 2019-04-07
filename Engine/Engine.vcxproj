@@ -235,6 +235,7 @@
     <ClInclude Include="src\Graphics\Vertex.h" />
     <ClInclude Include="src\Graphics\VertexArray.h" />
     <ClInclude Include="src\Graphics\VertexArrayGL.h" />
+    <ClInclude Include="src\GUI\GUIElements\GUIImage.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIManager.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIObject.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIText.h" />
@@ -289,6 +290,8 @@
     <ClCompile Include="src\Graphics\CubeMapGL.cpp" />
     <ClCompile Include="src\Graphics\FrameBufferGL.cpp" />
     <ClCompile Include="src\Graphics\SkyBox.cpp" />
+    <ClCompile Include="src\GUI\GUIElements\GUIManager.cpp" />
+    <ClCompile Include="src\GUI\GUIElements\GUIObject.cpp" />
     <ClCompile Include="src\GUI\imgui.cpp" />
     <ClCompile Include="src\GUI\imgui_demo.cpp" />
     <ClCompile Include="src\GUI\imgui_draw.cpp" />

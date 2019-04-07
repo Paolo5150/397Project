@@ -9,6 +9,7 @@
 	public:
 		friend class Core; //Core will initialize the window
 		friend class Input;
+		friend class GUIManager;
 		static Window& Instance();
 
 
