@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene/Scene.h"
+#include "GUI\GUIElements\GUIImage.h"
+#include "GUI\GUIElements\GUIText.h"
 
 
 class TestScene2 : public Scene
@@ -13,6 +15,10 @@ public:
 	virtual void LogicUpdate() override;
 	virtual void EngineUpdate() override;
 	virtual void LateUpdate() override;
+
+private:
+	GUIText* pName;
+	GUIImage* pImage;
 
 
 };

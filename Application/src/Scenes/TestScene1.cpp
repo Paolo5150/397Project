@@ -169,7 +169,8 @@ void TestScene1::LogicUpdate() {
 	//Logger::LogInfo("H ", h);
 	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
-	
+	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
+		SceneManager::Instance().LoadNewScene("TestScene2");
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();
 

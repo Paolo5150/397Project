@@ -3,6 +3,8 @@
 #include "..\Event\TimerEvents.h"
 #include "Logger.h"
 #include "..\Event\WindowEvents.h"
+#include "..\Event\ApplicationEvents.h"
+
 #include "..\Graphics\ShaderGL.h"
 #include "..\Graphics\Texture2D.h"
 
@@ -32,6 +34,11 @@ void Core::Initialize()
 	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>([this](Event* e){
 		WindowResizeEvent* wre = dynamic_cast<WindowResizeEvent*>(e);
 		GetGraphicsAPI().SetViewPort(wre->width, wre->height);
+		return 0;
+	});
+
+	EventDispatcher::Instance().SubscribeCallback<QuitRequestEvent>([this](Event* e){
+		m_isRunning = false;
 		return 0;
 	});
 
@@ -86,11 +93,7 @@ void Core::Run()
 		// Just update the timer
 		// The timer will send out events for update, render and so on
 		Window::Instance().UpdateEvents();		
-		Timer::Update();
-
-		if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
-			m_isRunning = false;
-		
+		Timer::Update();		
 	}
 }
 void Core::Shutdown()
