@@ -9,11 +9,12 @@
 #include "..\Scene\SceneManager.h"
 #include "..\Core\MainCamera.h"
 
+std::string waterResizeToken;
 
 Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 {
 	
-	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>(std::bind(&Water::ResizeFrameBuffers, this, std::placeholders::_1));
+	waterResizeToken = EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>(std::bind(&Water::ResizeFrameBuffers, this, std::placeholders::_1));
 	Initialize(normalMap, distortion);	
 }
 
@@ -71,6 +72,8 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 
 Water::~Water()
 {
+	EventDispatcher::Instance().UnsubscribeCallback<WindowResizeEvent>(waterResizeToken);
+
 	delete material;
 	delete refractionBuffer;
 	delete reflectionBuffer;

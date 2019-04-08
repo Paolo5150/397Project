@@ -16,6 +16,23 @@ class FileUtils
 		static std::string GetFileNameFromAbsolutePath(std::string path);
 		static std::string GetFileNameNoExtensionFromAbsolutePath(std::string path);
 		static std::string GetLastFolderNameFromAbsolutePath(std::string path);
+
+		template <class T>
+		static std::string GetClassName(T* obj = nullptr)
+		{
+			std::string n;
+			if (obj == nullptr)
+			{
+				n = typeid(T).name();
+				n = n.substr(6, n.length());
+			}
+			else
+			{
+				n = typeid(*obj).name();
+				n = n.substr(6, n.length());
+			}
+			return n;
+		}
 };
 
 

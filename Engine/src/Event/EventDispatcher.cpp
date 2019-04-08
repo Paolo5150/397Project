@@ -8,14 +8,14 @@ EventDispatcher& EventDispatcher::Instance()
 
 void EventDispatcher::DispatchEvent(Event* e)
 {
-	std::string eventName = typeid(*e).name();
+	std::string eventName = FileUtils::GetClassName(e);
 	auto it = allCallbacks.find(eventName);
 
 	if (it != allCallbacks.end())
 	{
-		for (auto i = 0; i < it->second.size(); i++)
+		for (auto itl = it->second.begin(); itl != it->second.end(); itl++)
 		{
-			it->second[i](e);
+			itl->fn(e);
 		}
 	}
 

@@ -16,7 +16,7 @@ Camera::Camera(std::string name) : GameObject(name)
 	allCameras.push_back(this);
 	UpdateOrdererdCameras();
 
-	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>(std::bind(&Camera::OnScreenResize, this, std::placeholders::_1));
+	resizeEventToken = EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>(std::bind(&Camera::OnScreenResize, this, std::placeholders::_1));
 
 }
 
@@ -64,6 +64,7 @@ void Camera::UpdateOrdererdCameras()
 
 Camera::~Camera()
 {
+	EventDispatcher::Instance().UnsubscribeCallback<WindowResizeEvent>(resizeEventToken);
 
 	auto it = allCameras.begin();
 

@@ -58,6 +58,7 @@ protected:
 	int depth;
 	CAMERA_TYPE camerType;
 	Camera(std::string name);
+	std::string resizeEventToken;
 
 
 
