@@ -5,11 +5,13 @@
 #include "Logger.h"
 #include "Timer.h"
 #include "Application.h"
+
 #include <iostream>
+
 
 extern "C++" Application* CreateApplication();
 
-
+class GUIText;
 
 class Core
 {
@@ -41,6 +43,8 @@ private:
 	Application* m_runningApplication;
 	bool m_isRunning;
 	GraphicsAPI* graphicsAPI;
+	GUIText* loading;
+	void LoadBasicAssets();
 
 
 };

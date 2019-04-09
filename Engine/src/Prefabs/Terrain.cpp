@@ -14,9 +14,7 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("grass"),TextureUniform::DIFFUSE1);
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rock"),TextureUniform::DIFFUSE2);
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hm1"), TextureUniform::SPECIAL0);
-	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rockNormal"), TextureUniform::NORMAL0);
-
-	
+	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rockNormal"), TextureUniform::NORMAL0);	
 
 	material.LoadFloat("UVScale", 50.0f);
 	material.LoadFloat("shininess", 18.0f);
@@ -28,19 +26,25 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 
 	Mesh*m = new GridMesh(size, size);
 	meshRenderer = new MeshRenderer(m, material);
-	meshRenderer->SetMaterial(material, MaterialType::NOLIGHT);
+	meshRenderer->SetMaterial(material);
+
+	meshRenderer->GetMaterial(MaterialType::NOLIGHT).SetShader(AssetLoader::Instance().GetAsset<Shader>("TerrainNoLight"));
+	meshRenderer->GetMaterial(MaterialType::NOLIGHT).LoadVec3("color", 0.4, 0.4, 0.4);
+
 	meshRenderer->AddPreRenderCallback(std::bind(&Terrain::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
 	meshRenderer->isCullable = false;
-
+	highMountainsRange = 20;
+	highMountainPerc = 0.5f;
 	this->AddComponent(meshRenderer);
 }
 
 void Terrain::OnPreRender(Camera& cam, Shader* s)
 {
 	s->SetFloat("u_maxHeight", transform.GetScale().y);
-	s->SetFloat("u_nearPlane", LightManager::Instance().GetShadowMapsCount());
+	s->SetFloat("shadowMapCount", LightManager::Instance().GetShadowMapsCount());
 
-	LightManager::Instance().UpdateShader(meshRenderer->GetMaterial().GetShader());
+	if (s->name == "Terrain")
+	 LightManager::Instance().SendShadowToShader(meshRenderer->GetMaterial().GetShader());
 
 }
 
@@ -265,8 +269,31 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 		{
 			for (int i = 0; i < terrainSize; i++)
 			{
-				int inted = ((j)*width) + i;
+				
 				meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y = heights[(width * (width * j / terrainSize)) + (width * i / terrainSize)] ;
+				
+				/*if (i > 0 && i < 60)
+					{
+				
+					float higher = i / 30.0f;
+					if (i>30)
+						higher = 2 - higher;
+
+					higher *= 0.8;
+					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
+					}
+
+				if (j > 0 && j < 60)
+				{
+
+					float higher = j / 30.0f;
+					if (j>30)
+						higher = 2 - higher;
+
+					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
+				}*/
+
+
 				min = meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y < min ? meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y : min;
 				max = meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y > max ? meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y : max;
 

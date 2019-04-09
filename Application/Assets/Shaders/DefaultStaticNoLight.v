@@ -6,6 +6,10 @@ layout(location = 2) in vec2 inTextcoords;
 
 
 out vec2 Textcoords;
+out vec3 Normal;
+
+out vec3 FragPosition;
+out vec3 CameraPosition;
 
 uniform mat4 u_mvp;
 uniform mat4 u_projection;
@@ -25,5 +29,7 @@ gl_ClipDistance[0] = dot( fragPos,u_clippingPlane);
 gl_Position = u_projection * u_view * fragPos;
 
 Textcoords = inTextcoords;
-
+Normal = normalize(mat3(transpose(inverse(u_model))) * normalize(inNormals));
+CameraPosition = u_cameraPosition;
+FragPosition = fragPos.xyz;
 }

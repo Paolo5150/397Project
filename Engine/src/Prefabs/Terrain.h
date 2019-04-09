@@ -25,4 +25,6 @@ private:
 
 	int maxHeight;
 	int terrainSize;
+	float highMountainsRange;
+	float highMountainPerc;
 };

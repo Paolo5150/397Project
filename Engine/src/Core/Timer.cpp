@@ -1,8 +1,11 @@
 #pragma once
-
+#include "..\pch.h"
 #include "Timer.h"
 #include "..\Event\TimerEvents.h"
 #include "Logger.h"
+#include "..\GUI\GUIElements\GUIManager.h"
+#include "..\Core\Input.h"
+#include  <sstream>
 
 bool Timer::m_displayFPS;
 double Timer::m_timerMultiplier;
@@ -13,6 +16,7 @@ double Timer::m_limitFPS;
 double Timer::m_now;
 double Timer::m_prev;
 long long Timer::tickCount;
+GUIText* Timer::FPSText;
 
 void Timer::Initialize()
 {
@@ -26,7 +30,19 @@ void Timer::Initialize()
 	m_timerMultiplier = 1.0;
 	m_displayFPS = 0;
 	tickCount = 0;
+
+	FPSText = new GUIText("", 10, 10);
+	GUIManager::Instance().AddGUIObject<GUIText>(FPSText,1);
 }
+
+std::string Timer::GetFPSString()
+{
+	std::stringstream ss;
+	ss << "FPS: ";
+	ss << m_FPSCounter;
+	return ss.str();
+}
+
 
 float Timer::GetDeltaS()
 {
@@ -61,6 +77,11 @@ void Timer::Update()
 
 	if (accumulator >= m_limitFPS)
 	{
+		if (Input::GetKeyPressed(GLFW_KEY_Q))
+		{
+			m_displayFPS = !m_displayFPS;
+			FPSText->isActive = m_displayFPS;
+		}
 		static float fixedNow = glfwGetTime();
 		static float fixedPrev = glfwGetTime();
 
@@ -76,9 +97,13 @@ void Timer::Update()
 		EventDispatcher::Instance().DispatchEvent(new LateUpdateEvent());
 
 		tickCount++;
+
+	
 	}
 
 	m_FPSCounter++;
+
+
 
 	if (m_displayFPS)
 	{
@@ -88,6 +113,7 @@ void Timer::Update()
 		{
 			st = 0;
 			Logger::LogInfo("FPS", m_FPSCounter);
+			FPSText->_message = GetFPSString();
 			m_FPSCounter = 0;
 		}
 	}

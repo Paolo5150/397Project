@@ -1,7 +1,7 @@
 #pragma once
-#include <GLFW/glfw3.h>
-
 #include "..\Event\EventDispatcher.h"
+
+class GUIText;
 
 class Timer
 {
@@ -13,6 +13,7 @@ public:
 	static float GetTimeS();
 	static void SetDisplayFPS(bool dfps);
 	static long long& GetTickCount();
+	static std::string GetFPSString();
 
 
 private:
@@ -25,6 +26,8 @@ private:
 	static double m_now;
 	static double m_prev;
 	static long long tickCount;
+
+	static GUIText* FPSText;
 
 
 

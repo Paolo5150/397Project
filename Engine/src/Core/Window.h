@@ -9,6 +9,7 @@
 	public:
 		friend class Core; //Core will initialize the window
 		friend class Input;
+		friend class GUIManager;
 		static Window& Instance();
 
 
@@ -20,6 +21,7 @@
 		void GetWindowSize(int& w, int& h);
 		void SetWindowTitle(std::string title);
 
+		GLFWwindow * window;
 
 	private:
 		static void OnClose(GLFWwindow* win);
@@ -27,7 +29,6 @@
 		static void Initialize();
 		static Window instance;
 
-		GLFWwindow * window;
 		Window();
 		~Window();
 	};

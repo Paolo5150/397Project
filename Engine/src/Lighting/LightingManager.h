@@ -20,7 +20,7 @@ public:
 	void RemoveLight(Light *l);
 	void Initialize();
 	void Update();
-	void UpdateShader(Shader& shader);
+	void SendShadowToShader(Shader& shader);
 	GameObject* sceneMainCamera;
 	glm::vec3 fogColor;
 	void SetFogEnable(bool enable);
@@ -29,6 +29,7 @@ public:
 	glm::vec4& GetClippingPlane(){ return clippingPlane; }
 	void SetClippingPlane(glm::vec4 cp){ clippingPlane = cp; }
 	int GetShadowMapsCount(){ return shadowMaps.size(); }
+	glm::vec3& GetAmbientLight(){ return ambientLight; }
 
 private:
 	int totalDirLights;

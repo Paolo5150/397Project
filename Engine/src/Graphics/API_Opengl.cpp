@@ -28,7 +28,9 @@ void API_Opengl::Initialize()
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-	glClearColor(0.3f, 0.3f, 0.3f, 1);
+	glClearColor(0.8f, 0.8f, 0.8f, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	
 }
 

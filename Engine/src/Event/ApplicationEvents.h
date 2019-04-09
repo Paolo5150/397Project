@@ -11,4 +11,11 @@ public:
 	Scene* currentScene;
 };
 
+class QuitRequestEvent : public Event
+{
+public:
+	QuitRequestEvent() {}
+	~QuitRequestEvent() {}
+
+};
 

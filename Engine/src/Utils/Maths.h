@@ -17,6 +17,10 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+#include "imgui.h"
+#include "..\GUI\imgui_impl_glfw.h"
+#include "..\GUI\imgui_impl_opengl3.h"
+
 class Maths
 {
 
@@ -29,5 +33,10 @@ public:
 	static glm::quat aiQuaternionToGlm(const aiQuaternion &from);
 	static glm::quat nlerp(glm::quat a, glm::quat b, float blend);
 	static glm::vec3 QuatToEuler(const glm::quat& q);
+	static ImVec2 vec2ToImVec2(const glm::vec2& v);
+	static ImVec4 vec4ToImVec4(const glm::vec4& v);
+
+
+
 
 };

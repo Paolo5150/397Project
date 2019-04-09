@@ -15,6 +15,8 @@
 #include "Graphics\SkyBox.h"
 #include "Utils\GameAssetFactory.h"
 #include "Core\Lua.h"
+#include "GUI\GUIElements\GUIText.h"
+#include "GUI\GUIElements\GUIManager.h"
 
 
 MainCamera* cam;
@@ -55,18 +57,18 @@ void TestScene1::Initialize() {
 	nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 
 	//Lights
-	LightManager::Instance().SetAmbientLight(0.0f, 0.0f, 0.0f);
+	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(30, 117, 0);
-	dirLight->SetIntensity(0.7f);
+	dirLight->transform.SetRotation(35, 117, 0);
+	dirLight->SetIntensity(0.65f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
-	dirLight2->transform.SetRotation(90, 0, 0);
-	dirLight2->SetIntensity(0.5f);
+	dirLight2->transform.SetRotation(90, -120, 0);
+	dirLight2->SetIntensity(0.4f);
 
 
 	pLight = new PointLight();
@@ -80,12 +82,14 @@ void TestScene1::Initialize() {
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
+	mat.LoadCubemap(&skybox->GetCubeMap());
+
 	mat.LoadFloat("shininess", 1000.0f);
+	mat.LoadFloat("reflectivness", 1.0);
+
 
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
-	nanosuit->transform.Translate(0, -100, -15);
-	nanosuit->transform.SetRotation(45, 0, 0);
 
 	nanosuit->transform.SetScale(2,2,2);
 
@@ -110,9 +114,8 @@ void TestScene1::Initialize() {
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
-	terrain->transform.SetScale(7 ,160, 7);
+	terrain->transform.SetScale(15 ,300, 15);
 	terrain->transform.Translate(0, 0, 0);
-
 
 	AddGameObject(w);
 
@@ -131,9 +134,13 @@ void TestScene1::Initialize() {
 
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
-	cam->transform.SetPosition(0, 20, 0);
-	w->transform.SetPosition(x, 40, z);
-	w->transform.SetScale(1000, 1000, 1);
+	cam->transform.SetPosition(x, y,z);
+
+	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
+
+
+	w->transform.SetPosition(x, 100, z);
+	w->transform.SetScale(2000, 2000, 1);
 
 	Lua::CloseLua();
 }
@@ -146,16 +153,33 @@ void TestScene1::LogicUpdate() {
 	//cam->transform.RotateBy(0.5f, cam->transform.GetLocalUp());
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 
-	nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
+	//nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
 
-	//nanosuit->transform.SetPosition(nanosuit->transform.GetPosition() + nanosuit->transform.GetLocalRight() * 0.2f);
+
+
+	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
+	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));
+	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
+	int s = glm::sign(cross.y);
+
+	nanosuit->transform.RotateBy(yAngle * s, 0,1,0);
+
+	glm::vec3 np = nanosuit->transform.GetPosition();
+	np += nanosuit->transform.GetLocalFront() * 0.5f;
+	float y = terrain->GetHeightAt(np.x, np.z);
+	nanosuit->transform.SetPosition(np.x, y, np.z);
+
+
+
 	//Logger::LogInfo(cam->transform.ToString());
 
 	pLight->transform.Translate(0.05f, 0, 0);
 	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
 	//Logger::LogInfo("H ", h);
-	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 10, cam->transform.GetPosition().z);
+	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
+	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
+		SceneManager::Instance().LoadNewScene("TestScene2");
 	/*static float timer = 0;
 	timer += Timer::GetDeltaS();
 

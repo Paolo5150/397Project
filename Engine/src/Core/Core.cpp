@@ -3,6 +3,8 @@
 #include "..\Event\TimerEvents.h"
 #include "Logger.h"
 #include "..\Event\WindowEvents.h"
+#include "..\Event\ApplicationEvents.h"
+
 #include "..\Graphics\ShaderGL.h"
 #include "..\Graphics\Texture2D.h"
 
@@ -11,7 +13,9 @@
 #include "..\Graphics\RenderingEngine.h"
 #include "..\Lighting\LightingManager.h"
 #include "Input.h"
-
+#include "..\GUI\GUIElements\GUIManager.h"
+#include <thread>
+#include <stdint.h>
 
 void Core::Initialize()
 {
@@ -33,6 +37,11 @@ void Core::Initialize()
 		return 0;
 	});
 
+	EventDispatcher::Instance().SubscribeCallback<QuitRequestEvent>([this](Event* e){
+		m_isRunning = false;
+		return 0;
+	});
+
 	//Close window, exit loop
 	EventDispatcher::Instance().SubscribeCallback<WindowCloseEvent>([this](Event* event) -> bool{
 		m_isRunning = 0;
@@ -42,47 +51,36 @@ void Core::Initialize()
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
 	Window::Instance().SetWindowSize(800, 600);
-	Input::Init(false, true);
+
 	//Managers initialization
+	Input::Init(false, true);
 	Timer::Initialize();
 	LightManager::Instance().Initialize();
+	AssetLoader::Initialize(graphicsAPI);
+	RenderingEngine::Instance().Initialize();
+	GUIManager::Instance().Initialize();
 
+
+	//Assets loaded here are available to all scenes.
+	//Load textures
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\logo.png", true);
+
+	//Splash screen
+	int wx, wy;
+	Window::Instance().GetWindowSize(wx, wy);
+
+	loading = new GUIText("Loading...", 20, wy - 50, 0.2f, 0.2f, 0.2f);
+	GUIManager::Instance().AddGUIObject<GUIText>(loading);
+	GUIManager::Instance().AddGUIObject<GUIImage>(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("logo"),
+		0 + 50, 0 + 50,
+		wx - 100, wy - 50));
+	LoadBasicAssets();
+	
+	loading->_message = "Loading scene (and what a scene that is)...";
+	GUIManager::Instance().Render(1, 1);
 	//Get cpplication
 	m_runningApplication = CreateApplication();
 	Window::Instance().SetWindowTitle(m_runningApplication->name.c_str()); //Window title -> game title
-
-	AssetLoader::Initialize(graphicsAPI);
-
-	//Assets loaded here are available to all scenes.
-	//Load shsders
-	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f",true);
-	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f", true);
-	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f", true);
-	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
-	AssetLoader::Instance().LoadShader("Terrain", "Assets\\Shaders\\Terrain.v", "Assets\\Shaders\\Terrain.f", true);
-	AssetLoader::Instance().LoadShader("Water", "Assets\\Shaders\\Water.v", "Assets\\Shaders\\Water.f", true);
-	AssetLoader::Instance().LoadShader("Skybox", "Assets\\Shaders\\Skybox.v", "Assets\\Shaders\\Skybox.f", true);
-
-
-	//Load textures
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", true);
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rockNormal.jpg", true);
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dudv.png", true);
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\grass.jpg", true);
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\ground.jpg", true);
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rock.jpg", true);
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm1.png", true);
-	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\ClearSky", true);
-	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet", true);
-
-
-
-
-	//Load basic shapes
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj", true);
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", true);
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", true);
-
 
 	//Start update loop
 	m_isRunning = true;
@@ -95,8 +93,7 @@ void Core::Run()
 		// Just update the timer
 		// The timer will send out events for update, render and so on
 		Window::Instance().UpdateEvents();		
-		Timer::Update();
-		
+		Timer::Update();		
 	}
 }
 void Core::Shutdown()
@@ -104,12 +101,11 @@ void Core::Shutdown()
 
 	m_runningApplication->AppShutdown(); //Shutdow game first
 
-	Logger::LogError("Engine asset clean up");
 	AssetLoader::Instance().UnloadPreserved<Shader>(); 
 	AssetLoader::Instance().UnloadPreserved<Texture2D>();
 	AssetLoader::Instance().UnloadPreserved<Model>();
 
-
+	GUIManager::Instance().Shutdown();
 
 	graphicsAPI->Shutdown();
 	Window::Instance().Destroy();
@@ -173,21 +169,43 @@ bool Core::Render(Event* e)
 
 	LightManager::Instance().Update();
 	RenderingEngine::Instance().RenderBuffer();
-	/*glEnable(GL_TEXTURE_2D);
-	AssetLoader::Instance().GetAsset<Texture2D>("wood")->Bind();
-	glBegin(GL_TRIANGLES);
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(-0.5f, -0.5f, 0.0f);
-
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(0.5f, -0.5f, 0.0f);
-
-	glTexCoord2f(0.5, 1.0);
-	glVertex3f(0.0f, 0.5f, 0.0f);
-
-
-	glEnd();*/
+	GUIManager::Instance().Render();	
 
 	Window::Instance().Refresh();
 	return 0;
+}
+
+void Core::LoadBasicAssets()
+{
+
+	loading->_message = "Loading textures...";
+	GUIManager::Instance().Render(1, 1);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rockNormal.jpg", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dudv.png", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\grass.jpg", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\ground.jpg", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rock.jpg", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm1.png", true);
+	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\ClearSky", true);
+	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet", true);
+
+	loading->_message = "Loading impressive shaders...";
+	GUIManager::Instance().Render(1, 1);
+	//Load shsders
+	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f", true);
+	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f", true);
+	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f", true);
+	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
+	AssetLoader::Instance().LoadShader("Terrain", "Assets\\Shaders\\Terrain.v", "Assets\\Shaders\\Terrain.f", true);
+	AssetLoader::Instance().LoadShader("Water", "Assets\\Shaders\\Water.v", "Assets\\Shaders\\Water.f", true);
+	AssetLoader::Instance().LoadShader("Skybox", "Assets\\Shaders\\Skybox.v", "Assets\\Shaders\\Skybox.f", true);
+	AssetLoader::Instance().LoadShader("TerrainNoLight", "Assets\\Shaders\\TerrainNoLight.v", "Assets\\Shaders\\TerrainNoLight.f", true);
+
+	loading->_message = "Loading rudimentary shapes...";
+	GUIManager::Instance().Render(1, 1);
+	//Load basic shapes
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj", true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", true);
 }

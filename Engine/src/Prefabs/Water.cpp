@@ -9,11 +9,12 @@
 #include "..\Scene\SceneManager.h"
 #include "..\Core\MainCamera.h"
 
+std::string waterResizeToken;
 
 Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 {
 	
-	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>(std::bind(&Water::ResizeFrameBuffers, this, std::placeholders::_1));
+	waterResizeToken = EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>(std::bind(&Water::ResizeFrameBuffers, this, std::placeholders::_1));
 	Initialize(normalMap, distortion);	
 }
 
@@ -56,7 +57,7 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	material->LoadFloat("shininess", 200.0f);
 	material->SetColor(0.8, 0.8f, 1.0f);
 
-	material->LoadFloat("UVscale", 30.0f);
+	material->LoadFloat("UVScale", 3.0f);
 
 	AssetLoader::Instance().GetAsset<Model>("Quad")->PopulateGameObject(this);
 	MeshRenderer* mr = dynamic_cast<MeshRenderer*>(GetChild("QuadMesh")->GetComponentByType("Renderer"));
@@ -71,6 +72,8 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 
 Water::~Water()
 {
+	EventDispatcher::Instance().UnsubscribeCallback<WindowResizeEvent>(waterResizeToken);
+
 	delete material;
 	delete refractionBuffer;
 	delete reflectionBuffer;
@@ -100,7 +103,7 @@ void Water::Update()
 	waterCamera->transform = mainCamera->transform;
 	waterCamera->Update();
 	//Logger::LogInfo("Wat cam", mainCamera->transform.VectorsToString());
-	RenderingEngine::Instance().RenderBuffer(waterCamera);
+	RenderingEngine::Instance().RenderBuffer(waterCamera, MaterialType::NOLIGHT);
 
 	refractionBuffer->Unbind();
 
@@ -118,7 +121,7 @@ void Water::Update()
 	waterCamera->transform.LookAt(waterCamera->transform.GetPosition() + ref);
 	waterCamera->Update();
 	LightManager::Instance().SetClippingPlane(glm::vec4(0, 1, 0, -transform.GetPosition().y));
-	RenderingEngine::Instance().RenderBuffer(waterCamera);
+	RenderingEngine::Instance().RenderBuffer(waterCamera,MaterialType::NOLIGHT);
 
 	reflectionBuffer->Unbind();
 
