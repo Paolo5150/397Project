@@ -42,10 +42,6 @@ void TestScene2::Initialize() {
 	 GUIManager::Instance().AddGUIObject(new GUIText("Dylan Green", 40, 60, 0.1f, 0.1f, 0.1f, true));
 
 
-
-	
-
-
 }
 void TestScene2::LogicUpdate() {
 	//Logger::LogInfo("Updating scene", name);
