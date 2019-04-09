@@ -158,7 +158,9 @@ std::string Lua::GetStringFromStack(std::string variable, lua_State*& L)
 
 	if (LuaType(L, 1, "string"))
 	{
-		return (std::string)lua_tostring(L, 1);
+		std::string stack = (std::string)lua_tostring(L, 1);
+		lua_pop(L, 1);
+		return stack;
 	}
 	else
 	{
@@ -174,7 +176,9 @@ int Lua::GetIntFromStack(std::string variable, lua_State*& L)
 
 	if (LuaType(L, 1, "number"))
 	{
-		return (int)lua_tonumber(L, 1);
+		int stack = (int)lua_tonumber(L, 1);
+		lua_pop(L, 1);
+		return stack;
 	}
 	else
 	{
@@ -190,7 +194,9 @@ float Lua::GetFloatFromStack(std::string variable, lua_State*& L)
 
 	if (LuaType(L, 1, "number"))
 	{
-		return (float)lua_tonumber(L, 1);
+		float stack = (float)lua_tonumber(L, 1);
+		lua_pop(L, 1);
+		return stack;
 	}
 	else
 	{
