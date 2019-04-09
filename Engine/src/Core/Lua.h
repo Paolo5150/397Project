@@ -2,7 +2,8 @@
 #include <lua.hpp>
 #include <luabind\luabind.hpp>
 #include <string>
-#include "..\Core\Logger.h"
+#include "Logger.h"
+#include "LuaRegistry.h"
 #include "..\Utils\Asset.h"
 #include "..\Utils\GameAssetFactory.h"
 
@@ -13,7 +14,7 @@ static class Lua
 public:
 	static void InitLua(lua_State*& L);
 	static void CloseLua(lua_State*& L);
-	static void RunLua(std::string fileName);
+	static void RunLua(std::string fileName, bool clearAssets = false);
 	static void ExecuteLuaScript(lua_State*& L, std::string fileName);
 	static bool LuaType(lua_State*& L, int index, std::string type);
 	static void ClearCreatedAssets();

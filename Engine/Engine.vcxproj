@@ -187,6 +187,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\LuaRegistry.h" />
     <ClInclude Include="src\Core\Lua.h" />
     <ClInclude Include="src\Core\MainCamera.h" />
     <ClInclude Include="src\Components\LineRenderer.h" />
@@ -258,6 +259,7 @@
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\LuaRegistry.cpp" />
     <ClCompile Include="src\Core\Lua.cpp" />
     <ClCompile Include="src\Core\MainCamera.cpp" />
     <ClCompile Include="src\Components\LineRenderer.cpp" />

@@ -100,9 +100,9 @@ void TestScene1::Initialize() {
 	std::string file = "Scripts\\Level1.lua";
 	Logger::LogInfo("Attempting to open file \"", file, "\"");
 	Lua::RunLua(file);
-	//Water* w = (Water*)Lua::GetCreatedAsset(0);
+	Water* w = (Water*)Lua::GetCreatedAsset(0);
 
-	Water* w = (Water*)GameAssetFactory::Instance().Create("Water");
+	//Water* w = (Water*)GameAssetFactory::Instance().Create("Water");
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);

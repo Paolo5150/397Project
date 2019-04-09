@@ -23,11 +23,14 @@ void Lua::CloseLua(lua_State*& L)
 	lua_close(L); //Close lua_State
 }
 
-void Lua::RunLua(std::string fileName)
+void Lua::RunLua(std::string fileName, bool clearAssets)
 {
 	lua_State* L;
 	InitLua(L);
-	ClearCreatedAssets();
+	if (clearAssets == true)
+	{
+		ClearCreatedAssets();
+	}
 	ExecuteLuaScript(L, fileName);
 	CloseLua(L);
 }
@@ -35,28 +38,28 @@ void Lua::RunLua(std::string fileName)
 //Executes the script in a lua file, exits with code 2 if opening script fails
 void Lua::ExecuteLuaScript(lua_State*& L, std::string fileName)
 {
-	//if (luaL_dofile(L, fileName.c_str())) //Attempt to open and execute file, if it returns 1 then log an error
-	//{
-	//	Logger::LogError("Lua: Failed to open script");
-	//	Logger::LogError("Lua: ", lua_tostring(L, -1));
-	//	lua_pop(L, 1);
-	//}
-
-	int error = luaL_loadfile(L, fileName.c_str());
-
-	if (error) //Attempt to open and execute file, if it returns 1 then log an error
+	if (luaL_dofile(L, fileName.c_str())) //Attempt to open and execute file, if it returns 1 then log an error
 	{
 		Logger::LogError("Lua: Failed to open script");
 		Logger::LogError("Lua: ", lua_tostring(L, -1));
 		lua_pop(L, 1);
 	}
-	else
-	{
-		luabind::object compiledScript(luabind::from_stack(L, -1));
-		luabind::call_function<void>(compiledScript); //Call the script.
 
-		lua_pop(L, 1);
-	}
+	//int error = luaL_loadfile(L, fileName.c_str());
+
+	//if (error) //Attempt to open and execute file, if it returns 1 then log an error
+	//{
+	//	Logger::LogError("Lua: Failed to open script");
+	//	Logger::LogError("Lua: ", lua_tostring(L, -1));
+	//	lua_pop(L, 1);
+	//}
+	//else
+	//{
+	//	luabind::object compiledScript(luabind::from_stack(L, -1));
+	//	luabind::call_function<void>(compiledScript); //Call the script.
+
+	//	lua_pop(L, 1);
+	//}
 }
 
 //Returns true if the index variable is of type "type"
@@ -139,42 +142,6 @@ void Lua::RegisterCppFunctions(lua_State*& L)
 {
 	//lua_register(L, "luaName", function);
 	//lua_CFunction fp = &Lua_Create;
-	//lua_register(L, "CreateAsset", Lua_Create);
-	luabind::def("CreateAsset", &Lua_Create);
-}
-
-
-int Lua::Lua_Create(lua_State*& L)
-{
-	int numParams = lua_gettop(L); //Number of parameters on the stack
-
-	if (numParams < 1 || numParams > 2) //Check we have enough parameters
-	{
-		Logger::LogError("Lua_Create: not enough parameters for Create function");
-	}
-
-	if (!Lua::LuaType(L, -1, "string") || (numParams == 2 && !Lua::LuaType(L, -2, "string"))) //Check all the parameters are strings
-	{
-		Logger::LogError("Lua_Create: parameters must all be strings!");
-	}
-
-	std::string name;
-	std::string assetType;
-	InternalAsset* asset;
-
-	if (numParams == 2)
-	{
-		name = lua_tostring(L, -1); //Get the parameters from the stack
-		assetType = lua_tostring(L, -2);
-		asset = GameAssetFactory::Instance().Create(assetType, name); //Create Asset
-	}
-	else
-	{
-		assetType = lua_tostring(L, -1); //Get the parameters from the stack
-		asset = GameAssetFactory::Instance().Create(assetType); //Create Asset
-	}
-
-	AddCreatedAsset(asset);
-
-	return 0; //Return number of values
+	lua_register(L, "CreateAsset", LuaRegistry::Lua_Create);
+	//luabind::def("CreateAsset", &Lua_Create);
 }
