@@ -129,7 +129,7 @@ void main()
 {
 
    
-	vec3 colorRatio = vec3(max(0.4,HeightRatio));
+	vec3 colorRatio = vec3(max(0.0,HeightRatio));
 
    vec3 DirLights =  CalculateDirectionalLights();   
    vec3 PointLights = CalculatePointLights();
