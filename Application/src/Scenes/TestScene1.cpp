@@ -89,18 +89,21 @@ void TestScene1::Initialize() {
 
 	nanosuit->transform.SetScale(2,2,2);
 
+	std::string file = "Scripts\\Level1.lua";
+	Logger::LogInfo("Attempting to open file \"", file, "\"");
+	Lua::RunLua(file);
+
 	float ar = Window::Instance().GetAspectRatio();
-	cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
+
+	cam = (MainCamera*)Lua::GetCreatedAsset(0);
+	//cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
 	cam->transform.SetPosition(0,35, 0);
 	cam->transform.SetRotation(30, 180, 0);
 	
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
 
-	std::string file = "Scripts\\Level1.lua";
-	Logger::LogInfo("Attempting to open file \"", file, "\"");
-	Lua::RunLua(file);
-	Water* w = (Water*)Lua::GetCreatedAsset(0);
+	Water* w = (Water*)Lua::GetCreatedAsset(1);
 
 	//Water* w = (Water*)GameAssetFactory::Instance().Create("Water");
 	terrain = new Terrain(256);

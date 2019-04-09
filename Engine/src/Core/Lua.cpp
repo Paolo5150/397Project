@@ -1,5 +1,6 @@
 #include "Lua.h"
 
+lua_State* Lua::lState = NULL;
 int Lua::createdAssetsLength = 0;
 InternalAsset** Lua::createdAssets = NULL;
 
@@ -18,14 +19,29 @@ void Lua::InitLua(lua_State*& L)
 	RegisterCppFunctions(L);
 }
 
+void Lua::RegisterCppFunctions(lua_State*& L)
+{
+	lua_register(L, "CreateAsset", LuaRegistry::Lua_Create);
+}
+
 void Lua::CloseLua(lua_State*& L)
 {
 	lua_close(L); //Close lua_State
 }
 
-void Lua::RunLua(std::string fileName, bool clearAssets)
+void Lua::RunLua(std::string fileName, bool useStatic, bool clearAssets)
 {
 	lua_State* L;
+
+	if (useStatic == true)
+	{
+		L = lState;
+	}
+	else
+	{
+		L = NULL;
+	}
+
 	InitLua(L);
 	if (clearAssets == true)
 	{
@@ -33,6 +49,17 @@ void Lua::RunLua(std::string fileName, bool clearAssets)
 	}
 	ExecuteLuaScript(L, fileName);
 	CloseLua(L);
+}
+
+//Executes the script in a lua file, exits with code 2 if opening script fails
+void Lua::ExecuteLuaScript(std::string fileName)
+{
+	if (luaL_dofile(lState, fileName.c_str())) //Attempt to open and execute file, if it returns 1 then log an error
+	{
+		Logger::LogError("Lua: Failed to open script");
+		Logger::LogError("Lua: ", lua_tostring(lState, -1));
+		lua_pop(lState, 1);
+	}
 }
 
 //Executes the script in a lua file, exits with code 2 if opening script fails
@@ -44,22 +71,6 @@ void Lua::ExecuteLuaScript(lua_State*& L, std::string fileName)
 		Logger::LogError("Lua: ", lua_tostring(L, -1));
 		lua_pop(L, 1);
 	}
-
-	//int error = luaL_loadfile(L, fileName.c_str());
-
-	//if (error) //Attempt to open and execute file, if it returns 1 then log an error
-	//{
-	//	Logger::LogError("Lua: Failed to open script");
-	//	Logger::LogError("Lua: ", lua_tostring(L, -1));
-	//	lua_pop(L, 1);
-	//}
-	//else
-	//{
-	//	luabind::object compiledScript(luabind::from_stack(L, -1));
-	//	luabind::call_function<void>(compiledScript); //Call the script.
-
-	//	lua_pop(L, 1);
-	//}
 }
 
 //Returns true if the index variable is of type "type"
@@ -126,6 +137,42 @@ void Lua::AddCreatedAsset(InternalAsset* asset)
 	createdAssetsLength++;
 }
 
+std::string Lua::GetStringFromStack(lua_State*& L, int stackIndex)
+{
+	if (LuaType(L, stackIndex, "String"))
+	{
+		return lua_tostring(L, stackIndex);
+	}
+	else
+	{
+		throw "Lua stack index is not a string!";
+	}
+}
+
+int Lua::GetIntFromStack(lua_State*& L, int stackIndex)
+{
+	if (LuaType(L, stackIndex, "Number"))
+	{
+		return (int)lua_tonumber(L, stackIndex);
+	}
+	else
+	{
+		throw "Lua stack index is not an int!";
+	}
+}
+
+float Lua::GetFloatFromStack(lua_State*& L, int stackIndex)
+{
+	if (LuaType(L, stackIndex, "Number"))
+	{
+		return (float)lua_tonumber(L, stackIndex);
+	}
+	else
+	{
+		throw "Lua stack index is not a float!";
+	}
+}
+
 InternalAsset* Lua::GetCreatedAsset(unsigned int index)
 {
 	if (index < createdAssetsLength)
@@ -136,12 +183,4 @@ InternalAsset* Lua::GetCreatedAsset(unsigned int index)
 	{
 		return nullptr;
 	}
-}
-
-void Lua::RegisterCppFunctions(lua_State*& L)
-{
-	//lua_register(L, "luaName", function);
-	//lua_CFunction fp = &Lua_Create;
-	lua_register(L, "CreateAsset", LuaRegistry::Lua_Create);
-	//luabind::def("CreateAsset", &Lua_Create);
 }

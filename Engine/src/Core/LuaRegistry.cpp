@@ -22,11 +22,14 @@ int LuaRegistry::Lua_Create(lua_State* L)
 	{
 		name = lua_tostring(L, -1); //Get the parameters from the stack
 		assetType = lua_tostring(L, -2);
+		lua_pop(L, -1);
+		lua_pop(L, -2);
 		asset = GameAssetFactory::Instance().Create(assetType, name); //Create Asset
 	}
 	else
 	{
 		assetType = lua_tostring(L, -1); //Get the parameters from the stack
+		lua_pop(L, -1);
 		asset = GameAssetFactory::Instance().Create(assetType); //Create Asset
 	}
 
