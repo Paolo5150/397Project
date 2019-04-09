@@ -24,31 +24,33 @@ void Lua::RegisterCppFunctions(lua_State*& L)
 	lua_register(L, "CreateAsset", LuaRegistry::Lua_Create);
 }
 
-void Lua::CloseLua(lua_State*& L)
+void Lua::CloseLua(lua_State*& L, bool clearAssets)
 {
 	lua_close(L); //Close lua_State
-}
 
-void Lua::RunLua(std::string fileName, bool useStatic, bool clearAssets)
-{
-	lua_State* L;
-
-	if (useStatic == true)
-	{
-		L = lState;
-	}
-	else
-	{
-		L = NULL;
-	}
-
-	InitLua(L);
 	if (clearAssets == true)
 	{
 		ClearCreatedAssets();
 	}
-	ExecuteLuaScript(L, fileName);
-	CloseLua(L);
+}
+
+void Lua::RunLua(std::string fileName, bool closeState, bool clearAssets)
+{
+	if (lState == NULL)
+	{
+		InitLua(lState);
+	}
+
+	if (clearAssets == true)
+	{
+		ClearCreatedAssets();
+	}
+	ExecuteLuaScript(lState, fileName);
+
+	if (closeState)
+	{
+		CloseLua(lState);
+	}
 }
 
 //Executes the script in a lua file, exits with code 2 if opening script fails
@@ -117,15 +119,6 @@ bool Lua::LuaType(lua_State*& L, int index, std::string type)
 	}
 }
 
-void Lua::ClearCreatedAssets()
-{
-	if (createdAssets != NULL)
-	{
-		delete[] createdAssets;
-		createdAssetsLength = 0;
-	}
-}
-
 void Lua::AddCreatedAsset(InternalAsset* asset)
 {
 	if (createdAssets == NULL)
@@ -135,42 +128,6 @@ void Lua::AddCreatedAsset(InternalAsset* asset)
 
 	createdAssets[createdAssetsLength] = asset;
 	createdAssetsLength++;
-}
-
-std::string Lua::GetStringFromStack(lua_State*& L, int stackIndex)
-{
-	if (LuaType(L, stackIndex, "String"))
-	{
-		return lua_tostring(L, stackIndex);
-	}
-	else
-	{
-		throw "Lua stack index is not a string!";
-	}
-}
-
-int Lua::GetIntFromStack(lua_State*& L, int stackIndex)
-{
-	if (LuaType(L, stackIndex, "Number"))
-	{
-		return (int)lua_tonumber(L, stackIndex);
-	}
-	else
-	{
-		throw "Lua stack index is not an int!";
-	}
-}
-
-float Lua::GetFloatFromStack(lua_State*& L, int stackIndex)
-{
-	if (LuaType(L, stackIndex, "Number"))
-	{
-		return (float)lua_tonumber(L, stackIndex);
-	}
-	else
-	{
-		throw "Lua stack index is not a float!";
-	}
 }
 
 InternalAsset* Lua::GetCreatedAsset(unsigned int index)
@@ -184,3 +141,61 @@ InternalAsset* Lua::GetCreatedAsset(unsigned int index)
 		return nullptr;
 	}
 }
+
+void Lua::ClearCreatedAssets()
+{
+	if (createdAssets != NULL)
+	{
+		delete[] createdAssets;
+		createdAssetsLength = 0;
+	}
+}
+
+std::string Lua::GetStringFromStack(std::string variable, lua_State*& L)
+{
+	lua_settop(lState, 0);
+	lua_getglobal(lState, variable.c_str());
+
+	if (LuaType(L, 1, "string"))
+	{
+		return (std::string)lua_tostring(L, 1);
+	}
+	else
+	{
+		Logger::LogError("Lua stack index is not a string!");
+		return "";
+	}
+}
+
+int Lua::GetIntFromStack(std::string variable, lua_State*& L)
+{
+	lua_settop(lState, 0);
+	lua_getglobal(lState, variable.c_str());
+
+	if (LuaType(L, 1, "number"))
+	{
+		return (int)lua_tonumber(L, 1);
+	}
+	else
+	{
+		Logger::LogError("Lua stack index is not an int!");
+		return -1;
+	}
+}
+
+float Lua::GetFloatFromStack(std::string variable, lua_State*& L)
+{
+	lua_settop(lState, 0);
+	lua_getglobal(lState, variable.c_str());
+
+	if (LuaType(L, 1, "number"))
+	{
+		return (float)lua_tonumber(L, 1);
+	}
+	else
+	{
+		Logger::LogError("Lua stack index is not a float!");
+		return -1;
+	}
+}
+

@@ -1,4 +1,4 @@
 CreateAsset("MainCamera");
 CreateAsset("Water");
-Loc = "Yes!";
---print("Yes!");
+camX, camY, camZ = 0, 35, 0;
+camRotX, camRotY, camRotZ = 30, 180, 0;

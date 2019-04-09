@@ -97,8 +97,9 @@ void TestScene1::Initialize() {
 
 	cam = (MainCamera*)Lua::GetCreatedAsset(0);
 	//cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
-	cam->transform.SetPosition(0,35, 0);
-	cam->transform.SetRotation(30, 180, 0);
+
+	cam->transform.SetPosition(Lua::GetFloatFromStack("camX"), Lua::GetFloatFromStack("camY"), Lua::GetFloatFromStack("camZ"));
+	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
 	
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
@@ -134,7 +135,7 @@ void TestScene1::Initialize() {
 	w->transform.SetPosition(x, 40, z);
 	w->transform.SetScale(1000, 1000, 1);
 
-
+	Lua::CloseLua();
 }
 void TestScene1::LogicUpdate() {
 	
