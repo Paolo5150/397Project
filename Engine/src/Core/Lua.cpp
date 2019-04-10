@@ -8,7 +8,6 @@ InternalAsset** Lua::createdAssets = NULL;
 void Lua::InitLua(lua_State*& L)
 {
 	L = lua_open(); //Open lua_State
-	luabind::open(L);
 
 	if (L == NULL) //If state failed to open
 	{
