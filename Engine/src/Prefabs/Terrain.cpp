@@ -30,7 +30,7 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 	Mesh*m = new GridMesh(size, size);
 	meshRenderer = new MeshRenderer(m, material);
 	meshRenderer->SetMaterial(material);
-
+	meshRenderer->isCullable = false;
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).SetShader(AssetLoader::Instance().GetAsset<Shader>("TerrainNoLight"));
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).LoadVec3("color", 0.9, 0.9, 0.9);
 
