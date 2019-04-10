@@ -3,6 +3,7 @@
 #include "..\Graphics\Layers.h"
 #include "..\Utils\Maths.h"
 #include "..\Lighting\LightingManager.h"
+#include "..\Core\Input.h"
 
 Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 {
@@ -24,12 +25,14 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 	SetLayer(0);
 	SetLayer(Layers::TERRAIN);
 
+	isWireframe = 0;
+
 	Mesh*m = new GridMesh(size, size);
 	meshRenderer = new MeshRenderer(m, material);
 	meshRenderer->SetMaterial(material);
 
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).SetShader(AssetLoader::Instance().GetAsset<Shader>("TerrainNoLight"));
-	meshRenderer->GetMaterial(MaterialType::NOLIGHT).LoadVec3("color", 0.4, 0.4, 0.4);
+	meshRenderer->GetMaterial(MaterialType::NOLIGHT).LoadVec3("color", 0.9, 0.9, 0.9);
 
 	meshRenderer->AddPreRenderCallback(std::bind(&Terrain::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
 	meshRenderer->isCullable = false;
@@ -40,6 +43,14 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 
 void Terrain::OnPreRender(Camera& cam, Shader* s)
 {
+	if (Input::GetKeyPressed(GLFW_KEY_K))
+		isWireframe = !isWireframe;
+
+	if (isWireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	s->SetFloat("u_maxHeight", transform.GetScale().y);
 	s->SetFloat("shadowMapCount", LightManager::Instance().GetShadowMapsCount());
 

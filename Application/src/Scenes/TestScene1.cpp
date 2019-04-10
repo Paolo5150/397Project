@@ -62,13 +62,13 @@ void TestScene1::Initialize() {
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(25, 117, 0);
-	dirLight->SetIntensity(0.65f);
+	dirLight->SetIntensity(0.7f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
 	dirLight2->transform.SetRotation(90, -120, 0);
-	dirLight2->SetIntensity(0.4f);
+	dirLight2->SetIntensity(0.5f);
 
 
 	pLight = new PointLight();
@@ -105,7 +105,7 @@ void TestScene1::Initialize() {
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
-	terrain->transform.SetScale(15 ,300, 15);
+	terrain->transform.SetScale(20 ,600, 20);
 	terrain->transform.Translate(0, 0, 0);
 
 	AddGameObject(w);
@@ -121,17 +121,14 @@ void TestScene1::Initialize() {
 	AddGameObject(terrain);
 	AddGameObject(nanosuit);
 
-	nanosuit->transform.SetPosition(200, terrain->GetHeightAt(200, 200), 200);
-
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(x, y,z);
 
 	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
 
-
 	w->transform.SetPosition(x, 100, z);
-	w->transform.SetScale(2000, 2000, 1);
+	w->transform.SetScale(3000, 3000, 1);
 
 
 }

@@ -27,4 +27,5 @@ private:
 	int terrainSize;
 	float highMountainsRange;
 	float highMountainPerc;
+	bool isWireframe;
 };

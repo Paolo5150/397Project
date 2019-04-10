@@ -18,6 +18,7 @@ in vec4 fragLightSpaces[MAX_LIGHTS];
 in vec4 clipSpace;
 in float HeightRatio;
 in vec3 vertexColor;
+in float fogVisibility;
 
 struct Material
 {
@@ -96,10 +97,10 @@ vec3 GenerateTerrainColor()
     float regionWeight = 0.0;
     
 
-    regionMin = -0.5f;
-    regionMax = 0.4f;
+    regionMin = 0.0f;
+    regionMax = 0.5f;
     regionRange = regionMax - regionMin;
-    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
+    regionWeight = 0.4 + (regionRange - abs(height - regionMax)) / regionRange;
     regionWeight = max(0.0, regionWeight);
     terrainColor += regionWeight * texture(diffuse0,Textcoords * material.UVScale).rgb;
 	
@@ -119,7 +120,7 @@ vec3 GenerateTerrainColor()
     regionWeight = max(0.0, regionWeight);
 	
     terrainColor += regionWeight * texture(diffuse1,Textcoords * material.UVScale).rgb;
-
+	
     return terrainColor;
 }
 
@@ -129,7 +130,8 @@ void main()
 {
 
    
-	vec3 colorRatio = vec3(max(0.0,HeightRatio));
+	vec3 colorRatio = vec3(max(0.4,HeightRatio));
+	colorRatio = clamp(colorRatio,0.0,1.0);
 
    vec3 DirLights =  CalculateDirectionalLights();   
    vec3 PointLights = CalculatePointLights();
@@ -142,6 +144,7 @@ void main()
    vec3 terrainColor =  GenerateTerrainColor();
    vec3 total =  shadowColor* colorRatio *(AmbientLight + DirLights + PointLights) * terrainColor* material.color * vertexColor;
 
+   vec3 mixFog = mix(vec3(0.321,0.3529,0.3550),total,fogVisibility);
 	gl_FragColor =  vec4(total,1.0);
 
 } 
