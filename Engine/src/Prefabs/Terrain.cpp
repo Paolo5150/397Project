@@ -40,8 +40,9 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 
 void Terrain::OnPreRender(Camera& cam, Shader* s)
 {
-	s->SetFloat("u_maxHeight", transform.GetScale().y);
+
 	s->SetFloat("shadowMapCount", LightManager::Instance().GetShadowMapsCount());
+	Logger::LogInfo("Shadows", LightManager::Instance().GetShadowMapsCount());
 
 	if (s->name == "Terrain")
 	 LightManager::Instance().SendShadowToShader(meshRenderer->GetMaterial().GetShader());
