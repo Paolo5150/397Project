@@ -98,40 +98,40 @@ void TestScene1::Initialize() {
 
 	nanosuit->transform.SetScale(2, 2, 2);
 
-	//int lua_npcs = Lua::GetIntFromStack("npcs");
-	//npcs = new GameObject*[lua_npcs];
+	int lua_npcs = Lua::GetIntFromStack("npcs");
+	npcs = new GameObject*[lua_npcs];
 
-	/*for (int i = 0; i < lua_npcs; i++)
+	Logger::LogInfo("Adding objects to npc array");
+	for (int i = 0; i < lua_npcs; i++)
 	{
 		npcs[i] = (GameObject*)Lua::GetCreatedAsset(i + 2);
 		npcs[i]->ApplyMaterial(mat);
 		npcs[i]->ApplyColor(1, 1, 1);
-
+	}
+	
+	Logger::LogInfo("Setting npc transforms");
+	for (int i = 0; i < lua_npcs; i++)
+	{
 		npcs[i]->transform.SetScale(2, 2, 2);
-		float posX = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "X");
-		float posY = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "Y");
-		float posZ = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "Z");
-		Logger::LogInfo("X:", posX, ", Y:", posY, ", Z:", posZ);
-		npcs[i]->transform.SetPosition(posX, posY, posZ);
-	}*/
+	}
 
 	float ar = Window::Instance().GetAspectRatio();
 
-	//cam = (MainCamera*)Lua::GetCreatedAsset(0);
-	cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
+	cam = (MainCamera*)Lua::GetCreatedAsset(0);
+	//cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
 
-	cam->transform.SetPosition(0, 35, 0);
-	cam->transform.SetRotation(30, 180, 0);
+	//cam->transform.SetPosition(0, 35, 0);
+	//cam->transform.SetRotation(30, 180, 0);
 
-	//cam->transform.SetPosition(Lua::GetFloatFromStack("camX"), Lua::GetFloatFromStack("camY"), Lua::GetFloatFromStack("camZ"));
-	//cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
+	cam->transform.SetPosition(Lua::GetFloatFromStack("camX"), Lua::GetFloatFromStack("camY"), Lua::GetFloatFromStack("camZ"));
+	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
 
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
 
-	//Water* w = (Water*)Lua::GetCreatedAsset(1);
+	Water* w = (Water*)Lua::GetCreatedAsset(1);
 
-	Water* w = (Water*)GameAssetFactory::Instance().Create("Water");
+	//Water* w = (Water*)GameAssetFactory::Instance().Create("Water");
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
@@ -151,10 +151,16 @@ void TestScene1::Initialize() {
 	AddGameObject(terrain);
 	AddGameObject(nanosuit);
 
-	/*for (int i = 0; i < lua_npcs; i++)
+	Logger::LogInfo("Adding npcs to gameobjects, and setting positions");
+	for (int i = 0; i < lua_npcs; i++)
 	{
 		AddGameObject(npcs[i]);
-	}*/
+		float posX = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "X");
+		float posY = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "Y");
+		float posZ = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "Z");
+		npcs[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ), posZ);
+		//npcs[i]->transform.SetPosition(npcs[i]->transform.GetPosition().x, terrain->GetHeightAt(npcs[i]->transform.GetPosition().x, npcs[i]->transform.GetPosition().z), npcs[i]->transform.GetPosition().z);
+	}
 
 	nanosuit->transform.SetPosition(200, terrain->GetHeightAt(200, 200), 200);
 
@@ -173,6 +179,7 @@ void TestScene1::Initialize() {
 void TestScene1::LogicUpdate() {
 
 	//Logger::LogInfo("Test scene 1 update");
+	Logger::LogInfo(cam->transform.GetPosition().x, ", ", cam->transform.GetPosition().y, ", ", cam->transform.GetPosition().z);
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
 	//Logger::LogInfo("Cam up", cam->transform.VectorsToString());

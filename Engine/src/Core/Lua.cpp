@@ -125,6 +125,25 @@ void Lua::AddCreatedAsset(InternalAsset* asset)
 		createdAssets = new InternalAsset*[1];
 	}
 
+	if (createdAssetsLength >= 2)
+	{
+		GameObject* obj = (GameObject*)asset;
+		Logger::LogInfo("Assigning index \"", createdAssetsLength, "\" to ",obj->GetName());
+	}
+
+	InternalAsset** tempArray = new InternalAsset*[createdAssetsLength];
+	for (int i = 0; i < createdAssetsLength; i++)
+	{
+		tempArray[i] = createdAssets[i];
+	}
+	delete[] createdAssets;
+	createdAssets = new InternalAsset*[createdAssetsLength + 1];
+	for (int i = 0; i < createdAssetsLength; i++)
+	{
+		createdAssets[i] = tempArray[i];
+	}
+	delete[] tempArray;
+
 	createdAssets[createdAssetsLength] = asset;
 	createdAssetsLength++;
 }

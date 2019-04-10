@@ -5,6 +5,7 @@
 #include "Logger.h"
 #include "LuaRegistry.h"
 #include "..\Utils\Asset.h"
+#include "..\GameObject\GameObject.h"
 
 #include <iostream>
 
