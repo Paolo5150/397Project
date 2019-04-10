@@ -23,7 +23,7 @@ GameObject::~GameObject()
 		delete (*it);
 
 	_components.clear();
-	Logger::LogWarning("Gameobject", GetName(), "deleted");
+	//Logger::LogWarning("Gameobject", GetName(), "deleted");
 }
 
 

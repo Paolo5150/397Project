@@ -90,10 +90,10 @@ void TestScene1::Initialize() {
 	mat.LoadCubemap(&skybox->GetCubeMap());
 
 	mat.LoadFloat("shininess", 1000.0f);
-	mat.LoadFloat("reflectivness", 1.0);
+	mat.LoadFloat("reflectivness", 0.0);
 
 
-	nanosuit->ApplyMaterial(mat);
+	//nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 
 	nanosuit->transform.SetScale(2, 2, 2);
@@ -162,7 +162,6 @@ void TestScene1::Initialize() {
 		//npcs[i]->transform.SetPosition(npcs[i]->transform.GetPosition().x, terrain->GetHeightAt(npcs[i]->transform.GetPosition().x, npcs[i]->transform.GetPosition().z), npcs[i]->transform.GetPosition().z);
 	}
 
-	nanosuit->transform.SetPosition(200, terrain->GetHeightAt(200, 200), 200);
 
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
@@ -189,7 +188,7 @@ void TestScene1::LogicUpdate() {
 
 
 
-	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
+	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
 	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
 	int s = glm::sign(cross.y);
@@ -199,7 +198,7 @@ void TestScene1::LogicUpdate() {
 	glm::vec3 np = nanosuit->transform.GetPosition();
 	np += nanosuit->transform.GetLocalFront() * 0.5f;
 	float y = terrain->GetHeightAt(np.x, np.z);
-	nanosuit->transform.SetPosition(np.x, y, np.z);
+	nanosuit->transform.SetPosition(np.x, y, np.z);*/
 
 
 
