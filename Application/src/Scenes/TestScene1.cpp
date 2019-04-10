@@ -55,6 +55,7 @@ void TestScene1::Initialize() {
 	Timer::SetDisplayFPS(true);
 	
 	nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
+	GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.1f);
@@ -87,11 +88,13 @@ void TestScene1::Initialize() {
 	mat.LoadFloat("shininess", 1000.0f);
 	mat.LoadFloat("reflectivness", 0.0);
 
-
+	
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 
 	nanosuit->transform.SetScale(2,2,2);
+	n2->transform.SetScale(2, 2, 2);
+
 
 	float ar = Window::Instance().GetAspectRatio();
 	cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
@@ -121,12 +124,16 @@ void TestScene1::Initialize() {
 	AddGameObject(cam);
 	AddGameObject(terrain);
 	AddGameObject(nanosuit);
+	AddGameObject(n2);
+
 
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(x, y,z);
 
 	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
+	n2->transform.SetPosition(x, terrain->GetHeightAt(x, z + 700) + 4, z + 700);
+
 
 	w->transform.SetPosition(x, 100, z);
 	w->transform.SetScale(3000, 3000, 1);
