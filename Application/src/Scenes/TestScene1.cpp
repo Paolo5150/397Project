@@ -97,6 +97,7 @@ void TestScene1::Initialize() {
 	cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
 	cam->transform.SetPosition(0,35, 0);
 	cam->transform.SetRotation(30, 180, 0);
+	cam->SetMovementSpeed(500);
 	
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
@@ -134,7 +135,7 @@ void TestScene1::Initialize() {
 }
 void TestScene1::LogicUpdate() {
 
-	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
+	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));
 	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
 	int s = glm::sign(cross.y);
@@ -150,7 +151,7 @@ void TestScene1::LogicUpdate() {
 	pLight->transform.Translate(0.05f, 0, 0);
 	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
 	//Logger::LogInfo("H ", h);
-	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);*/
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
 		SceneManager::Instance().LoadNewScene("TestScene2");

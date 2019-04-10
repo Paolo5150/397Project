@@ -283,7 +283,7 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 				
 				meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y = heights[(width * (width * j / terrainSize)) + (width * i / terrainSize)] ;
 				
-				/*if (i > 0 && i < 60)
+				if (i > 0 && i < 60)
 					{
 				
 					float higher = i / 30.0f;
@@ -302,7 +302,28 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 						higher = 2 - higher;
 
 					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
-				}*/
+				}
+
+				if (i > terrainSize - 60 && i < terrainSize)
+				{
+
+					float higher = i / 30.0f;
+					if (i>30)
+						higher = 2 - higher;
+
+					higher *= 0.8;
+					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
+				}
+
+				if (j > 0 && j < 60)
+				{
+
+					float higher = j / 30.0f;
+					if (j>30)
+						higher = 2 - higher;
+
+					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
+				}
 
 
 				min = meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y < min ? meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y : min;

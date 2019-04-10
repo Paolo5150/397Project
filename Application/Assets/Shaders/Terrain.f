@@ -106,7 +106,7 @@ vec3 GenerateTerrainColor()
 	
 
     regionMin = 0.5f;
-    regionMax = 1.0f;
+    regionMax = 2.0f;
     regionRange = regionMax - regionMin;
     regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
     regionWeight = max(0.0, regionWeight);
