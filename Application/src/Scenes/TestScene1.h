@@ -15,6 +15,7 @@ public:
 
 	//Camera* cam;
 	GameObject* quad;
+	
 
 private:
 

@@ -30,7 +30,15 @@ int LuaRegistry::Lua_Create(lua_State* L)
 	{
 		assetType = lua_tostring(L, -1); //Get the parameters from the stack
 		lua_pop(L, -1);
-		asset = GameAssetFactory::Instance().Create(assetType); //Create Asset
+		if (assetType != "Model" && assetType != "GameObject")
+		{
+			asset = GameAssetFactory::Instance().Create(assetType); //Create Asset
+		}
+		else
+		{
+			Logger::LogError("Lua_Create: Not enough parameters to create a ", assetType, "!");
+			throw "Lua_Create: Not enough parameters to create requested type!";
+		}
 	}
 
 	Lua::AddCreatedAsset(asset);

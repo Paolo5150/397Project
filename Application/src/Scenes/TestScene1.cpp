@@ -20,6 +20,7 @@
 
 
 MainCamera* cam;
+GameObject** npcs;
 GameObject* nanosuit;
 PointLight* pLight;
 DirectionalLight* dirLight;
@@ -35,7 +36,7 @@ void TestScene1::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
-	
+
 }
 void TestScene1::UnloadAssets() {
 	AssetLoader::Instance().Unload<Model>();
@@ -50,11 +51,15 @@ void TestScene1::ExitScene() {
 }
 void TestScene1::Initialize() {
 
+	Lua::RunLua("Scripts\\Level1.lua");
+
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
 	Timer::SetDisplayFPS(true);
-	
+
 	nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
+
+
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
@@ -91,11 +96,24 @@ void TestScene1::Initialize() {
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 
-	nanosuit->transform.SetScale(2,2,2);
+	nanosuit->transform.SetScale(2, 2, 2);
 
-	std::string file = "Scripts\\Level1.lua";
-	Logger::LogInfo("Attempting to open file \"", file, "\"");
-	Lua::RunLua(file);
+	int lua_npcs = Lua::GetIntFromStack("npcs");
+	npcs = new GameObject*[lua_npcs];
+
+	/*for (int i = 0; i < lua_npcs; i++)
+	{
+		npcs[i] = (GameObject*)Lua::GetCreatedAsset(i + 2);
+		npcs[i]->ApplyMaterial(mat);
+		npcs[i]->ApplyColor(1, 1, 1);
+
+		npcs[i]->transform.SetScale(2, 2, 2);
+		float posX = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "X");
+		float posY = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "Y");
+		float posZ = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "Z");
+		Logger::LogInfo("X:", posX, ", Y:", posY, ", Z:", posZ);
+		npcs[i]->transform.SetPosition(posX, posY, posZ);
+	}*/
 
 	float ar = Window::Instance().GetAspectRatio();
 
@@ -104,7 +122,7 @@ void TestScene1::Initialize() {
 
 	cam->transform.SetPosition(Lua::GetFloatFromStack("camX"), Lua::GetFloatFromStack("camY"), Lua::GetFloatFromStack("camZ"));
 	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
-	
+
 	//cam->transform.LookAt(nanosuit->transform.GetPosition());
 	cam->RemoveLayerMask(Layers::GUI);
 
@@ -114,7 +132,7 @@ void TestScene1::Initialize() {
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
-	terrain->transform.SetScale(15 ,300, 15);
+	terrain->transform.SetScale(15, 300, 15);
 	terrain->transform.Translate(0, 0, 0);
 
 	AddGameObject(w);
@@ -130,13 +148,18 @@ void TestScene1::Initialize() {
 	AddGameObject(terrain);
 	AddGameObject(nanosuit);
 
+	/*for (int i = 0; i < lua_npcs; i++)
+	{
+		AddGameObject(npcs[i]);
+	}*/
+
 	nanosuit->transform.SetPosition(200, terrain->GetHeightAt(200, 200), 200);
 
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
-	cam->transform.SetPosition(x, y,z);
+	cam->transform.SetPosition(x, y, z);
 
-	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
+	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x, z + 500) + 4, z + 500);
 
 
 	w->transform.SetPosition(x, 100, z);
@@ -145,7 +168,7 @@ void TestScene1::Initialize() {
 	Lua::CloseLua();
 }
 void TestScene1::LogicUpdate() {
-	
+
 	//Logger::LogInfo("Test scene 1 update");
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
@@ -158,11 +181,11 @@ void TestScene1::LogicUpdate() {
 
 
 	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
-	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));
+	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
 	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
 	int s = glm::sign(cross.y);
 
-	nanosuit->transform.RotateBy(yAngle * s, 0,1,0);
+	nanosuit->transform.RotateBy(yAngle * s, 0, 1, 0);
 
 	glm::vec3 np = nanosuit->transform.GetPosition();
 	np += nanosuit->transform.GetLocalFront() * 0.5f;
@@ -184,7 +207,7 @@ void TestScene1::LogicUpdate() {
 	timer += Timer::GetDeltaS();
 
 	if (timer > 5)
-		SceneManager::Instance().LoadNewScene("TestScene2");*/
+	SceneManager::Instance().LoadNewScene("TestScene2");*/
 
 
 	Scene::LogicUpdate(); //Must be last statement!

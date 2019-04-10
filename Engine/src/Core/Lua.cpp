@@ -142,6 +142,22 @@ InternalAsset* Lua::GetCreatedAsset(unsigned int index)
 	}
 }
 
+//InternalAsset* Lua::GetCreatedAsset(std::string name)
+//{
+//	if (name.length > 0)
+//	{
+//		for (int i = 0; i < createdAssetsLength; i++)
+//		{
+//			if (createdAssets[i])
+//			return createdAssets[i];
+//		}
+//	}
+//	else
+//	{
+//		return nullptr;
+//	}
+//}
+
 void Lua::ClearCreatedAssets()
 {
 	if (createdAssets != NULL)

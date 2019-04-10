@@ -28,6 +28,7 @@ public:
 	//Asset Management
 	static void AddCreatedAsset(InternalAsset* asset);
 	static InternalAsset* GetCreatedAsset(unsigned int index);
+	//static InternalAsset* GetCreatedAsset(std::string name);
 	static void ClearCreatedAssets();
 
 	//Stack Returns
