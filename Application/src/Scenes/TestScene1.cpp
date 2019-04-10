@@ -179,7 +179,6 @@ void TestScene1::Initialize() {
 void TestScene1::LogicUpdate() {
 
 	//Logger::LogInfo("Test scene 1 update");
-	Logger::LogInfo(cam->transform.GetPosition().x, ", ", cam->transform.GetPosition().y, ", ", cam->transform.GetPosition().z);
 
 	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
 	//Logger::LogInfo("Cam up", cam->transform.VectorsToString());
