@@ -100,12 +100,8 @@ void main()
 	CameraPositionTS = TBN * CameraPosition;
 	FragPositionTS = TBN * FragPosition;
 	
+	fragLightSpaces[0] = allDirLights[0].lightSpace * vec4(fragPos.xyz,1.0);
 
-	for(int i=0; i < MAX_LIGHTS; i++)
-	{
-	if(i >= shadowMapCount) break;
-	fragLightSpaces[i] = allDirLights[i].lightSpace * vec4(fragPos.xyz,1.0);
-	}
 	
 	for(int i=0; i<MAX_LIGHTS;i++)
 	{

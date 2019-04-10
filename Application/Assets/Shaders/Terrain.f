@@ -129,7 +129,7 @@ void main()
 {
 
    
-	vec3 colorRatio = vec3(max(0.4,HeightRatio));
+	vec3 colorRatio = vec3(max(0.0,HeightRatio));
 
    vec3 DirLights =  CalculateDirectionalLights();   
    vec3 PointLights = CalculatePointLights();
@@ -142,7 +142,7 @@ void main()
    vec3 terrainColor =  GenerateTerrainColor();
    vec3 total =  shadowColor* colorRatio *(AmbientLight + DirLights + PointLights) * terrainColor* material.color * vertexColor;
 
-	gl_FragColor =  vec4(total,1.0);
+	FragColor =  vec4(total,1.0);
 
 } 
 

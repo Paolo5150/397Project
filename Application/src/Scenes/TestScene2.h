@@ -17,8 +17,7 @@ public:
 	virtual void LateUpdate() override;
 
 private:
-	GUIText* pName;
-	GUIImage* pImage;
+
 
 
 };

@@ -20,25 +20,26 @@ TestScene2::TestScene2() : Scene("TestScene2")
 void TestScene2::LoadAssets() {
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\paolo.png");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dylan.png");
+
 
 }
-void TestScene2::UnloadAssets() {}
+void TestScene2::UnloadAssets() {
+
+	AssetLoader::Instance().Unload<Texture2D>();
+}
 
 void TestScene2::ExitScene() {
 	Scene::ExitScene();
 }
 
-void TestScene2::Initialize() {
+void TestScene2::Initialize() {	 
 
-	 pName = new GUIText("Paolo Ferri",10,10,0.2,0.2,0.2);
-	 pImage = new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("paolo"), 50, 50, 100, 100);
-	 
-	 GUIManager::Instance().AddGUIObject(pName);
-	 GUIManager::Instance().AddGUIObject(pImage);
+	 GUIManager::Instance().AddGUIObject(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("paolo"), 10, 20, 25, 35, true)); 
+	 GUIManager::Instance().AddGUIObject(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("dylan"), 40, 20, 25, 35, true));
 
-	
-
-	
+	 GUIManager::Instance().AddGUIObject(new GUIText("Paolo Ferri", 10, 60, 0.1f, 0.1f, 0.1f, true));
+	 GUIManager::Instance().AddGUIObject(new GUIText("Dylan Green", 40, 60, 0.1f, 0.1f, 0.1f, true));
 
 
 }

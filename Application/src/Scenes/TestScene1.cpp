@@ -62,11 +62,11 @@ void TestScene1::Initialize() {
 
 
 	//Lights
-	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.2f);
+	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.1f);
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(35, 117, 0);
+	dirLight->transform.SetRotation(25, 117, 0);
 	dirLight->SetIntensity(0.65f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
@@ -177,17 +177,6 @@ void TestScene1::Initialize() {
 }
 void TestScene1::LogicUpdate() {
 
-	//Logger::LogInfo("Test scene 1 update");
-
-	//quad->transform.Translate(0.1f, 0.0f, 0.0f);
-	//Logger::LogInfo("Cam up", cam->transform.VectorsToString());
-	//cam->transform.RotateBy(0.5f, cam->transform.GetLocalUp());
-	//cam->transform.LookAt(nanosuit->transform.GetPosition());
-
-	//nanosuit->transform.RotateBy(0.5f,nanosuit->transform.GetLocalUp());
-
-
-
 	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
 	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
@@ -201,9 +190,6 @@ void TestScene1::LogicUpdate() {
 	nanosuit->transform.SetPosition(np.x, y, np.z);*/
 
 
-
-	//Logger::LogInfo(cam->transform.ToString());
-
 	pLight->transform.Translate(0.05f, 0, 0);
 	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
 	//Logger::LogInfo("H ", h);
@@ -211,11 +197,6 @@ void TestScene1::LogicUpdate() {
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
 		SceneManager::Instance().LoadNewScene("TestScene2");
-	/*static float timer = 0;
-	timer += Timer::GetDeltaS();
-
-	if (timer > 5)
-	SceneManager::Instance().LoadNewScene("TestScene2");*/
 
 
 	Scene::LogicUpdate(); //Must be last statement!
