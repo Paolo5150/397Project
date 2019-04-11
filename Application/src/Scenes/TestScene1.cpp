@@ -20,8 +20,12 @@
 
 
 MainCamera* cam;
-GameObject** npcs;
-GameObject* nanosuit;
+int luaAssetOffset = 0;
+GameObject** nanosuits;
+GameObject** pumpkins;
+GameObject** barrels;
+GameObject** crates;
+GameObject* gun;
 PointLight* pLight;
 DirectionalLight* dirLight;
 Terrain* terrain;
@@ -35,6 +39,10 @@ TestScene1::TestScene1() : Scene("TestScene1")
 void TestScene1::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Pumpkin\\pumpkin.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Barrel\\barrel.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Gun\\gun.obj");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 
 }
@@ -57,9 +65,6 @@ void TestScene1::Initialize() {
 
 	Timer::SetDisplayFPS(true);
 
-	nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
-
-
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.1f);
@@ -75,7 +80,6 @@ void TestScene1::Initialize() {
 	dirLight2->transform.SetRotation(90, -120, 0);
 	dirLight2->SetIntensity(0.4f);
 
-
 	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
 	pLight->transform.Translate(-15, 10, -15);
@@ -83,60 +87,101 @@ void TestScene1::Initialize() {
 
 
 	// Uncomment this to force a wood material!
-	Material mat;
-	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
+	Material mat_wood;
+	mat_wood.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 
-	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
-	mat.LoadCubemap(&skybox->GetCubeMap());
+	mat_wood.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
+	mat_wood.LoadCubemap(&skybox->GetCubeMap());
 
-	mat.LoadFloat("shininess", 1000.0f);
-	mat.LoadFloat("reflectivness", 0.0);
+	mat_wood.LoadFloat("shininess", 1000.0f);
+	mat_wood.LoadFloat("reflectivness", 0.0);
 
-
-	//nanosuit->ApplyMaterial(mat);
-	nanosuit->ApplyColor(1, 1, 1);
-
-	nanosuit->transform.SetScale(2, 2, 2);
-
-	int lua_npcs = Lua::GetIntFromStack("npcs");
-	npcs = new GameObject*[lua_npcs];
-
-	Logger::LogInfo("Adding objects to npc array");
-	for (int i = 0; i < lua_npcs; i++)
-	{
-		npcs[i] = (GameObject*)Lua::GetCreatedAsset(i + 2);
-		npcs[i]->ApplyMaterial(mat);
-		npcs[i]->ApplyColor(1, 1, 1);
-	}
-	
-	Logger::LogInfo("Setting npc transforms");
-	for (int i = 0; i < lua_npcs; i++)
-	{
-		npcs[i]->transform.SetScale(2, 2, 2);
-	}
-
-	float ar = Window::Instance().GetAspectRatio();
-
-	cam = (MainCamera*)Lua::GetCreatedAsset(0);
-	//cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
-
-	//cam->transform.SetPosition(0, 35, 0);
-	//cam->transform.SetRotation(30, 180, 0);
-
-	cam->transform.SetPosition(Lua::GetFloatFromStack("camX"), Lua::GetFloatFromStack("camY"), Lua::GetFloatFromStack("camZ"));
-	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
-
-	//cam->transform.LookAt(nanosuit->transform.GetPosition());
-	cam->RemoveLayerMask(Layers::GUI);
-
-	Water* w = (Water*)Lua::GetCreatedAsset(1);
-
-	//Water* w = (Water*)GameAssetFactory::Instance().Create("Water");
+	//Terrain
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
 	terrain->transform.SetScale(15, 300, 15);
 	terrain->transform.Translate(0, 0, 0);
+	AddGameObject(terrain);
+
+	//GameObjects
+	cam = (MainCamera*)Lua::GetCreatedAsset(0);
+	luaAssetOffset++;
+	cam->transform.SetPosition(Lua::GetFloatFromStack("camX"), Lua::GetFloatFromStack("camY"), Lua::GetFloatFromStack("camZ"));
+	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
+	cam->RemoveLayerMask(Layers::GUI);
+	AddGameObject(cam);
+
+	Water* w = (Water*)Lua::GetCreatedAsset(1);
+	luaAssetOffset++;
+
+	nanosuits = new GameObject*[Lua::GetIntFromStack("npc_nanosuits")];
+	for (int i = 0; i < Lua::GetIntFromStack("npc_nanosuits"); i++)
+	{
+		nanosuits[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
+		nanosuits[i]->ApplyColor(1, 1, 1);
+		AddGameObject(nanosuits[i]);
+		nanosuits[i]->transform.SetScale(Lua::GetFloatFromStack("nanosuitScale"), Lua::GetFloatFromStack("nanosuitScale"), Lua::GetFloatFromStack("nanosuitScale"));
+		float posX = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "X");
+		float posY = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "Y");
+		float posZ = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "Z");
+		nanosuits[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ), posZ);
+	}
+	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");
+
+	pumpkins = new GameObject*[Lua::GetIntFromStack("npc_pumpkins")];
+	for (int i = 0; i < Lua::GetIntFromStack("npc_pumpkins"); i++)
+	{
+		pumpkins[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
+		pumpkins[i]->ApplyColor(1, 1, 1);
+		AddGameObject(pumpkins[i]);
+		pumpkins[i]->transform.SetScale(Lua::GetFloatFromStack("pumpkinScale"), Lua::GetFloatFromStack("pumpkinScale"), Lua::GetFloatFromStack("pumpkinScale"));
+		float posX = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "X");
+		float posY = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "Y");
+		float posZ = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "Z");
+		pumpkins[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ), posZ);
+	}
+	luaAssetOffset += Lua::GetIntFromStack("npc_pumpkins");
+
+	barrels = new GameObject*[Lua::GetIntFromStack("prop_barrels")];
+	for (int i = 0; i < Lua::GetIntFromStack("prop_barrels"); i++)
+	{
+		barrels[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
+		barrels[i]->ApplyColor(1, 1, 1);
+		AddGameObject(barrels[i]);
+		barrels[i]->transform.SetScale(Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"));
+		float posX = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "X");
+		float posY = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "Y");
+		float posZ = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "Z");
+		barrels[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ), posZ);
+	}
+	luaAssetOffset += Lua::GetIntFromStack("prop_barrels");
+
+	crates = new GameObject*[Lua::GetIntFromStack("prop_crates")];
+	for (int i = 0; i < Lua::GetIntFromStack("prop_crates"); i++)
+	{
+		crates[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
+		crates[i]->ApplyColor(1, 1, 1);
+		AddGameObject(crates[i]);
+		crates[i]->transform.SetScale(Lua::GetFloatFromStack("crateScale"), Lua::GetFloatFromStack("crateScale"), Lua::GetFloatFromStack("crateScale"));
+		float posX = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "X");
+		float posY = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "Y");
+		float posZ = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "Z");
+		crates[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ), posZ);
+	}
+	luaAssetOffset += Lua::GetIntFromStack("prop_crates");
+
+	gun = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
+	gun->ApplyColor(1, 1, 1);
+	AddGameObject(gun);
+	gun->transform.SetScale(Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"));
+	gun->transform.SetPosition(Lua::GetFloatFromStack("gunX"), terrain->GetHeightAt(Lua::GetFloatFromStack("gunZ"), Lua::GetFloatFromStack("gunZ")) + Lua::GetFloatFromStack("gunY"), Lua::GetFloatFromStack("gunZ"));
+	gun->transform.SetRotation(0, 0, 90);
+	luaAssetOffset++;
+
+	float ar = Window::Instance().GetAspectRatio();
+
+	
 
 	AddGameObject(w);
 
@@ -147,28 +192,11 @@ void TestScene1::Initialize() {
 	Axis* a = new Axis();
 	a->transform.SetScale(10, 10, 10);
 	AddGameObject(a);
-	AddGameObject(cam);
-	AddGameObject(terrain);
-	AddGameObject(nanosuit);
-
-	Logger::LogInfo("Adding npcs to gameobjects, and setting positions");
-	for (int i = 0; i < lua_npcs; i++)
-	{
-		AddGameObject(npcs[i]);
-		float posX = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "X");
-		float posY = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "Y");
-		float posZ = Lua::GetFloatFromStack("npc" + std::to_string(i + 1) + "Z");
-		npcs[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ), posZ);
-		//npcs[i]->transform.SetPosition(npcs[i]->transform.GetPosition().x, terrain->GetHeightAt(npcs[i]->transform.GetPosition().x, npcs[i]->transform.GetPosition().z), npcs[i]->transform.GetPosition().z);
-	}
-
+	
 
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(x, y, z);
-
-	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x, z + 500) + 4, z + 500);
-
 
 	w->transform.SetPosition(x, 100, z);
 	w->transform.SetScale(2000, 2000, 1);

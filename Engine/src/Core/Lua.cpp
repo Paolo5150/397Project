@@ -128,7 +128,6 @@ void Lua::AddCreatedAsset(InternalAsset* asset)
 	if (createdAssetsLength >= 2)
 	{
 		GameObject* obj = (GameObject*)asset;
-		Logger::LogInfo("Assigning index \"", createdAssetsLength, "\" to ",obj->GetName());
 	}
 
 	InternalAsset** tempArray = new InternalAsset*[createdAssetsLength];
