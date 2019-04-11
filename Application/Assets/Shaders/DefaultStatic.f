@@ -54,7 +54,6 @@ layout (std140, binding = 2) uniform AllPointLights
 
 uniform Material material;
 uniform sampler2D diffuse0;
-uniform sampler2D normal0;
 uniform vec3 AmbientLight;
 uniform samplerCube cubemap0;
 
