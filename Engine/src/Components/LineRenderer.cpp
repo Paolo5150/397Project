@@ -40,11 +40,11 @@ void LineRenderer::SetColor(float r, float g, float b)
 void LineRenderer::OnPreRender(Camera& cam, Shader* currentShader )
 {
 	//Logger::LogError("Line renderer");
-	glm::mat4 mvp = cam.projectionMatrix * cam.viewMatrix * _parent->transform.GetMatrix();
+	glm::mat4 mvp = cam.GetProjectionMatrix() * cam.GetViewMatrix() * _parent->transform.GetMatrix();
 	Shader::GetCurrentShader().SetMat4("u_mvp", mvp);
 	Shader::GetCurrentShader().SetMat4("u_model", _parent->transform.GetMatrix());
-	Shader::GetCurrentShader().SetMat4("u_view", cam.viewMatrix);
-	Shader::GetCurrentShader().SetMat4("u_projection", cam.projectionMatrix);
+	Shader::GetCurrentShader().SetMat4("u_view", cam.GetViewMatrix());
+	Shader::GetCurrentShader().SetMat4("u_projection", cam.GetProjectionMatrix());
 }
 
 

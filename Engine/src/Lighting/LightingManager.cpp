@@ -102,7 +102,7 @@ void LightManager::UpdateUBOs()
 
 			shadowMaps.push_back((*it)->shadowMap);
 		}
-		direcionalLightsBuffer->AddDataRange(0 + i * DIRECTIONAL_LIGHT_SIZE, 64, glm::value_ptr((shadowCamera->projectionMatrix * shadowCamera->viewMatrix)));
+		direcionalLightsBuffer->AddDataRange(0 + i * DIRECTIONAL_LIGHT_SIZE, 64, glm::value_ptr((shadowCamera->GetProjectionMatrix() * shadowCamera->GetViewMatrix())));
 		direcionalLightsBuffer->AddDataRange(64 + i * DIRECTIONAL_LIGHT_SIZE, 16, &(*it)->transform.GetPosition());
 		direcionalLightsBuffer->AddDataRange(64 + 16 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->transform.GetLocalFront());
 		direcionalLightsBuffer->AddDataRange(64 + 32 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->GetDiffuseColor());

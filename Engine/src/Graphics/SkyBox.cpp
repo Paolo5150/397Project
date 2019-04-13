@@ -16,7 +16,7 @@ Skybox::Skybox(CubeMap* cubemap)
 	g->ApplyMaterial(material, MaterialType::COLORONLY);
 
 	meshRenderer = (MeshRenderer*)g->GetComponentInChild("cube", "MeshRenderer");
-	meshRenderer->isCullable = false;
+	meshRenderer->SetIsCullable(false);
 
 	meshRenderer->AddPreRenderCallback(std::bind(&Skybox::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
 	meshRenderer->AddPostRenderCallback(std::bind(&Skybox::OnPostRender, this, std::placeholders::_1, std::placeholders::_2));

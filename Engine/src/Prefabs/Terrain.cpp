@@ -30,12 +30,12 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 	Mesh*m = new GridMesh(size, size);
 	meshRenderer = new MeshRenderer(m, material);
 	meshRenderer->SetMaterial(material);
-	meshRenderer->isCullable = false;
+	meshRenderer->SetIsCullable(false);
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).SetShader(AssetLoader::Instance().GetAsset<Shader>("TerrainNoLight"));
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).LoadVec3("color", 0.9, 0.9, 0.9);
 
 	meshRenderer->AddPreRenderCallback(std::bind(&Terrain::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
-	meshRenderer->isCullable = false;
+	meshRenderer->SetIsCullable(false);
 	highMountainsRange = 20;
 	highMountainPerc = 0.5f;
 	this->AddComponent(meshRenderer);
@@ -173,7 +173,7 @@ bool Terrain::GenerateFaultFormation(int iterations, int minHeight, float weight
 	}
 	Logger::LogInfo("Center",Maths::Vec3ToString(meshRenderer->GetMesh().GetCenter()));
 	meshRenderer->GetMesh().CalculateNormals();
-	meshRenderer->vertexBuffer->AddData(meshRenderer->GetMesh().vertices);
+	meshRenderer->GetArrayBufferVertex().AddData(meshRenderer->GetMesh().vertices);
 	transform.Translate(-meshRenderer->GetMesh().GetCenter().x, -meshRenderer->GetMesh().GetCenter().y, -meshRenderer->GetMesh().GetCenter().z);
 }
 
@@ -336,7 +336,7 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 
 
 		meshRenderer->GetMesh().CalculateNormals();
-		meshRenderer->vertexBuffer->AddData(meshRenderer->GetMesh().vertices);
+		meshRenderer->GetArrayBufferVertex().AddData(meshRenderer->GetMesh().vertices);
 		//transform.Translate(-meshRenderer->GetMesh().GetCenter().x, -meshRenderer->GetMesh().GetCenter().y, -meshRenderer->GetMesh().GetCenter().z);
 		delete[] heights;
 	}

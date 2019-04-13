@@ -51,9 +51,4 @@ void ExitScene::LogicUpdate() {
 
 	Scene::LogicUpdate();
 }
-void ExitScene::EngineUpdate() {
-	//Scene::EngineUpdate();
-}
-void ExitScene::LateUpdate() {
-	Scene::LateUpdate();
-}
+
