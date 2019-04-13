@@ -4,8 +4,8 @@
 #include "Core\Logger.h"
 #include "Scene/SceneManager.h"
 
-#include "Scenes/TestScene1.h"
-#include "Scenes/TestScene2.h"
+#include "Scenes/MainScene.h"
+#include "Scenes/ExitScene.h"
 
 
 Application* CreateApplication()
@@ -28,12 +28,12 @@ Game::~Game()
 void Game::AppInitialize()
 {
 	//Create all scenes here, might need to use LUA...?
-	SceneManager::Instance().AddScene(new TestScene1());
-	SceneManager::Instance().AddScene(new TestScene2());
+	SceneManager::Instance().AddScene(new MainScene());
+	SceneManager::Instance().AddScene(new ExitScene());
 
 
 	//Load first scene
-	SceneManager::Instance().LoadNewScene("TestScene1"); //Scene initialize is called here
+	SceneManager::Instance().LoadNewScene("MainScene"); //Scene initialize is called here
 
 
 	

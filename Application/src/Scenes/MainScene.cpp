@@ -2,7 +2,7 @@
 #include "Prefabs\Axis.h"
 
 #include "Core\MainCamera.h"
-#include "TestScene1.h"
+#include "MainScene.h"
 #include "Core/Logger.h"
 #include "Scene/SceneManager.h"
 
@@ -26,29 +26,29 @@ DirectionalLight* dirLight;
 Terrain* terrain;
 
 
-TestScene1::TestScene1() : Scene("TestScene1")
+MainScene::MainScene() : Scene("MainScene")
 {
 
 }
 
-void TestScene1::LoadAssets() {
+void MainScene::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	
 }
-void TestScene1::UnloadAssets() {
+void MainScene::UnloadAssets() {
 	AssetLoader::Instance().Unload<Model>();
 	AssetLoader::Instance().Unload<Texture2D>();
 
 }
-void TestScene1::ExitScene() {
+void MainScene::QuitScene() {
 	Logger::LogError("Scene asset clean up");
 
-	Scene::ExitScene();
+	Scene::QuitScene();
 
 }
-void TestScene1::Initialize() {
+void MainScene::Initialize() {
 
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
@@ -140,7 +140,7 @@ void TestScene1::Initialize() {
 
 
 }
-void TestScene1::LogicUpdate() {
+void MainScene::LogicUpdate() {
 
 	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));
@@ -161,7 +161,7 @@ void TestScene1::LogicUpdate() {
 	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);*/
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
-		SceneManager::Instance().LoadNewScene("TestScene2");
+		SceneManager::Instance().LoadNewScene("ExitScene");
 
 
 	Scene::LogicUpdate(); //Must be last statement!

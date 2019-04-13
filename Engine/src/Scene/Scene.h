@@ -22,7 +22,7 @@ public:
 
 	virtual void LoadAssets() = 0;
 	virtual void UnloadAssets() = 0;
-	virtual void ExitScene() = 0;
+	virtual void QuitScene() = 0;
 	virtual void Initialize() = 0;
 	virtual void LogicUpdate() = 0;
 	virtual void EngineUpdate();

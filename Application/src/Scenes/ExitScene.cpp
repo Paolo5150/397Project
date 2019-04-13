@@ -1,6 +1,6 @@
 #include "Components\MeshRenderer.h"
 #include "Core\CameraPerspective.h"
-#include "TestScene2.h"
+#include "ExitScene.h"
 #include "Core/Logger.h"
 #include "Scene/SceneManager.h"
 
@@ -12,28 +12,28 @@
 #include "Event\ApplicationEvents.h"
 
 
-TestScene2::TestScene2() : Scene("TestScene2")
+ExitScene::ExitScene() : Scene("ExitScene")
 {
 
 }
 
-void TestScene2::LoadAssets() {
+void ExitScene::LoadAssets() {
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\paolo.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\dylan.png");
 
 
 }
-void TestScene2::UnloadAssets() {
+void ExitScene::UnloadAssets() {
 
 	AssetLoader::Instance().Unload<Texture2D>();
 }
 
-void TestScene2::ExitScene() {
-	Scene::ExitScene();
+void ExitScene::QuitScene() {
+	Scene::QuitScene();
 }
 
-void TestScene2::Initialize() {	 
+void ExitScene::Initialize() {
 
 	 GUIManager::Instance().AddGUIObject(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("paolo"), 10, 20, 25, 35, true)); 
 	 GUIManager::Instance().AddGUIObject(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("dylan"), 40, 20, 25, 35, true));
@@ -43,7 +43,7 @@ void TestScene2::Initialize() {
 
 
 }
-void TestScene2::LogicUpdate() {
+void ExitScene::LogicUpdate() {
 	//Logger::LogInfo("Updating scene", name);
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
@@ -51,9 +51,9 @@ void TestScene2::LogicUpdate() {
 
 	Scene::LogicUpdate();
 }
-void TestScene2::EngineUpdate() {
+void ExitScene::EngineUpdate() {
 	//Scene::EngineUpdate();
 }
-void TestScene2::LateUpdate() {
+void ExitScene::LateUpdate() {
 	Scene::LateUpdate();
 }

@@ -4,13 +4,13 @@
 #include "GUI\GUIElements\GUIText.h"
 
 
-class TestScene2 : public Scene
+class ExitScene : public Scene
 {
 public:
-	TestScene2();
+	ExitScene();
 	virtual void LoadAssets() override;
 	virtual void UnloadAssets() override;
-	virtual void ExitScene() override;
+	virtual void QuitScene() override;
 	virtual void Initialize() override;
 	virtual void LogicUpdate() override;
 	virtual void EngineUpdate() override;
