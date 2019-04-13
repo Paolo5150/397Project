@@ -11,7 +11,28 @@
 #include <string>
 #include <vector>
 
+/**
+* @class ModelNode
+* @brief Describe a joint in an animated model
+* CURRENTLY NOT IMPLEMENTED
+*
+* @author Paolo Ferri
+* @version 01
+* @date 15/03/2018
+*
+*
+* @bug No known bugs.
+*/
+class ModelNode
+{
 
+public:
+	std::string name;
+	glm::mat4 transform;
+	std::vector<ModelNode*> children;
+};
+
+/*
 class TranslateKey
 {
 public:
@@ -36,14 +57,6 @@ public:
 	glm::quat value;
 };
 
-class ModelNode
-{
-
-public:
-	std::string name;
-	glm::mat4 transform;
-	std::vector<ModelNode*> children;
-};
 
 class ModelNodeAnimationInfo
 {
@@ -64,3 +77,4 @@ public:
 	unsigned int index;
 };
 
+*/
