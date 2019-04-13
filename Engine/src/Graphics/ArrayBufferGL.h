@@ -6,7 +6,7 @@
 
 /**
 * @class ArrayBufferGL
-* @brief Template class used to create buffers for the GPU
+* @brief Template class used to create buffers for the GPU, specialized for Opengl 
 * @author Paolo Ferri
 * @version 01
 * @date 15/03/2018
