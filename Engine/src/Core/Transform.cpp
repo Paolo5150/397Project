@@ -86,8 +86,9 @@ void Transform::SetScale(float x, float y, float z)
 }
 
 
-void Transform::UpdateVectors()
+void Transform::Update()
 {
+		
 	if (parent == NULL)
 	{
 		modelMatrix = GetTranslateMatrix()* GetRotationMatrix() * GetScaleMatrix();
@@ -97,15 +98,6 @@ void Transform::UpdateVectors()
 
 		modelMatrix = parent->GetMatrix()  * GetTranslateMatrix()* GetRotationMatrix() * GetScaleMatrix();
 	}
-
-
-}
-
-
-void Transform::Update()
-{
-		
-	UpdateVectors();
 
 }
 

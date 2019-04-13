@@ -119,28 +119,94 @@ public:
 	*/
 	glm::mat4& GetProjectionMatrix() { return projectionMatrix; }
 
+	/**
+	* @brief Return the near plane
+	*/
+	float GetNearPlane() { return nearPlane; };
+
+	/**
+	* @brief Return the far ratio
+	*/
+	float GetFarPlane() { return farPlane; };
+
+
 protected:
 
+	/**
+	* @brief Callback method invoked when the screen is resied. Updates the projection matrix
+	*
+	* @param The event 
+	*/
 	virtual bool OnScreenResize(Event* e) = 0;
-	Transform* entityTransform;
+
+	/**
+	* @brief The culling mask
+	*/
 	unsigned cullingMask;
+
+	/**
+	* @brief The camera depth
+	*/
 	int depth;
+
+	/**
+	* @brief The camera type (orthographic or perspective)
+	*/
 	CAMERA_TYPE camerType;
+
+	/**
+	* @brief Creates the camera object. Private as no generic camera can be created
+	*
+	* @pre The camera does not exist
+	* @post The camera object is created
+	*/
 	Camera(std::string name);
+
+	/**
+	* @brief Token used to unsubscribe callback
+	*/
 	std::string resizeEventToken;
-
-
+	/**
+	* @brief The view matrix
+	*/
 	glm::mat4 viewMatrix;
+
+	/**
+	* @brief The projection matrix
+	*/
 	glm::mat4 projectionMatrix;
+
+	/**
+	* @brief The camera near clipping plane
+	*/
 	float nearPlane;
+
+	/**
+	* @brief The camera far clipping plane
+	*/
 	float farPlane;
 
 
 
 
 private:
+
+	/**
+	* @brief The list of all the cameras
+	*/
 	static std::list<Camera*> allCameras;
-	static std::vector<Camera*> allCamerasVector; //Temporary;
+
+	/**
+	* @brief The list of all the cameras ordererd by depth
+	*/
+	static std::vector<Camera*> allCamerasVector; 
+
+	/**
+	* @brief Update the allCamerasVector by updating the cameras by depth
+	*
+	* @pre The vector is not empty
+	* @post The cameras in the vector are oredered by depth
+	*/
 	static void UpdateOrdererdCameras();
 
 
