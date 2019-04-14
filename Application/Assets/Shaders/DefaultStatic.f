@@ -66,7 +66,7 @@ void main()
    vec3 diffuseColor = texture(diffuse0,Textcoords * material.UVScale).rgb;
    
    vec3 CamToFrag = normalize(FragPosition - CameraPosition);
-   vec3 reflection = reflect(CamToFrag,Normal);
+   vec3 reflection = reflect(CamToFrag,normalize(Normal));
    vec3 skyboxColor = texture(cubemap0,reflection).rgb;
    
    vec3 DirLights = CalculateDirectionalLights();

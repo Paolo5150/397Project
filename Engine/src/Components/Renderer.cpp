@@ -60,7 +60,7 @@ void Renderer::EngineUpdate()
 		{
 			glm::vec3 camToHere = glm::normalize(_parent->transform.GetGlobalPosition() - Camera::GetCameraByName("Main Camera")->transform.GetPosition());
 			float d = glm::dot(camToHere, Camera::GetCameraByName("Main Camera")->transform.GetLocalFront());
-			if (d >= 0.4)
+			if (d >= 0.1)
 			{
 
 				RenderingEngine::Instance().SubmitRenderer(this);

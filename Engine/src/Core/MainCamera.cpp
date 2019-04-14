@@ -62,11 +62,11 @@ void MainCamera::UpdateControls()
 		Input::SetCursorMode("disabled");
 
 	if (Input::GetKeyDown(GLFW_KEY_KP_ADD))
-		_movementSpeed++;
+		_movementSpeed+=10;
 	else if (Input::GetKeyDown(GLFW_KEY_KP_SUBTRACT))
-		_movementSpeed--;
+		_movementSpeed-=10;
 
-	Logger::LogInfo(transform.ToString());
+	//Logger::LogInfo(transform.ToString());
 }
 
 void MainCamera::SetMovementSpeed(float speed)

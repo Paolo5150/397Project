@@ -34,6 +34,7 @@ MainScene::MainScene() : Scene("MainScene")
 void MainScene::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
+
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	
 }
@@ -86,7 +87,7 @@ void MainScene::Initialize() {
 	mat.LoadCubemap(&skybox->GetCubeMap());
 
 	mat.LoadFloat("shininess", 1000.0f);
-	mat.LoadFloat("reflectivness", 0.0);
+	mat.LoadFloat("reflectivness", 1.0);
 
 	
 	nanosuit->ApplyMaterial(mat);
@@ -156,9 +157,9 @@ void MainScene::LogicUpdate() {
 
 
 	pLight->transform.Translate(0.05f, 0, 0);*/
-	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+	//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
 
-	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+//	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 	if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)
 		cam->transform.SetPosition(terrain->GetTerrainMaxX() - 50, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
