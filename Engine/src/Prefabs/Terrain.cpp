@@ -345,4 +345,24 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 		//transform.Translate(-meshRenderer->GetMesh().GetCenter().x, -meshRenderer->GetMesh().GetCenter().y, -meshRenderer->GetMesh().GetCenter().z);
 		delete[] heights;
 	}
+
 }
+
+float Terrain::GetTerrainMaxX()
+{
+	return meshRenderer->GetMesh().vertices[((terrainSize - 1) * terrainSize) + (terrainSize - 1)].position.x * transform.GetScale().x;
+}
+float Terrain::GetTerrainMinX()
+{
+	return meshRenderer->GetMesh().vertices[(0 * terrainSize) + 0].position.x * transform.GetScale().x* transform.GetScale().x;
+}
+
+float Terrain::GetTerrainMaxZ()
+{
+	return meshRenderer->GetMesh().vertices[((terrainSize - 1) * terrainSize) + (terrainSize - 1)].position.z * transform.GetScale().z;
+}
+float Terrain::GetTerrainMinZ()
+{
+	return meshRenderer->GetMesh().vertices[(0 * terrainSize) + 0].position.x * transform.GetScale().z* transform.GetScale().z;
+}
+

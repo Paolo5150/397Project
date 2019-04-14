@@ -87,6 +87,14 @@ public:
 	*/
 	float GetHeightAt(int x, int z);
 
+
+	float GetTerrainMaxX();
+	float GetTerrainMinX();
+
+	float GetTerrainMaxZ();
+	float GetTerrainMinZ();
+	
+
 private:
 	/**
 	* @brief		Normaliz the terrain height
@@ -122,4 +130,6 @@ private:
 	* @brief		Whether the wireframe will be rendererd
 	*/
 	bool isWireframe;
+
+	
 };
