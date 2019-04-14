@@ -36,8 +36,7 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 
 	meshRenderer->AddPreRenderCallback(std::bind(&Terrain::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
 	meshRenderer->SetIsCullable(false);
-	highMountainsRange = 20;
-	highMountainPerc = 0.5f;
+
 	this->AddComponent(meshRenderer);
 }
 
@@ -53,7 +52,6 @@ void Terrain::OnPreRender(Camera& cam, Shader* s)
 
 	s->SetFloat("u_maxHeight", transform.GetScale().y);
 	s->SetFloat("shadowMapCount", LightManager::Instance().GetShadowMapsCount());
-	Logger::LogInfo("Shadows", LightManager::Instance().GetShadowMapsCount());
 
 	if (s->name == "Terrain")
 	 LightManager::Instance().SendShadowToShader(meshRenderer->GetMaterial().GetShader());
@@ -118,7 +116,7 @@ void Terrain::GetCenter(int& x, int& y,int& z)
 }
 
 
-bool Terrain::GenerateFaultFormation(int iterations, int minHeight, float weight, bool random)
+/*bool Terrain::GenerateFaultFormation(int iterations, int minHeight, float weight, bool random)
 {
 	int x1, x2, z1, z2;
 	float* heights = NULL;
@@ -175,7 +173,7 @@ bool Terrain::GenerateFaultFormation(int iterations, int minHeight, float weight
 	meshRenderer->GetMesh().CalculateNormals();
 	meshRenderer->GetArrayBufferVertex().AddData(meshRenderer->GetMesh().vertices);
 	transform.Translate(-meshRenderer->GetMesh().GetCenter().x, -meshRenderer->GetMesh().GetCenter().y, -meshRenderer->GetMesh().GetCenter().z);
-}
+}*/
 
 
 void Terrain::NormaliseTerrain(float* heightData, int dataWidth, int dataHeight)

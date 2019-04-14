@@ -28,9 +28,3 @@ PointLight::~PointLight()
 
 }
 
-void PointLight::Update()
-{
-	GameObject::Update();
-
-
-}

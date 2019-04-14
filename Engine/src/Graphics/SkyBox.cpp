@@ -1,6 +1,5 @@
 #include "Skybox.h"
 #include "..\Utils\AssetLoader.h"
-#include "..\Prefabs\CubeMesh.h"
 
 Skybox::Skybox(CubeMap* cubemap)
 {
