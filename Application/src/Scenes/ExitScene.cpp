@@ -46,7 +46,7 @@ void ExitScene::Initialize() {
 void ExitScene::LogicUpdate() {
 	//Logger::LogInfo("Updating scene", name);
 
-	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
+	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
 
 	Scene::LogicUpdate();

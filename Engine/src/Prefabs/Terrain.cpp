@@ -35,6 +35,8 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).LoadVec3("color", 0.9, 0.9, 0.9);
 
 	meshRenderer->AddPreRenderCallback(std::bind(&Terrain::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
+	meshRenderer->AddPostRenderCallback(std::bind(&Terrain::OnPostRender, this, std::placeholders::_1, std::placeholders::_2));
+
 	meshRenderer->SetIsCullable(false);
 
 	this->AddComponent(meshRenderer);
@@ -56,6 +58,11 @@ void Terrain::OnPreRender(Camera& cam, Shader* s)
 	if (s->name == "Terrain")
 	 LightManager::Instance().SendShadowToShader(meshRenderer->GetMaterial().GetShader());
 
+}
+
+void Terrain::OnPostRender(Camera& cam, Shader* s)
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 float TriangleBaric(glm::vec3 p1, glm::vec3 p2,glm::vec3 p3, glm::vec2 pos)
@@ -282,7 +289,7 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 				
 				meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y = heights[(width * (width * j / terrainSize)) + (width * i / terrainSize)] ;
 				
-				if (i > 0 && i < 60)
+				/*if (i > 0 && i < 60)
 					{
 				
 					float higher = i / 30.0f;
@@ -322,7 +329,7 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 						higher = 2 - higher;
 
 					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
-				}
+				}*/
 
 
 				min = meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y < min ? meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y : min;

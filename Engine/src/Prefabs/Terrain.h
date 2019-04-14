@@ -54,6 +54,17 @@ public:
 	void OnPreRender(Camera& cam, Shader* s);
 
 	/**
+	* @brief		Callback called right after the Render method
+	*
+	* @pre			The render method has been called
+	* @post			The method is called after Render
+	*
+	* @param cam	The camera used to render the object
+	* @param currentShader	The shader used to render the object
+	*/
+	void OnPostRender(Camera& cam, Shader* s);
+
+	/**
 	* @brief		Get the center of the terrain in world space
 	*
 	* @pre			The terrain object must exist

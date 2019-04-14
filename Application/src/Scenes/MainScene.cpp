@@ -160,7 +160,7 @@ void MainScene::LogicUpdate() {
 	//Logger::LogInfo("H ", h);
 	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);*/
 
-	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
+	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		SceneManager::Instance().LoadNewScene("ExitScene");
 
 
