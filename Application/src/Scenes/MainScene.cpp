@@ -34,8 +34,11 @@ MainScene::MainScene() : Scene("MainScene")
 void MainScene::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
+
 	
 }
 void MainScene::UnloadAssets() {
@@ -56,7 +59,9 @@ void MainScene::Initialize() {
 	Timer::SetDisplayFPS(true);
 	
 	nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
-	GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
+	GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
+
+
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.1f);
@@ -89,12 +94,17 @@ void MainScene::Initialize() {
 	mat.LoadFloat("shininess", 1000.0f);
 	mat.LoadFloat("reflectivness", 1.0);
 
-	
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 
 	nanosuit->transform.SetScale(2,2,2);
-	n2->transform.SetScale(2, 2, 2);
+
+	Material cabinMat;
+	cabinMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
+	cabinMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
+	n2->ApplyMaterial(cabinMat);
+	n2->transform.SetScale(100, 100,100);
+	n2->transform.SetRotation(-90, 0, 0);
 
 
 	float ar = Window::Instance().GetAspectRatio();
@@ -133,7 +143,8 @@ void MainScene::Initialize() {
 	cam->transform.SetPosition(x, y,z);
 
 	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
-	n2->transform.SetPosition(x, terrain->GetHeightAt(x, z + 700) + 4, z + 700);
+
+	n2->transform.SetPosition(x, terrain->GetHeightAt(x, z + 1500) + 4, z + 1500);
 
 
 	w->transform.SetPosition(x, 100, z);
@@ -157,9 +168,9 @@ void MainScene::LogicUpdate() {
 
 
 	pLight->transform.Translate(0.05f, 0, 0);*/
-	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+	//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
 
-	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+//	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 	if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)
 		cam->transform.SetPosition(terrain->GetTerrainMaxX() - 50, cam->transform.GetPosition().y, cam->transform.GetPosition().z);

@@ -29,7 +29,7 @@ LightManager::~LightManager()
 
 void LightManager::Initialize()
 {	
-	shadowCamera = new CameraOrthogonal(-500, 500, -500, 500, 0.1, 2000.0);
+	shadowCamera = new CameraOrthogonal(-1000, 1000, -1000, 1000, 0.1, 5000);
 	shadowCamera->RemoveLayerMask(Layers::GUI);
 	shadowCamera->RemoveLayerMask(Layers::TERRAIN);
 	shadowCamera->RemoveLayerMask(Layers::WATER);
@@ -93,7 +93,7 @@ void LightManager::UpdateUBOs()
 			//Create shadow map
 			(*it)->shadowMap->Bind();
 			glClear(GL_DEPTH_BUFFER_BIT);
-			shadowCamera->transform.SetPosition(sceneMainCamera->transform.GetPosition() - (*it)->transform.GetLocalFront() * 500.0f);
+			shadowCamera->transform.SetPosition(sceneMainCamera->transform.GetPosition() - (*it)->transform.GetLocalFront() * 1000.0f);
 			shadowCamera->transform.LookAt(shadowCamera->transform.GetPosition() + (*it)->transform.GetLocalFront());
 			shadowCamera->UpdateViewMatrix();
 			RenderingEngine::Instance().RenderBuffer(shadowCamera, MaterialType::COLORONLY);
