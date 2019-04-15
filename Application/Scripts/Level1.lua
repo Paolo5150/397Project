@@ -41,8 +41,16 @@ end
     crateScale = 1;
 
 CreateAsset("Model", "Gun");
-gunX, gunY, gunZ = 1637, 35.5, 1555;
+gunX, gunY, gunZ = 1637, 16, 1555; --Same x and z location as crate 1, y = 16 is to lay the gun on a crate
 gunScale = 0.8;
+
+CreateAsset("Model", "Ship");
+shipX, shipY, shipZ = 1545, 0, 1414;
+shipScale = 20;
+
+--CreateAsset("Model", "Cabin");
+cabinX, cabinY, cabinZ = 1489, 0, 2753;
+cabinScale = 20;
 
    nanosuit1X, nanosuit1Y, nanosuit1Z = 1900, 0, 1900;
    nanosuit2X, nanosuit2Y, nanosuit2Z = 1700, 0, 2300;

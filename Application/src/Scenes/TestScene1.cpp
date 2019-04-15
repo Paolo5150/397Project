@@ -26,6 +26,8 @@ GameObject** pumpkins;
 GameObject** barrels;
 GameObject** crates;
 GameObject* gun;
+GameObject* ship;
+GameObject* cabin;
 PointLight* pLight;
 DirectionalLight* dirLight;
 Terrain* terrain;
@@ -43,7 +45,10 @@ void TestScene1::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Barrel\\barrel.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Gun\\gun.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
+	//AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.obj");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
+	AssetLoader::Instance().LoadTexture("Assets\\Models\\Ship\\textures\\shipTexture.png");
 
 }
 void TestScene1::UnloadAssets() {
@@ -96,9 +101,19 @@ void TestScene1::Initialize() {
 	mat_wood.LoadFloat("shininess", 1000.0f);
 	mat_wood.LoadFloat("reflectivness", 0.0);
 
+
+	Material mat_ship;
+	mat_ship.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
+	mat_ship.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("shipTexture"));
+	mat_ship.LoadCubemap(&skybox->GetCubeMap());
+
+	mat_ship.LoadFloat("shininess", 1000.0f);
+	mat_ship.LoadFloat("reflectivness", 0.5f);
+
+
 	//Terrain
 	terrain = new Terrain(256);
-	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
+	terrain->ApplyHeightMap("Assets\\Textures\\hm2.jpg");
 	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
 	terrain->transform.SetScale(15, 300, 15);
 	terrain->transform.Translate(0, 0, 0);
@@ -125,7 +140,7 @@ void TestScene1::Initialize() {
 		float posX = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "X");
 		float posY = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "Y");
 		float posZ = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "Z");
-		nanosuits[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ), posZ);
+		nanosuits[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
 	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");
 
@@ -139,7 +154,7 @@ void TestScene1::Initialize() {
 		float posX = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "X");
 		float posY = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "Y");
 		float posZ = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "Z");
-		pumpkins[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ), posZ);
+		pumpkins[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
 	luaAssetOffset += Lua::GetIntFromStack("npc_pumpkins");
 
@@ -153,7 +168,7 @@ void TestScene1::Initialize() {
 		float posX = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "X");
 		float posY = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "Y");
 		float posZ = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "Z");
-		barrels[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ), posZ);
+		barrels[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
 	luaAssetOffset += Lua::GetIntFromStack("prop_barrels");
 
@@ -167,7 +182,7 @@ void TestScene1::Initialize() {
 		float posX = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "X");
 		float posY = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "Y");
 		float posZ = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "Z");
-		crates[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ), posZ);
+		crates[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
 	luaAssetOffset += Lua::GetIntFromStack("prop_crates");
 
@@ -175,13 +190,26 @@ void TestScene1::Initialize() {
 	gun->ApplyColor(1, 1, 1);
 	AddGameObject(gun);
 	gun->transform.SetScale(Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"));
-	gun->transform.SetPosition(Lua::GetFloatFromStack("gunX"), terrain->GetHeightAt(Lua::GetFloatFromStack("gunZ"), Lua::GetFloatFromStack("gunZ")) + Lua::GetFloatFromStack("gunY"), Lua::GetFloatFromStack("gunZ"));
+	gun->transform.SetPosition(Lua::GetFloatFromStack("gunX"), terrain->GetHeightAt(Lua::GetFloatFromStack("gunX"), Lua::GetFloatFromStack("gunZ")) + Lua::GetFloatFromStack("gunY"), Lua::GetFloatFromStack("gunZ"));
 	gun->transform.SetRotation(0, 0, 90);
 	luaAssetOffset++;
 
-	float ar = Window::Instance().GetAspectRatio();
+	ship = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
+	ship->ApplyColor(1, 1, 1);
+	ship->ApplyMaterial(mat_ship);
+	AddGameObject(ship);
+	ship->transform.SetScale(Lua::GetFloatFromStack("shipScale"), Lua::GetFloatFromStack("shipScale"), Lua::GetFloatFromStack("shipScale"));
+	ship->transform.SetPosition(Lua::GetFloatFromStack("shipX"), terrain->GetHeightAt(Lua::GetFloatFromStack("shipX"), Lua::GetFloatFromStack("shipZ")) + Lua::GetFloatFromStack("shipY"), Lua::GetFloatFromStack("shipZ"));
+	luaAssetOffset++;
 
-	
+	/*cabin = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
+	cabin->ApplyColor(1, 1, 1);
+	AddGameObject(cabin);
+	cabin->transform.SetScale(Lua::GetFloatFromStack("cabinScale"), Lua::GetFloatFromStack("cabinScale"), Lua::GetFloatFromStack("cabinScale"));
+	cabin->transform.SetPosition(Lua::GetFloatFromStack("cabinX"), terrain->GetHeightAt(Lua::GetFloatFromStack("cabinX"), Lua::GetFloatFromStack("cabinZ")) + Lua::GetFloatFromStack("cabinY"), Lua::GetFloatFromStack("cabinZ"));
+	luaAssetOffset++;*/
+
+	float ar = Window::Instance().GetAspectRatio();
 
 	AddGameObject(w);
 
@@ -222,6 +250,8 @@ void TestScene1::LogicUpdate() {
 	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
 	//Logger::LogInfo("H ", h);
 	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+
+	Logger::LogInfo(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
 		SceneManager::Instance().LoadNewScene("TestScene2");
