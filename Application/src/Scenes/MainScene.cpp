@@ -157,9 +157,9 @@ void MainScene::LogicUpdate() {
 
 
 	pLight->transform.Translate(0.05f, 0, 0);*/
-	//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
 
-//	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 	if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)
 		cam->transform.SetPosition(terrain->GetTerrainMaxX() - 50, cam->transform.GetPosition().y, cam->transform.GetPosition().z);

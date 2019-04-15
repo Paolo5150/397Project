@@ -98,12 +98,12 @@ float Terrain::GetHeightAt(int worldX, int worldZ)
 		meshRenderer->GetMesh().vertices[(gridZ+1) * terrainSize + gridX].position,
 		glm::vec2(worldX / transform.GetScale().x, worldZ/ transform.GetScale().x));
 
-	float h2 = TriangleBaric(meshRenderer->GetMesh().vertices[gridZ * terrainSize + gridX].position,
+	/*float h2 = TriangleBaric(meshRenderer->GetMesh().vertices[gridZ * terrainSize + gridX].position,
 		meshRenderer->GetMesh().vertices[gridZ * terrainSize + gridX + 1].position,
 		meshRenderer->GetMesh().vertices[(gridZ + 1) * terrainSize + gridX+1].position,
-		glm::vec2(worldX / transform.GetScale().x, worldZ / transform.GetScale().x));
+		glm::vec2(worldX / transform.GetScale().x, worldZ / transform.GetScale().x));*/
 
-	return ((h1 + h2)/2) * transform.GetScale().y;
+	return (h1) * transform.GetScale().y;
 	
 }
 
