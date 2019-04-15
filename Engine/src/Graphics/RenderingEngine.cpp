@@ -31,7 +31,7 @@ RenderingEngine::~RenderingEngine()
 void RenderingEngine::Initialize()
 {
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
-		Logger::LogError("RE scene changed");
+
 		ClearRendererList();
 		return 0;
 	});

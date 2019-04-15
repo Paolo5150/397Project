@@ -31,6 +31,7 @@ Model* AssetLoader::LoadModel(std::string path, bool preserve)
 {
 	Model* m = assimpWrapper.LoadModel(path);
 	containers[typeid(Model).name()].Load(m->name, m);	
+	//Logger::LogError("Loaded model", m->name);
 	m->preserve = preserve;	
 
 	return m;

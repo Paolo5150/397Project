@@ -34,6 +34,8 @@ MainScene::MainScene() : Scene("MainScene")
 void MainScene::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Wolf\\wolf.fbx");
+
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	
@@ -57,6 +59,8 @@ void MainScene::Initialize() {
 	
 	nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 	GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
+
+
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.1f);
@@ -89,13 +93,18 @@ void MainScene::Initialize() {
 	mat.LoadFloat("shininess", 1000.0f);
 	mat.LoadFloat("reflectivness", 1.0);
 
-	
+	GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
+
+	//woof->PrintHierarchy();
+
+
 	nanosuit->ApplyMaterial(mat);
 	nanosuit->ApplyColor(1, 1, 1);
 
 	nanosuit->transform.SetScale(2,2,2);
 	n2->transform.SetScale(2, 2, 2);
 
+	AddGameObject(woof);
 
 	float ar = Window::Instance().GetAspectRatio();
 	cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
@@ -124,8 +133,8 @@ void MainScene::Initialize() {
 	AddGameObject(a);
 	AddGameObject(cam);
 	AddGameObject(terrain);
-	AddGameObject(nanosuit);
-	AddGameObject(n2);
+	//AddGameObject(nanosuit);
+	//AddGameObject(n2);
 
 
 	int x, y, z;
@@ -133,6 +142,8 @@ void MainScene::Initialize() {
 	cam->transform.SetPosition(x, y,z);
 
 	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
+	woof->transform.SetPosition(x, terrain->GetHeightAt(x, z + 500) + 15, z + 500);
+
 	n2->transform.SetPosition(x, terrain->GetHeightAt(x, z + 700) + 4, z + 700);
 
 
