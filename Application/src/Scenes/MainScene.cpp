@@ -36,6 +36,8 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
 
+
+
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");
@@ -62,8 +64,6 @@ void MainScene::Initialize() {
 	
 	nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 	GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
-
-
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.1f);
@@ -148,7 +148,7 @@ void MainScene::Initialize() {
 
 	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
 
-	n2->transform.SetPosition(x, terrain->GetHeightAt(x, z + 1500) + 4, z + 1500);
+	n2->transform.SetPosition(x+300, terrain->GetHeightAt(x+300, z + 1200) + 15, z + 1200);
 
 
 	w->transform.SetPosition(x, 100, z);

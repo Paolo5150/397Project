@@ -137,7 +137,7 @@ void main()
    vec3 PointLights = CalculatePointLights();
    
    	float shadowFactor = ShadowCalculation();
-	float shadowAlpha = max(0.0,(500 - length(FragPosition - CameraPosition)) / 500.0);
+	float shadowAlpha = max(0.0,(1000 - length(FragPosition - CameraPosition)) / 1000.0);
 	float shadowColor = (1.0  - shadowFactor* shadowAlpha )  ;
    
     NormalToUse = normalize(texture(normal0,Textcoords*15).rgb);    
