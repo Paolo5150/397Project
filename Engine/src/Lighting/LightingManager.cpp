@@ -130,7 +130,7 @@ void LightManager::UpdateUBOs()
 			continue;
 		}
 
-		pointLightsBuffer->AddDataRange(0 + i * POINT_LIGHT_SIZE, 16, &(*it2)->transform.GetPosition());
+		pointLightsBuffer->AddDataRange(0 + i * POINT_LIGHT_SIZE, 16, &(*it2)->transform.GetGlobalPosition());
 		pointLightsBuffer->AddDataRange(16 + i * POINT_LIGHT_SIZE, 12, &(*it2)->transform.GetRotation());
 		pointLightsBuffer->AddDataRange(32 + i * POINT_LIGHT_SIZE, 12, &(*it2)->GetDiffuseColor());
 		pointLightsBuffer->AddDataRange(48 + i * POINT_LIGHT_SIZE, 12, &(*it2)->GetSpecularColor());

@@ -36,8 +36,6 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
 
-
-
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");
@@ -66,7 +64,7 @@ void MainScene::Initialize() {
 	GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
 
 	//Lights
-	LightManager::Instance().SetAmbientLight(0.2f, 0.2f, 0.1f);
+	LightManager::Instance().SetAmbientLight(0.4f, 0.4f, 0.2f);
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
@@ -83,7 +81,7 @@ void MainScene::Initialize() {
 	pLight = new PointLight();
 	pLight->SetDiffuseColor(1, 1, 1);
 	pLight->transform.Translate(-15, 10, -15);
-	pLight->SetIntensity(10.0f);
+	pLight->SetIntensity(50.0f);
 
 
 	// Uncomment this to force a wood material!
@@ -117,13 +115,13 @@ void MainScene::Initialize() {
 	cam->transform.SetRotation(30, 180, 0);
 	cam->SetMovementSpeed(500);
 	
-	//cam->transform.LookAt(nanosuit->transform.GetPosition());
+
 	cam->RemoveLayerMask(Layers::GUI);
 
 	Water* w = (Water*)GameAssetFactory::Instance().Create("Water");
 	terrain = new Terrain(256);
 	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
-	//terrain->GenerateFaultFormation(64, 0, 40, 0.5f, 1);
+
 	terrain->transform.SetScale(20 ,600, 20);
 	terrain->transform.Translate(0, 0, 0);
 
@@ -148,8 +146,9 @@ void MainScene::Initialize() {
 
 	nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
 
-	n2->transform.SetPosition(x+300, terrain->GetHeightAt(x+300, z + 1200) + 15, z + 1200);
-
+	n2->transform.SetPosition(x+300, terrain->GetHeightAt(x+300, z + 1200) + 50, z + 1200);
+	cam->AddChild(pLight);
+	//pLight->transform.SetPosition(0, 0, 10);
 
 	w->transform.SetPosition(x, 100, z);
 	w->transform.SetScale(3000, 3000, 1);
@@ -172,9 +171,9 @@ void MainScene::LogicUpdate() {
 
 
 	pLight->transform.Translate(0.05f, 0, 0);*/
-	//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
 
-//	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 	if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)
 		cam->transform.SetPosition(terrain->GetTerrainMaxX() - 50, cam->transform.GetPosition().y, cam->transform.GetPosition().z);

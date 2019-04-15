@@ -73,8 +73,9 @@ void main()
    vec3 PointLights = CalculatePointLights();
 
    vec3 total = (AmbientLight + DirLights + PointLights) * diffuseColor* material.color;
+   vec3 reflectionColor = (AmbientLight + DirLights + PointLights) * skyboxColor* material.color;
    
-   vec3 mixTotal = mix(total,skyboxColor,material.reflectivness);
+   vec3 mixTotal = mix(total,reflectionColor,material.reflectivness);
 	gl_FragColor =  vec4(mixTotal,1.0);
 
 } 
