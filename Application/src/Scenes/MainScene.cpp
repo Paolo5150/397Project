@@ -38,6 +38,8 @@ void MainScene::LoadAssets() {
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");
+
 
 	
 }
@@ -100,8 +102,10 @@ void MainScene::Initialize() {
 	nanosuit->transform.SetScale(2,2,2);
 
 	Material cabinMat;
-	cabinMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
+	cabinMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
 	cabinMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
+	cabinMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);
+
 	n2->ApplyMaterial(cabinMat);
 	n2->transform.SetScale(100, 100,100);
 	n2->transform.SetRotation(-90, 0, 0);
