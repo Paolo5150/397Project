@@ -162,7 +162,6 @@ void MainScene::LogicUpdate() {
 	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
 	int s = glm::sign(cross.y);
 
-	nanosuit->transform.RotateBy(yAngle * s, 0,1,0);
 
 	glm::vec3 np = nanosuit->transform.GetPosition();
 	np += nanosuit->transform.GetLocalFront() * 0.5f;
@@ -171,6 +170,7 @@ void MainScene::LogicUpdate() {
 
 
 	pLight->transform.Translate(0.05f, 0, 0);*/
+	nanosuit->transform.RotateBy(0.51f, 0,1,0);
 	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
 
 	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
