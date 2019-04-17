@@ -54,10 +54,7 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_specular.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\shipTexture.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");
-
-
-	
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");	
 }
 void MainScene::UnloadAssets() {
 	AssetLoader::Instance().Unload<Model>();
@@ -309,9 +306,7 @@ void MainScene::LogicUpdate() {
 		int x, y, z;
 		terrain->GetCenter(x, y, z);
 		cam->transform.LookAt(x, y, z);
-	}
-
-	
+	}	
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		SceneManager::Instance().LoadNewScene("ExitScene");

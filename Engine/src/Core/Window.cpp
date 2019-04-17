@@ -25,9 +25,10 @@ void Window::Initialize()
 
 
 	glfwWindowHint(GLFW_DOUBLEBUFFER, true);
+
 	instance.window = glfwCreateWindow(800, 600, "", NULL, NULL);
 	glfwMakeContextCurrent(instance.window);
-
+	glfwSetWindowPos(instance.window, 200, 20);
 	
 	glfwSetWindowCloseCallback(instance.window, OnClose);
 	glfwSetWindowSizeCallback(instance.window, OnResize);
