@@ -48,6 +48,7 @@ void Input::Init(bool disableCursor, bool logGlfwErrors)
 	mouseY = 0;
 	deltaMouseX = 0;
 	deltaMouseY = 0;
+	SetCursorMode("disabled");
 	Logger::LogInfo("Input initialised");
 }
 

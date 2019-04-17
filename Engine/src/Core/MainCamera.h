@@ -81,9 +81,15 @@ public:
 	*
 	* @pre			The MainCamera exists
 	* @post			The MainCamera rotation speed is returned and left unchanged
-	*
 	*/
 	float GetRotationSpeed() const;
+
+	/**
+	* @brief		Returns whether the camera is in top view mode
+	*
+	* @pre			The MainCamera exists
+	*/
+	bool IsTopView() const { return _isTopView; };
 
 private:
 	/**
@@ -95,5 +101,15 @@ private:
 	* @brief		The camera rotation speed
 	*/
 	float _rotationSpeed;
+
+	/**
+	* @brief		Whether the camera is in top view
+	*/
+	bool _isTopView;
+
+	/**
+	* @brief		The last position before top view
+	*/
+	glm::vec3 _lastPos;
 };
 
