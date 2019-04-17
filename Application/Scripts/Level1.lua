@@ -48,9 +48,9 @@ CreateAsset("Model", "Ship");
 shipX, shipY, shipZ = 1545, 0, 1414;
 shipScale = 20;
 
---CreateAsset("Model", "Cabin");
-cabinX, cabinY, cabinZ = 1489, 0, 2753;
-cabinScale = 20;
+CreateAsset("Model", "Cabin");
+cabinX, cabinY, cabinZ = 300, 50, 1200;
+cabinScale = 100;
 
    nanosuit1X, nanosuit1Y, nanosuit1Z = 1900, 0, 1900;
    nanosuit2X, nanosuit2Y, nanosuit2Z = 1700, 0, 2300;
