@@ -126,6 +126,8 @@ void MainScene::Initialize() {
 	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
 	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);
 
+	
+
 	/*n2->ApplyMaterial(mat_cabin);
 	n2->transform.SetScale(100, 100,100);
 	n2->transform.SetRotation(-90, 0, 0);*/
@@ -159,7 +161,7 @@ void MainScene::Initialize() {
 
 	Water* w = (Water*)Lua::GetCreatedAsset(1);
 	luaAssetOffset++;
-
+	//w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
 	nanosuits = new GameObject*[Lua::GetIntFromStack("npc_nanosuits")];
 	for (int i = 0; i < Lua::GetIntFromStack("npc_nanosuits"); i++)
 	{

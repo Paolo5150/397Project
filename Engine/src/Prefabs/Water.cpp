@@ -9,7 +9,12 @@
 #include "..\Scene\SceneManager.h"
 #include "..\Core\MainCamera.h"
 
+namespace
+{
 std::string waterResizeToken;
+bool cubemapLoaded = 0;
+}
+
 
 Water::Water(Texture2D* normalMap, Texture2D* distortion) : GameObject("Water")
 {
@@ -32,6 +37,7 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	waterCamera->RemoveAllMaskLayers();
 	waterCamera->AddLayerMask(Layers::DEFAULT);
 	waterCamera->AddLayerMask(Layers::TERRAIN);
+
 	waterCamera->SetActive(false);
 
 
@@ -46,8 +52,6 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 
 	material->Loadtexture(normalMap, TextureUniform::NORMAL0);
 	material->Loadtexture(distortion, TextureUniform::SPECIAL0);
-	if (SceneManager::Instance().GetCurrentScene().GetSkyBox() != nullptr)
-		material->LoadCubemap(&SceneManager::Instance().GetCurrentScene().GetSkyBox()->GetCubeMap());
 
 	material->Loadtexture(refractionBuffer->GetColorTexture(), TextureUniform::REFRACTION0);
 	material->Loadtexture(reflectionBuffer->GetColorTexture(), TextureUniform::REFLECITON0);
@@ -60,13 +64,13 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	material->LoadFloat("UVScale", 3.0f);
 
 	AssetLoader::Instance().GetAsset<Model>("Quad")->PopulateGameObject(this);
-	MeshRenderer* mr = dynamic_cast<MeshRenderer*>(GetChild("QuadMesh")->GetComponentByType("Renderer"));
-	mr->AddPreRenderCallback(std::bind(&Water::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
-	mr->SetIsCullable(false);
+	meshRenderer = dynamic_cast<MeshRenderer*>(GetChild("QuadMesh")->GetComponentByType("Renderer"));
+	meshRenderer->AddPreRenderCallback(std::bind(&Water::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
+	meshRenderer->SetIsCullable(false);
 	SetIsStatic(true);
 	SetLayer(0);
 	SetLayer(Layers::WATER);
-	ApplyMaterial(*material);
+	meshRenderer->SetMaterial(*material);
 }
 
 
@@ -136,6 +140,11 @@ void Water::OnPreRender(Camera& camera, Shader* currentShader)
 	//Logger::LogInfo("Water pre render");
 	currentShader->SetFloat("timer", timer);
 
+	if (SceneManager::Instance().GetCurrentScene().GetSkyBox() != nullptr && !cubemapLoaded)
+	{
+		meshRenderer->GetMaterial().LoadCubemap(&SceneManager::Instance().GetCurrentScene().GetSkyBox()->GetCubeMap());
+		cubemapLoaded = 1;
+	}
 
 }
 

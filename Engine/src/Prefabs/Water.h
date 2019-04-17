@@ -81,6 +81,10 @@ public:
 	*/
 	void OnPreRender(Camera& camera, Shader* currentShader = nullptr) ;
 
+	/**
+	* @brief		The mesh renderer component
+	*/
+	MeshRenderer* meshRenderer;
 private:
 
 	/**
@@ -93,10 +97,6 @@ private:
 	*/
 	CameraPerspective* waterCamera;
 
-	/**
-	* @brief		The mesh renderer component
-	*/
-	MeshRenderer* meshRenderer;
 
 	/**
 	* @brief		The material used by the water object
