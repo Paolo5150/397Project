@@ -18,11 +18,11 @@ class Camera;
 * @brief Represents an entity in the engine
 *
 *
-*Contains an entity and can contain children and components
+* Contains an entity and can contain children and components
 *
 * @author Dylan Green
 * @version 01
-* @date 05/03/2018
+* @date 05/03/2019
 *
 *
 * @bug No known bugs.
@@ -73,7 +73,7 @@ public:
 	* @pre			The GameObject must exist
 	* @post			The GameObject object's IsActive state is set to the parameter value, if it is valid
 	*
-	* @param		active		State of the GameObject
+	* @param		active				State of the GameObject
 	* @param		includeChildren		Whether to set all children to the same state
 	*/
 	void SetActive(bool active, bool includeChildren = true);
@@ -93,7 +93,7 @@ public:
 	* @pre			The GameObject must exist
 	* @post			The GameObject object's layer is set to the parameter value, if it is valid
 	*
-	* @param		layer		Layer of the GameObject, must be greater than 0
+	* @param		layer				Layer of the GameObject, must be greater than 0
 	* @param		includeChildren		Whether to set all children to the same layer
 	*/
 	void SetLayer(unsigned int layer, bool includeChildren = true);

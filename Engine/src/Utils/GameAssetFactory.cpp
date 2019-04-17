@@ -40,7 +40,7 @@ InternalAsset* GameAssetFactory::Create(std::string type, std::string name)
 	{
 		Material*m = new Material();
 		toBeDeletedASsets.push_back(m);
-		m;
+		return m;
 	}
 	else if (type == "Model")
 		return AssetLoader::Instance().GetAsset<Model>(name)->CreateGameObject();

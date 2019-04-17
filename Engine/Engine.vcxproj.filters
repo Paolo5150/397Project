@@ -153,6 +153,15 @@
     <ClCompile Include="src\Graphics\SkyBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Prefabs\CubeMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Lua.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\LuaRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\GUI\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -174,7 +183,7 @@
     <ClCompile Include="src\GUI\GUIElements\GUIManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\GUIElements\GUIObject.cpp">
+    <ClCompile Include="src\GUI\GUIElements\GUIObject.cpp">r
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -375,6 +384,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\SkyBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prefabs\CubeMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Lua.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\LuaRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\imconfig.h">
