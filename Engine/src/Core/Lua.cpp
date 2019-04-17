@@ -120,31 +120,27 @@ bool Lua::LuaType(lua_State*& L, int index, std::string type)
 
 void Lua::AddCreatedAsset(InternalAsset* asset)
 {
-	if (createdAssets == NULL)
+	if (createdAssets == NULL) //Create a new array if the array is null
 	{
 		createdAssets = new InternalAsset*[1];
+		//Don't increase the length here, it will be increased once the item is added
 	}
 
-	if (createdAssetsLength >= 2)
-	{
-		GameObject* obj = (GameObject*)asset;
-	}
-
-	InternalAsset** tempArray = new InternalAsset*[createdAssetsLength];
-	for (int i = 0; i < createdAssetsLength; i++)
+	InternalAsset** tempArray = new InternalAsset*[createdAssetsLength]; //Create a temp array to copy the createdasset array to
+	for (int i = 0; i < createdAssetsLength; i++) //Copy all of the created assets to the temp array
 	{
 		tempArray[i] = createdAssets[i];
 	}
 	delete[] createdAssets;
-	createdAssets = new InternalAsset*[createdAssetsLength + 1];
-	for (int i = 0; i < createdAssetsLength; i++)
+	createdAssets = new InternalAsset*[createdAssetsLength + 1]; //Create a new array, one element bigger than the previous array
+	for (int i = 0; i < createdAssetsLength; i++) //Copy all the elements back in
 	{
 		createdAssets[i] = tempArray[i];
 	}
-	delete[] tempArray;
+	delete[] tempArray; //Delete the temp array
 
-	createdAssets[createdAssetsLength] = asset;
-	createdAssetsLength++;
+	createdAssets[createdAssetsLength] = asset; //Add the asset
+	createdAssetsLength++; //Increase the length count by one
 }
 
 InternalAsset* Lua::GetCreatedAsset(unsigned int index)
@@ -155,25 +151,10 @@ InternalAsset* Lua::GetCreatedAsset(unsigned int index)
 	}
 	else
 	{
+		Logger::LogError("Invalid createdAssets array index!");
 		return nullptr;
 	}
 }
-
-//InternalAsset* Lua::GetCreatedAsset(std::string name)
-//{
-//	if (name.length > 0)
-//	{
-//		for (int i = 0; i < createdAssetsLength; i++)
-//		{
-//			if (createdAssets[i])
-//			return createdAssets[i];
-//		}
-//	}
-//	else
-//	{
-//		return nullptr;
-//	}
-//}
 
 void Lua::ClearCreatedAssets()
 {
