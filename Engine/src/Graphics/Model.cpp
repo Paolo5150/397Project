@@ -6,15 +6,15 @@
 
 Model::Model()
 {
-	rootNode = NULL;
+//	rootNode = NULL;
 }
 
 Model::~Model()
 {
-	auto it = allNodes.begin();
+//	auto it = allNodes.begin();
 
-	for (; it != allNodes.end(); it++)
-		delete it->second;
+	//for (; it != allNodes.end(); it++)
+	//	delete it->second;
 
 	//Textures are deleted by the AsetLoader
 	//Meshes are deleted by the mesh renderer
@@ -27,7 +27,7 @@ Model::~Model()
 		delete itm->second;
 
 
-	allNodes.clear();
+	//allNodes.clear();
 	allTextures.clear();
 	allMeshes.clear();
 	allMaterials.clear();

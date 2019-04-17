@@ -40,17 +40,7 @@ void GUIManager::Initialize()
 	});
 }
 
-bool GUIManager::OnSceneChange(Event* e)
-{
 
-	return false;
-}
-
-void GUIManager::SetBackgroundColor(float r, float g, float b, float a)
-{
-	ImGui::SetNextWindowBgAlpha(a);
-	//Need to find a way to change color...
-}
 
 void GUIManager::Refresh()
 {

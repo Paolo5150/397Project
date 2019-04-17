@@ -60,7 +60,7 @@ void Renderer::EngineUpdate()
 		{
 			glm::vec3 camToHere = glm::normalize(_parent->transform.GetGlobalPosition() - Camera::GetCameraByName("Main Camera")->transform.GetPosition());
 			float d = glm::dot(camToHere, Camera::GetCameraByName("Main Camera")->transform.GetLocalFront());
-			if (d >= 0.4)
+			if (d >= 0.1)
 			{
 
 				RenderingEngine::Instance().SubmitRenderer(this);
@@ -70,8 +70,8 @@ void Renderer::EngineUpdate()
 		else
 		{
 
-		RenderingEngine::Instance().SubmitRenderer(this);
-		submitted = true;
+			RenderingEngine::Instance().SubmitRenderer(this);
+			submitted = true;
 		}
 	}
 
@@ -93,11 +93,11 @@ void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 {
 	//Logger::LogInfo("Prerender called on", _parent->GetName());
 	
-	glm::mat4 mvp = cam.projectionMatrix * cam.viewMatrix * _parent->transform.GetMatrix();
+	glm::mat4 mvp = cam.GetProjectionMatrix() * cam.GetViewMatrix() * _parent->transform.GetMatrix();
 	Shader::GetCurrentShader().SetMat4("u_mvp", mvp);
 	Shader::GetCurrentShader().SetMat4("u_model", _parent->transform.GetMatrix());
-	Shader::GetCurrentShader().SetMat4("u_view", cam.viewMatrix);
-	Shader::GetCurrentShader().SetMat4("u_projection", cam.projectionMatrix);
+	Shader::GetCurrentShader().SetMat4("u_view", cam.GetViewMatrix());
+	Shader::GetCurrentShader().SetMat4("u_projection", cam.GetProjectionMatrix());
 	Shader::GetCurrentShader().SetVec3("u_cameraPosition", cam.transform.GetPosition());
 	Shader::GetCurrentShader().SetVec4("u_clippingPlane", LightManager::Instance().GetClippingPlane());
 
@@ -136,11 +136,6 @@ void Renderer::AddPostRenderCallback(std::function<void(Camera&, Shader*)> cb)
 
 }
 
-void Renderer::SendDataToShader(Camera& cam)
-{
-	
-
-}
 
 Material& Renderer::GetMaterial(MaterialType mt)
 {

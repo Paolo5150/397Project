@@ -68,7 +68,7 @@ void Scene::LogicUpdate()
 	}
 }
 
-void Scene::ExitScene()
+void Scene::QuitScene()
 {
 	auto it = m_allGameObjects.begin();
 

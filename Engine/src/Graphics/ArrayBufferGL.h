@@ -2,19 +2,59 @@
 #include <string>
 #include "ArrayBuffer.h"
 #include "..\Core\Logger.h"
+
+
+/**
+* @class ArrayBufferGL
+* @brief Template class used to create buffers for the GPU, specialized for Opengl 
+* @author Paolo Ferri
+* @version 01
+* @date 15/03/2018
+*
+*
+* @bug No known bugs.
+*/
 template <class T>
 class ArrayBufferGL : public ArrayBuffer<T>
 {
 public:
 
-
+	/**
+	* @brief		Creates a new array buffer
+	*
+	* @post			The graphics array buffer is created
+	*/
 	ArrayBufferGL();
+
+	/**
+	* @brief		Destroy a new array buffer, clear GPU memory
+	*
+	* @pre			The array buffer exists
+	* @post			The graphics array buffer is destroyed
+	*/
 	~ArrayBufferGL();
+
+	/**
+	* @brief		Bind the current array buffer
+	*
+	* @pre			The array buffer exists
+	* @post			The array buffer is ready to be used
+	*/
 	void Bind() override;
 
+	/**
+	* @brief		Add  data to the buffer
+	*
+	* @pre			The array buffer exists
+	* @post			The data is added to the buffer
+	* @param data	The data
+	*/
 	void AddData(std::vector<T>& data) override;
 
 private:
+	/**
+	* @brief The buffer type
+	*/
 	unsigned bufferType;
 
 };

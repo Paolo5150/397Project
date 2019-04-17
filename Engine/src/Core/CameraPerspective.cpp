@@ -28,5 +28,3 @@ bool CameraPerspective::OnScreenResize(Event* e)
 
 float CameraPerspective::GetAspectRatio() { return aspectRatio; }
 float CameraPerspective::GetFOV() { return FOV; }
-float CameraPerspective::GetNearPlane() { return nearPlane; }
-float CameraPerspective::GetFarPlane() { return farPlane; }

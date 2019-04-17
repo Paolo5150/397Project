@@ -94,7 +94,7 @@ glm::quat Maths::nlerp(glm::quat q1, glm::quat q2, float blend)
 
 	return glm::normalize(result);
 }
-
+/*
 glm::vec3 Maths::QuatToEuler(const glm::quat& q)
 {
 	glm::vec3 r;
@@ -117,7 +117,7 @@ glm::vec3 Maths::QuatToEuler(const glm::quat& q)
 	r.y = atan2(siny_cosp, cosy_cosp);
 
 	return r;
-}
+}*/
 
 ImVec2 Maths::vec2ToImVec2(const glm::vec2& v)
 {

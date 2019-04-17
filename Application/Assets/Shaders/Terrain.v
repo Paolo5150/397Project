@@ -45,6 +45,7 @@ out vec4 clipSpace;
 out float HeightRatio;
 out vec4 fragLightSpaces[MAX_LIGHTS];
 out vec3 vertexColor;
+out float fogVisibility;
 
 uniform mat4 u_mvp;
 uniform mat4 u_projection;
@@ -54,6 +55,9 @@ uniform vec3 u_cameraPosition;
 uniform vec4 u_clippingPlane;
 uniform float u_maxHeight;
 uniform int shadowMapCount;
+
+const float fogDensity = 0.0007;
+const float fogGradient = 1.5;
 
 
 //All directional lights
@@ -99,6 +103,11 @@ void main()
 	mat3 TBN = transpose(mat3(T,B,N));
 	CameraPositionTS = TBN * CameraPosition;
 	FragPositionTS = TBN * FragPosition;
+	
+	vec3 viewPosition = (u_view * fragPos).xyz;
+	float dist = length(viewPosition);
+	fogVisibility = exp(-pow(dist * fogDensity,fogGradient));
+	fogVisibility = clamp(fogVisibility,0.0,1.0);
 	
 	fragLightSpaces[0] = allDirLights[0].lightSpace * vec4(fragPos.xyz,1.0);
 

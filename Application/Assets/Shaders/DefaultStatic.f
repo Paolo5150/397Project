@@ -54,7 +54,6 @@ layout (std140, binding = 2) uniform AllPointLights
 
 uniform Material material;
 uniform sampler2D diffuse0;
-uniform sampler2D normal0;
 uniform vec3 AmbientLight;
 uniform samplerCube cubemap0;
 
@@ -67,15 +66,16 @@ void main()
    vec3 diffuseColor = texture(diffuse0,Textcoords * material.UVScale).rgb;
    
    vec3 CamToFrag = normalize(FragPosition - CameraPosition);
-   vec3 reflection = reflect(CamToFrag,Normal);
+   vec3 reflection = reflect(CamToFrag,normalize(Normal));
    vec3 skyboxColor = texture(cubemap0,reflection).rgb;
    
    vec3 DirLights = CalculateDirectionalLights();
    vec3 PointLights = CalculatePointLights();
 
    vec3 total = (AmbientLight + DirLights + PointLights) * diffuseColor* material.color;
+   vec3 reflectionColor = (AmbientLight + DirLights + PointLights) * skyboxColor* material.color;
    
-   vec3 mixTotal = mix(total,skyboxColor,material.reflectivness);
+   vec3 mixTotal = mix(total,reflectionColor,material.reflectivness);
 	gl_FragColor =  vec4(mixTotal,1.0);
 
 } 
