@@ -49,7 +49,10 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");	
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
-	AssetLoader::Instance().LoadTexture("Assets\\Models\\Ship\\textures\\shipTexture.png");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_normal.tga");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_specular.tga");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\shipTexture.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");
 
@@ -83,7 +86,7 @@ void MainScene::Initialize() {
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(25, 117, 0);
+	dirLight->transform.SetRotation(45, 117, 0);
 	dirLight->SetIntensity(0.7f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
@@ -108,6 +111,10 @@ void MainScene::Initialize() {
 	mat_wood.LoadFloat("shininess", 1000.0f);
 	mat_wood.LoadFloat("reflectivness", 1.0);
 
+	Material mat_crate;
+	mat_crate.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
+	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_diffuse"));
+	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_normal"), TextureUniform::NORMAL0);
 
 	Material mat_ship;
 	mat_ship.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
@@ -117,12 +124,12 @@ void MainScene::Initialize() {
 	mat_ship.LoadFloat("shininess", 1000.0f);
 	mat_ship.LoadFloat("reflectivness", 0.5f);
 
-	Material cabinMat;
-	cabinMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
-	cabinMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
-	cabinMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);
+	Material mat_cabin;
+	mat_cabin.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
+	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
+	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);
 
-	/*n2->ApplyMaterial(cabinMat);
+	/*n2->ApplyMaterial(mat_cabin);
 	n2->transform.SetScale(100, 100,100);
 	n2->transform.SetRotation(-90, 0, 0);*/
 
@@ -160,7 +167,6 @@ void MainScene::Initialize() {
 	for (int i = 0; i < Lua::GetIntFromStack("npc_nanosuits"); i++)
 	{
 		nanosuits[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		nanosuits[i]->ApplyColor(1, 1, 1);
 		AddGameObject(nanosuits[i]);
 		nanosuits[i]->transform.SetScale(Lua::GetFloatFromStack("nanosuitScale"), Lua::GetFloatFromStack("nanosuitScale"), Lua::GetFloatFromStack("nanosuitScale"));
 		float posX = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "X");
@@ -174,7 +180,6 @@ void MainScene::Initialize() {
 	for (int i = 0; i < Lua::GetIntFromStack("npc_pumpkins"); i++)
 	{
 		pumpkins[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		pumpkins[i]->ApplyColor(1, 1, 1);
 		AddGameObject(pumpkins[i]);
 		pumpkins[i]->transform.SetScale(Lua::GetFloatFromStack("pumpkinScale"), Lua::GetFloatFromStack("pumpkinScale"), Lua::GetFloatFromStack("pumpkinScale"));
 		float posX = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "X");
@@ -188,7 +193,6 @@ void MainScene::Initialize() {
 	for (int i = 0; i < Lua::GetIntFromStack("prop_barrels"); i++)
 	{
 		barrels[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		barrels[i]->ApplyColor(1, 1, 1);
 		AddGameObject(barrels[i]);
 		barrels[i]->transform.SetScale(Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"));
 		float posX = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "X");
@@ -202,7 +206,7 @@ void MainScene::Initialize() {
 	for (int i = 0; i < Lua::GetIntFromStack("prop_crates"); i++)
 	{
 		crates[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		crates[i]->ApplyColor(1, 1, 1);
+		crates[i]->ApplyMaterial(mat_crate);
 		AddGameObject(crates[i]);
 		crates[i]->transform.SetScale(Lua::GetFloatFromStack("crateScale"), Lua::GetFloatFromStack("crateScale"), Lua::GetFloatFromStack("crateScale"));
 		float posX = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "X");
@@ -213,7 +217,6 @@ void MainScene::Initialize() {
 	luaAssetOffset += Lua::GetIntFromStack("prop_crates");
 
 	gun = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
-	gun->ApplyColor(1, 1, 1);
 	AddGameObject(gun);
 	gun->transform.SetScale(Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"));
 	gun->transform.SetPosition(Lua::GetFloatFromStack("gunX"), terrain->GetHeightAt(Lua::GetFloatFromStack("gunX"), Lua::GetFloatFromStack("gunZ")) + Lua::GetFloatFromStack("gunY"), Lua::GetFloatFromStack("gunZ"));
@@ -221,7 +224,6 @@ void MainScene::Initialize() {
 	luaAssetOffset++;
 
 	ship = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
-	ship->ApplyColor(1, 1, 1);
 	ship->ApplyMaterial(mat_ship);
 	AddGameObject(ship);
 	ship->transform.SetScale(Lua::GetFloatFromStack("shipScale"), Lua::GetFloatFromStack("shipScale"), Lua::GetFloatFromStack("shipScale"));
@@ -229,13 +231,11 @@ void MainScene::Initialize() {
 	luaAssetOffset++;
 
 	cabin = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
-	//cabin->ApplyColor(1, 1, 1);
-	cabin->ApplyMaterial(cabinMat);
-	cabin->transform.SetScale(100, 100, 100);
-	cabin->transform.SetRotation(-90, 0, 0);
+	cabin->ApplyMaterial(mat_cabin);
 	AddGameObject(cabin);
 	cabin->transform.SetScale(Lua::GetFloatFromStack("cabinScale"), Lua::GetFloatFromStack("cabinScale"), Lua::GetFloatFromStack("cabinScale"));
 	cabin->transform.SetPosition(Lua::GetFloatFromStack("cabinX"), terrain->GetHeightAt(Lua::GetFloatFromStack("cabinX"), Lua::GetFloatFromStack("cabinZ")) + Lua::GetFloatFromStack("cabinY"), Lua::GetFloatFromStack("cabinZ"));
+	cabin->transform.SetRotation(-90, 0, 0);
 	luaAssetOffset++;
 
 	AddGameObject(w);
