@@ -74,6 +74,7 @@ void MainCamera::UpdateControls()
 	{
 		_isTopView = !_isTopView;
 		transform.SetPosition(0, 2000, 0);
+
 	}
 
 
