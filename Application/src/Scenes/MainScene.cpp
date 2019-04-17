@@ -282,9 +282,6 @@ void MainScene::LogicUpdate() {
 
 	/*pLight->transform.Translate(0.05f, 0, 0);
 	nanosuit->transform.RotateBy(0.51f, 0,1,0);*/
-	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
-
-	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 	if (!cam->IsTopView())
 	{
