@@ -24,7 +24,7 @@ void Core::Initialize()
 	graphicsAPI = new API_Opengl();
 
 	graphicsAPI->Initialize();
-
+	Logger::LogInfo("OpenGL version supported by this platform", glGetString(GL_VERSION));
 	//Events subscirption
 	EventDispatcher::Instance().SubscribeCallback<LogicUpdateEvent>(std::bind(&Core::LogicUpdate, this, std::placeholders::_1));
 	EventDispatcher::Instance().SubscribeCallback<LateUpdateEvent>(std::bind(&Core::LateUpdate, this, std::placeholders::_1));

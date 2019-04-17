@@ -40,10 +40,10 @@ void AssimpWrapper::ProcessNode(aiNode* node, const aiScene* scene, ModelNode* p
 	ModelNode* n = new ModelNode();
 	n->name = node->mName.C_Str();
 	n->transform = Maths::aiMatrix4x4ToGlm(node->mTransformation);
-	model->allNodes[n->name] = n;
+//	model->allNodes[n->name] = n;
 
-	if (model->rootNode == NULL)
-		model->rootNode = n;
+	//if (model->rootNode == NULL)
+	//	model->rootNode = n;
 
 	if (parentNode != NULL)
 		parentNode->children.push_back(n);
@@ -127,12 +127,12 @@ void AssimpWrapper::LoadMesh(aiMesh* mesh, Model* model, bool isanimated)
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
 	std::vector<Texture2D> textures;
-	std::vector<VertexBoneData> bones_id_weights_for_each_vertex;
+	//std::vector<VertexBoneData> bones_id_weights_for_each_vertex;
 
 	vertices.reserve(mesh->mNumVertices);
 	indices.reserve(mesh->mNumVertices);
 
-	bones_id_weights_for_each_vertex.resize(mesh->mNumVertices);
+//	bones_id_weights_for_each_vertex.resize(mesh->mNumVertices);
 
 	//vertices
 	for (unsigned i = 0; i < mesh->mNumVertices; i++)
@@ -189,7 +189,7 @@ void AssimpWrapper::LoadMesh(aiMesh* mesh, Model* model, bool isanimated)
 	Mesh* meshReturn = new Mesh();
 	meshReturn->vertices = vertices;
 	meshReturn->indices = indices;
-	meshReturn->bones_id_weights_for_each_vertex = bones_id_weights_for_each_vertex;
+	//meshReturn->bones_id_weights_for_each_vertex = bones_id_weights_for_each_vertex;
 	meshReturn->CalculateNormals();
 
 	int index = model->allMeshes.size();

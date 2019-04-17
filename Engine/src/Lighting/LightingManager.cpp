@@ -29,7 +29,7 @@ LightManager::~LightManager()
 
 void LightManager::Initialize()
 {	
-	shadowCamera = new Camera_Orthogonal(-500, 500, -500, 500, 0.1, 2000.0);
+	shadowCamera = new CameraOrthogonal(-1000, 1000, -1000, 1000, 0.1, 5000);
 	shadowCamera->RemoveLayerMask(Layers::GUI);
 	shadowCamera->RemoveLayerMask(Layers::TERRAIN);
 	shadowCamera->RemoveLayerMask(Layers::WATER);
@@ -93,7 +93,7 @@ void LightManager::UpdateUBOs()
 			//Create shadow map
 			(*it)->shadowMap->Bind();
 			glClear(GL_DEPTH_BUFFER_BIT);
-			shadowCamera->transform.SetPosition(sceneMainCamera->transform.GetPosition() - (*it)->transform.GetLocalFront() * 500.0f);
+			shadowCamera->transform.SetPosition(sceneMainCamera->transform.GetPosition() - (*it)->transform.GetLocalFront() * 1000.0f);
 			shadowCamera->transform.LookAt(shadowCamera->transform.GetPosition() + (*it)->transform.GetLocalFront());
 			shadowCamera->UpdateViewMatrix();
 			RenderingEngine::Instance().RenderBuffer(shadowCamera, MaterialType::COLORONLY);
@@ -102,7 +102,7 @@ void LightManager::UpdateUBOs()
 
 			shadowMaps.push_back((*it)->shadowMap);
 		}
-		direcionalLightsBuffer->AddDataRange(0 + i * DIRECTIONAL_LIGHT_SIZE, 64, glm::value_ptr((shadowCamera->projectionMatrix * shadowCamera->viewMatrix)));
+		direcionalLightsBuffer->AddDataRange(0 + i * DIRECTIONAL_LIGHT_SIZE, 64, glm::value_ptr((shadowCamera->GetProjectionMatrix() * shadowCamera->GetViewMatrix())));
 		direcionalLightsBuffer->AddDataRange(64 + i * DIRECTIONAL_LIGHT_SIZE, 16, &(*it)->transform.GetPosition());
 		direcionalLightsBuffer->AddDataRange(64 + 16 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->transform.GetLocalFront());
 		direcionalLightsBuffer->AddDataRange(64 + 32 + i * DIRECTIONAL_LIGHT_SIZE, 12, &(*it)->GetDiffuseColor());
@@ -130,7 +130,7 @@ void LightManager::UpdateUBOs()
 			continue;
 		}
 
-		pointLightsBuffer->AddDataRange(0 + i * POINT_LIGHT_SIZE, 16, &(*it2)->transform.GetPosition());
+		pointLightsBuffer->AddDataRange(0 + i * POINT_LIGHT_SIZE, 16, &(*it2)->transform.GetGlobalPosition());
 		pointLightsBuffer->AddDataRange(16 + i * POINT_LIGHT_SIZE, 12, &(*it2)->transform.GetRotation());
 		pointLightsBuffer->AddDataRange(32 + i * POINT_LIGHT_SIZE, 12, &(*it2)->GetDiffuseColor());
 		pointLightsBuffer->AddDataRange(48 + i * POINT_LIGHT_SIZE, 12, &(*it2)->GetSpecularColor());

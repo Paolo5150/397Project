@@ -348,28 +348,121 @@ public:
 	* @return		none
 	*/
 	virtual void Update();
+
+
+	/**
+	* @brief		Update the gameobject in the Engine Update loop
+	*
+	* @pre			The GameObject must exist.
+	* @post
+	*
+	* @return		none
+	*/
 	virtual void EngineUpdate();
+
+
+	/**
+	* @brief		Print the game object hierarchy (children) to the console
+	*
+	* @pre			The GameObject must exist.
+	* @post			The hierarchybis printed to the console
+	*
+	* @return		none
+	*/
 
 	void PrintHierarchy();
 
+	/**
+	* @brief		Get the GameObject on top of the hierarchy
+	*
+	* @pre			The GameObject must exist.
+	* @post			The top GameObject is returned
+	*
+	* @return		The top GameObject
+	*/
 	GameObject* GetRoot();
 
+	/**
+	* @brief		Apply a material to the gameobject and its children
+	*
+	* @pre			The GameObject must exist.
+	* @post			The material is applied to the gameobject and its children
+	* @param mat	The material to be applied
+	* @param mt		The material type
+	*/
 	void ApplyMaterial(Material mat, MaterialType mt = DEFAULT);
-	void ApplyColor(float r, float g, float b);
-	void SetIsStatic(bool st, bool includeChildren = true);
 
+	/**
+	* @brief		Apply a color to the gameobject and its children
+	*
+	* @pre			The GameObject must exist.
+	* @post			The color is applied to the gameobject and its children
+	* @param r		The red chnnel of the color
+	* @param g		The green chnnel of the color
+	* @param b		The blue chnnel of the color
+	*/
+	void ApplyColor(float r, float g, float b);
+
+	/**
+	* @param The transform of the object
+	*/
 	Transform transform;
 
+	/**
+	* @brief		Set whether an object is static
+	*
+	* @pre			The GameObject must exist.
+	* @post			The new value is applied to isStatic
+	* @param s		The isStatic new value
+	* @param includeChildren		Whether the value will be applied to the children
+
+
+	*/
+	void SetIsStatic(bool st, bool includeChildren = true);
+
 protected:
+	/**
+	* @param The name of the object
+	*/
 	std::string _name;
+
+	/**
+	* @param The active state of the object
+	*/
 	bool _isActive;
+
+	/**
+	* @param Flag the object to be destroyed in the next late update
+	*/
 	bool _toBeDestroyed;
+
+	/**
+	* @param The layer mask
+	*/
 	unsigned int _layer;
-	GameObject* _parent;
-	std::list<GameObject*> _children;
-	std::list<Component*> _components; //Possibly Map
+
 	bool _isStatic;
 
+	/**
+	* @param The parent object.
+	*/
+	GameObject* _parent;
+
+	/**
+	* @param The list of children
+	*/
+	std::list<GameObject*> _children;
+
+	/**
+	* @param The list of components
+	*/
+	std::list<Component*> _components; //Possibly Map
+
+	/**
+	* @param Helper method used to print the hierarchy recursively
+	* @param indentation	The indentation used for the next line
+	* @param output			The string to be printed
+	*/
 	void PrintHierarchy(int indentation, std::string& output);
 
 };

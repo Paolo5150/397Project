@@ -116,8 +116,3 @@ void ShaderGL::SetVec4(const std::string &name, glm::vec4 v) const
 
 }
 
-void ShaderGL::AssignToUniformBuffer(std::string uniformName, unsigned bufferIndex)
-{
-	int location = glGetUniformBlockIndex(shaderID, uniformName.c_str());
-	glUniformBlockBinding(shaderID, location, bufferIndex);
-}

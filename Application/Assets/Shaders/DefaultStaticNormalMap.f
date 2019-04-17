@@ -77,7 +77,7 @@ void main()
 
     vec3 normalMap = texture(normal0,Textcoords * material.UVScale).rgb *2.0 -1.0;
    
-	NormalToUse = normalMap;
+	NormalToUse = normalize(normalMap);
 	FragPosToUse = FragPositionTS;
 	CamPosToUse = CameraPositionTS;
 

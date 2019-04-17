@@ -56,7 +56,7 @@ void SceneManager::LoadNewScene(std::string sceneName)
 
 	if (m_currentScene != nullptr)
 	{
-		m_currentScene->ExitScene();
+		m_currentScene->QuitScene();
 		m_currentScene->UnloadAssets();
 		m_currentScene->m_isReady = false;
 	}
@@ -75,7 +75,7 @@ void SceneManager::DestroyAllScenes()
 
 	for (; it != m_allScenes.end(); it++)
 	{
-		it->second->ExitScene();
+		it->second->QuitScene();
 		it->second->UnloadAssets(); //Not sure about this one
 		delete it->second;
 	}

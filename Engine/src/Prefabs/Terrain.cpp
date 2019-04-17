@@ -3,6 +3,7 @@
 #include "..\Graphics\Layers.h"
 #include "..\Utils\Maths.h"
 #include "..\Lighting\LightingManager.h"
+#include "..\Core\Input.h"
 
 Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 {
@@ -24,28 +25,44 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 	SetLayer(0);
 	SetLayer(Layers::TERRAIN);
 
+	isWireframe = 0;
+
 	Mesh*m = new GridMesh(size, size);
 	meshRenderer = new MeshRenderer(m, material);
 	meshRenderer->SetMaterial(material);
-
+	meshRenderer->SetIsCullable(false);
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).SetShader(AssetLoader::Instance().GetAsset<Shader>("TerrainNoLight"));
-	meshRenderer->GetMaterial(MaterialType::NOLIGHT).LoadVec3("color", 0.4, 0.4, 0.4);
+	meshRenderer->GetMaterial(MaterialType::NOLIGHT).LoadVec3("color", 0.9, 0.9, 0.9);
 
 	meshRenderer->AddPreRenderCallback(std::bind(&Terrain::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
-	meshRenderer->isCullable = false;
-	highMountainsRange = 20;
-	highMountainPerc = 0.5f;
+	meshRenderer->AddPostRenderCallback(std::bind(&Terrain::OnPostRender, this, std::placeholders::_1, std::placeholders::_2));
+
+	meshRenderer->SetIsCullable(false);
+
 	this->AddComponent(meshRenderer);
 }
 
 void Terrain::OnPreRender(Camera& cam, Shader* s)
 {
+	if (Input::GetKeyPressed(GLFW_KEY_K))
+		isWireframe = !isWireframe;
+
+	if (isWireframe)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	s->SetFloat("u_maxHeight", transform.GetScale().y);
 	s->SetFloat("shadowMapCount", LightManager::Instance().GetShadowMapsCount());
 
 	if (s->name == "Terrain")
 	 LightManager::Instance().SendShadowToShader(meshRenderer->GetMaterial().GetShader());
 
+}
+
+void Terrain::OnPostRender(Camera& cam, Shader* s)
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 float TriangleBaric(glm::vec3 p1, glm::vec3 p2,glm::vec3 p3, glm::vec2 pos)
@@ -81,12 +98,12 @@ float Terrain::GetHeightAt(int worldX, int worldZ)
 		meshRenderer->GetMesh().vertices[(gridZ+1) * terrainSize + gridX].position,
 		glm::vec2(worldX / transform.GetScale().x, worldZ/ transform.GetScale().x));
 
-	float h2 = TriangleBaric(meshRenderer->GetMesh().vertices[gridZ * terrainSize + gridX].position,
+	/*float h2 = TriangleBaric(meshRenderer->GetMesh().vertices[gridZ * terrainSize + gridX].position,
 		meshRenderer->GetMesh().vertices[gridZ * terrainSize + gridX + 1].position,
 		meshRenderer->GetMesh().vertices[(gridZ + 1) * terrainSize + gridX+1].position,
-		glm::vec2(worldX / transform.GetScale().x, worldZ / transform.GetScale().x));
+		glm::vec2(worldX / transform.GetScale().x, worldZ / transform.GetScale().x));*/
 
-	return ((h1 + h2)/2) * transform.GetScale().y;
+	return (h1) * transform.GetScale().y;
 	
 }
 
@@ -106,7 +123,7 @@ void Terrain::GetCenter(int& x, int& y,int& z)
 }
 
 
-bool Terrain::GenerateFaultFormation(int iterations, int minHeight, float weight, bool random)
+/*bool Terrain::GenerateFaultFormation(int iterations, int minHeight, float weight, bool random)
 {
 	int x1, x2, z1, z2;
 	float* heights = NULL;
@@ -161,9 +178,9 @@ bool Terrain::GenerateFaultFormation(int iterations, int minHeight, float weight
 	}
 	Logger::LogInfo("Center",Maths::Vec3ToString(meshRenderer->GetMesh().GetCenter()));
 	meshRenderer->GetMesh().CalculateNormals();
-	meshRenderer->vertexBuffer->AddData(meshRenderer->GetMesh().vertices);
+	meshRenderer->GetArrayBufferVertex().AddData(meshRenderer->GetMesh().vertices);
 	transform.Translate(-meshRenderer->GetMesh().GetCenter().x, -meshRenderer->GetMesh().GetCenter().y, -meshRenderer->GetMesh().GetCenter().z);
-}
+}*/
 
 
 void Terrain::NormaliseTerrain(float* heightData, int dataWidth, int dataHeight)
@@ -291,6 +308,27 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 						higher = 2 - higher;
 
 					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
+				}
+
+				if (i > terrainSize - 60 && i < terrainSize)
+				{
+
+					float higher = i / 30.0f;
+					if (i>30)
+						higher = 2 - higher;
+
+					higher *= 0.8;
+					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
+				}
+
+				if (j > 0 && j < 60)
+				{
+
+					float higher = j / 30.0f;
+					if (j>30)
+						higher = 2 - higher;
+
+					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
 				}*/
 
 
@@ -303,8 +341,28 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 
 
 		meshRenderer->GetMesh().CalculateNormals();
-		meshRenderer->vertexBuffer->AddData(meshRenderer->GetMesh().vertices);
+		meshRenderer->GetArrayBufferVertex().AddData(meshRenderer->GetMesh().vertices);
 		//transform.Translate(-meshRenderer->GetMesh().GetCenter().x, -meshRenderer->GetMesh().GetCenter().y, -meshRenderer->GetMesh().GetCenter().z);
 		delete[] heights;
 	}
+
 }
+
+float Terrain::GetTerrainMaxX()
+{
+	return meshRenderer->GetMesh().vertices[((terrainSize - 1) * terrainSize) + (terrainSize - 1)].position.x * transform.GetScale().x;
+}
+float Terrain::GetTerrainMinX()
+{
+	return meshRenderer->GetMesh().vertices[(0 * terrainSize) + 0].position.x * transform.GetScale().x* transform.GetScale().x;
+}
+
+float Terrain::GetTerrainMaxZ()
+{
+	return meshRenderer->GetMesh().vertices[((terrainSize - 1) * terrainSize) + (terrainSize - 1)].position.z * transform.GetScale().z;
+}
+float Terrain::GetTerrainMinZ()
+{
+	return meshRenderer->GetMesh().vertices[(0 * terrainSize) + 0].position.x * transform.GetScale().z* transform.GetScale().z;
+}
+

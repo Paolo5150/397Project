@@ -62,7 +62,7 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	AssetLoader::Instance().GetAsset<Model>("Quad")->PopulateGameObject(this);
 	MeshRenderer* mr = dynamic_cast<MeshRenderer*>(GetChild("QuadMesh")->GetComponentByType("Renderer"));
 	mr->AddPreRenderCallback(std::bind(&Water::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
-
+	mr->SetIsCullable(false);
 	SetIsStatic(true);
 	SetLayer(0);
 	SetLayer(Layers::WATER);
