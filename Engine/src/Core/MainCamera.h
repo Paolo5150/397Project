@@ -85,6 +85,8 @@ public:
 	*/
 	float GetRotationSpeed() const;
 
+	bool IsTopView() const { return _isTopView; };
+
 private:
 	/**
 	* @brief		The camera movement speed
@@ -95,5 +97,10 @@ private:
 	* @brief		The camera rotation speed
 	*/
 	float _rotationSpeed;
+
+	/**
+	* @brief		Whether the camera is in top view
+	*/
+	bool _isTopView;
 };
 

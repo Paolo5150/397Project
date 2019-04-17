@@ -68,7 +68,7 @@ void MainScene::Initialize() {
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
-	dirLight->transform.SetRotation(25, 117, 0);
+	dirLight->transform.SetRotation(45, 117, 0);
 	dirLight->SetIntensity(0.7f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
@@ -170,20 +170,34 @@ void MainScene::LogicUpdate() {
 
 
 	pLight->transform.Translate(0.05f, 0, 0);*/
+
 	nanosuit->transform.RotateBy(0.51f, 0,1,0);
-	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+	
+	if (!cam->IsTopView())
+	{
+		float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+		cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
-	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+		// Limit camera position within terrain
+		if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)
+			cam->transform.SetPosition(terrain->GetTerrainMaxX() - 50, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
+		else if (cam->transform.GetPosition().x < terrain->GetTerrainMinX() + 50)
+			cam->transform.SetPosition(terrain->GetTerrainMinX() + 50, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 
-	if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)
-		cam->transform.SetPosition(terrain->GetTerrainMaxX() - 50, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
-	else if (cam->transform.GetPosition().x < terrain->GetTerrainMinX() + 50)
-		cam->transform.SetPosition(terrain->GetTerrainMinX() + 50, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
+		if (cam->transform.GetPosition().z > terrain->GetTerrainMaxZ() - 50)
+			cam->transform.SetPosition(cam->transform.GetPosition().x, cam->transform.GetPosition().y, terrain->GetTerrainMaxZ() - 50);
+		if (cam->transform.GetPosition().z < terrain->GetTerrainMinZ() + 50)
+			cam->transform.SetPosition(cam->transform.GetPosition().x, cam->transform.GetPosition().y, terrain->GetTerrainMinZ() + 50);
+	}
 
-	if (cam->transform.GetPosition().z > terrain->GetTerrainMaxZ() - 50)
-		cam->transform.SetPosition(cam->transform.GetPosition().x, cam->transform.GetPosition().y, terrain->GetTerrainMaxZ() - 50);
-	if (cam->transform.GetPosition().z < terrain->GetTerrainMinZ() + 50)
-		cam->transform.SetPosition(cam->transform.GetPosition().x, cam->transform.GetPosition().y, terrain->GetTerrainMinZ() + 50);
+	else
+	{
+		int x, y, z;
+		terrain->GetCenter(x, y, z);
+		cam->transform.LookAt(x, y, z);
+	}
+
+	
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		SceneManager::Instance().LoadNewScene("ExitScene");

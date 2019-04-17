@@ -51,9 +51,7 @@ std::vector<Mesh> Model::GetMeshes()
 
 
 void Model::PopulateGameObject(GameObject* go)
-{
-
-
+{	
 	for (int i = 0; i < allMeshes.size(); i++)
 	{
 		Mesh* m = new Mesh(*allMeshes[i]);
@@ -77,7 +75,6 @@ GameObject* Model::CreateGameObject()
 		Mesh* m = new Mesh(*allMeshes[i]);
 
 		MeshRenderer* mr = new MeshRenderer(m, allMaterials[i]); //Default material
-
 		
 		//mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 		//simplifiedMaterial.LoadVec3("color", 0.3f,0.3f,0.3f);
