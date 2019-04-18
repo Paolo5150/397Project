@@ -71,7 +71,7 @@ void MainScene::QuitScene() {
 }
 void MainScene::Initialize() {
 
-	Lua::RunLua("Scripts\\Level1.lua");
+	Lua::RunLua("Assets\\Scripts\\Level1.lua");
 
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
