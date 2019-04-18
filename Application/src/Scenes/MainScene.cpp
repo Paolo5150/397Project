@@ -48,6 +48,8 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");	
 
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
+
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_normal.tga");
@@ -77,6 +79,8 @@ void MainScene::Initialize() {
 	
 	//nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 	//GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
+	manual = new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
+	GUIManager::Instance().AddGUIObject(manual);
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.4f, 0.4f, 0.2f);
@@ -265,6 +269,7 @@ void MainScene::Initialize() {
 	w->transform.SetScale(3000, 3000, 1);
 
 	Lua::CloseLua();
+	cam->transform.SetRotation(0, 0, 0);
 }
 void MainScene::LogicUpdate() {
 
@@ -306,6 +311,10 @@ void MainScene::LogicUpdate() {
 		terrain->GetCenter(x, y, z);
 		cam->transform.LookAt(x, y, z);
 	}	
+
+	if (Input::GetKeyPressed(GLFW_KEY_M))
+		manual->isActive = !manual->isActive;
+
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		SceneManager::Instance().LoadNewScene("ExitScene");
