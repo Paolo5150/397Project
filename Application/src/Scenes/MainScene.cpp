@@ -129,23 +129,10 @@ void MainScene::Initialize() {
 	Material mat_cabin;
 	mat_cabin.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
 	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
-	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);
-
-	
-
-	/*n2->ApplyMaterial(mat_cabin);
-	n2->transform.SetScale(100, 100,100);
-	n2->transform.SetRotation(-90, 0, 0);*/
+	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);	
 
 
 	float ar = Window::Instance().GetAspectRatio();
-	/*cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
-	cam->transform.SetPosition(0,35, 0);
-	cam->transform.SetRotation(30, 180, 0);
-	cam->SetMovementSpeed(500);
-	
-
-	cam->RemoveLayerMask(Layers::GUI);*/
 
 	//Terrain
 	terrain = new Terrain(256);
@@ -264,19 +251,14 @@ void MainScene::Initialize() {
 	a->transform.SetScale(10, 10, 10);
 	AddGameObject(a);
 	AddGameObject(cam);
-	//AddGameObject(nanosuit);
-	//AddGameObject(n2);
-
 
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(x, y,z);
 
-	//nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
 
-	//n2->transform.SetPosition(x+300, terrain->GetHeightAt(x+300, z + 1200) + 50, z + 1200);
 	cam->AddChild(pLight);
-	//pLight->transform.SetPosition(0, 0, 10);
+
 
 	w->transform.SetPosition(x, 100, z);
 	w->transform.SetScale(3000, 3000, 1);
@@ -286,24 +268,9 @@ void MainScene::Initialize() {
 }
 void MainScene::LogicUpdate() {
 
-	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
-	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));
-	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
-	int s = glm::sign(cross.y);
-
-
-	glm::vec3 np = nanosuit->transform.GetPosition();
-	np += nanosuit->transform.GetLocalFront() * 0.5f;
-	float y = terrain->GetHeightAt(np.x, np.z);
-	nanosuit->transform.SetPosition(np.x, y, np.z);*/
-
-
-	/*pLight->transform.Translate(0.05f, 0, 0);
-	nanosuit->transform.RotateBy(0.51f, 0,1,0);*/
 
 	static float timer = 0;
 	timer += Timer::GetDeltaS();
-
 
 	if (!cam->IsTopView())
 	{
