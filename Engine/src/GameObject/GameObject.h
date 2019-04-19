@@ -420,6 +420,9 @@ public:
 	*/
 	void SetIsStatic(bool st, bool includeChildren = true);
 
+	virtual void OnCollision(GameObject* go){};
+
+
 protected:
 	/**
 	* @param The name of the object

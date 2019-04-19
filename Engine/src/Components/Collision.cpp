@@ -36,7 +36,7 @@ bool SphereCollider::checkCollision(SphereCollider other){
 
 	float dist = glm::length(other.trans.GetGlobalPosition() - trans.GetGlobalPosition());
 
-	float sumRad = trans.GetGlobalScale().x + other.trans.GetGlobalScale().x;
+	float sumRad = trans.GetGlobalScale().x / 2 + other.trans.GetGlobalScale().x / 2;
 
 	if (dist < sumRad)
 		return true;

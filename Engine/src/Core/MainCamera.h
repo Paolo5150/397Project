@@ -91,6 +91,9 @@ public:
 	*/
 	bool IsTopView() const { return _isTopView; };
 
+	void OnCollision(GameObject* go) override;
+
+
 private:
 	/**
 	* @brief		The camera movement speed
