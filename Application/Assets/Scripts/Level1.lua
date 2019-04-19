@@ -1,10 +1,10 @@
-allColliders = false;
+allColliders = false; --lua colliders currently (possibly) broken, don't set to true
 
 CreateAsset("MainCamera");
 camX, camY, camZ = 0, 35, 0;
 camRotX, camRotY, camRotZ = 0, 0, 0;
 camCollider = allColliders;
-camColliderX, camColliderY, camColliderZ = 20, 20, 20;
+camColliderX, camColliderY, camColliderZ = 0, 0, 0;
 camColliderScale = 20;
 
 CreateAsset("Water");
@@ -19,7 +19,7 @@ npc_pumpkins = 10;
 prop_barrels = 10;
 prop_crates = 10;
 
-totalAssets = (npc_nanosuits + npc_pumpkins + prop_barrels + prop_crates + 3); --3 extra objects after the for loops
+totalAssets = (2 + npc_nanosuits + npc_pumpkins + prop_barrels + prop_crates + 3); -- 2 extra objects before the for loops, 3 after
 
 for i = 0, npc_nanosuits-1, 1
 do

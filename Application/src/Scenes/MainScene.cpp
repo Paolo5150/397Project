@@ -158,6 +158,35 @@ void MainScene::Initialize() {
 	terrain->transform.Translate(0, 0, 0);
 	AddGameObject(terrain);
 
+
+	//----------Collision Hard-Coded Values----------//
+	int camColliderX = 0, camColliderY = 0, camColliderZ = 0;
+	int camColliderScaleX = 20, camColliderScaleY = 20, camColliderScaleZ = 20;
+
+	int nanosuitColliderX = 0, nanosuitColliderY = 0, nanosuitColliderZ = 0;
+	int nanosuitColliderScaleX = 1, nanosuitColliderScaleY = 1, nanosuitColliderScaleZ = 1;
+
+	int pumpkinColliderX = 0, pumpkinColliderY = 0, pumpkinColliderZ = 0;
+	int pumpkinColliderScaleX = 1, pumpkinColliderScaleY = 1, pumpkinColliderScaleZ = 1;
+
+	int barrelColliderX = 0, barrelColliderY = 1, barrelColliderZ = 0;
+	int barrelColliderScaleX = 1, barrelColliderScaleY = 1, barrelColliderScaleZ = 1;
+
+	int crateColliderX = 0, crateColliderY = 1, crateColliderZ = 0;
+	int crateColliderScaleX = 20, crateColliderScaleY = 20, crateColliderScaleZ = 20;
+
+	int gunColliderX = 0, gunColliderY = 0, gunColliderZ = 0;
+	int gunColliderScaleX = 1, gunColliderScaleY = 1, gunColliderScaleZ = 1;
+
+	int shipColliderX = 0, shipColliderY = 5, shipColliderZ = 0;
+	int shipColliderScaleX = 20, shipColliderScaleY = 20, shipColliderScaleZ = 20;
+
+	int cabinColliderX = 0, cabinColliderY = 0, cabinColliderZ = 0;
+	int cabinColliderScaleX = 1, cabinColliderScaleY = 1, cabinColliderScaleZ = 1;
+
+	//-----------------------------------------------//
+
+
 	//GameObjects
 	cam = (MainCamera*)Lua::GetCreatedAsset(0);
 	if (Lua::GetBoolFromStack("camCollider") == true)
@@ -166,7 +195,13 @@ void MainScene::Initialize() {
 		((SphereCollider*)cam->GetComponent("SphereCollider"))->trans.SetPosition(Lua::GetFloatFromStack("camColliderX"), Lua::GetFloatFromStack("camColliderY"), Lua::GetFloatFromStack("camColliderZ"));
 		((SphereCollider*)cam->GetComponent("SphereCollider"))->trans.SetScale(Lua::GetFloatFromStack("camColliderScale"), Lua::GetFloatFromStack("camColliderScale"), Lua::GetFloatFromStack("camColliderScale"));
 	}
-	
+	else
+	{
+		cam->AddComponent(new SphereCollider());
+		((SphereCollider*)cam->GetComponent("SphereCollider"))->trans.SetPosition(camColliderX, camColliderY, camColliderZ);
+		((SphereCollider*)cam->GetComponent("SphereCollider"))->trans.SetScale(camColliderScaleX, camColliderScaleY, camColliderScaleZ);
+	}
+
 	luaAssetOffset++;
 	cam->transform.SetPosition(Lua::GetFloatFromStack("camX"), Lua::GetFloatFromStack("camY"), Lua::GetFloatFromStack("camZ"));
 	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
@@ -186,6 +221,12 @@ void MainScene::Initialize() {
 			nanosuits[i]->AddComponent(new SphereCollider());
 			((SphereCollider*)nanosuits[i]->GetComponent("SphereCollider"))->trans.SetPosition(Lua::GetFloatFromStack("nanosuitColliderX"), Lua::GetFloatFromStack("nanosuitColliderY"), Lua::GetFloatFromStack("nanosuitColliderZ"));
 			((SphereCollider*)nanosuits[i]->GetComponent("SphereCollider"))->trans.SetScale(Lua::GetFloatFromStack("nanosuitColliderScale"), Lua::GetFloatFromStack("nanosuitColliderScale"), Lua::GetFloatFromStack("nanosuitColliderScale"));
+		}
+		else
+		{
+			nanosuits[i]->AddComponent(new SphereCollider());
+			((SphereCollider*)nanosuits[i]->GetComponent("SphereCollider"))->trans.SetPosition(nanosuitColliderX, nanosuitColliderY, nanosuitColliderZ);
+			((SphereCollider*)nanosuits[i]->GetComponent("SphereCollider"))->trans.SetScale(nanosuitColliderScaleX, nanosuitColliderScaleY, nanosuitColliderScaleZ);
 		}
 
 		AddGameObject(nanosuits[i]);
@@ -207,6 +248,12 @@ void MainScene::Initialize() {
 			((SphereCollider*)pumpkins[i]->GetComponent("SphereCollider"))->trans.SetPosition(Lua::GetFloatFromStack("pumpkinColliderX"), Lua::GetFloatFromStack("pumpkinColliderY"), Lua::GetFloatFromStack("pumpkinColliderZ"));
 			((SphereCollider*)pumpkins[i]->GetComponent("SphereCollider"))->trans.SetScale(Lua::GetFloatFromStack("pumpkinColliderScale"), Lua::GetFloatFromStack("pumpkinColliderScale"), Lua::GetFloatFromStack("pumpkinColliderScale"));
 		}
+		else
+		{
+			pumpkins[i]->AddComponent(new SphereCollider());
+			((SphereCollider*)pumpkins[i]->GetComponent("SphereCollider"))->trans.SetPosition(pumpkinColliderX, pumpkinColliderY, pumpkinColliderZ);
+			((SphereCollider*)pumpkins[i]->GetComponent("SphereCollider"))->trans.SetScale(pumpkinColliderScaleX, pumpkinColliderScaleY, pumpkinColliderScaleZ);
+		}
 
 		AddGameObject(pumpkins[i]);
 		pumpkins[i]->transform.SetScale(Lua::GetFloatFromStack("pumpkinScale"), Lua::GetFloatFromStack("pumpkinScale"), Lua::GetFloatFromStack("pumpkinScale"));
@@ -226,6 +273,12 @@ void MainScene::Initialize() {
 			barrels[i]->AddComponent(new SphereCollider());
 			((SphereCollider*)barrels[i]->GetComponent("SphereCollider"))->trans.SetPosition(Lua::GetFloatFromStack("barrelColliderX"), Lua::GetFloatFromStack("barrelColliderY"), Lua::GetFloatFromStack("barrelColliderZ"));
 			((SphereCollider*)barrels[i]->GetComponent("SphereCollider"))->trans.SetScale(Lua::GetFloatFromStack("barrelColliderScale"), Lua::GetFloatFromStack("barrelColliderScale"), Lua::GetFloatFromStack("barrelColliderScale"));
+		}
+		else
+		{
+			barrels[i]->AddComponent(new SphereCollider());
+			((SphereCollider*)barrels[i]->GetComponent("SphereCollider"))->trans.SetPosition(barrelColliderX, barrelColliderY, barrelColliderZ);
+			((SphereCollider*)barrels[i]->GetComponent("SphereCollider"))->trans.SetScale(barrelColliderScaleX, barrelColliderScaleY, barrelColliderScaleZ);
 		}
 
 		AddGameObject(barrels[i]);
@@ -249,6 +302,12 @@ void MainScene::Initialize() {
 			//((SphereCollider*)crates[i]->GetComponent("SphereCollider"))->trans.SetPosition(0, 1, 0);
 			//((SphereCollider*)crates[i]->GetComponent("SphereCollider"))->trans.SetScale(20, 20, 20);
 		}
+		else
+		{
+			crates[i]->AddComponent(new SphereCollider());
+			((SphereCollider*)crates[i]->GetComponent("SphereCollider"))->trans.SetPosition(crateColliderX, crateColliderY, crateColliderZ);
+			((SphereCollider*)crates[i]->GetComponent("SphereCollider"))->trans.SetScale(crateColliderScaleX, crateColliderScaleY, crateColliderScaleZ);
+		}
 		
 		crates[i]->ApplyMaterial(mat_crate);
 		AddGameObject(crates[i]);
@@ -268,6 +327,12 @@ void MainScene::Initialize() {
 		((SphereCollider*)gun->GetComponent("SphereCollider"))->trans.SetPosition(Lua::GetFloatFromStack("gunColliderX"), Lua::GetFloatFromStack("gunColliderY"), Lua::GetFloatFromStack("gunColliderZ"));
 		((SphereCollider*)gun->GetComponent("SphereCollider"))->trans.SetScale(Lua::GetFloatFromStack("gunColliderScale"), Lua::GetFloatFromStack("gunColliderScale"), Lua::GetFloatFromStack("gunColliderScale"));
 	}
+	else
+	{
+		gun->AddComponent(new SphereCollider());
+		((SphereCollider*)gun->GetComponent("SphereCollider"))->trans.SetPosition(gunColliderX, gunColliderY, gunColliderZ);
+		((SphereCollider*)gun->GetComponent("SphereCollider"))->trans.SetScale(gunColliderScaleX, gunColliderScaleY, gunColliderScaleZ);
+	}
 
 	AddGameObject(gun);
 	gun->transform.SetScale(Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"));
@@ -281,6 +346,12 @@ void MainScene::Initialize() {
 		ship->AddComponent(new SphereCollider());
 		((SphereCollider*)ship->GetComponent("SphereCollider"))->trans.SetPosition(Lua::GetFloatFromStack("shipColliderX"), Lua::GetFloatFromStack("shipColliderY"), Lua::GetFloatFromStack("shipColliderZ"));
 		((SphereCollider*)ship->GetComponent("SphereCollider"))->trans.SetScale(Lua::GetFloatFromStack("shipColliderScale"), Lua::GetFloatFromStack("shipColliderScale"), Lua::GetFloatFromStack("shipColliderScale"));
+	}
+	else
+	{
+		ship->AddComponent(new SphereCollider());
+		((SphereCollider*)ship->GetComponent("SphereCollider"))->trans.SetPosition(shipColliderX, shipColliderY, shipColliderZ);
+		((SphereCollider*)ship->GetComponent("SphereCollider"))->trans.SetScale(shipColliderScaleX, shipColliderScaleY, shipColliderScaleZ);
 	}
 
 	ship->ApplyMaterial(mat_ship);
@@ -308,6 +379,12 @@ void MainScene::Initialize() {
 		cabin->AddComponent(new SphereCollider());
 		((SphereCollider*)cabin->GetComponent("SphereCollider"))->trans.SetPosition(Lua::GetFloatFromStack("cabinColliderX"), Lua::GetFloatFromStack("cabinColliderY"), Lua::GetFloatFromStack("cabinColliderZ"));
 		((SphereCollider*)cabin->GetComponent("SphereCollider"))->trans.SetScale(Lua::GetFloatFromStack("cabinColliderScale"), Lua::GetFloatFromStack("cabinColliderScale"), Lua::GetFloatFromStack("cabinColliderScale"));
+	}
+	else
+	{
+		cabin->AddComponent(new SphereCollider());
+		((SphereCollider*)cabin->GetComponent("SphereCollider"))->trans.SetPosition(cabinColliderX, cabinColliderY, cabinColliderZ);
+		((SphereCollider*)cabin->GetComponent("SphereCollider"))->trans.SetScale(cabinColliderScaleX, cabinColliderScaleY, cabinColliderScaleZ);
 	}
 
 	cabin->ApplyMaterial(mat_cabin);
@@ -372,7 +449,6 @@ void MainScene::LogicUpdate() {
 	{
 		/*if (((SphereCollider*)cam->GetComponent("SphereCollider"))->checkCollision(*((SphereCollider*)ship->GetComponent("SphereCollider"))))
 		{
-			
 			if (timer > 3)
 				cam->OnCollision(ship);
 

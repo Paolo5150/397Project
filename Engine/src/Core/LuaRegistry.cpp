@@ -26,8 +26,6 @@ int LuaRegistry::Lua_Create(lua_State* L)
 		lua_pop(L, -2);
 
 		asset = GameAssetFactory::Instance().Create(assetType, name); //Create Asset
-
-		//((GameObject*)asset)->AddComponent(new SphereCollider());
 	}
 	else
 	{
