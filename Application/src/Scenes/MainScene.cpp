@@ -48,16 +48,15 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");	
 
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
+
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_normal.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_specular.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\shipTexture.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");
-
-
-	
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");	
 }
 void MainScene::UnloadAssets() {
 	AssetLoader::Instance().Unload<Model>();
@@ -72,7 +71,7 @@ void MainScene::QuitScene() {
 }
 void MainScene::Initialize() {
 
-	Lua::RunLua("Scripts\\Level1.lua");
+	Lua::RunLua("Assets\\Scripts\\Level1.lua");
 
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
@@ -80,6 +79,8 @@ void MainScene::Initialize() {
 	
 	//nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 	//GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
+	manual = new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
+	GUIManager::Instance().AddGUIObject(manual);
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.4f, 0.4f, 0.2f);
@@ -129,6 +130,8 @@ void MainScene::Initialize() {
 	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
 	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);
 
+	
+
 	/*n2->ApplyMaterial(mat_cabin);
 	n2->transform.SetScale(100, 100,100);
 	n2->transform.SetRotation(-90, 0, 0);*/
@@ -162,7 +165,7 @@ void MainScene::Initialize() {
 
 	Water* w = (Water*)Lua::GetCreatedAsset(1);
 	luaAssetOffset++;
-
+	//w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
 	nanosuits = new GameObject*[Lua::GetIntFromStack("npc_nanosuits")];
 	for (int i = 0; i < Lua::GetIntFromStack("npc_nanosuits"); i++)
 	{
@@ -266,6 +269,7 @@ void MainScene::Initialize() {
 	w->transform.SetScale(3000, 3000, 1);
 
 	Lua::CloseLua();
+	cam->transform.SetRotation(0, 0, 0);
 }
 void MainScene::LogicUpdate() {
 
@@ -283,9 +287,6 @@ void MainScene::LogicUpdate() {
 
 	/*pLight->transform.Translate(0.05f, 0, 0);
 	nanosuit->transform.RotateBy(0.51f, 0,1,0);*/
-	float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
-
-	cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 	if (!cam->IsTopView())
 	{
@@ -309,9 +310,11 @@ void MainScene::LogicUpdate() {
 		int x, y, z;
 		terrain->GetCenter(x, y, z);
 		cam->transform.LookAt(x, y, z);
-	}
+	}	
 
-	
+	if (Input::GetKeyPressed(GLFW_KEY_M))
+		manual->isActive = !manual->isActive;
+
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		SceneManager::Instance().LoadNewScene("ExitScene");

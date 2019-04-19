@@ -1,6 +1,8 @@
 #pragma once
 #include "Scene/Scene.h"
 
+class GUIImage;
+
 /**
 * @class MainScene
 * @brief The application main scene
@@ -54,5 +56,7 @@ public:
 	* @brief		Update objects in the scene.
 	*/
 	virtual void LogicUpdate() override;
+
+	GUIImage* manual;
 
 };

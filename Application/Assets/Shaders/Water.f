@@ -103,7 +103,7 @@ void main()
 	
 	
 	
-	vec3 totalRef = mix(cubemap,reflectionColor,0.7f);
+	vec3 totalRef = mix(cubemap,reflectionColor,0.5f);
 	vec3 textureMix = mix(totalRef,refractionColor,dot(camToFrag,-Normal));
 
     vec3 total = (AmbientLight + DirLights + PointLights) * textureMix;

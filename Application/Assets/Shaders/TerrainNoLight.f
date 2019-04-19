@@ -72,7 +72,7 @@ void main()
 	vec3 colorRatio = vec3(max(0.4,HeightRatio));     
   
    vec3 terrainColor =  GenerateTerrainColor();
-   vec3 total =   terrainColor* material.color;
+   vec3 total =   colorRatio * terrainColor* material.color;
 
 	gl_FragColor =  vec4(total,1.0);
 
