@@ -33,6 +33,7 @@ void SphereCollider::OnAttach(GameObject* go)
 
 
 bool SphereCollider::checkCollision(SphereCollider other){
+	if (!this->_isActive || !other.GetActive()) return 0;
 
 	float dist = glm::length(other.trans.GetGlobalPosition() - trans.GetGlobalPosition());
 
@@ -48,7 +49,11 @@ bool SphereCollider::checkCollision(SphereCollider other){
 
 void SphereCollider::EngineUpdate()
 { 
+	if (_isActive)
+	{
+	
 	trans.Update();
 	mr->EngineUpdate();
+	}
 
 }
