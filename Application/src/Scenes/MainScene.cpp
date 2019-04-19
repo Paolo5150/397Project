@@ -245,6 +245,9 @@ void MainScene::Initialize() {
 
 	cabin = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	cabin->ApplyMaterial(mat_cabin);
+	cabin->AddComponent(new SphereCollider());
+	((SphereCollider*)cabin->GetComponent("SphereCollider"))->trans.SetScale(5, 5, 5);
+	((SphereCollider*)cabin->GetComponent("SphereCollider"))->trans.SetPosition(0, 0, 0);
 	AddGameObject(cabin);
 	cabin->transform.SetScale(Lua::GetFloatFromStack("cabinScale"), Lua::GetFloatFromStack("cabinScale"), Lua::GetFloatFromStack("cabinScale"));
 	cabin->transform.SetPosition(Lua::GetFloatFromStack("cabinX"), terrain->GetHeightAt(Lua::GetFloatFromStack("cabinX"), Lua::GetFloatFromStack("cabinZ")) + Lua::GetFloatFromStack("cabinY"), Lua::GetFloatFromStack("cabinZ"));
@@ -305,12 +308,17 @@ void MainScene::LogicUpdate() {
 	if (!cam->IsTopView())
 	{
 		if (((SphereCollider*)cam->GetComponent("SphereCollider"))->checkCollision(*((SphereCollider*)ship->GetComponent("SphereCollider"))))
-		{
-			
+		{			
 			if (timer > 3)
 				cam->OnCollision(ship);
-
 		}
+
+		if (((SphereCollider*)cam->GetComponent("SphereCollider"))->checkCollision(*((SphereCollider*)cabin->GetComponent("SphereCollider"))))
+		{
+			if (timer > 3)
+				cam->OnCollision(cabin);
+		}
+
 
 
 		float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);

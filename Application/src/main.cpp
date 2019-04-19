@@ -3,10 +3,10 @@
 
 void main()
 {
-	//FreeConsole();
+	FreeConsole();
 	Core::Instance().Initialize();
 	Core::Instance().Run();
 	Core::Instance().Shutdown();
 
-	system("pause");
+	//system("pause");
 }

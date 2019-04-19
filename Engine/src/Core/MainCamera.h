@@ -91,6 +91,13 @@ public:
 	*/
 	bool IsTopView() const { return _isTopView; };
 
+	/**
+	* @brief		Callback invoked when collision occurs
+	*
+	* @pre			The MainCamera exists
+	* @param go		The object collided against
+	*/
+
 	void OnCollision(GameObject* go) override;
 
 

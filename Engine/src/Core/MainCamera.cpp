@@ -96,7 +96,7 @@ void MainCamera::UpdateControls()
 void MainCamera::OnCollision(GameObject* go)
 {
 	float sumRad = transform.GetGlobalScale().x / 2 + go->transform.GetGlobalScale().x / 2;
-	glm::vec3 toHere = sumRad * glm::normalize(transform.GetGlobalPosition() - go->transform.GetGlobalPosition());
+	glm::vec3 toHere = sumRad / 1.5f * glm::normalize(transform.GetGlobalPosition() - go->transform.GetGlobalPosition());
 
 
 	transform.SetPosition(transform.GetGlobalPosition() + toHere);

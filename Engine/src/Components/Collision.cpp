@@ -49,6 +49,5 @@ bool SphereCollider::checkCollision(SphereCollider other){
 void SphereCollider::EngineUpdate()
 { 
 	trans.Update();
-	mr->EngineUpdate();
-
+	//mr->EngineUpdate();
 }
