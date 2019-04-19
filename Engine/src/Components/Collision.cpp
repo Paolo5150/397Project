@@ -2,26 +2,55 @@
 #include "Collision.h"
 
 SphereCollider::SphereCollider() : Collider("SphereCollider"){
-	trans.parent = &_parent->transform;
-	Mesh* m = new Mesh(AssetLoader::Instance().GetAsset<Model>("sphere_low")->GetMeshes()[0]);
+	Mesh* m = new Mesh(AssetLoader::Instance().GetAsset<Model>("Sphere")->GetMeshes()[0]);
+	mat.SetColor(0, 1, 0);
+	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
 	mr = new MeshRenderer(m, mat);
+	mr->renderMode = Renderer::WIREFRAME;
+	mr->AddPreRenderCallback([this](Camera& cam, Shader* s){
+
+		glDisable(GL_CULL_FACE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	});
+	
+
+	mr->AddPostRenderCallback([this](Camera& cam, Shader* s){
+		glEnable(GL_CULL_FACE);
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	});
 };
 
+void SphereCollider::OnAttach(GameObject* go)
+{
+	mr->SetParent(go);
+	trans.parent = &go->transform;
+	trans.SetScale(20, 20, 20);
+	trans.SetPosition(0, 5, 0);
+	mr->transform = &trans;
+}
+
+
+
 bool SphereCollider::checkCollision(SphereCollider other){
-	double Xsquared = trans.GetPosition().x - other.trans.GetPosition().x;
-	Xsquared *= Xsquared;
 
-	double Ysquared = trans.GetPosition().y - other.trans.GetPosition().y;
-	Ysquared *= Ysquared;
+	float dist = glm::length(other.trans.GetGlobalPosition() - trans.GetGlobalPosition());
 
-	double Zsquared = trans.GetPosition().z - other.trans.GetPosition().z;
-	Zsquared *= Zsquared;
+	float sumRad = trans.GetGlobalScale().x + other.trans.GetGlobalScale().x;
 
-	double sumRadii = (trans.GetScale().x) + (other.trans.GetScale().x);
-	sumRadii *= sumRadii;
-
-	if (Xsquared + Ysquared + Zsquared <= sumRadii)
+	if (dist < sumRad)
 		return true;
+	
 	return false;
+
+
+}
+
+void SphereCollider::EngineUpdate()
+{ 
+	trans.Update();
+	mr->EngineUpdate();
 
 }

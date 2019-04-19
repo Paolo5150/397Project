@@ -17,7 +17,7 @@ Renderer::Renderer(std::string name, Material m) : Component(name) {
 	_type = "Renderer";
 	isCullable = true;
 	SetMaterial(m);
-	
+	renderMode = FILL;
 	
 
 }
@@ -58,7 +58,7 @@ void Renderer::EngineUpdate()
 	{
 		if (isCullable)
 		{
-			glm::vec3 camToHere = glm::normalize(_parent->transform.GetGlobalPosition() - Camera::GetCameraByName("Main Camera")->transform.GetPosition());
+			glm::vec3 camToHere = glm::normalize(transform->GetGlobalPosition() - Camera::GetCameraByName("Main Camera")->transform.GetPosition());
 			float d = glm::dot(camToHere, Camera::GetCameraByName("Main Camera")->transform.GetLocalFront());
 			if (d >= 0.1)
 			{
@@ -93,9 +93,9 @@ void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 {
 	//Logger::LogInfo("Prerender called on", _parent->GetName());
 	
-	glm::mat4 mvp = cam.GetProjectionMatrix() * cam.GetViewMatrix() * _parent->transform.GetMatrix();
+	glm::mat4 mvp = cam.GetProjectionMatrix() * cam.GetViewMatrix() * transform->GetMatrix();
 	Shader::GetCurrentShader().SetMat4("u_mvp", mvp);
-	Shader::GetCurrentShader().SetMat4("u_model", _parent->transform.GetMatrix());
+	Shader::GetCurrentShader().SetMat4("u_model", transform->GetMatrix());
 	Shader::GetCurrentShader().SetMat4("u_view", cam.GetViewMatrix());
 	Shader::GetCurrentShader().SetMat4("u_projection", cam.GetProjectionMatrix());
 	Shader::GetCurrentShader().SetVec3("u_cameraPosition", cam.transform.GetPosition());

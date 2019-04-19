@@ -26,6 +26,12 @@ class Renderer : public Component
 	public:
 		friend class RenderingEngine;
 
+		enum RENDER_MODE
+		{
+			WIREFRAME,
+			FILL
+		};
+
 		/**
 		* @brief		Create new Renderer component
 		*
@@ -156,8 +162,9 @@ class Renderer : public Component
 		*/
 		void SetIsCullable(bool ic){ isCullable = ic; }
 
-
-
+		void OnAttach(GameObject* go) override { transform = &go->transform; };
+		Transform* transform;
+		RENDER_MODE renderMode;
 
 	protected:
 		/**

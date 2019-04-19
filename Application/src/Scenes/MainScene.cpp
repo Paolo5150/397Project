@@ -17,6 +17,7 @@
 #include "Core\Lua.h"
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIManager.h"
+#include "Components\Collision.h"
 
 
 MainCamera* cam;
@@ -232,6 +233,9 @@ void MainScene::Initialize() {
 	ship->transform.SetScale(Lua::GetFloatFromStack("shipScale"), Lua::GetFloatFromStack("shipScale"), Lua::GetFloatFromStack("shipScale"));
 	ship->transform.SetPosition(Lua::GetFloatFromStack("shipX"), terrain->GetHeightAt(Lua::GetFloatFromStack("shipX"), Lua::GetFloatFromStack("shipZ")) + Lua::GetFloatFromStack("shipY"), Lua::GetFloatFromStack("shipZ"));
 	luaAssetOffset++;
+	ship->AddComponent(new SphereCollider());
+
+	cam->AddComponent(new SphereCollider());
 
 	cabin = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	cabin->ApplyMaterial(mat_cabin);
@@ -288,10 +292,15 @@ void MainScene::LogicUpdate() {
 	/*pLight->transform.Translate(0.05f, 0, 0);
 	nanosuit->transform.RotateBy(0.51f, 0,1,0);*/
 
+	if (((SphereCollider*)cam->GetComponent("SphereCollider"))->checkCollision(*((SphereCollider*)ship->GetComponent("SphereCollider"))))
+	{
+		Logger::LogInfo("Camera colliding");
+	}
+
 	if (!cam->IsTopView())
 	{
-		float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
-		cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+		//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+		//cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 		// Limit camera position within terrain
 		if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)

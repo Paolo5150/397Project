@@ -100,5 +100,7 @@ Mesh& MeshRenderer::GetMesh()
 void MeshRenderer::Render(Camera& cam)
 {	
 
+
 	vertexArray->RenderArrayTriangles(mesh->indices.size());
+
 }

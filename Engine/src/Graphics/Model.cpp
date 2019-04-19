@@ -39,7 +39,7 @@ Model::~Model()
 std::vector<Mesh> Model::GetMeshes()
 {
 	std::vector<Mesh> v;
-
+	Logger::LogInfo("In model, meshes", allMeshes.size());
 	for (int i = 0; i < allMeshes.size(); i++)
 	{
 		v.push_back(*allMeshes[i]);

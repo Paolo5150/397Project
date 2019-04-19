@@ -141,7 +141,7 @@ public:
 	* @pre			The Component exists 
 	* @post			The Component is attached to a GameObject
 	*/
-	virtual void OnAttach(){};
+	virtual void OnAttach(GameObject* go){};
 
 
 protected:

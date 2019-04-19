@@ -18,7 +18,9 @@ class SphereCollider : public Collider
 {
 	public:
 		SphereCollider();
-		void Update() override { mr->Update(); }
+		void EngineUpdate() override;
 		bool checkCollision(SphereCollider);
+		void OnAttach(GameObject* go) override;
+
 
 };
