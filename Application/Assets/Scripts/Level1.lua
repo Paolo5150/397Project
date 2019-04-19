@@ -1,7 +1,9 @@
+allColliders = false;
+
 CreateAsset("MainCamera");
 camX, camY, camZ = 0, 35, 0;
 camRotX, camRotY, camRotZ = 0, 0, 0;
-camCollider = true;
+camCollider = allColliders;
 camColliderX, camColliderY, camColliderZ = 20, 20, 20;
 camColliderScale = 20;
 
@@ -24,7 +26,7 @@ do
     CreateAsset("Model", "Nanosuit");
 end
     nanosuitScale = 2;
-    nanosuitCollider = true;
+    nanosuitCollider = allColliders;
     nanosuitColliderScale = 1;
 
 for i = 0, npc_pumpkins-1, 1
@@ -32,7 +34,7 @@ do
     CreateAsset("Model", "Pumpkin");
 end
     pumpkinScale = 20;
-    pumpkinCollider = true;
+    pumpkinCollider = allColliders;
     pumpkinColliderScale = 1;
 
 for i = 0, prop_barrels-1, 1
@@ -40,7 +42,7 @@ do
     CreateAsset("Model", "Barrel");
 end
     barrelScale = 20;
-    barrelCollider = true;
+    barrelCollider = allColliders;
     barrelColliderScale = 1;
 
 for i = 0, prop_crates-1, 1
@@ -48,27 +50,27 @@ do
     CreateAsset("Model", "Crate");
 end
     crateScale = 1;
-    crateCollider = true;
+    crateCollider = allColliders;
     crateColliderScale = 20;
 
 CreateAsset("Model", "Gun");
 gunX, gunY, gunZ = 1637, 16, 1555; --Same x and z location as crate 1, y = 16 is to lay the gun on a crate
 gunScale = 0.8;
-gunCollider = true;
+gunCollider = allColliders;
 gunColliderX, gunColliderY, gunColliderZ = 0, 0, 0;
 gunColliderScale = 1;
 
 CreateAsset("Model", "Ship");
 shipX, shipY, shipZ = 1545, 0, 1414;
 shipScale = 20;
-shipCollider = true;
+shipCollider = allColliders;
 shipColliderX, shipColliderY, shipColliderZ = 0, 5, 0;
 shipColliderScale = 20;
 
 CreateAsset("Model", "Cabin");
 cabinX, cabinY, cabinZ = 300, 50, 1200;
 cabinScale = 100;
-cabinCollider = true;
+cabinCollider = allColliders;
 cabinColliderX, cabinColliderY, cabinColliderZ = 0, 0, 0;
 cabinColliderScale = 1;
 

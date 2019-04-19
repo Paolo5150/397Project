@@ -246,6 +246,8 @@ void MainScene::Initialize() {
 			crates[i]->AddComponent(new SphereCollider());
 			((SphereCollider*)crates[i]->GetComponent("SphereCollider"))->trans.SetPosition(Lua::GetFloatFromStack("crateColliderX"), Lua::GetFloatFromStack("crateColliderY"), Lua::GetFloatFromStack("crateColliderZ"));
 			((SphereCollider*)crates[i]->GetComponent("SphereCollider"))->trans.SetScale(Lua::GetFloatFromStack("crateColliderScale"), Lua::GetFloatFromStack("crateColliderScale"), Lua::GetFloatFromStack("crateColliderScale"));
+			//((SphereCollider*)crates[i]->GetComponent("SphereCollider"))->trans.SetPosition(0, 1, 0);
+			//((SphereCollider*)crates[i]->GetComponent("SphereCollider"))->trans.SetScale(20, 20, 20);
 		}
 		
 		crates[i]->ApplyMaterial(mat_crate);
@@ -368,22 +370,25 @@ void MainScene::LogicUpdate() {
 
 	if (!cam->IsTopView())
 	{
-		if (((SphereCollider*)cam->GetComponent("SphereCollider"))->checkCollision(*((SphereCollider*)ship->GetComponent("SphereCollider"))))
+		/*if (((SphereCollider*)cam->GetComponent("SphereCollider"))->checkCollision(*((SphereCollider*)ship->GetComponent("SphereCollider"))))
 		{
 			
 			if (timer > 3)
 				cam->OnCollision(ship);
 
-		}
+		}*/
 
 		for (int i = 2; i < totalAssets; i++) //Start at 2 to skip cam and water
 		{
 			GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
-			if (((SphereCollider*)cam->GetComponent("SphereCollider"))->checkCollision(*((SphereCollider*)obj->GetComponent("SphereCollider"))))
+			if (obj->HasComponent("SphereCollider"))
 			{
-				if (timer > 3)
+				if (((SphereCollider*)cam->GetComponent("SphereCollider"))->checkCollision(*((SphereCollider*)obj->GetComponent("SphereCollider"))))
 				{
-					cam->OnCollision(obj);
+					if (timer > 3)
+					{
+						cam->OnCollision(obj);
+					}
 				}
 			}
 		}
