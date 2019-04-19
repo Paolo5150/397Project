@@ -265,6 +265,7 @@ void MainScene::Initialize() {
 
 	Lua::CloseLua();
 	cam->transform.SetRotation(0, 0, 0);
+	cam->SetActive(1);
 }
 void MainScene::LogicUpdate() {
 

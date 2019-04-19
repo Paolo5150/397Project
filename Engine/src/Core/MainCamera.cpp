@@ -13,6 +13,7 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	_movementSpeed = 20;
 	_rotationSpeed = 20;
 	_isTopView = false;
+	_isActive = false;
 }
 
 
