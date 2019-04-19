@@ -1,60 +1,82 @@
 CreateAsset("MainCamera");
 camX, camY, camZ = 0, 35, 0;
-camRotX, camRotY, camRotZ = 30, 180, 0;
+camRotX, camRotY, camRotZ = 0, 0, 0;
+camCollider = true;
+camColliderX, camColliderY, camColliderZ = 20, 20, 20;
+camColliderScale = 20;
 
 CreateAsset("Water");
 waterX, waterY, waterZ = 0, 100, 0;
 waterScaleX, waterScaleY, waterScaleZ = 2000, 2000, 1;
 
---Create all npcs and props
 
+--Create all npcs and props
 
 npc_nanosuits = 2;
 npc_pumpkins = 10;
 prop_barrels = 10;
 prop_crates = 10;
 
-asset_total = npc_nanosuits + npc_pumpkins + prop_barrels;
+totalAssets = (npc_nanosuits + npc_pumpkins + prop_barrels + prop_crates + 3); --3 extra objects after the for loops
 
 for i = 0, npc_nanosuits-1, 1
 do
     CreateAsset("Model", "Nanosuit");
 end
     nanosuitScale = 2;
+    nanosuitCollider = true;
+    nanosuitColliderScale = 1;
 
 for i = 0, npc_pumpkins-1, 1
 do
     CreateAsset("Model", "Pumpkin");
 end
     pumpkinScale = 20;
+    pumpkinCollider = true;
+    pumpkinColliderScale = 1;
 
 for i = 0, prop_barrels-1, 1
 do
     CreateAsset("Model", "Barrel");
 end
     barrelScale = 20;
+    barrelCollider = true;
+    barrelColliderScale = 1;
 
 for i = 0, prop_crates-1, 1
 do
     CreateAsset("Model", "Crate");
 end
     crateScale = 1;
+    crateCollider = true;
+    crateColliderScale = 20;
 
 CreateAsset("Model", "Gun");
 gunX, gunY, gunZ = 1637, 16, 1555; --Same x and z location as crate 1, y = 16 is to lay the gun on a crate
 gunScale = 0.8;
+gunCollider = true;
+gunColliderX, gunColliderY, gunColliderZ = 0, 0, 0;
+gunColliderScale = 1;
 
 CreateAsset("Model", "Ship");
 shipX, shipY, shipZ = 1545, 0, 1414;
 shipScale = 20;
+shipCollider = true;
+shipColliderX, shipColliderY, shipColliderZ = 0, 5, 0;
+shipColliderScale = 20;
 
 CreateAsset("Model", "Cabin");
 cabinX, cabinY, cabinZ = 300, 50, 1200;
 cabinScale = 100;
+cabinCollider = true;
+cabinColliderX, cabinColliderY, cabinColliderZ = 0, 0, 0;
+cabinColliderScale = 1;
 
+   nanosuitColliderX, nanosuitColliderY, nanosuitColliderZ = 0, 0, 0;
    nanosuit1X, nanosuit1Y, nanosuit1Z = 1900, 0, 1900;
    nanosuit2X, nanosuit2Y, nanosuit2Z = 1700, 0, 2300;
 
+   pumpkinColliderX, pumpkinColliderY, pumpkinColliderZ = 0, 0, 0;
    pumpkin1X, pumpkin1Y, pumpkin1Z = 2234, 0, 1833;
    pumpkin2X, pumpkin2Y, pumpkin2Z = 255, 0, 1007;
    pumpkin3X, pumpkin3Y, pumpkin3Z = 1043, 0, 2660;
@@ -76,6 +98,7 @@ pumpkin18X, pumpkin18Y, pumpkin18Z = 242, 0, 2715;
 pumpkin19X, pumpkin19Y, pumpkin19Z = 209, 0, 774;
 pumpkin20X, pumpkin20Y, pumpkin20Z = 219, 0, 874;
 
+   barrelColliderX, barrelColliderY, barrelColliderZ = 0, 1, 0;
    barrel1X, barrel1Y, barrel1Z = 1116, 0, 1327;
    barrel2X, barrel2Y, barrel2Z = 1289, 0, 1066;
    barrel3X, barrel3Y, barrel3Z = 1325, 0, 1826;
@@ -97,6 +120,7 @@ barrel18X, barrel18Y, barrel18Z = 79, 0, 919;
 barrel19X, barrel19Y, barrel19Z = 1202, 0, 1652;
 barrel20X, barrel20Y, barrel20Z = 1431, 0, 1566;
 
+   crateColliderX, crateColliderY, crateColliderZ = 0, 1, 0;
    crate1X, crate1Y, crate1Z = 1633, 0, 1555;
    crate2X, crate2Y, crate2Z = 220, 0, 1613;
    crate3X, crate3Y, crate3Z = 220, 0, 2470;

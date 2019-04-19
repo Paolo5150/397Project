@@ -219,3 +219,20 @@ float Lua::GetFloatFromStack(std::string variable, lua_State*& L)
 	}
 }
 
+bool Lua::GetBoolFromStack(std::string variable, lua_State*& L)
+{
+	lua_settop(lState, 0);
+	lua_getglobal(lState, variable.c_str());
+
+	if (LuaType(L, 1, "bool"))
+	{
+		bool stack = (float)lua_toboolean(L, 1);
+		lua_pop(L, 1);
+		return stack;
+	}
+	else
+	{
+		Logger::LogError("Lua stack index is not a boolean!");
+		return -1;
+	}
+}

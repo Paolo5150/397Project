@@ -128,7 +128,15 @@ public:
 	* @param		variable	the variable name to get from the stack
 	* @param		L			the lua state to get the variable from
 	*/
-	static float GetFloatFromStack(std::string variable, lua_State*& L = lState); //Gets an int from the lua state, with the index stackIndex
+	static float GetFloatFromStack(std::string variable, lua_State*& L = lState); //Gets an float from the lua state, with the index stackIndex
+
+	/**
+	* @brief		Gets a bool variable from the given lua state. Uses the built-in lua state if none is specified
+	*
+	* @param		variable	the variable name to get from the stack
+	* @param		L			the lua state to get the variable from
+	*/
+	static bool GetBoolFromStack(std::string variable, lua_State*& L = lState); //Gets an bool from the lua state, with the index stackIndex
 	
 
 private:
