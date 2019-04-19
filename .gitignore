@@ -27,7 +27,7 @@ bld/
 
 # Allow boost debug
 
-!Dependencies
+!Dependencies/
 
 # Visual Studio 2015 cache/options directory
 .vs/
