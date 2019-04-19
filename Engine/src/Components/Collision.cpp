@@ -6,7 +6,7 @@ SphereCollider::SphereCollider() : Collider("SphereCollider"){
 	mat.SetColor(0, 1, 0);
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
 	mr = new MeshRenderer(m, mat);
-	mr->renderMode = Renderer::WIREFRAME;
+
 	mr->AddPreRenderCallback([this](Camera& cam, Shader* s){
 
 		glDisable(GL_CULL_FACE);
@@ -27,8 +27,6 @@ void SphereCollider::OnAttach(GameObject* go)
 {
 	mr->SetParent(go);
 	trans.parent = &go->transform;
-	trans.SetScale(20, 20, 20);
-	trans.SetPosition(0, 5, 0);
 	mr->transform = &trans;
 }
 

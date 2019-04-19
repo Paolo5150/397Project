@@ -234,8 +234,10 @@ void MainScene::Initialize() {
 	ship->transform.SetPosition(Lua::GetFloatFromStack("shipX"), terrain->GetHeightAt(Lua::GetFloatFromStack("shipX"), Lua::GetFloatFromStack("shipZ")) + Lua::GetFloatFromStack("shipY"), Lua::GetFloatFromStack("shipZ"));
 	luaAssetOffset++;
 	ship->AddComponent(new SphereCollider());
+	((SphereCollider*)ship->GetComponent("SphereCollider"))->trans.SetScale(20, 20, 20);
 
 	cam->AddComponent(new SphereCollider());
+	((SphereCollider*)cam->GetComponent("SphereCollider"))->trans.SetScale(10, 10, 10);
 
 	cabin = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	cabin->ApplyMaterial(mat_cabin);
