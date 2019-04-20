@@ -22,16 +22,8 @@ Model::~Model()
 	//for (int i = 0; i < allTextures.size(); i++)
 	//	delete allTextures[i];
 
-	auto itm = allMeshes.begin();
-	for (; itm != allMeshes.end(); itm++)
-		delete itm->second;
-
 
 	//allNodes.clear();
-	allTextures.clear();
-	allMeshes.clear();
-	allMaterials.clear();
-
 }
 
 
@@ -42,7 +34,7 @@ std::vector<Mesh> Model::GetMeshes()
 
 	for (int i = 0; i < allMeshes.size(); i++)
 	{
-		v.push_back(*allMeshes[i]);
+		v.push_back(allMeshes[i]);
 
 	}
 	return v;
@@ -54,9 +46,9 @@ void Model::PopulateGameObject(GameObject* go)
 {	
 	for (int i = 0; i < allMeshes.size(); i++)
 	{
-		Mesh* m = new Mesh(*allMeshes[i]);
+		//Mesh* m = new Mesh(*allMeshes[i]);
 
-		MeshRenderer* mr = new MeshRenderer(m, allMaterials[i]); //Default material
+		MeshRenderer* mr = new MeshRenderer(&allMeshes[i], allMaterials[i]); //Default material
 		GameObject* c = new GameObject(meshesNames[i]);
 		c->AddComponent(mr);
 		go->AddChild(c);
@@ -72,9 +64,9 @@ GameObject* Model::CreateGameObject()
 
 	for (int i = 0; i < allMeshes.size(); i++)
 	{
-		Mesh* m = new Mesh(*allMeshes[i]);
 
-		MeshRenderer* mr = new MeshRenderer(m, allMaterials[i]); //Default material
+
+		MeshRenderer* mr = new MeshRenderer(&allMeshes[i], allMaterials[i]); //Default material
 		
 		//mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 		//simplifiedMaterial.LoadVec3("color", 0.3f,0.3f,0.3f);

@@ -71,7 +71,7 @@ public:
 	/**
 	* @brief		The map of meshes
 	*/
-	std::map<int, Mesh*>& GetMEshesMap(){ return allMeshes; };
+	std::map<int, Mesh>& GetMEshesMap(){ return allMeshes; };
 protected:
 
 	//ModelNode* rootNode;
@@ -85,7 +85,7 @@ protected:
 	/**
 	* @brief The meshes of the model
 	*/
-	std::map<int, Mesh*> allMeshes;
+	std::map<int, Mesh> allMeshes;
 
 	/**
 	* @brief The materials of the model (when imported from external asset)

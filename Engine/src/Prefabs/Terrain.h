@@ -32,7 +32,7 @@ public:
 	* @pre			The terrain object must exist
 	* @post			The terrain object is destroyed
 	*/
-	~Terrain(){};
+	~Terrain(){ delete gridMesh; };
 
 	/**
 	* @brief				Applies a heightmap to the terrain
@@ -130,6 +130,8 @@ private:
 	* @brief		Whether the wireframe will be rendererd
 	*/
 	bool isWireframe;
+
+	Mesh* gridMesh;
 
 	
 };

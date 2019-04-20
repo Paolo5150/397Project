@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "..\Core\Core.h"
 
 Mesh::Mesh(std::vector<Vertex> vs, std::vector<unsigned> inds, bool calculateNormals)
 {
@@ -7,12 +8,24 @@ Mesh::Mesh(std::vector<Vertex> vs, std::vector<unsigned> inds, bool calculateNor
 
 	if (calculateNormals)
 		CalculateNormals();
+
+	InitializeVertexArray();
+
 }
 
 Mesh::~Mesh()
 {
-
+	delete vertexArray;
+	delete vertexBuffer;
+	delete indexBuffer;
 }
+
+void Mesh::Render(Camera& cam)
+{
+
+	vertexArray->RenderArrayTriangles(indices.size());
+}
+
 
 glm::vec3 Mesh::GetCenter()
 {
@@ -29,6 +42,59 @@ glm::vec3 Mesh::GetCenter()
 
 }
 
+
+void Mesh::InitializeVertexArray()
+{
+	vertexArray = Core::Instance().GetGraphicsAPI().CreateVertexArray();
+	vertexBuffer = Core::Instance().GetGraphicsAPI().CreateVertexBuffer();
+	indexBuffer = Core::Instance().GetGraphicsAPI().CreateIndexBuffer();
+
+	/*Bones*/
+	//bones data
+	/*if (mesh->bones_id_weights_for_each_vertex.size() > 0)
+	{
+	if (VBO_bones == 0)
+	glGenBuffers(1, &VBO_bones);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_bones);
+	glBufferData(GL_ARRAY_BUFFER, mesh->bones_id_weights_for_each_vertex.size() * sizeof(mesh->bones_id_weights_for_each_vertex[0]), &mesh->bones_id_weights_for_each_vertex[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}*/
+
+	vertexArray->Bind();
+	vertexBuffer->AddData(vertices);
+	indexBuffer->AddData(indices);
+
+	//Position
+	vertexArray->AddLayoutf(0, 3, false, sizeof(Vertex), 0);
+
+	//normal
+	vertexArray->AddLayoutf(1, 3, false, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+
+	//UV
+	vertexArray->AddLayoutf(2, 2, false, sizeof(Vertex), (void*)offsetof(Vertex, UV));
+
+	//color
+	vertexArray->AddLayoutf(3, 3, false, sizeof(Vertex), (void*)offsetof(Vertex, color));
+
+	//tangent
+	vertexArray->AddLayoutf(4, 3, false, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
+
+	//bitangemnt
+	vertexArray->AddLayoutf(5, 3, false, sizeof(Vertex), (void*)offsetof(Vertex, binormal));
+
+	/*if (mesh->bones_id_weights_for_each_vertex.size() > 0)
+	{
+	//bones
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_bones);
+	glEnableVertexAttribArray(6);
+	glVertexAttribIPointer(6, 4, GL_UNSIGNED_INT, sizeof(VertexBoneData), (GLvoid*)0); // for INT Ipointer
+	glEnableVertexAttribArray(7);
+	glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(VertexBoneData), (const GLvoid*)(16));
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}*/
+
+	vertexArray->Unbind();
+}
 
 
 void Mesh::CalculateNormals()

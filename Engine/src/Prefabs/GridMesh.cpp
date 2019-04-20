@@ -8,11 +8,12 @@ GridMesh::GridMesh(int widthVerts, int depthVerts)
 	sizeZ = depthVerts;
 
 	Initialize();
+	InitializeVertexArray();
 }
 
 GridMesh::~GridMesh()
 {
-
+	Logger::LogError("Grid mesh gone");
 }
 
 void GridMesh::Initialize()

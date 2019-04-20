@@ -186,14 +186,14 @@ void AssimpWrapper::LoadMesh(aiMesh* mesh, Model* model, bool isanimated)
 	//if (isAnimated)
 	//	LoadBones(mesh, dynamic_cast<AnimatedModel*>(model), bones_id_weights_for_each_vertex);
 
-	Mesh* meshReturn = new Mesh();
-	meshReturn->vertices = vertices;
-	meshReturn->indices = indices;
-	//meshReturn->bones_id_weights_for_each_vertex = bones_id_weights_for_each_vertex;
-	meshReturn->CalculateNormals();
 
 	int index = model->allMeshes.size();
-	model->allMeshes[index] = meshReturn;
+
+	model->allMeshes[index].vertices = vertices;
+	model->allMeshes[index].indices = indices;
+	model->allMeshes[index].CalculateNormals();
+	model->allMeshes[index].InitializeVertexArray();
+
 	model->meshesNames[index] = mesh->mName.C_Str();
 }
 

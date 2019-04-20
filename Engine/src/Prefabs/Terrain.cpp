@@ -27,8 +27,8 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 
 	isWireframe = 0;
 
-	Mesh*m = new GridMesh(size, size);
-	meshRenderer = new MeshRenderer(m, material);
+	gridMesh = new GridMesh(size, size);
+	meshRenderer = new MeshRenderer(gridMesh, material);
 	meshRenderer->SetMaterial(material);
 	meshRenderer->SetIsCullable(false);
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).SetShader(AssetLoader::Instance().GetAsset<Shader>("TerrainNoLight"));
@@ -341,7 +341,7 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 
 
 		meshRenderer->GetMesh().CalculateNormals();
-		meshRenderer->GetArrayBufferVertex().AddData(meshRenderer->GetMesh().vertices);
+		meshRenderer->GetMesh().RefreshVertexBuffer();
 		//transform.Translate(-meshRenderer->GetMesh().GetCenter().x, -meshRenderer->GetMesh().GetCenter().y, -meshRenderer->GetMesh().GetCenter().z);
 		delete[] heights;
 	}

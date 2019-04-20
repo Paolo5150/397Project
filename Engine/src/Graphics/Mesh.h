@@ -3,7 +3,9 @@
 #include <vector>
 #include "Vertex.h"
 #include "..\Core\Logger.h"
-#include <vector>
+#include "..\Graphics\ArrayBuffer.h"
+#include "..\Graphics\VertexArray.h"
+#include "..\Core\Camera.h"
 
 
 
@@ -88,6 +90,34 @@ public:
 	* @post			The vertices normals are calculated
 	*/
 	void CalculateNormals();
+
+	ArrayBuffer<Vertex>& GetVertexBuffer() { return *vertexBuffer; };
+
+
+	void Render(Camera& cam);
+
+	void RefreshVertexBuffer() { vertexBuffer->AddData(vertices); };
+	void InitializeVertexArray();
+private:
+	/**
+	* @brief		The vertex buffer for the GPU
+	*/
+	ArrayBuffer<Vertex>* vertexBuffer;
+
+
+	/**
+	* @brief		The indices buffer for the GPU
+	*/
+	ArrayBuffer<unsigned>* indexBuffer;
+
+
+	/**
+	* @brief		The vertex array of array buffers
+	*/
+	VertexArray* vertexArray;
+
+
+
 
 
 };
