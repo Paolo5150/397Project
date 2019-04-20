@@ -194,6 +194,8 @@ void Core::LoadBasicAssets()
 	GUIManager::Instance().Render(1, 1);
 	//Load shsders
 	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f", true);
+	AssetLoader::Instance().LoadShader("DefaultAnimated", "Assets\\Shaders\\DefaultAnimated.v", "Assets\\Shaders\\DefaultAnimated.f", true);
+
 	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f", true);
 	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f", true);
 	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);

@@ -49,6 +49,8 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");	
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Wolf\\wolf.fbx");
+
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
@@ -81,6 +83,8 @@ void MainScene::Initialize() {
 	//GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
 	manual = new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
 	GUIManager::Instance().AddGUIObject(manual);
+
+
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.4f, 0.4f, 0.2f);
@@ -116,6 +120,13 @@ void MainScene::Initialize() {
 	mat_crate.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_diffuse"));
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_normal"), TextureUniform::NORMAL0);
+	GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
+
+	//woof->PrintHierarchy();
+
+
+	nanosuit->ApplyMaterial(mat);
+	nanosuit->ApplyColor(1, 1, 1);
 
 	Material mat_ship;
 	mat_ship.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
@@ -124,6 +135,7 @@ void MainScene::Initialize() {
 
 	mat_ship.LoadFloat("shininess", 1000.0f);
 	mat_ship.LoadFloat("reflectivness", 0.5f);
+	AddGameObject(woof);
 
 	Material mat_cabin;
 	mat_cabin.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
@@ -231,6 +243,9 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(pLight);
+	AddGameObject(terrain);
+	//AddGameObject(nanosuit);
+	//AddGameObject(n2);
 
 	AddGameObject(cam);
 
@@ -239,6 +254,8 @@ void MainScene::Initialize() {
 	cam->transform.SetPosition(x, y,z);
 
 	//nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
+	woof->transform.SetPosition(x, terrain->GetHeightAt(x, z + 500) + 15, z + 500);
+
 
 	//n2->transform.SetPosition(x+300, terrain->GetHeightAt(x+300, z + 1200) + 50, z + 1200);
 	cam->AddChild(pLight);

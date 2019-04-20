@@ -101,6 +101,8 @@ public:
 	*/
 	virtual void SetVec4(const std::string &name, glm::vec4 value) const = 0;
 
+	unsigned GetID() { return shaderID; }
+
 protected :
 	/**
 	* @brief		Create a new shader

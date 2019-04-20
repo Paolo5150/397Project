@@ -183,7 +183,7 @@ public:
 	*
 	* @param		component	Component to add to the GameObject
 	*/
-	void AddComponent(Component *component);
+	Component* AddComponent(Component *component);
 
 	/**
 	* @brief		Adds a component to a child of the GameObject.

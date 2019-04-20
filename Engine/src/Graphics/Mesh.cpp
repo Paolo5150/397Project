@@ -134,7 +134,7 @@ void Mesh::CalculateNormals()
 		}
 	}
 }
-/*
+
 void VertexBoneData::addBoneData(unsigned bone_id, float weight)
 {
 	for (unsigned i = 0; i < NUM_BONES_PER_VEREX; i++)
@@ -148,4 +148,4 @@ void VertexBoneData::addBoneData(unsigned bone_id, float weight)
 		}
 	}
 
-}*/
+}

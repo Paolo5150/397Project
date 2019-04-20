@@ -13,7 +13,7 @@
 
 
 // Used for skeletal animation
-/*struct VertexBoneData
+struct VertexBoneData
 {
 	unsigned ids[NUM_BONES_PER_VEREX];   // we have 4 bone ids for EACH vertex & 4 weights for EACH vertex
 	float weights[NUM_BONES_PER_VEREX];
@@ -26,7 +26,7 @@
 	}
 
 	void addBoneData(unsigned bone_id, float weight);
-};*/
+};
 
 
 /**
@@ -121,5 +121,6 @@ private:
 
 
 
+	std::vector<VertexBoneData> bones_id_weights_for_each_vertex;
 
 };

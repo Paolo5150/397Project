@@ -3,7 +3,7 @@
 #include "..\Graphics\Mesh.h"
 #include "..\Graphics\Texture2D.h"
 #include "..\Graphics\Model.h"
-
+#include "..\Graphics\AnimatedModel.h"
 #include "assimp\Importer.hpp"
 #include "assimp\scene.h"
 #include "assimp\postprocess.h"
@@ -20,10 +20,10 @@ public:
 	void ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model, bool isAnimated);
 
 private:
-	//void LoadBones(aiMesh* mesh, AnimatedModel* model, std::vector<VertexBoneData>& bones_id_weights_for_each_vertex);
+	void LoadBones(aiMesh* mesh, AnimatedModel* model, std::vector<VertexBoneData>& bones_id_weights_for_each_vertex);
 	void LoadMesh(aiMesh* mesh, Model* model, bool isanimated);
 
-	//void LoadAnimations(const aiScene* scene, AnimatedModel* model);
+	void LoadAnimations(const aiScene* scene, AnimatedModel* model);
 	void LoadTextureIntoMaterial(aiTextureType type, aiMaterial* material, Material* mymaterial, std::string textureFolder, Model* model);
 
 };

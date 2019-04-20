@@ -189,6 +189,7 @@
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
     <ClInclude Include="src\Core\Lua.h" />
+    <ClInclude Include="src\Components\Animator.h" />
     <ClInclude Include="src\Core\MainCamera.h" />
     <ClInclude Include="src\Components\LineRenderer.h" />
     <ClInclude Include="src\Components\MeshRenderer.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="src\Event\WindowEvents.h" />
     <ClInclude Include="src\GameObject\Component.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
+    <ClInclude Include="src\Graphics\AnimatedModel.h" />
     <ClInclude Include="src\Graphics\API_Opengl.h" />
     <ClInclude Include="src\Graphics\ArrayBuffer.h" />
     <ClInclude Include="src\Graphics\ArrayBufferGL.h" />
@@ -224,6 +226,8 @@
     <ClInclude Include="src\Graphics\Material.h" />
     <ClInclude Include="src\Graphics\Mesh.h" />
     <ClInclude Include="src\Graphics\Model.h" />
+    <ClInclude Include="src\Graphics\ModelAnimation.h" />
+    <ClInclude Include="src\Graphics\ModelBone.h" />
     <ClInclude Include="src\Graphics\ModelNode.h" />
     <ClInclude Include="src\Graphics\RenderingEngine.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
@@ -271,6 +275,7 @@
   <ItemGroup>
     <ClCompile Include="src\Core\LuaRegistry.cpp" />
     <ClCompile Include="src\Core\Lua.cpp" />
+    <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Core\MainCamera.cpp" />
     <ClCompile Include="src\Components\LineRenderer.cpp" />
     <ClCompile Include="src\Components\MeshRenderer.cpp" />
@@ -288,9 +293,11 @@
     <ClCompile Include="src\Event\EventDispatcher.cpp" />
     <ClCompile Include="src\GameObject\Component.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
+    <ClCompile Include="src\Graphics\AnimatedModel.cpp" />
     <ClCompile Include="src\Graphics\API_Opengl.cpp" />
     <ClCompile Include="src\Graphics\CubeMapGL.cpp" />
     <ClCompile Include="src\Graphics\FrameBufferGL.cpp" />
+    <ClCompile Include="src\Graphics\ModelAnimation.cpp" />
     <ClCompile Include="src\Graphics\SkyBox.cpp" />
     <ClCompile Include="src\GUI\GUIElements\GUIManager.cpp" />
     <ClCompile Include="src\GUI\GUIElements\GUIObject.cpp" />
