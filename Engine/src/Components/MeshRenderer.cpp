@@ -5,8 +5,7 @@
 
 MeshRenderer::~MeshRenderer()
 {
-	if (mesh->bones_id_weights_for_each_vertex.size() > 0)
-		glDeleteBuffers(1, &VBO_bones);
+
 
 
 

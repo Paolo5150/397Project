@@ -193,12 +193,16 @@ void Core::LoadBasicAssets()
 	loading->_message = "Loading impressive shaders...";
 	GUIManager::Instance().Render(1, 1);
 	//Load shsders
-	AssetLoader::Instance().LoadShader("ColorOnly", "Assets\\Shaders\\ColorOnly.v", "Assets\\Shaders\\ColorOnly.f", true);
+	AssetLoader::Instance().LoadShader("ColorOnlyStatic", "Assets\\Shaders\\ColorOnlyStatic.v", "Assets\\Shaders\\ColorOnlyStatic.f", true);
+	AssetLoader::Instance().LoadShader("ColorOnlyAnimated", "Assets\\Shaders\\ColorOnlyAnimated.v", "Assets\\Shaders\\ColorOnlyStatic.f", true);
+
 	AssetLoader::Instance().LoadShader("DefaultAnimated", "Assets\\Shaders\\DefaultAnimated.v", "Assets\\Shaders\\DefaultAnimated.f", true);
 
 	AssetLoader::Instance().LoadShader("DefaultStatic", "Assets\\Shaders\\DefaultStatic.v", "Assets\\Shaders\\DefaultStatic.f", true);
 	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f", true);
 	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
+	AssetLoader::Instance().LoadShader("DefaultAnimatedNoLight", "Assets\\Shaders\\DefaultAnimatedNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
+
 	AssetLoader::Instance().LoadShader("Terrain", "Assets\\Shaders\\Terrain.v", "Assets\\Shaders\\Terrain.f", true);
 	AssetLoader::Instance().LoadShader("Water", "Assets\\Shaders\\Water.v", "Assets\\Shaders\\Water.f", true);
 	AssetLoader::Instance().LoadShader("Skybox", "Assets\\Shaders\\Skybox.v", "Assets\\Shaders\\Skybox.f", true);

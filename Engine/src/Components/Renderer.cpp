@@ -9,8 +9,6 @@
 #include "..\Lighting\LightingManager.h"
 
 
-
-
 Renderer::Renderer(std::string name, Material m) : Component(name) {
 
 	submitted = 0;
@@ -35,9 +33,19 @@ Renderer::Renderer(std::string name) : Component(name) {
 
 void Renderer::CreateOtherMaterials(Material& defaultMat)
 {
+
+	std::size_t res =  defaultMat.GetShader().name.find("Static");
+	std::string colorOnlyShader = "ColorOnlyStatic";
+	std::string nolightShader = "DefaultStaticNoLight";
+
+	if (res == std::string::npos)
+	{
+		colorOnlyShader = "ColorOnlyAnimated";
+		nolightShader = "DefaultAnimatedNoLight";
+	}
 	//Create a ColorOnly material for all renderers
 	Material co;
-	co.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
+	co.SetShader(AssetLoader::Instance().GetAsset<Shader>(colorOnlyShader));
 
 	float r, g, b;
 	defaultMat.GetColor(r, g, b);
@@ -45,9 +53,10 @@ void Renderer::CreateOtherMaterials(Material& defaultMat)
 	SetMaterial(co, COLORONLY);
 
 	//Create a NoLight material for all renderers, copy from default one (textures and color)
+	
 
 	Material nolight(defaultMat); //Copy from default
-	nolight.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
+	nolight.SetShader(AssetLoader::Instance().GetAsset<Shader>(nolightShader));
 	nolight.SetColor(r, g, b);
 	SetMaterial(nolight, NOLIGHT);
 }

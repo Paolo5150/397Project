@@ -14,7 +14,7 @@ Model* AssimpWrapper::LoadModel(const std::string& path)
 	Assimp::Importer import;
 
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_FixInfacingNormals |
-		aiProcess_ForceGenNormals | aiProcessPreset_TargetRealtime_Quality);
+		aiProcess_GenNormals | aiProcessPreset_TargetRealtime_Quality);
 
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -133,7 +133,7 @@ void AssimpWrapper::ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model
 	else
 	{
 		//Logger::LogInfo("No material, applying default one {}", mesh->mMaterialIndex);
-		associatedMaterial = Material(AssetLoader::Instance().GetAsset<Shader>("ColorOnly")); 
+		associatedMaterial = Material(AssetLoader::Instance().GetAsset<Shader>("ColorOnlyStatic")); 
 		associatedMaterial.LoadVec3("color", 1,0,1);
 
 	}
@@ -212,15 +212,15 @@ void AssimpWrapper::LoadMesh(aiMesh* mesh, Model* model, bool isanimated)
 	if (isanimated)
 		LoadBones(mesh, dynamic_cast<AnimatedModel*>(model), bones_id_weights_for_each_vertex);
 
-	meshReturn->bones_id_weights_for_each_vertex = bones_id_weights_for_each_vertex;
 
 	int index = model->allMeshes.size();
 
 	model->allMeshes[index].vertices = vertices;
 	model->allMeshes[index].indices = indices;
 	model->allMeshes[index].CalculateNormals();
-	model->allMeshes[index].InitializeVertexArray();
+	model->allMeshes[index].bones_id_weights_for_each_vertex = bones_id_weights_for_each_vertex;
 	model->allMeshes[index].name = mesh->mName.C_Str();
+	model->allMeshes[index].InitializeVertexArray();
 
 	model->meshesNames[index] = mesh->mName.C_Str();
 }

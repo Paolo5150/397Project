@@ -100,6 +100,7 @@ public:
 	void InitializeVertexArray();
 
 	std::string name;
+	std::vector<VertexBoneData> bones_id_weights_for_each_vertex;
 private:
 	/**
 	* @brief		The vertex buffer for the GPU
@@ -118,9 +119,6 @@ private:
 	*/
 	VertexArray* vertexArray;
 
-
-
-
-	std::vector<VertexBoneData> bones_id_weights_for_each_vertex;
+	unsigned VBO_bones;
 
 };

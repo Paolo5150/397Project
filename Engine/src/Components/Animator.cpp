@@ -78,7 +78,6 @@ void Animator::Update()
 }
 void Animator::OnPreRender(Camera& cam, Shader* currentShader)
 {
-
 	int loc = glGetUniformLocation(currentShader->GetID(), "bones");
 	glUniformMatrix4fv(loc, allBonesTransforms.size(), GL_FALSE, (const GLfloat*)&allBonesTransforms[0]);
 	/*auto it = shaderToUpdate.begin();

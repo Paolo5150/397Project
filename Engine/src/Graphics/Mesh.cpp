@@ -18,7 +18,9 @@ Mesh::~Mesh()
 	delete vertexArray;
 	delete vertexBuffer;
 	delete indexBuffer;
-	Logger::LogError("Mesh deleted", name);
+	if (bones_id_weights_for_each_vertex.size() > 0)
+		glDeleteBuffers(1, &VBO_bones);
+	//Logger::LogError("Mesh deleted", name);
 }
 
 void Mesh::Render(Camera& cam)
@@ -50,16 +52,7 @@ void Mesh::InitializeVertexArray()
 	vertexBuffer = Core::Instance().GetGraphicsAPI().CreateVertexBuffer();
 	indexBuffer = Core::Instance().GetGraphicsAPI().CreateIndexBuffer();
 
-	/*Bones*/
-	//bones data
-	/*if (mesh->bones_id_weights_for_each_vertex.size() > 0)
-	{
-	if (VBO_bones == 0)
-	glGenBuffers(1, &VBO_bones);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_bones);
-	glBufferData(GL_ARRAY_BUFFER, mesh->bones_id_weights_for_each_vertex.size() * sizeof(mesh->bones_id_weights_for_each_vertex[0]), &mesh->bones_id_weights_for_each_vertex[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}*/
+
 
 	vertexArray->Bind();
 	vertexBuffer->AddData(vertices);
@@ -83,7 +76,17 @@ void Mesh::InitializeVertexArray()
 	//bitangemnt
 	vertexArray->AddLayoutf(5, 3, false, sizeof(Vertex), (void*)offsetof(Vertex, binormal));
 
-	/*if (mesh->bones_id_weights_for_each_vertex.size() > 0)
+	/*Bones*/
+	//bones data
+	if (bones_id_weights_for_each_vertex.size() > 0)
+	{
+		glGenBuffers(1, &VBO_bones);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO_bones);
+		glBufferData(GL_ARRAY_BUFFER, bones_id_weights_for_each_vertex.size() * sizeof(bones_id_weights_for_each_vertex[0]), &bones_id_weights_for_each_vertex[0], GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	if (bones_id_weights_for_each_vertex.size() > 0)
 	{
 	//bones
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_bones);
@@ -92,7 +95,7 @@ void Mesh::InitializeVertexArray()
 	glEnableVertexAttribArray(7);
 	glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE, sizeof(VertexBoneData), (const GLvoid*)(16));
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}*/
+	}
 
 	vertexArray->Unbind();
 }

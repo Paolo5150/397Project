@@ -56,18 +56,16 @@ GameObject* AnimatedModel::CreateGameObject()
 
 	for (int i = 0; i < allMeshes.size(); i++)
 	{
-		Mesh* m = new Mesh(*allMeshes[i]);
 
 		GameObject* c = new GameObject(meshesNames[i]);
 
-		MeshRenderer* mr = new MeshRenderer(m, allMaterials[i]); //Default material
+		MeshRenderer* mr = new MeshRenderer(&allMeshes[i], allMaterials[i]); //Default material
 
 		mr->AddPreRenderCallback(std::bind(&Animator::OnPreRender, anim, std::placeholders::_1, std::placeholders::_2));
 
 		c->AddComponent(mr);
 		e->AddChild(c);
-		//anim->shaderToUpdate.insert(&allMaterials[i].GetShader());
-		//anim->shaderToUpdate.insert(simplifiedMaterialGetShader());
+
 
 	}
 	return e;

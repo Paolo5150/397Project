@@ -120,13 +120,7 @@ void MainScene::Initialize() {
 	mat_crate.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_diffuse"));
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_normal"), TextureUniform::NORMAL0);
-	GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
 
-	//woof->PrintHierarchy();
-
-
-	nanosuit->ApplyMaterial(mat);
-	nanosuit->ApplyColor(1, 1, 1);
 
 	Material mat_ship;
 	mat_ship.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
@@ -135,7 +129,6 @@ void MainScene::Initialize() {
 
 	mat_ship.LoadFloat("shininess", 1000.0f);
 	mat_ship.LoadFloat("reflectivness", 0.5f);
-	AddGameObject(woof);
 
 	Material mat_cabin;
 	mat_cabin.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
@@ -175,6 +168,9 @@ void MainScene::Initialize() {
 		nanosuits[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
 	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");
+
+	GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
+	AddGameObject(woof);
 
 	/*pumpkins = new GameObject*[Lua::GetIntFromStack("npc_pumpkins")];
 	for (int i = 0; i < Lua::GetIntFromStack("npc_pumpkins"); i++)
@@ -296,8 +292,8 @@ void MainScene::LogicUpdate() {
 
 	if (!cam->IsTopView())
 	{
-		float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
-		cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+		//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+		//cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 		// Limit camera position within terrain
 		if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)

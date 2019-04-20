@@ -40,9 +40,8 @@ vec4 fragPos = u_model * vec4(inPosition, 1.0);
 
 gl_Position = u_mvp  * boned_position;
 
-Textcoords = inTextcoords;
 Normal = normalize( u_model * bone_transform* vec4(normalize(inNormals),0.0)).xyz;
-//Normal = normalize(mat3(transpose(inverse(u_model))) * normalize(inNormals));
+
 
 CameraPosition = u_cameraPosition;
 FragPosition = fragPos.xyz;

@@ -82,7 +82,7 @@ class MeshRenderer : public Renderer
 		*/
 		void Initialize();
 
-		unsigned VBO_bones;
+
 
 	};
 

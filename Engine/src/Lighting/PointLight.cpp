@@ -14,7 +14,7 @@ PointLight::PointLight() : Light("PointLight",POINT)
 	GameObject* sphere = m->CreateGameObject();
 
 	Material mat;
-	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
+	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnlyStatic"));
 	mat.SetColor(diffuseColor.x, diffuseColor.y, diffuseColor.z);
 
 	sphere->ApplyMaterial(mat);
