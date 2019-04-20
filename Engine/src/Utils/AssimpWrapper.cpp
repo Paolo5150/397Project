@@ -193,6 +193,7 @@ void AssimpWrapper::LoadMesh(aiMesh* mesh, Model* model, bool isanimated)
 	model->allMeshes[index].indices = indices;
 	model->allMeshes[index].CalculateNormals();
 	model->allMeshes[index].InitializeVertexArray();
+	model->allMeshes[index].name = mesh->mName.C_Str();
 
 	model->meshesNames[index] = mesh->mName.C_Str();
 }

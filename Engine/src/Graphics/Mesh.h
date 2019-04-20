@@ -98,6 +98,8 @@ public:
 
 	void RefreshVertexBuffer() { vertexBuffer->AddData(vertices); };
 	void InitializeVertexArray();
+
+	std::string name;
 private:
 	/**
 	* @brief		The vertex buffer for the GPU

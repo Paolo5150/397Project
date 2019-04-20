@@ -18,6 +18,7 @@ Mesh::~Mesh()
 	delete vertexArray;
 	delete vertexBuffer;
 	delete indexBuffer;
+	Logger::LogError("Mesh deleted", name);
 }
 
 void Mesh::Render(Camera& cam)
