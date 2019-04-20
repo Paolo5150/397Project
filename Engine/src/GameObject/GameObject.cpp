@@ -196,21 +196,6 @@ GameObject* GameObject::GetChild(std::string childName) const
 	}
 }
 
-Component* GameObject::GetComponent(std::string componentName) const
-{
-	std::list<Component*>::const_iterator it;
-	it = std::find_if(std::begin(_components), std::end(_components), [&](Component* const component) -> Component* {if (component->GetName() == componentName){ return component; } else { return nullptr; }});
-
-	if (it != std::end(_components))
-	{
-		return *it;
-	}
-	else
-	{
-		return nullptr;
-	}
-}
-
 Component* GameObject::GetComponentByType(std::string componentType) const
 {
 	std::list<Component*>::const_iterator it;
@@ -226,17 +211,7 @@ Component* GameObject::GetComponentByType(std::string componentType) const
 	}
 }
 
-Component* GameObject::GetComponentInChild(std::string childName, std::string componentName) const
-{
-	if (HasChild(childName) == true)
-	{
-		return GetChild(childName)->GetComponent(componentName);
-	}
-	else
-	{
-		return nullptr;
-	}
-}
+
 
 std::list<GameObject*>& GameObject::GetChildList()
 {

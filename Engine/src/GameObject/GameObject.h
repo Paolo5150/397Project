@@ -253,7 +253,8 @@ public:
 	*
 	* @return		A component in the GameObject, or nullptr if there is no component with that name
 	*/
-	Component* GetComponent(std::string componentName) const;
+	template <class T>
+	T* GetComponent(std::string componentName) const;
 
 	/**
 	* @brief		Retrieves a component in the GameObject by the type
@@ -278,7 +279,8 @@ public:
 	*
 	* @return		A component in a child of the GameObject, or nullptr if the component/child was not found
 	*/
-	Component* GetComponentInChild(std::string childName, std::string componentName) const;
+	template <class T>
+	T* GetComponentInChild(std::string childName, std::string componentName) const;
 
 	/**
 	* @brief		Retrieves the parent of the GameObject
@@ -467,3 +469,32 @@ protected:
 
 };
 
+
+template <class T>
+T* GameObject::GetComponent(std::string componentName) const
+{
+	std::list<Component*>::const_iterator it;
+	it = std::find_if(std::begin(_components), std::end(_components), [&](Component* const component) -> Component* {if (component->GetName() == componentName){ return component; } else { return nullptr; }});
+
+	if (it != std::end(_components))
+	{
+		return (T*)*it;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+template <class T>
+T* GameObject::GetComponentInChild(std::string childName, std::string componentName) const
+{
+	if (HasChild(childName) == true)
+	{
+		return (T*)(GetChild(childName)->GetComponent<T>(componentName));
+	}
+	else
+	{
+		return nullptr;
+	}
+}
