@@ -19,7 +19,7 @@
 #include "GUI\GUIElements\GUIManager.h"
 #include "Bullet\btBulletCollisionCommon.h"
 #include "Bullet\btBulletDynamicsCommon.h"
-
+#include "Bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.h"
 
 MainCamera* cam;
 int luaAssetOffset = 0;
@@ -280,7 +280,7 @@ void MainScene::Initialize() {
 
 	// The world.
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	dynamicsWorld->setGravity(btVector3(0, -9.81f, 0));
+	dynamicsWorld->setGravity(btVector3(0, 1.0, 0));
 
 	btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
 	boxCollisionShape->calculateLocalInertia(1, btVector3(1.0f, 1.0f, 1.0f));
@@ -297,12 +297,14 @@ void MainScene::Initialize() {
 		);
 	dynamicsWorld->stepSimulation(Timer::GetDeltaS(), 10);
 
-
+	
 	rigidBody = new btRigidBody(rigidBodyCI);
 	
 
 
 	dynamicsWorld->addRigidBody(rigidBody);
+
+	
 
 	
 

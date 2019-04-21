@@ -60,6 +60,7 @@
     <ClCompile Include="src\Utils\FileUtils.cpp" />
     <ClCompile Include="src\Utils\GameAssetFactory.cpp" />
     <ClCompile Include="src\Utils\Maths.cpp" />
+    <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -146,5 +147,6 @@
     <ClInclude Include="src\Utils\GameAssetFactory.h" />
     <ClInclude Include="src\Utils\Maths.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
+    <ClInclude Include="src\Physics\PhysicsWorld.h" />
   </ItemGroup>
 </Project>
