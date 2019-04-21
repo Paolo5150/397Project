@@ -83,6 +83,15 @@ public:
 	*/
 	glm::mat4& GetGlobalRotation();
 
+
+	/**
+	* @brief		Return the rotation quaternion
+	* @pre			The game object owning the transform exists
+	* @post			The direction the object is facing of the game object is return and left unchanged
+	*
+	*/
+	glm::quat& GetRotationQuat() { return rotationQuat; };
+
 	/**
 	* @brief		Return the direction the object is facing
 	* @pre			The game object owning the transform exists

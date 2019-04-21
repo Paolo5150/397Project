@@ -46,7 +46,7 @@ public:
 	* @post			The list of meshes of the model is returned
 	* @return		The list of meshes of this model
 	*/
-	std::vector<Mesh> GetMeshes();
+	std::vector<Mesh*> GetMeshes();
 
 	/**
 	* @brief		Create a GameObject with the needed component attached to render the model

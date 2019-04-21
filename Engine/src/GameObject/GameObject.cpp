@@ -147,6 +147,8 @@ Component* GameObject::AddComponent(Component* component)
 	//{
 		component->SetParent(this);
 		_components.push_back(component);
+
+		component->OnAttach(this);
 		return component;
 	//}
 }

@@ -28,13 +28,13 @@ Model::~Model()
 
 
 
-std::vector<Mesh> Model::GetMeshes()
+std::vector<Mesh*> Model::GetMeshes()
 {
-	std::vector<Mesh> v;
+	std::vector<Mesh*> v;
 
 	for (int i = 0; i < allMeshes.size(); i++)
 	{
-		v.push_back(allMeshes[i]);
+		v.push_back(&allMeshes[i]);
 
 	}
 	return v;

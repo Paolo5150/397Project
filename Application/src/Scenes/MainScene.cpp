@@ -17,6 +17,7 @@
 #include "Core\Lua.h"
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIManager.h"
+#include "Components\BoxCollider.h"
 #include "Physics\PhysicsWorld.h"
 
 MainCamera* cam;
@@ -171,6 +172,7 @@ void MainScene::Initialize() {
 	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");
 
 	GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
+	woof->AddComponent(new BoxCollider());
 	AddGameObject(woof);
 
 	/*pumpkins = new GameObject*[Lua::GetIntFromStack("npc_pumpkins")];
@@ -314,7 +316,7 @@ void MainScene::LogicUpdate() {
 		rigidBody->getMotionState()->getWorldTransform(t);
 		float yy = t.getOrigin().getY();
 
-		Logger::LogInfo("Y:", yy);
+
 	}
 	
 

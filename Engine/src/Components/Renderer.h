@@ -156,7 +156,9 @@ class Renderer : public Component
 		*/
 		void SetIsCullable(bool ic){ isCullable = ic; }
 
+		void OnAttach(GameObject* go) override;
 
+		Transform* transform;
 
 
 	protected:
