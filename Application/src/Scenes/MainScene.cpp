@@ -17,6 +17,8 @@
 #include "Core\Lua.h"
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIManager.h"
+#include "Bullet\btBulletCollisionCommon.h"
+#include "Bullet\btBulletDynamicsCommon.h"
 
 
 MainCamera* cam;
@@ -31,8 +33,9 @@ GameObject* cabin;
 PointLight* pLight;
 DirectionalLight* dirLight;
 Terrain* terrain;
-
-
+btDefaultMotionState* motionstate;
+btRigidBody *rigidBody;
+btDiscreteDynamicsWorld* dynamicsWorld;
 MainScene::MainScene() : Scene("MainScene")
 {
 
@@ -84,7 +87,7 @@ void MainScene::Initialize() {
 	manual = new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
 	GUIManager::Instance().AddGUIObject(manual);
 
-
+	
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.4f, 0.4f, 0.2f);
@@ -262,6 +265,47 @@ void MainScene::Initialize() {
 
 	Lua::CloseLua();
 	cam->transform.SetRotation(0, 0, 0);
+
+
+	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+
+	// Set up the collision configuration and dispatcher
+	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+	btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+
+	// The actual physics solver
+	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+
+
+
+	// The world.
+	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+	dynamicsWorld->setGravity(btVector3(0, -9.81f, 0));
+
+	btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
+	boxCollisionShape->calculateLocalInertia(1, btVector3(1.0f, 1.0f, 1.0f));
+
+	 motionstate = new btDefaultMotionState(btTransform(
+		 btQuaternion(), btVector3()
+		));
+
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
+		1,                  // mass, in kg. 0 -> Static object, will never move.
+		motionstate,
+		boxCollisionShape,  // collision shape of body
+		btVector3(1,1,1)    // local inertia
+		);
+	dynamicsWorld->stepSimulation(Timer::GetDeltaS(), 10);
+
+
+	rigidBody = new btRigidBody(rigidBodyCI);
+	
+
+
+	dynamicsWorld->addRigidBody(rigidBody);
+
+	
+
 }
 void MainScene::LogicUpdate() {
 
@@ -279,6 +323,25 @@ void MainScene::LogicUpdate() {
 
 	/*pLight->transform.Translate(0.05f, 0, 0);
 	nanosuit->transform.RotateBy(0.51f, 0,1,0);*/
+
+
+	dynamicsWorld->stepSimulation(Timer::GetDeltaS(),10);
+
+	if (rigidBody->getMotionState())
+	{
+
+		btTransform t;
+		rigidBody->getMotionState()->getWorldTransform(t);
+		float yy = t.getOrigin().getY();
+
+		Logger::LogInfo("Y:", yy);
+	}
+	
+
+
+
+	
+	
 
 	static float timer = 0;
 	static bool done = 0;

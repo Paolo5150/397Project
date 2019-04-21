@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bullet\include;$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -137,8 +137,9 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bullet\include;$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,6 +149,7 @@
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

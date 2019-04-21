@@ -100,7 +100,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bullet\include;$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(SolutionDir)PCH\$(ProjectName)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
@@ -108,10 +108,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>assimp-vc140-mt.lib;Luabuild_vs2013_D.lib;Lua_5.1_vs2013_D.lib;SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalDependencies>BulletCollision_vs2010.lib;BulletDynamics_vs2010.lib;LinearMath_vs2010.lib;assimp-vc140-mt.lib;Luabuild_vs2013_D.lib;Lua_5.1_vs2013_D.lib;SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\Luabind\lib;$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Bullet\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\Luabind\lib;$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,8 +146,9 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bullet\include;$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(SolutionDir)PCH\$(ProjectName)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,10 +157,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>assimp-vc140-mt.lib;Luabuild_vs2013.lib;Lua_5.1_vs2013.lib;SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalDependencies>BulletCollision.lib;BulletDynamics.lib;Bullet3Collision.lib;Bullet3Dynamics.lib;LinearMath.lib;assimp-vc140-mt.lib;Luabuild_vs2013.lib;Lua_5.1_vs2013.lib;SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\Luabind\lib;$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Bullet\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\Luabind\lib;$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
