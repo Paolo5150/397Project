@@ -267,3 +267,5 @@ __pycache__/
 # Allow boost debug
 
 !Dependencies/Luabind/include/boost/preprocessor/debug
+!Dependencies/Bullet/lib/[Dd]ebug
+!Dependencies/Bullet/lib/[Rr]elease
