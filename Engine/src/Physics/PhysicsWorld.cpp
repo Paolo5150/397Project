@@ -1,5 +1,13 @@
 #include "PhysicsWorld.h"
 
+
+PhysicsWorld&  PhysicsWorld::Instance()
+{
+	static PhysicsWorld instance;
+	return instance;
+}
+
+
 PhysicsWorld::PhysicsWorld()
 {
 	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
@@ -18,7 +26,12 @@ PhysicsWorld::PhysicsWorld()
 
 PhysicsWorld::~PhysicsWorld()
 {
+	for (int i = 0; i < allRigidBodies.size(); i++)
+		dynamicsWorld->removeRigidBody(allRigidBodies[i]);
 
+	allRigidBodies.clear();
+
+	delete dynamicsWorld;
 }
 
 void PhysicsWorld::SetGravity(float x, float y, float z)
@@ -29,7 +42,7 @@ void PhysicsWorld::SetGravity(float x, float y, float z)
 
 void PhysicsWorld::Update(float deltaS)
 {
-
+	dynamicsWorld->stepSimulation(deltaS, 10);
 }
 
 

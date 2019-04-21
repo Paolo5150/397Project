@@ -17,9 +17,7 @@
 #include "Core\Lua.h"
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIManager.h"
-#include "Bullet\btBulletCollisionCommon.h"
-#include "Bullet\btBulletDynamicsCommon.h"
-#include "Bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.h"
+#include "Physics\PhysicsWorld.h"
 
 MainCamera* cam;
 int luaAssetOffset = 0;
@@ -35,7 +33,7 @@ DirectionalLight* dirLight;
 Terrain* terrain;
 btDefaultMotionState* motionstate;
 btRigidBody *rigidBody;
-btDiscreteDynamicsWorld* dynamicsWorld;
+
 MainScene::MainScene() : Scene("MainScene")
 {
 
@@ -266,21 +264,7 @@ void MainScene::Initialize() {
 	Lua::CloseLua();
 	cam->transform.SetRotation(0, 0, 0);
 
-
-	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-
-	// Set up the collision configuration and dispatcher
-	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-	btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-
-	// The actual physics solver
-	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-
-
-
-	// The world.
-	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	dynamicsWorld->setGravity(btVector3(0, 1.0, 0));
+		
 
 	btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
 	boxCollisionShape->calculateLocalInertia(1, btVector3(1.0f, 1.0f, 1.0f));
@@ -295,16 +279,10 @@ void MainScene::Initialize() {
 		boxCollisionShape,  // collision shape of body
 		btVector3(1,1,1)    // local inertia
 		);
-	dynamicsWorld->stepSimulation(Timer::GetDeltaS(), 10);
-
 	
 	rigidBody = new btRigidBody(rigidBodyCI);
-	
 
-
-	dynamicsWorld->addRigidBody(rigidBody);
-
-	
+	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(rigidBody);
 
 	
 
@@ -327,7 +305,7 @@ void MainScene::LogicUpdate() {
 	nanosuit->transform.RotateBy(0.51f, 0,1,0);*/
 
 
-	dynamicsWorld->stepSimulation(Timer::GetDeltaS(),10);
+	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
 	if (rigidBody->getMotionState())
 	{
