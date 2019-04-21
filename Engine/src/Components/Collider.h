@@ -2,13 +2,18 @@
 
 #include "..\GameObject\Component.h"
 #include "..\Components\MeshRenderer.h"
-#include "..\Physics\PhysicsWorld.h"
+#include "Bullet\btBulletCollisionCommon.h"
+#include "Bullet\btBulletDynamicsCommon.h"
+
 
 class Collider : public Component
 {
 public:
+
+	friend class RigidBody;
+
 	Collider(std::string name) : Component(name){ 
-		
+		_type = "Collider";
 		enableRender = 1; }
 	virtual ~Collider(){ delete meshRenderer; };
 

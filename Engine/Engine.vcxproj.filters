@@ -63,6 +63,7 @@
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Components\Collider.cpp" />
     <ClCompile Include="src\Components\BoxCollider.cpp" />
+    <ClCompile Include="src\Components\RigidBody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -152,5 +153,6 @@
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Components\Collider.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />
+    <ClInclude Include="src\Components\RigidBody.h" />
   </ItemGroup>
 </Project>

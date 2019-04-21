@@ -18,6 +18,8 @@
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIManager.h"
 #include "Components\BoxCollider.h"
+#include "Components\RigidBody.h"
+
 #include "Physics\PhysicsWorld.h"
 
 MainCamera* cam;
@@ -173,6 +175,8 @@ void MainScene::Initialize() {
 
 	GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
 	woof->AddComponent(new BoxCollider());
+	woof->AddComponent(new RigidBody(100));
+
 	AddGameObject(woof);
 
 	/*pumpkins = new GameObject*[Lua::GetIntFromStack("npc_pumpkins")];
@@ -268,11 +272,11 @@ void MainScene::Initialize() {
 
 		
 
-	btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
+	/*btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
 	boxCollisionShape->calculateLocalInertia(1, btVector3(1.0f, 1.0f, 1.0f));
 
 	 motionstate = new btDefaultMotionState(btTransform(
-		 btQuaternion(), btVector3()
+		 btQuaternion(), btVector3(10,10,10)
 		));
 
 	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
@@ -284,7 +288,7 @@ void MainScene::Initialize() {
 	
 	rigidBody = new btRigidBody(rigidBodyCI);
 
-	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(rigidBody);
+	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(rigidBody);*/
 
 	
 
@@ -309,15 +313,16 @@ void MainScene::LogicUpdate() {
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
-	if (rigidBody->getMotionState())
+	/*if (rigidBody->getMotionState())
 	{
 
 		btTransform t;
 		rigidBody->getMotionState()->getWorldTransform(t);
 		float yy = t.getOrigin().getY();
+		Logger::LogInfo("Y", yy);
 
 
-	}
+	}*/
 	
 
 

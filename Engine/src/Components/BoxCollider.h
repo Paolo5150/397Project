@@ -7,6 +7,7 @@ class BoxCollider : public Collider
 {
 
 public:
+	
 	BoxCollider() : Collider("BoxCollider")
 	{
 

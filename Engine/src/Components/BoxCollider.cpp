@@ -14,4 +14,5 @@ void BoxCollider::InitializeMeshRenderer()
 
 
 	collisionShape = new btBoxShape(btVector3(transform.GetGlobalScale().x, transform.GetGlobalScale().y, transform.GetGlobalScale().z));
+	collisionShape->calculateLocalInertia(1, btVector3(1.0f, 1.0f, 1.0f));
 }

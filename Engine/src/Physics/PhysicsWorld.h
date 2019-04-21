@@ -3,7 +3,8 @@
 #include "Bullet\btBulletCollisionCommon.h"
 #include "Bullet\btBulletDynamicsCommon.h"
 #include "Bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.h"
-#include <vector>
+#include "..\Components\RigidBody.h"
+#include <list>
 
 class PhysicsWorld
 {
@@ -15,9 +16,12 @@ public:
 
 	void SetGravity(float x, float y, float z);
 	void Update(float deltaS);
+	void AddRigidBody(RigidBody* rb);
+	void RemoveRigidBody(RigidBody* rb);
+
 
 	btDynamicsWorld* dynamicsWorld;
-	std::vector<btRigidBody*> allRigidBodies;
+	std::vector<RigidBody*> allRigidBodies;
 private:
 
 
