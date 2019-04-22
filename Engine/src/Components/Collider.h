@@ -24,6 +24,8 @@ public:
 	void EngineUpdate() override;
 	virtual void InitializeMeshRenderer(){};
 	glm::vec3 GlobalTranslationFromGameObject();
+	void Update() override {
+		transform.Update(); }
 
 	bool enableRender;
 

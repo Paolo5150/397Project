@@ -46,8 +46,10 @@ void RigidBody::Update()
 
 	//Logger::LogWarning("Y trans", ytans);
 	//Logger::LogWarning("In update, y is", t.getOrigin().getY());
-	//Logger::LogWarning("In update, z is", btrb->getWorldTransform().getOrigin().getZ());
-	
+	Logger::LogWarning("In rigidbody, collider y", _collider->transform.GetGlobalPosition().y);
+	//Logger::LogError("y trans", ytans);
+
+	prevPos = t;
 
 
 	transform->Translate(xtans, ytans, ztans);
@@ -58,7 +60,6 @@ void RigidBody::Update()
 void RigidBody::PrePhysicsUpdate()
 {
 
-	btrb->getMotionState()->getWorldTransform(prevPos);
 
 }
 
@@ -72,7 +73,9 @@ void RigidBody::InitBTRB(GameObject* go)
 
 	_collider->collisionShape->calculateLocalInertia(mass, btVector3(intertia.x,intertia.y,intertia.z));
 
+
 	motionState = new btDefaultMotionState(btTransform(btQuaternion(), btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z)));
+	prevPos.setOrigin(btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z));
 	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
 		mass,                  // mass, in kg. 0 -> Static object, will never move.
 		motionState,

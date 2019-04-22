@@ -253,24 +253,23 @@ void MainScene::Initialize() {
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c1->transform.SetPosition(cam->transform.GetPosition().x,480, cam->transform.GetPosition().z + 200);
+	c1->transform.SetScale(3, 3, 3);
 	c1->AddComponent(new BoxCollider());
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(5,15,5);
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 15, 0);
-	
 	c1->AddComponent(new RigidBody(10));
-	c1->transform.SetScale(3, 3, 3);
 
 	GameObject* c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c2->transform.SetPosition(cam->transform.GetPosition().x + 20, 180, cam->transform.GetPosition().z + 200);
-	c2->AddComponent(new BoxCollider());
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(5, 25, 5);
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0,15,0);
-	c2->AddComponent(new RigidBody(0));
+	c2->transform.SetPosition(cam->transform.GetPosition().x , 180, cam->transform.GetPosition().z + 200);
 	c2->transform.SetScale(3, 3, 3);
+	c2->AddComponent(new BoxCollider());
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(8, 8, 8);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0,5,0);
+	c2->AddComponent(new RigidBody(0));
+	AddGameObject(c2);
 
 
 	AddGameObject(c1);
-	AddGameObject(c2);
 
 
 	AddGameObject(w);
@@ -312,10 +311,11 @@ void MainScene::Initialize() {
 
 	rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 
-	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(rigidBody);
+//	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(rigidBody);
 
 }
 void MainScene::LogicUpdate() {
+	c1->GetComponent<RigidBody>("RigidBody")->btrb->setLinearVelocity(btVector3(0, -50, 0));
 
 	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));

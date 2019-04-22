@@ -128,7 +128,7 @@ glm::mat4& Transform::GetGlobalRotation()
 
 glm::vec3& Transform::GetGlobalPosition()
 {
-
+	Update();
 	globalPosition.x = modelMatrix[3][0];
 	globalPosition.y = modelMatrix[3][1];
 	globalPosition.z = modelMatrix[3][2];

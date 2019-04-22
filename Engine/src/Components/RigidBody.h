@@ -25,10 +25,10 @@ public:
 	void PrePhysicsUpdate();
 	glm::vec3 intertia;
 
+	btRigidBody* btrb;
 private:
 	Transform* transform;
 	Collider* _collider;
-	btRigidBody* btrb;
 	btMotionState* motionState;
 	void InitBTRB(GameObject* go);
 	btTransform prevPos;

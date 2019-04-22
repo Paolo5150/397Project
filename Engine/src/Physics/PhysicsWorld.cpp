@@ -23,7 +23,7 @@ PhysicsWorld::PhysicsWorld()
 	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
 	// The world.
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	SetGravity(0.0f, -7.0f, 0.0f);
+	SetGravity(0.0f, 0.0f, 0.0f);
 
 
 }

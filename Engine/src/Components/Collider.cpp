@@ -7,7 +7,7 @@ void Collider::EngineUpdate()
 		meshRenderer->EngineUpdate();
 	}
 
-	transform.Update();
+
 }
 
 glm::vec3 Collider::GlobalTranslationFromGameObject()
