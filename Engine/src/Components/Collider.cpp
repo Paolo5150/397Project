@@ -10,6 +10,14 @@ void Collider::EngineUpdate()
 	transform.Update();
 }
 
+glm::vec3 Collider::GlobalTranslationFromGameObject()
+{
+	return glm::vec3(transform.GetPosition().x * transform.GetScale().x * _parent->transform.GetScale().x,
+		transform.GetPosition().y * transform.GetScale().y * _parent->transform.GetScale().y,
+		transform.GetPosition().z * transform.GetScale().z * _parent->transform.GetScale().z );
+}
+
+
 void Collider::OnAttach(GameObject* go)
 {
 	InitializeMeshRenderer();

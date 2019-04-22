@@ -50,6 +50,21 @@ void GameObject::FlagToBeDestroyed()
 	
 }
 
+void GameObject::OnAddToScene()
+{
+	for (auto it = std::begin(_components); it != std::end(_components); it++)
+	{
+		(*it)->OnGameObjectAddedToScene(this);
+	}
+
+
+	for (auto it = std::begin(_children); it != std::end(_children); it++)
+		{
+		(*it)->OnAddToScene();
+		}
+	
+}
+
 void GameObject::SetActive(bool active, bool includeChildren)
 {
 	_isActive = active;

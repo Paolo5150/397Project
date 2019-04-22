@@ -423,6 +423,9 @@ public:
 	*/
 	void SetIsStatic(bool st, bool includeChildren = true);
 
+
+	void OnAddToScene();
+
 protected:
 	/**
 	* @param The name of the object

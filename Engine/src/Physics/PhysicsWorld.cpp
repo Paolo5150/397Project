@@ -23,7 +23,7 @@ PhysicsWorld::PhysicsWorld()
 	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
 	// The world.
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	SetGravity(0.0f, -0.1f, 0.0f);
+	SetGravity(0.0f, -7.0f, 0.0f);
 
 
 }
@@ -69,6 +69,12 @@ void PhysicsWorld::SetGravity(float x, float y, float z)
 
 void PhysicsWorld::Update(float deltaS)
 {
+	auto it = allRigidBodies.begin();
+	for (; it != allRigidBodies.end(); it++)
+		(*it)->PrePhysicsUpdate();
+
+	dynamicsWorld->updateAabbs();
+	
 	dynamicsWorld->stepSimulation(deltaS, 10);
 }
 

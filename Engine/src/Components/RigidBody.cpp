@@ -1,5 +1,8 @@
 #include "RigidBody.h"
+#include "..\Utils\Maths.h"
 #include "..\Physics\PhysicsWorld.h"
+
+
 
 void RigidBody::OnAttach(GameObject* go)
 {
@@ -8,8 +11,7 @@ void RigidBody::OnAttach(GameObject* go)
 		if (go->GetComponentByType<Collider>("Collider"))
 		{
 			_collider = go->GetComponentByType<Collider>("Collider");
-			InitBTRB();
-			PhysicsWorld::Instance().AddRigidBody(this);
+			InitBTRB(go);
 
 		}
 		else
@@ -26,31 +28,51 @@ RigidBody::~RigidBody()
 
 }
 
+void RigidBody::OnGameObjectAddedToScene(GameObject* go)
+{
+	PhysicsWorld::Instance().AddRigidBody(this);
+}
 
 void RigidBody::Update()
 {
+	if (!_isActive) return;
+
 	btTransform t;
 	btrb->getMotionState()->getWorldTransform(t);
 
-	float mat[16];
-	t.getOpenGLMatrix(mat);
-	glm::mat4 trans = glm::make_mat4(mat);
+	float xtans = t.getOrigin().getX() - prevPos.getOrigin().getX();
+	float ytans = t.getOrigin().getY() - prevPos.getOrigin().getY();
+	float ztans = t.getOrigin().getZ() - prevPos.getOrigin().getZ();
 
-	trans *= transform->GetMatrix();
+	//Logger::LogWarning("Y trans", ytans);
+	//Logger::LogWarning("In update, y is", t.getOrigin().getY());
+	//Logger::LogWarning("In update, z is", btrb->getWorldTransform().getOrigin().getZ());
 	
-	transform->SetPosition(trans[3][0], trans[3][1], trans[3][2]);
-	//transform.Update();
 
-	Logger::LogInfo("gy", _parent->transform.GetGlobalPosition().y);
+
+	transform->Translate(xtans, ytans, ztans);
+
+
 }
 
-void RigidBody::InitBTRB()
+void RigidBody::PrePhysicsUpdate()
 {
 
+	btrb->getMotionState()->getWorldTransform(prevPos);
+
+}
+
+
+void RigidBody::InitBTRB(GameObject* go)
+{
+
+	transform = &go->GetRoot()->transform;
+	transform->Update();
+	_collider->transform.Update();
 
 	_collider->collisionShape->calculateLocalInertia(mass, btVector3(intertia.x,intertia.y,intertia.z));
 
-	motionState = new btDefaultMotionState();
+	motionState = new btDefaultMotionState(btTransform(btQuaternion(), btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z)));
 	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
 		mass,                  // mass, in kg. 0 -> Static object, will never move.
 		motionState,
@@ -60,6 +82,5 @@ void RigidBody::InitBTRB()
 
 	btrb = new btRigidBody(rigidBodyCI);
 	
-	transform = &_parent->transform;
 
 }

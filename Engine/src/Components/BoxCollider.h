@@ -16,6 +16,7 @@ public:
 	~BoxCollider(){}
 
 	virtual void InitializeMeshRenderer() override;
+	void Update() override;
 
 
 };

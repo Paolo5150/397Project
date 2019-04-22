@@ -13,14 +13,16 @@ public:
 		_collider = collider;
 		this->mass = mass;
 		if (_collider != nullptr)
-			InitBTRB();
+			InitBTRB(_parent);
 
 
 	}
 
 	~RigidBody();
 	void OnAttach(GameObject* go) override;
+	void OnGameObjectAddedToScene(GameObject* go) override;
 	void Update() override;
+	void PrePhysicsUpdate();
 	glm::vec3 intertia;
 
 private:
@@ -28,6 +30,7 @@ private:
 	Collider* _collider;
 	btRigidBody* btrb;
 	btMotionState* motionState;
-	void InitBTRB();
+	void InitBTRB(GameObject* go);
+	btTransform prevPos;
 	float mass;
 };

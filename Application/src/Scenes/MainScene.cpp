@@ -37,6 +37,10 @@ Terrain* terrain;
 btDefaultMotionState* motionstate;
 btRigidBody *rigidBody;
 
+GameObject* c1;
+GameObject* c2;
+
+
 MainScene::MainScene() : Scene("MainScene")
 {
 
@@ -53,7 +57,7 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");	
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Wolf\\wolf.fbx");
+	//AssetLoader::Instance().LoadModel("Assets\\Models\\Wolf\\wolf.fbx");
 
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
@@ -86,6 +90,7 @@ void MainScene::Initialize() {
 	//nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 	//GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
 	manual = new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
+	manual->isActive = 0;
 	GUIManager::Instance().AddGUIObject(manual);
 
 	
@@ -111,14 +116,14 @@ void MainScene::Initialize() {
 
 
 	// Uncomment this to force a wood material!
-	Material mat_wood;
+	/*Material mat_wood;
 	mat_wood.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 
 	mat_wood.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
 	mat_wood.LoadCubemap(&skybox->GetCubeMap());
 
 	mat_wood.LoadFloat("shininess", 1000.0f);
-	mat_wood.LoadFloat("reflectivness", 1.0);
+	mat_wood.LoadFloat("reflectivness", 1.0);*/
 
 	Material mat_crate;
 	mat_crate.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
@@ -126,7 +131,7 @@ void MainScene::Initialize() {
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_normal"), TextureUniform::NORMAL0);
 
 
-	Material mat_ship;
+/*	Material mat_ship;
 	mat_ship.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	mat_ship.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("shipTexture"));
 	mat_ship.LoadCubemap(&skybox->GetCubeMap());
@@ -137,7 +142,7 @@ void MainScene::Initialize() {
 	Material mat_cabin;
 	mat_cabin.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
 	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
-	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);
+	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);*/
 
 
 	//Terrain
@@ -160,7 +165,7 @@ void MainScene::Initialize() {
 	Water* w = (Water*)Lua::GetCreatedAsset(1);
 	luaAssetOffset++;
 	//w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
-	nanosuits = new GameObject*[Lua::GetIntFromStack("npc_nanosuits")];
+	/*nanosuits = new GameObject*[Lua::GetIntFromStack("npc_nanosuits")];
 	for (int i = 0; i < Lua::GetIntFromStack("npc_nanosuits"); i++)
 	{
 		nanosuits[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
@@ -171,13 +176,9 @@ void MainScene::Initialize() {
 		float posZ = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "Z");
 		nanosuits[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
-	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");
+	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");*/
 
-	GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
-	woof->AddComponent(new BoxCollider());
-	woof->AddComponent(new RigidBody(100));
 
-	AddGameObject(woof);
 
 	/*pumpkins = new GameObject*[Lua::GetIntFromStack("npc_pumpkins")];
 	for (int i = 0; i < Lua::GetIntFromStack("npc_pumpkins"); i++)
@@ -240,6 +241,37 @@ void MainScene::Initialize() {
 	cabin->transform.SetPosition(Lua::GetFloatFromStack("cabinX"), terrain->GetHeightAt(Lua::GetFloatFromStack("cabinX"), Lua::GetFloatFromStack("cabinZ")) + Lua::GetFloatFromStack("cabinY"), Lua::GetFloatFromStack("cabinZ"));
 	cabin->transform.SetRotation(-90, 0, 0);
 	luaAssetOffset++;*/
+	int x, y, z;
+	terrain->GetCenter(x, y, z);
+	cam->transform.SetPosition(x, y, z);
+
+	/*GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
+	woof->AddComponent(new BoxCollider());
+	woof->AddComponent(new RigidBody(100));
+	woof->transform.SetPosition(0, 0, 0);
+	AddGameObject(woof);*/
+
+	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
+	c1->transform.SetPosition(cam->transform.GetPosition().x,480, cam->transform.GetPosition().z + 200);
+	c1->AddComponent(new BoxCollider());
+	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(5,15,5);
+	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 15, 0);
+	
+	c1->AddComponent(new RigidBody(10));
+	c1->transform.SetScale(3, 3, 3);
+
+	GameObject* c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
+	c2->transform.SetPosition(cam->transform.GetPosition().x + 20, 180, cam->transform.GetPosition().z + 200);
+	c2->AddComponent(new BoxCollider());
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(5, 25, 5);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0,15,0);
+	c2->AddComponent(new RigidBody(0));
+	c2->transform.SetScale(3, 3, 3);
+
+
+	AddGameObject(c1);
+	AddGameObject(c2);
+
 
 	AddGameObject(w);
 
@@ -247,50 +279,40 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(pLight);
 	AddGameObject(terrain);
-	//AddGameObject(nanosuit);
-	//AddGameObject(n2);
+
 
 	AddGameObject(cam);
 
-	int x, y, z;
-	terrain->GetCenter(x, y, z);
-	cam->transform.SetPosition(x, y,z);
-
-	//nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
-	woof->transform.SetPosition(x, terrain->GetHeightAt(x, z + 500) + 15, z + 500);
 
 
-	//n2->transform.SetPosition(x+300, terrain->GetHeightAt(x+300, z + 1200) + 50, z + 1200);
 	cam->AddChild(pLight);
-	//pLight->transform.SetPosition(0, 0, 10);
 
-	w->transform.SetPosition(x, 100, z);
+
+	w->transform.SetPosition(x, 50, z);
 	w->transform.SetScale(3000, 3000, 1);
 
 	Lua::CloseLua();
-	cam->transform.SetRotation(0, 0, 0);
+	cam->transform.SetRotation(0, 0, 0);		
 
-		
 
-	/*btCollisionShape* boxCollisionShape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
-	boxCollisionShape->calculateLocalInertia(1, btVector3(1.0f, 1.0f, 1.0f));
 
 	 motionstate = new btDefaultMotionState(btTransform(
-		 btQuaternion(), btVector3(10,10,10)
+		 btQuaternion(), btVector3(0,0,0)
 		));
 
+	btStaticPlaneShape* plane = new btStaticPlaneShape(btVector3(0, 1, 0),50);
 	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
-		1,                  // mass, in kg. 0 -> Static object, will never move.
+		0,                  // mass, in kg. 0 -> Static object, will never move.
 		motionstate,
-		boxCollisionShape,  // collision shape of body
-		btVector3(1,1,1)    // local inertia
+		plane,
+		btVector3(0,0,0)// collision shape of body
 		);
-	
+
 	rigidBody = new btRigidBody(rigidBodyCI);
 
-	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(rigidBody);*/
+	rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 
-	
+	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(rigidBody);
 
 }
 void MainScene::LogicUpdate() {
@@ -334,11 +356,7 @@ void MainScene::LogicUpdate() {
 	static bool done = 0;
 	timer += Timer::GetDeltaS();
 
-	if (timer > 5 && !done)
-	{
-		done = 1;
-		nanosuits[0]->FlagToBeDestroyed();
-	}
+	
 
 	if (!cam->IsTopView())
 	{

@@ -143,6 +143,14 @@ public:
 	*/
 	virtual void OnAttach(GameObject* go){};
 
+	/**
+	* @brief		Callback invoked when the gameobject is added to a scene
+	*
+	* @pre			The Component exists
+	* @post			The Component is attached to a GameObject
+	*/
+	virtual void OnGameObjectAddedToScene(GameObject* go){};
+
 
 protected:
 	/**

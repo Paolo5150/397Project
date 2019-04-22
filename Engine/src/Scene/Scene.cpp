@@ -18,6 +18,7 @@ void Scene::AddGameObject(GameObject* go)
 		}
 
 	m_allGameObjects.push_back(go);
+	go->OnAddToScene();
 
 	auto child = go->GetChildList().begin();
 
