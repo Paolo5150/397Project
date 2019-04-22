@@ -61,11 +61,13 @@ void RigidBody::PrePhysicsUpdate()
 
 void RigidBody::InitBTRB(GameObject* go)
 {
-	intertia = glm::vec3(0.2,0.2,0.2);
+	
 	transform = &go->GetRoot()->transform;
 	transform->Update();
 	_collider->transform.Update();
-	_collider->collisionShape->calculateLocalInertia(mass, btVector3(intertia.x,intertia.y,intertia.z));
+
+	btVector3 intert;
+	_collider->collisionShape->calculateLocalInertia(mass, intert);
 	
 	motionState = new btDefaultMotionState(btTransform(btQuaternion(1,0,0,0), btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z)));
 	prevPos.setOrigin(btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z));
@@ -75,14 +77,14 @@ void RigidBody::InitBTRB(GameObject* go)
 		mass,                  // mass, in kg. 0 -> Static object, will never move.
 		motionState,
 		_collider->collisionShape,  // collision shape of body
-		btVector3(intertia.x, intertia.y, intertia.z)    // local inertia
+		intert   // local inertia
 		);
 
 	btrb = new btRigidBody(rigidBodyCI);
-	btrb->setFriction(0.5);
+	/*btrb->setFriction(0.5);
 	btrb->setRollingFriction(0.2);
 	btrb->setRestitution(0.1);
-	btrb->activate();
+	btrb->activate();*/
 	//btrb->setCenterOfMassTransform((btTransform(btQuaternion(), btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z))));
 
 }

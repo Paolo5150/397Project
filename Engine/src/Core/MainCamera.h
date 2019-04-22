@@ -1,7 +1,8 @@
 #pragma once
 #include "CameraPerspective.h"
 #include "Input.h"
-
+#include "..\Components\RigidBody.h"
+#include "..\Components\BoxCollider.h"
 
 /**
 * @class MainCamera
@@ -91,6 +92,9 @@ public:
 	*/
 	bool IsTopView() const { return _isTopView; };
 
+	RigidBody* rigidBody;
+	BoxCollider* boxCollider;
+
 private:
 	/**
 	* @brief		The camera movement speed
@@ -111,5 +115,7 @@ private:
 	* @brief		The last position before top view
 	*/
 	glm::vec3 _lastPos;
+
+
 };
 

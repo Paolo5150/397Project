@@ -13,6 +13,14 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	_movementSpeed = 20;
 	_rotationSpeed = 20;
 	_isTopView = false;
+
+	boxCollider = new BoxCollider();
+	boxCollider->transform.SetScale(50, 50, 50);
+	boxCollider->transform.SetPosition(0,0,10);
+
+
+	AddComponent(boxCollider);
+
 }
 
 
@@ -30,19 +38,22 @@ void MainCamera::UpdateControls()
 		{
 		this->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
 		this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
+
+		
 	
 			if (glm::dot(transform.GetLocalFront(), glm::vec3(0, -1, 0)) > 0.8 || glm::dot(transform.GetLocalFront(), glm::vec3(0, 1, 0)) > 0.8)
 				this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), -transform.GetLocalRight());
 		}
 		else
 		{
-			transform.Translate(0, GetMovementSpeed() * Input::GetDeltaMousePosY() * Timer::GetDeltaS(),0);
+			//transform.Translate(0, GetMovementSpeed() * Input::GetDeltaMousePosY() * Timer::GetDeltaS(),0);
 		}
 
 		//Handle forward and backward movement
 		if (Input::GetKeyDown(GLFW_KEY_W) == true && Input::GetKeyDown(GLFW_KEY_S) == false)
 		{
 			this->transform.SetPosition(this->transform.GetPosition() + (GetMovementSpeed() * Timer::GetDeltaS() * this->transform.GetLocalFront()));
+			//rigidBody->btrb->translate(btVector3(0, 1, 0));
 		}
 		else if (Input::GetKeyDown(GLFW_KEY_S) == true && Input::GetKeyDown(GLFW_KEY_W) == false)
 		{
