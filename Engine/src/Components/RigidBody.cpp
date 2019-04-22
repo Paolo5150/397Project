@@ -44,15 +44,10 @@ void RigidBody::Update()
 	float ytans = t.getOrigin().getY() - prevPos.getOrigin().getY();
 	float ztans = t.getOrigin().getZ() - prevPos.getOrigin().getZ();
 
-	//Logger::LogWarning("Y trans", ytans);
-	//Logger::LogWarning("In update, y is", t.getOrigin().getY());
-	Logger::LogWarning("In rigidbody, collider y", _collider->transform.GetGlobalPosition().y);
-	//Logger::LogError("y trans", ytans);
 
 	prevPos = t;
-
-
 	transform->Translate(xtans, ytans, ztans);
+	transform->SetRotation(t.getRotation().getX(), t.getRotation().getY(), t.getRotation().getZ(), t.getRotation().getW());
 
 
 }
@@ -66,16 +61,16 @@ void RigidBody::PrePhysicsUpdate()
 
 void RigidBody::InitBTRB(GameObject* go)
 {
-
+	intertia = glm::vec3(0.2,0.2,0.2);
 	transform = &go->GetRoot()->transform;
 	transform->Update();
 	_collider->transform.Update();
-
 	_collider->collisionShape->calculateLocalInertia(mass, btVector3(intertia.x,intertia.y,intertia.z));
-
-
-	motionState = new btDefaultMotionState(btTransform(btQuaternion(), btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z)));
+	
+	motionState = new btDefaultMotionState(btTransform(btQuaternion(1,0,0,0), btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z)));
 	prevPos.setOrigin(btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z));
+	
+	//intertia = glm::vec3(1,1,1);
 	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
 		mass,                  // mass, in kg. 0 -> Static object, will never move.
 		motionState,
@@ -84,6 +79,10 @@ void RigidBody::InitBTRB(GameObject* go)
 		);
 
 	btrb = new btRigidBody(rigidBodyCI);
-	
+	btrb->setFriction(0.5);
+	btrb->setRollingFriction(0.2);
+	btrb->setRestitution(0.1);
+	btrb->activate();
+	//btrb->setCenterOfMassTransform((btTransform(btQuaternion(), btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z))));
 
 }

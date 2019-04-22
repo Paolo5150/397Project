@@ -252,19 +252,19 @@ void MainScene::Initialize() {
 	AddGameObject(woof);*/
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c1->transform.SetPosition(cam->transform.GetPosition().x,480, cam->transform.GetPosition().z + 200);
+	c1->transform.SetPosition(cam->transform.GetPosition().x + 20,240, cam->transform.GetPosition().z + 200);
 	c1->transform.SetScale(3, 3, 3);
 	c1->AddComponent(new BoxCollider());
-	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(5,15,5);
-	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 15, 0);
-	c1->AddComponent(new RigidBody(10));
+	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(7,7,7);
+	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 6, 0);
+	c1->AddComponent(new RigidBody(1));
 
 	GameObject* c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c2->transform.SetPosition(cam->transform.GetPosition().x , 180, cam->transform.GetPosition().z + 200);
 	c2->transform.SetScale(3, 3, 3);
 	c2->AddComponent(new BoxCollider());
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(8, 8, 8);
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0,5,0);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(7,7,7);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0,6,0);
 	c2->AddComponent(new RigidBody(0));
 	AddGameObject(c2);
 
@@ -315,7 +315,7 @@ void MainScene::Initialize() {
 
 }
 void MainScene::LogicUpdate() {
-	c1->GetComponent<RigidBody>("RigidBody")->btrb->setLinearVelocity(btVector3(0, -50, 0));
+	//c1->GetComponent<RigidBody>("RigidBody")->btrb->setLinearVelocity(btVector3(0, -50, 0));
 
 	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));

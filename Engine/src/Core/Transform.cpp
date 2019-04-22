@@ -53,6 +53,18 @@ void Transform::SetRotation(float x, float y, float z)
 
 }
 
+void Transform::SetRotation(float x, float y, float z, float w)
+{
+
+	rotationQuat = glm::quat(x,y,z,w);
+	rotationMatrix = glm::toMat4(rotationQuat);
+
+	localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
+	localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
+	localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
+
+}
+
 void Transform::RotateBy(float angle, glm::vec3 axis)
 {	
 
