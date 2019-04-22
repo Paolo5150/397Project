@@ -37,25 +37,53 @@ void RigidBody::Update()
 {
 	if (!_isActive) return;
 
-	btTransform t;
-	btrb->getMotionState()->getWorldTransform(t);
+	if (!isKinematic)
+	{
 
-	float xtans = t.getOrigin().getX() - prevPos.getOrigin().getX();
-	float ytans = t.getOrigin().getY() - prevPos.getOrigin().getY();
-	float ztans = t.getOrigin().getZ() - prevPos.getOrigin().getZ();
+		btTransform t;
+		btrb->getMotionState()->getWorldTransform(t);
+
+		float xtans = t.getOrigin().getX() - prevPos.getOrigin().getX();
+		float ytans = t.getOrigin().getY() - prevPos.getOrigin().getY();
+		float ztans = t.getOrigin().getZ() - prevPos.getOrigin().getZ();
 
 
-	prevPos = t;
-	transform->Translate(xtans, ytans, ztans);
-	transform->SetRotation(t.getRotation().getX(), t.getRotation().getY(), t.getRotation().getZ(), t.getRotation().getW());
+		prevPos = t;
+		transform->Translate(xtans, ytans, ztans);
+		transform->SetRotation(t.getRotation().getX(), t.getRotation().getY(), t.getRotation().getZ(), t.getRotation().getW());
+	}
+	else
+	{
 
+		btTransform t;
+		t.setOrigin(btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z));
+		btrb->getMotionState()->setWorldTransform(t);
+	}
 
 }
+
+void RigidBody::AddToCallback()
+{
+	btrb->setCollisionFlags(btrb->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+}
+
+void RigidBody::SetIsTrigger()
+{
+	btrb->setCollisionFlags(btrb->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
+
+}
+
 
 void RigidBody::PrePhysicsUpdate()
 {
 
 
+}
+
+void RigidBody::SetIsKinematic()
+{
+	isKinematic = true;
+	btrb->setCollisionFlags(btrb->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 }
 
 

@@ -10,6 +10,8 @@ public:
 
 	RigidBody(float mass = 0, Collider* collider = nullptr) : Component("RigidBody")
 	{
+		isKinematic = false;
+
 		_collider = collider;
 		this->mass = mass;
 		if (_collider != nullptr)
@@ -23,6 +25,9 @@ public:
 	void OnGameObjectAddedToScene(GameObject* go) override;
 	void Update() override;
 	void PrePhysicsUpdate();
+	void SetIsKinematic();
+	void AddToCallback();
+	void SetIsTrigger();
 	glm::vec3 intertia;
 
 	btRigidBody* btrb;
@@ -33,4 +38,5 @@ private:
 	void InitBTRB(GameObject* go);
 	btTransform prevPos;
 	float mass;
+	bool isKinematic;
 };

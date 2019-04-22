@@ -82,7 +82,7 @@ void MainScene::QuitScene() {
 void MainScene::Initialize() {
 
 	Lua::RunLua("Assets\\Scripts\\Level1.lua");
-
+	gContactAddedCallback = PhysicsWorld::CollisionCallback;
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
 	Timer::SetDisplayFPS(true);
@@ -254,12 +254,18 @@ void MainScene::Initialize() {
 	AddGameObject(woof);*/
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c1->transform.SetPosition(cam->transform.GetPosition().x + 20,240, cam->transform.GetPosition().z + 200);
+	c1->transform.SetPosition(cam->transform.GetPosition().x + 20,340, cam->transform.GetPosition().z + 200);
 	c1->transform.SetScale(3, 3, 3);
 	c1->AddComponent(new BoxCollider());
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(7,7,7);
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
-	c1->AddComponent(new RigidBody(10));
+	c1->AddComponent(new RigidBody(1));
+	c1->GetComponent<RigidBody>("RigidBody")->SetIsKinematic();
+	c1->GetComponent<RigidBody>("RigidBody")->SetIsTrigger();
+	c1->GetComponent<RigidBody>("RigidBody")->AddToCallback();
+
+
+	
 
 	GameObject* c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c2->transform.SetPosition(cam->transform.GetPosition().x , 180, cam->transform.GetPosition().z + 200);
@@ -267,7 +273,7 @@ void MainScene::Initialize() {
 	c2->AddComponent(new BoxCollider());
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(7,7,7);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0,7,0);
-	c2->AddComponent(new RigidBody(0));
+	c2->AddComponent(new RigidBody(1));
 	AddGameObject(c2);
 
 	cam->AddChild(pLight);
@@ -284,10 +290,6 @@ void MainScene::Initialize() {
 
 
 	AddGameObject(cam);
-
-
-
-
 
 	w->transform.SetPosition(x, 50, z);
 	w->transform.SetScale(3000, 3000, 1);
@@ -317,7 +319,7 @@ void MainScene::Initialize() {
 
 }
 void MainScene::LogicUpdate() {
-
+	c1->transform.Translate(0, -0.5, 0);
 	//c1->GetComponent<RigidBody>("RigidBody")->btrb->translate(btVector3(0, -1, 0));
 
 	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
