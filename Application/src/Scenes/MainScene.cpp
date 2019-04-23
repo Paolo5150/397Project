@@ -251,7 +251,7 @@ void MainScene::Initialize() {
 	AddGameObject(woof);*/
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c1->transform.SetPosition(cam->transform.GetPosition().x + 150,400, cam->transform.GetPosition().z + 200);
+	c1->transform.SetPosition(cam->transform.GetPosition().x,400, cam->transform.GetPosition().z + 400);
 
 	c1->transform.SetScale(3, 3, 3);
 	c1->AddComponent(new BoxCollider());
@@ -299,9 +299,14 @@ void MainScene::LogicUpdate() {
 	/*pLight->transform.Translate(0.05f, 0, 0);
 	nanosuit->transform.RotateBy(0.51f, 0,1,0);*/
 
-	c1->transform.Translate(-0.2, 0, 0);
+	c1->transform.Translate(-0.0, 0, -0.2);
+
 	if (c1->GetComponent<BoxCollider>("BoxCollider")->IsColliding(c2->GetComponent<BoxCollider>("BoxCollider")))
-		Logger::LogInfo("Box collision");
+	{
+		c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback(c2);
+		c2->GetComponent<BoxCollider>("BoxCollider")->collisionCallback(c1);
+	}
+
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	

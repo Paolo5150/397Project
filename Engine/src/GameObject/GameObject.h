@@ -423,6 +423,7 @@ public:
 	*/
 	void SetIsStatic(bool st, bool includeChildren = true);
 
+	virtual void OnCollision(GameObject* go){};
 
 	void OnAddToScene();
 

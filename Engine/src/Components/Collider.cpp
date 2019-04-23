@@ -25,6 +25,7 @@ void Collider::OnAttach(GameObject* go)
 	meshRenderer->transform = &transform;
 	meshRenderer->SetParent(go);
 
+	collisionCallback = std::bind(&GameObject::OnCollision, go, std::placeholders::_1);
 	meshRenderer->AddPreRenderCallback([](Camera& cam, Shader* s){		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDisable(GL_CULL_FACE);	

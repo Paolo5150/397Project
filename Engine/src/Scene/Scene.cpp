@@ -24,6 +24,8 @@ void Scene::AddGameObject(GameObject* go)
 
 	for (; child != go->GetChildList().end(); child++)
 			AddGameObject(*child);
+
+	go->transform.Update();
 }
 
 

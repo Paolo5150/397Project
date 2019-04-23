@@ -4,7 +4,7 @@
 #include "..\Components\MeshRenderer.h"
 #include "Bullet\btBulletCollisionCommon.h"
 #include "Bullet\btBulletDynamicsCommon.h"
-
+#include <functional>
 
 class Collider : public Component
 {
@@ -35,6 +35,7 @@ public:
 
 	bool enableRender;
 
+	std::function<void(GameObject*)> collisionCallback;
 protected:
 	btCollisionShape* collisionShape;
 };
