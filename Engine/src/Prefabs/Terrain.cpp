@@ -4,7 +4,10 @@
 #include "..\Utils\Maths.h"
 #include "..\Lighting\LightingManager.h"
 #include "..\Core\Input.h"
-
+#include "Bullet\btBulletCollisionCommon.h"
+#include "Bullet\btBulletDynamicsCommon.h"
+#include "Bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.h"
+#include "..\Physics\PhysicsWorld.h"
 Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 {
 
@@ -40,6 +43,7 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 	meshRenderer->SetIsCullable(false);
 
 	this->AddComponent(meshRenderer);
+
 }
 
 void Terrain::OnPreRender(Camera& cam, Shader* s)
@@ -288,49 +292,7 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 			{
 				
 				meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y = heights[(width * (width * j / terrainSize)) + (width * i / terrainSize)] ;
-				
-				/*if (i > 0 && i < 60)
-					{
-				
-					float higher = i / 30.0f;
-					if (i>30)
-						higher = 2 - higher;
-
-					higher *= 0.8;
-					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
-					}
-
-				if (j > 0 && j < 60)
-				{
-
-					float higher = j / 30.0f;
-					if (j>30)
-						higher = 2 - higher;
-
-					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
-				}
-
-				if (i > terrainSize - 60 && i < terrainSize)
-				{
-
-					float higher = i / 30.0f;
-					if (i>30)
-						higher = 2 - higher;
-
-					higher *= 0.8;
-					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
-				}
-
-				if (j > 0 && j < 60)
-				{
-
-					float higher = j / 30.0f;
-					if (j>30)
-						higher = 2 - higher;
-
-					meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y += higher;
-				}*/
-
+					
 
 				min = meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y < min ? meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y : min;
 				max = meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y > max ? meshRenderer->GetMesh().vertices[(j*terrainSize) + i].position.y : max;
@@ -338,7 +300,24 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 			}
 		}
 
+		/*btHeightfieldTerrainShape* btrg = new btHeightfieldTerrainShape(width , height , heights,1, 0, transform.GetGlobalScale().y, 1, PHY_FLOAT, 0);
+		btrg->setLocalScaling(btVector3(17,1,17));
+		btVector3 intert;
+		btrg->calculateLocalInertia(0, intert);
 
+		btMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(1, 0, 0, 0), btVector3(0,0,0)));
+		
+		//intertia = glm::vec3(1,1,1);
+		btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
+			0,                  // mass, in kg. 0 -> Static object, will never move.
+			motionState,
+			btrg,  // collision shape of body
+			intert   // local inertia
+			);
+
+		btRigidBody* btrb = new btRigidBody(rigidBodyCI);
+		
+		PhysicsWorld::Instance().dynamicsWorld->addRigidBody(btrb);*/
 
 		meshRenderer->GetMesh().CalculateNormals();
 		meshRenderer->GetMesh().RefreshVertexBuffer();

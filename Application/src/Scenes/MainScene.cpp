@@ -246,33 +246,24 @@ void MainScene::Initialize() {
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(x, y, z);
 
-
-
 	/*GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
-	woof->AddComponent(new BoxCollider());
-	woof->AddComponent(new RigidBody(100));
-	woof->transform.SetPosition(0, 0, 0);
+	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 400, cam->transform.GetPosition().z + 200);
 	AddGameObject(woof);*/
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c1->transform.SetPosition(cam->transform.GetPosition().x + 20,200, cam->transform.GetPosition().z + 200);
-	//c1->transform.SetPosition(0,0,100);
+	c1->transform.SetPosition(cam->transform.GetPosition().x + 20,400, cam->transform.GetPosition().z + 200);
 
 	c1->transform.SetScale(3, 3, 3);
-	c1->AddComponent(new SphereCollider());
-	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetScale(20,20,20);
-	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetPosition(0, 7, 0);
-
+	c1->AddComponent(new BoxCollider());
+	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(8,8,8);
+	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c2->transform.SetPosition(cam->transform.GetPosition().x , 180, cam->transform.GetPosition().z + 200);
 	c2->transform.SetScale(3, 3, 3);
-	c2->AddComponent(new SphereCollider());
-	c2->GetComponent<SphereCollider>("SphereCollider")->transform.SetScale(20,20,20);
-	c2->GetComponent<SphereCollider>("SphereCollider")->transform.SetPosition(0, 7, 0);
-
-
-
+	c2->AddComponent(new BoxCollider());
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(7,7,7);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
 	AddGameObject(c2);
 	AddGameObject(c1);
@@ -289,8 +280,6 @@ void MainScene::Initialize() {
 
 	Lua::CloseLua();
 	cam->transform.SetRotation(0, 0, 0);		
-
-	
 
 }
 void MainScene::LogicUpdate() {
@@ -314,12 +303,6 @@ void MainScene::LogicUpdate() {
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	
-	if (c1->GetComponent<SphereCollider>("SphereCollider")->IsColliding(cam->sphereCollider))
-	{
-		Logger::LogInfo("Collision");
-	}
-
-
 	if (!cam->IsTopView())
 	{
 		//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);

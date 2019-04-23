@@ -23,7 +23,7 @@ PhysicsWorld::PhysicsWorld()
 	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
 	// The world.
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	SetGravity(0.0f, -00.0f, 0.0f);
+	SetGravity(0.0f, -40.0f, 0.0f);
 	
 
 }
@@ -91,7 +91,7 @@ void PhysicsWorld::Update(float deltaS)
 
 bool PhysicsWorld::CollisionCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	//Logger::LogInfo("Collision");
+	Logger::LogInfo("Collision");
 	return false;
 }
 
