@@ -10,6 +10,7 @@ public:
 
 	SphereCollider() : Collider("SphereCollider")
 	{
+		colliderType = SPHERE;
 
 	}
 

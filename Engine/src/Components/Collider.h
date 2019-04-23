@@ -6,6 +6,10 @@
 #include "Bullet\btBulletDynamicsCommon.h"
 #include <functional>
 
+class SphereCollider;
+class BoxCollider;
+
+
 class Collider : public Component
 {
 public:
@@ -30,12 +34,18 @@ public:
 	void EngineUpdate() override;
 	virtual void InitializeMeshRenderer(){};
 	glm::vec3 GlobalTranslationFromGameObject();
+
 	void Update() override {
 		transform.Update(); }
 
 	bool enableRender;
 
+	virtual bool IsColliding(BoxCollider* other){ return 0; };
+	virtual bool IsColliding(SphereCollider* other){ return 0; };
+
+
 	std::function<void(GameObject*)> collisionCallback;
+	COLLIDER_TYPE colliderType;
 protected:
 	btCollisionShape* collisionShape;
 };

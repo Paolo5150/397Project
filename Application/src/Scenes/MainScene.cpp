@@ -161,7 +161,9 @@ void MainScene::Initialize() {
 	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
 	cam->SetMovementSpeed(500);
 	cam->RemoveLayerMask(Layers::GUI);
-
+	cam->boxCollider->collisionCallback = [](GameObject* go){
+		Logger::LogInfo("Camera is colliding");
+	};
 
 	Water* w = (Water*)Lua::GetCreatedAsset(1);
 	luaAssetOffset++;
@@ -246,7 +248,7 @@ void MainScene::Initialize() {
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(x, y, z);
 	PhysicsWorld::Instance().InitializeQuadtree(x, z, terrain->GetTerrainMaxX() - terrain->GetTerrainMinX(), terrain->GetTerrainMaxZ() - terrain->GetTerrainMinZ());
-
+	
 	/*GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
 	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 400, cam->transform.GetPosition().z + 200);
 	AddGameObject(woof);*/
@@ -258,6 +260,9 @@ void MainScene::Initialize() {
 	c1->AddComponent(new BoxCollider());
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(8,8,8);
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
+	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go){
+		Logger::LogInfo("C1 colliding");
+	};
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c2->transform.SetPosition(cam->transform.GetPosition().x+20 , 400, cam->transform.GetPosition().z + 200);
@@ -299,7 +304,7 @@ void MainScene::LogicUpdate() {
 	float y = terrain->GetHeightAt(np.x, np.z);
 	nanosuit->transform.SetPosition(np.x, y, np.z);*/
 
-
+	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
 
 	c1->transform.Translate(-0.0, 0, -0.2);

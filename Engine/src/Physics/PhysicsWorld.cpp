@@ -1,4 +1,8 @@
 #include "PhysicsWorld.h"
+#include "..\Components\BoxCollider.h"
+#include "..\Components\SphereCollider.h"
+
+
 
 namespace
 {
@@ -116,7 +120,7 @@ void PhysicsWorld::SetGravity(float x, float y, float z)
 
 void PhysicsWorld::Update(float deltaS)
 {
-
+	PerformCollisions();
 	/*auto it = allRigidBodies.begin();
 	for (; it != allRigidBodies.end(); it++)
 		(*it)->PrePhysicsUpdate();*/
@@ -134,7 +138,7 @@ bool PhysicsWorld::CollisionCallback(btManifoldPoint& cp, const btCollisionObjec
 
 void PhysicsWorld::PerformCollisions()
 {
-
+	PerformCollisions(quadtree->root);
 }
 
 void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
@@ -156,7 +160,23 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 
 			for (; it2 != node->gameObjects.end(); it2++)
 			{
-				
+				if (*it == *it2) continue;
+				if ((*it2)->colliderType == Collider::BOX)
+				{
+					if ((*it)->IsColliding(dynamic_cast<BoxCollider*>(*it2)))
+					{
+						(*it)->collisionCallback((*it2)->GetParent());
+					}
+				}
+			/*	else
+				{
+					if ((*it)->IsColliding(dynamic_cast<SphereCollider*>(*it2)))
+					{
+						(*it)->collisionCallback((*it2)->GetParent());
+					}
+
+				}*/
+
 			}
 		}
 	}

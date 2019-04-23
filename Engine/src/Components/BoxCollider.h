@@ -10,7 +10,7 @@ public:
 	
 	BoxCollider() : Collider("BoxCollider")
 	{
-
+		colliderType = BOX;
 	}
 
 	~BoxCollider(){}
@@ -18,6 +18,6 @@ public:
 	virtual void InitializeMeshRenderer() override;
 	void Update() override;
 
-	bool IsColliding(BoxCollider* other);
+	bool IsColliding(BoxCollider* other) override;
 
 };
