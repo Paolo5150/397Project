@@ -30,7 +30,7 @@ PhysicsWorld::PhysicsWorld()
 
 void PhysicsWorld::InitializeQuadtree(int x, int y, int w, int h)
 {
-	quadtree = new QuadTree(x, y, w, h);
+	quadtree = new QuadTree<Collider*>(x, y, w, h);
 }
 
 void PhysicsWorld::FillQuadtree()
@@ -40,7 +40,7 @@ void PhysicsWorld::FillQuadtree()
 
 	for (; it != allColliders.end(); it++)
 	{
-		quadtree->AddGameObject((*it)->GetParent(), (*it)->transform.GetGlobalPosition().x, (*it)->transform.GetGlobalPosition().z);
+		quadtree->AddElement((*it), (*it)->transform.GetGlobalPosition().x, (*it)->transform.GetGlobalPosition().z);
 	}
 }
 
@@ -116,13 +116,14 @@ void PhysicsWorld::SetGravity(float x, float y, float z)
 
 void PhysicsWorld::Update(float deltaS)
 {
-	auto it = allRigidBodies.begin();
+
+	/*auto it = allRigidBodies.begin();
 	for (; it != allRigidBodies.end(); it++)
-		(*it)->PrePhysicsUpdate();
+		(*it)->PrePhysicsUpdate();*/
 
 	//dynamicsWorld->updateAabbs();
 	//Logger::LogInfo("RB", allRigidBodies.size());
-	dynamicsWorld->stepSimulation(deltaS, 10);
+	//dynamicsWorld->stepSimulation(deltaS, 10);
 }
 
 bool PhysicsWorld::CollisionCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
@@ -130,5 +131,37 @@ bool PhysicsWorld::CollisionCallback(btManifoldPoint& cp, const btCollisionObjec
 	Logger::LogInfo("Collision");
 	return false;
 }
+
+void PhysicsWorld::PerformCollisions()
+{
+
+}
+
+void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
+{
+	if (node->isSplit)
+	{
+		PerformCollisions(node->topLeft);
+		PerformCollisions(node->topRight);
+		PerformCollisions(node->bottomLeft);
+		PerformCollisions(node->bottomRight);
+	}
+	else
+	{
+		auto it = node->gameObjects.begin();
+
+		for (; it != node->gameObjects.end(); it++)
+		{
+			auto it2 = node->gameObjects.begin();
+
+			for (; it2 != node->gameObjects.end(); it2++)
+			{
+				
+			}
+		}
+	}
+}
+
+
 
 

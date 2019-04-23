@@ -32,6 +32,8 @@ public:
 
 	static bool  CollisionCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1);
 	std::vector<Collider*> allColliders;
-	QuadTree* quadtree;
+	QuadTree<Collider*>* quadtree;
 private:
+	void PerformCollisions();
+	void PerformCollisions(QuadNode<Collider*>* node);
 };

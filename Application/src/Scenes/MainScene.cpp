@@ -300,7 +300,7 @@ void MainScene::LogicUpdate() {
 	nanosuit->transform.SetPosition(np.x, y, np.z);*/
 
 
-	Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
+	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
 
 	c1->transform.Translate(-0.0, 0, -0.2);
 
