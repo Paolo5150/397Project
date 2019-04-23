@@ -251,7 +251,7 @@ void MainScene::Initialize() {
 	AddGameObject(woof);*/
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c1->transform.SetPosition(cam->transform.GetPosition().x + 20,400, cam->transform.GetPosition().z + 200);
+	c1->transform.SetPosition(cam->transform.GetPosition().x + 150,400, cam->transform.GetPosition().z + 200);
 
 	c1->transform.SetScale(3, 3, 3);
 	c1->AddComponent(new BoxCollider());
@@ -259,7 +259,7 @@ void MainScene::Initialize() {
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c2->transform.SetPosition(cam->transform.GetPosition().x , 180, cam->transform.GetPosition().z + 200);
+	c2->transform.SetPosition(cam->transform.GetPosition().x , 400, cam->transform.GetPosition().z + 200);
 	c2->transform.SetScale(3, 3, 3);
 	c2->AddComponent(new BoxCollider());
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(7,7,7);
@@ -284,13 +284,12 @@ void MainScene::Initialize() {
 }
 void MainScene::LogicUpdate() {
 	//c1->GetComponent<RigidBody>("RigidBody")->btrb->translate(btVector3(0, -1, 0));
-
 	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));
 	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
 	int s = glm::sign(cross.y);
 
-
+	
 	glm::vec3 np = nanosuit->transform.GetPosition();
 	np += nanosuit->transform.GetLocalFront() * 0.5f;
 	float y = terrain->GetHeightAt(np.x, np.z);
@@ -300,6 +299,9 @@ void MainScene::LogicUpdate() {
 	/*pLight->transform.Translate(0.05f, 0, 0);
 	nanosuit->transform.RotateBy(0.51f, 0,1,0);*/
 
+	c1->transform.Translate(-0.2, 0, 0);
+	if (c1->GetComponent<BoxCollider>("BoxCollider")->IsColliding(c2->GetComponent<BoxCollider>("BoxCollider")))
+		Logger::LogInfo("Box collision");
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	
