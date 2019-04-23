@@ -245,13 +245,14 @@ void MainScene::Initialize() {
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(x, y, z);
+	PhysicsWorld::Instance().InitializeQuadtree(x, z, terrain->GetTerrainMaxX() - terrain->GetTerrainMinX(), terrain->GetTerrainMaxZ() - terrain->GetTerrainMinZ());
 
 	/*GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
 	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 400, cam->transform.GetPosition().z + 200);
 	AddGameObject(woof);*/
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c1->transform.SetPosition(cam->transform.GetPosition().x,400, cam->transform.GetPosition().z + 400);
+	c1->transform.SetPosition(cam->transform.GetPosition().x+20,400, cam->transform.GetPosition().z + 400);
 
 	c1->transform.SetScale(3, 3, 3);
 	c1->AddComponent(new BoxCollider());
@@ -259,7 +260,7 @@ void MainScene::Initialize() {
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c2->transform.SetPosition(cam->transform.GetPosition().x , 400, cam->transform.GetPosition().z + 200);
+	c2->transform.SetPosition(cam->transform.GetPosition().x+20 , 400, cam->transform.GetPosition().z + 200);
 	c2->transform.SetScale(3, 3, 3);
 	c2->AddComponent(new BoxCollider());
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(7,7,7);
@@ -281,8 +282,11 @@ void MainScene::Initialize() {
 	Lua::CloseLua();
 	cam->transform.SetRotation(0, 0, 0);		
 
+
+
 }
 void MainScene::LogicUpdate() {
+	PhysicsWorld::Instance().FillQuadtree();
 	//c1->GetComponent<RigidBody>("RigidBody")->btrb->translate(btVector3(0, -1, 0));
 	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));
@@ -296,19 +300,10 @@ void MainScene::LogicUpdate() {
 	nanosuit->transform.SetPosition(np.x, y, np.z);*/
 
 
-	/*pLight->transform.Translate(0.05f, 0, 0);
-	nanosuit->transform.RotateBy(0.51f, 0,1,0);*/
+	Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
 
 	c1->transform.Translate(-0.0, 0, -0.2);
 
-	if (c1->GetComponent<BoxCollider>("BoxCollider")->IsColliding(c2->GetComponent<BoxCollider>("BoxCollider")))
-	{
-		c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback(c2);
-		c2->GetComponent<BoxCollider>("BoxCollider")->collisionCallback(c1);
-	}
-
-
-	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	
 	if (!cam->IsTopView())
 	{

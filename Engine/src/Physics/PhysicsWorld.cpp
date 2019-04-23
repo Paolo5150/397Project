@@ -28,11 +28,29 @@ PhysicsWorld::PhysicsWorld()
 
 }
 
+void PhysicsWorld::InitializeQuadtree(int x, int y, int w, int h)
+{
+	quadtree = new QuadTree(x, y, w, h);
+}
+
+void PhysicsWorld::FillQuadtree()
+{
+	quadtree->ClearNodes();
+	auto it = allColliders.begin();
+
+	for (; it != allColliders.end(); it++)
+	{
+		quadtree->AddGameObject((*it)->GetParent(), (*it)->transform.GetGlobalPosition().x, (*it)->transform.GetGlobalPosition().z);
+	}
+}
+
 PhysicsWorld::~PhysicsWorld()
 {
 	
 	allRigidBodies.clear();
 	delete dynamicsWorld;
+	quadtree->ClearNodes();
+	delete quadtree;
 }
 
 void PhysicsWorld::AddRigidBody(RigidBody* rb)
@@ -51,6 +69,24 @@ void PhysicsWorld::AddRigidBody(RigidBody* rb)
 	{
 		allRigidBodies.push_back(rb);
 		dynamicsWorld->addRigidBody(rb->btrb);
+	}
+}
+
+void PhysicsWorld::AddCollider(Collider* rb)
+{
+	bool found = 0;
+
+	auto it = allColliders.begin();
+
+	for (; it != allColliders.end() && !found; it++)
+	{
+		if ((*it) == rb)
+			found = 1;
+	}
+
+	if (!found)
+	{
+		allColliders.push_back(rb);
 	}
 }
 

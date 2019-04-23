@@ -65,6 +65,7 @@
     <ClCompile Include="src\Components\BoxCollider.cpp" />
     <ClCompile Include="src\Components\RigidBody.cpp" />
     <ClCompile Include="src\Components\SphereCollider.cpp" />
+    <ClCompile Include="src\Utils\Quadtree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -156,5 +157,6 @@
     <ClInclude Include="src\Components\BoxCollider.h" />
     <ClInclude Include="src\Components\RigidBody.h" />
     <ClInclude Include="src\Components\SphereCollider.h" />
+    <ClInclude Include="src\Utils\Quadtree.h" />
   </ItemGroup>
 </Project>

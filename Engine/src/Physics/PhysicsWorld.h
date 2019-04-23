@@ -6,6 +6,7 @@
 #include "..\Components\RigidBody.h"
 #include "Bullet\BulletCollision/CollisionDispatch/btCollisionObjectWrapper.h"
 #include "Bullet\BulletCollision/CollisionDispatch/btCollisionObject.h"
+#include "..\Utils\Quadtree.h"
 #include <list>
 
 
@@ -20,14 +21,17 @@ public:
 	void SetGravity(float x, float y, float z);
 	void Update(float deltaS);
 	void AddRigidBody(RigidBody* rb);
-	void RemoveRigidBody(RigidBody* rb);
+	void AddCollider(Collider* c);
 
+	void RemoveRigidBody(RigidBody* rb);
+	void InitializeQuadtree(int x, int y, int w, int h);
+	void FillQuadtree();
 
 	btDynamicsWorld* dynamicsWorld;
 	std::vector<RigidBody*> allRigidBodies;
 
 	static bool  CollisionCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1);
+	std::vector<Collider*> allColliders;
+	QuadTree* quadtree;
 private:
-
-
 };

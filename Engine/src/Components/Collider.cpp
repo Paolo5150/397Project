@@ -1,10 +1,11 @@
 #include "Collider.h"
-
+#include "..\Physics\PhysicsWorld.h"
 void Collider::EngineUpdate()
 {
 	if (enableRender)
 	{
 		meshRenderer->EngineUpdate();
+		
 	}
 
 
@@ -36,6 +37,8 @@ void Collider::OnAttach(GameObject* go)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glEnable(GL_CULL_FACE);
 	});
+
+	PhysicsWorld::Instance().AddCollider(this);
 }
 
 
