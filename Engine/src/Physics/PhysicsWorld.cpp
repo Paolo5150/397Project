@@ -91,7 +91,7 @@ void PhysicsWorld::Update(float deltaS)
 
 bool PhysicsWorld::CollisionCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	Logger::LogInfo("Collision");
+	//Logger::LogInfo("Collision");
 	return false;
 }
 

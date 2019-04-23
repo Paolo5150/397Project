@@ -14,7 +14,10 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	_rotationSpeed = 20;
 	_isTopView = false;
 
-
+	sphereCollider = new SphereCollider();
+	AddComponent(sphereCollider);
+	sphereCollider->transform.SetScale(10, 10, 10);
+	sphereCollider->meshRenderer->SetIsCullable(0);
 }
 
 

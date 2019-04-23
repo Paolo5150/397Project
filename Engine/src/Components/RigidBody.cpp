@@ -30,7 +30,7 @@ RigidBody::~RigidBody()
 
 void RigidBody::OnGameObjectAddedToScene(GameObject* go)
 {
-	//PhysicsWorld::Instance().AddRigidBody(this);
+	PhysicsWorld::Instance().AddRigidBody(this);
 }
 
 void RigidBody::Update()

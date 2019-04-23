@@ -11,8 +11,6 @@ void BoxCollider::InitializeMeshRenderer()
 
 	meshRenderer = new MeshRenderer(mesh, m);
 
-
-
 	collisionShape = new btBoxShape(btVector3(1,1,1));
 	collisionShape->setLocalScaling(btVector3(transform.GetGlobalScale().x, transform.GetGlobalScale().y, transform.GetGlobalScale().z));
 
@@ -20,6 +18,7 @@ void BoxCollider::InitializeMeshRenderer()
 
 void BoxCollider::Update()
 {
+	meshRenderer->transform->SetRotation(0, 0, 0);
 	Collider::Update();
 	collisionShape->setLocalScaling(btVector3(transform.GetGlobalScale().x, transform.GetGlobalScale().y, transform.GetGlobalScale().z));
 	

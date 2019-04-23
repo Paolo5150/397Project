@@ -262,14 +262,7 @@ void MainScene::Initialize() {
 	c1->AddComponent(new SphereCollider());
 	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetScale(20,20,20);
 	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetPosition(0, 7, 0);
-	c1->AddComponent(new RigidBody(1));
-	c1->GetComponent<RigidBody>("RigidBody")->SetRestitution(0.5);
-	c1->GetComponent<RigidBody>("RigidBody")->SetFriction(0.5);
-	c1->GetComponent<RigidBody>("RigidBody")->SetRollingFriction(0.5);
-	//c1->GetComponent<RigidBody>("RigidBody")->SetIsKinematic();
-	c1->GetComponent<RigidBody>("RigidBody")->SetIsTrigger();
-	c1->GetComponent<RigidBody>("RigidBody")->AddToCallback();
-	
+
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c2->transform.SetPosition(cam->transform.GetPosition().x , 180, cam->transform.GetPosition().z + 200);
@@ -277,16 +270,9 @@ void MainScene::Initialize() {
 	c2->AddComponent(new SphereCollider());
 	c2->GetComponent<SphereCollider>("SphereCollider")->transform.SetScale(20,20,20);
 	c2->GetComponent<SphereCollider>("SphereCollider")->transform.SetPosition(0, 7, 0);
-	c2->AddComponent(new RigidBody(0));
-	c2->GetComponent<RigidBody>("RigidBody")->SetRestitution(1.0);
-	c2->GetComponent<RigidBody>("RigidBody")->SetFriction(1.0);
-	c2->GetComponent<RigidBody>("RigidBody")->SetRollingFriction(1.0);
 
-	c2->GetComponent<RigidBody>("RigidBody")->SetIsKinematic();
 
-	//c2->GetComponent<RigidBody>("RigidBody")->AddToCallback();
 
-	//cam->AddChild(c1);
 
 	AddGameObject(c2);
 	AddGameObject(c1);
@@ -304,9 +290,7 @@ void MainScene::Initialize() {
 	Lua::CloseLua();
 	cam->transform.SetRotation(0, 0, 0);		
 
-	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(c1->GetComponent<RigidBody>("RigidBody")->btrb);
-	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(c2->GetComponent<RigidBody>("RigidBody")->btrb);
-
+	
 
 }
 void MainScene::LogicUpdate() {
@@ -329,29 +313,12 @@ void MainScene::LogicUpdate() {
 
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
-
-	/*if (rigidBody->getMotionState())
+	
+	if (c1->GetComponent<SphereCollider>("SphereCollider")->IsColliding(cam->sphereCollider))
 	{
+		Logger::LogInfo("Collision");
+	}
 
-		btTransform t;
-		rigidBody->getMotionState()->getWorldTransform(t);
-		float yy = t.getOrigin().getY();
-		Logger::LogInfo("Y", yy);
-
-
-	}*/
-	
-
-
-
-	
-	
-
-	static float timer = 0;
-	static bool done = 0;
-	timer += Timer::GetDeltaS();
-
-	
 
 	if (!cam->IsTopView())
 	{

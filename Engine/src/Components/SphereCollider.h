@@ -18,5 +18,5 @@ public:
 	virtual void InitializeMeshRenderer() override;
 	void Update() override;
 
-
+	bool IsColliding(SphereCollider* other);
 };

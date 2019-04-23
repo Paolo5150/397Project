@@ -12,6 +12,12 @@ public:
 
 	friend class RigidBody;
 
+	enum COLLIDER_TYPE
+	{
+		SPHERE,
+		BOX
+	};
+
 	Collider(std::string name) : Component(name){ 
 		_type = "Collider";
 		enableRender = 1; }

@@ -3,6 +3,8 @@
 #include "Input.h"
 #include "..\Components\RigidBody.h"
 #include "..\Components\BoxCollider.h"
+#include "..\Components\SphereCollider.h"
+
 
 /**
 * @class MainCamera
@@ -94,6 +96,8 @@ public:
 
 	RigidBody* rigidBody;
 	BoxCollider* boxCollider;
+	SphereCollider* sphereCollider;
+
 
 private:
 	/**
