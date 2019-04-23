@@ -14,12 +14,6 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	_rotationSpeed = 20;
 	_isTopView = false;
 
-	boxCollider = new BoxCollider();
-	boxCollider->transform.SetScale(50, 50, 50);
-	boxCollider->transform.SetPosition(0,0,10);
-
-
-	AddComponent(boxCollider);
 
 }
 

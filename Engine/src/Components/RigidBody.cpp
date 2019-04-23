@@ -30,7 +30,7 @@ RigidBody::~RigidBody()
 
 void RigidBody::OnGameObjectAddedToScene(GameObject* go)
 {
-	PhysicsWorld::Instance().AddRigidBody(this);
+	//PhysicsWorld::Instance().AddRigidBody(this);
 }
 
 void RigidBody::Update()
@@ -54,7 +54,6 @@ void RigidBody::Update()
 	}
 	else
 	{
-
 		btTransform t;
 		t.setOrigin(btVector3(_collider->transform.GetGlobalPosition().x, _collider->transform.GetGlobalPosition().y, _collider->transform.GetGlobalPosition().z));
 		btrb->getMotionState()->setWorldTransform(t);

@@ -28,6 +28,11 @@ public:
 	void SetIsKinematic();
 	void AddToCallback();
 	void SetIsTrigger();
+
+	void SetRestitution(float r){ btrb->setRestitution(r); };
+	void SetFriction(float r){ btrb->setFriction(r); };
+	void SetRollingFriction(float r){ btrb->setRollingFriction(r); };
+
 	glm::vec3 intertia;
 
 	btRigidBody* btrb;

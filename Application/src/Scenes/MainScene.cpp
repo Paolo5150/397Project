@@ -18,6 +18,8 @@
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIManager.h"
 #include "Components\BoxCollider.h"
+#include "Components\SphereCollider.h"
+
 #include "Components\RigidBody.h"
 
 #include "Physics\PhysicsWorld.h"
@@ -151,7 +153,6 @@ void MainScene::Initialize() {
 
 	terrain->transform.SetScale(20 ,600, 20);
 	terrain->transform.Translate(0, 0, 0);
-	AddGameObject(terrain);
 
 	//GameObjects
 	cam = (MainCamera*)Lua::GetCreatedAsset(0);
@@ -160,7 +161,7 @@ void MainScene::Initialize() {
 	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
 	cam->SetMovementSpeed(500);
 	cam->RemoveLayerMask(Layers::GUI);
-	AddGameObject(cam);
+
 
 	Water* w = (Water*)Lua::GetCreatedAsset(1);
 	luaAssetOffset++;
@@ -254,41 +255,47 @@ void MainScene::Initialize() {
 	AddGameObject(woof);*/
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c1->transform.SetPosition(cam->transform.GetPosition().x + 20,340, cam->transform.GetPosition().z + 200);
+	c1->transform.SetPosition(cam->transform.GetPosition().x + 20,200, cam->transform.GetPosition().z + 200);
+	//c1->transform.SetPosition(0,0,100);
+
 	c1->transform.SetScale(3, 3, 3);
-	c1->AddComponent(new BoxCollider());
-	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(7,7,7);
-	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
+	c1->AddComponent(new SphereCollider());
+	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetScale(20,20,20);
+	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetPosition(0, 7, 0);
 	c1->AddComponent(new RigidBody(1));
-	c1->GetComponent<RigidBody>("RigidBody")->SetIsKinematic();
+	c1->GetComponent<RigidBody>("RigidBody")->SetRestitution(0.5);
+	c1->GetComponent<RigidBody>("RigidBody")->SetFriction(0.5);
+	c1->GetComponent<RigidBody>("RigidBody")->SetRollingFriction(0.5);
+	//c1->GetComponent<RigidBody>("RigidBody")->SetIsKinematic();
 	c1->GetComponent<RigidBody>("RigidBody")->SetIsTrigger();
 	c1->GetComponent<RigidBody>("RigidBody")->AddToCallback();
-
-
 	
 
-	GameObject* c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
+	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c2->transform.SetPosition(cam->transform.GetPosition().x , 180, cam->transform.GetPosition().z + 200);
 	c2->transform.SetScale(3, 3, 3);
-	c2->AddComponent(new BoxCollider());
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(7,7,7);
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0,7,0);
-	c2->AddComponent(new RigidBody(1));
+	c2->AddComponent(new SphereCollider());
+	c2->GetComponent<SphereCollider>("SphereCollider")->transform.SetScale(20,20,20);
+	c2->GetComponent<SphereCollider>("SphereCollider")->transform.SetPosition(0, 7, 0);
+	c2->AddComponent(new RigidBody(0));
+	c2->GetComponent<RigidBody>("RigidBody")->SetRestitution(1.0);
+	c2->GetComponent<RigidBody>("RigidBody")->SetFriction(1.0);
+	c2->GetComponent<RigidBody>("RigidBody")->SetRollingFriction(1.0);
+
+	c2->GetComponent<RigidBody>("RigidBody")->SetIsKinematic();
+
+	//c2->GetComponent<RigidBody>("RigidBody")->AddToCallback();
+
+	//cam->AddChild(c1);
+
 	AddGameObject(c2);
-
-	cam->AddChild(pLight);
-
 	AddGameObject(c1);
-
-
 	AddGameObject(w);
-
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(pLight);
 	AddGameObject(terrain);
-
-
+	AddGameObject(terrain);
 	AddGameObject(cam);
 
 	w->transform.SetPosition(x, 50, z);
@@ -297,29 +304,12 @@ void MainScene::Initialize() {
 	Lua::CloseLua();
 	cam->transform.SetRotation(0, 0, 0);		
 
+	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(c1->GetComponent<RigidBody>("RigidBody")->btrb);
+	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(c2->GetComponent<RigidBody>("RigidBody")->btrb);
 
-
-	 motionstate = new btDefaultMotionState(btTransform(
-		 btQuaternion(), btVector3(0,0,0)
-		));
-
-	btStaticPlaneShape* plane = new btStaticPlaneShape(btVector3(0, 1, 0),50);
-	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
-		0,                  // mass, in kg. 0 -> Static object, will never move.
-		motionstate,
-		plane,
-		btVector3(0,0,0)// collision shape of body
-		);
-
-	rigidBody = new btRigidBody(rigidBodyCI);
-
-	rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
-
-//	PhysicsWorld::Instance().dynamicsWorld->addRigidBody(rigidBody);
 
 }
 void MainScene::LogicUpdate() {
-	c1->transform.Translate(0, -0.5, 0);
 	//c1->GetComponent<RigidBody>("RigidBody")->btrb->translate(btVector3(0, -1, 0));
 
 	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();

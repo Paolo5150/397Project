@@ -23,7 +23,7 @@ PhysicsWorld::PhysicsWorld()
 	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
 	// The world.
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	SetGravity(0.0f, 0.0f, 0.0f);
+	SetGravity(0.0f, -00.0f, 0.0f);
 	
 
 }
@@ -32,15 +32,26 @@ PhysicsWorld::~PhysicsWorld()
 {
 	
 	allRigidBodies.clear();
-
-
 	delete dynamicsWorld;
 }
 
 void PhysicsWorld::AddRigidBody(RigidBody* rb)
 {
-	allRigidBodies.push_back(rb);
-	dynamicsWorld->addRigidBody(rb->btrb);
+	bool found = 0;
+
+	auto it = allRigidBodies.begin();
+
+	for (; it != allRigidBodies.end() && !found; it++)
+	{
+		if ((*it) == rb)
+			found = 1;
+	}
+
+	if (!found)
+	{
+		allRigidBodies.push_back(rb);
+		dynamicsWorld->addRigidBody(rb->btrb);
+	}
 }
 
 void PhysicsWorld::RemoveRigidBody(RigidBody* rb)
@@ -73,8 +84,8 @@ void PhysicsWorld::Update(float deltaS)
 	for (; it != allRigidBodies.end(); it++)
 		(*it)->PrePhysicsUpdate();
 
-	dynamicsWorld->updateAabbs();
-	
+	//dynamicsWorld->updateAabbs();
+	//Logger::LogInfo("RB", allRigidBodies.size());
 	dynamicsWorld->stepSimulation(deltaS, 10);
 }
 
