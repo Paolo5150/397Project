@@ -21,11 +21,11 @@ glm::vec3 Collider::GlobalTranslationFromGameObject()
 
 void Collider::OnAttach(GameObject* go)
 {
-	InitializeMeshRenderer();
 	transform.parent = &go->transform;
+	InitializeMeshRenderer();
 	meshRenderer->transform = &transform;
 	meshRenderer->SetParent(go);
-
+	transform.SetIgnoreParentRotation(1);
 	collisionCallback = std::bind(&GameObject::OnCollision, go, std::placeholders::_1);
 	meshRenderer->AddPreRenderCallback([](Camera& cam, Shader* s){		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

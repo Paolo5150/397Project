@@ -98,12 +98,12 @@ void MainScene::Initialize() {
 	
 
 	//Lights
-	LightManager::Instance().SetAmbientLight(0.4f, 0.4f, 0.2f);
+	LightManager::Instance().SetAmbientLight(0.5f, 0.5f, 0.2f);
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(45, 117, 0);
-	dirLight->SetIntensity(0.7f);
+	dirLight->SetIntensity(0.9f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
@@ -250,7 +250,7 @@ void MainScene::Initialize() {
 	PhysicsWorld::Instance().InitializeQuadtree(x, z, terrain->GetTerrainMaxX() - terrain->GetTerrainMinX(), terrain->GetTerrainMaxZ() - terrain->GetTerrainMinZ());
 	
 	/*GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
-	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 400, cam->transform.GetPosition().z + 200);
+	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
 	AddGameObject(woof);*/
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
@@ -268,12 +268,14 @@ void MainScene::Initialize() {
 	c2->transform.SetPosition(cam->transform.GetPosition().x+20 , 400, cam->transform.GetPosition().z + 200);
 	c2->transform.SetScale(3, 3, 3);
 	c2->AddComponent(new BoxCollider());
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(7,7,7);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(9,9,9);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
 	AddGameObject(c2);
 	AddGameObject(c1);
 	AddGameObject(w);
+
+
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(pLight);
@@ -307,7 +309,9 @@ void MainScene::LogicUpdate() {
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
 
-	c1->transform.Translate(-0.0, 0, -0.2);
+	c1->transform.RotateBy(0.5f,0,1,0);
+	c1->transform.Translate(0.0, 0, -0.1);
+
 
 	
 	if (!cam->IsTopView())

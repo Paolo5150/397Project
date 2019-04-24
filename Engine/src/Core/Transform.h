@@ -260,6 +260,9 @@ public:
 	*/
 	std::string VectorsToString();
 
+
+	void SetIgnoreParentRotation(bool i) { ignoreParentRotation = i; }
+
 private:
 	/**
 	* @brief		The position of the object
@@ -335,4 +338,6 @@ private:
 	* @brief		Create and return the rotation matrix
 	*/
 	glm::mat4 GetRotationMatrix();
+
+	bool ignoreParentRotation;
 };

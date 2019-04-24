@@ -8,6 +8,7 @@ Transform::Transform()
 	scale = glm::vec3(1, 1, 1);
 	SetRotation(0,0,0);
 	parent = NULL;
+	ignoreParentRotation = 0;
 
 }
 
@@ -107,8 +108,11 @@ void Transform::Update()
 	}
 	else
 	{
-
+		if (!ignoreParentRotation)
 		modelMatrix = parent->GetMatrix()  * GetTranslateMatrix()* GetRotationMatrix() * GetScaleMatrix();
+		else
+			modelMatrix = (parent->GetTranslateMatrix() * parent->GetScaleMatrix()) * GetTranslateMatrix()* GetRotationMatrix() * GetScaleMatrix();
+
 	}
 
 }

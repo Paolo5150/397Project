@@ -20,7 +20,7 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	//sphereCollider->meshRenderer->SetIsCullable(0);
 
 	boxCollider = new BoxCollider();
-	AddComponent(boxCollider);
+	AddComponent(boxCollider); // Needs to be added first and modified later. I know, messy
 	boxCollider->transform.SetScale(10, 10, 10);
 	boxCollider->meshRenderer->SetIsCullable(0);
 }

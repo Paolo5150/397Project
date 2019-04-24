@@ -44,6 +44,7 @@ void PhysicsWorld::FillQuadtree()
 
 	for (; it != allColliders.end(); it++)
 	{
+		if ((*it)->GetActive())
 		quadtree->AddElement((*it), (*it)->transform.GetGlobalPosition().x, (*it)->transform.GetGlobalPosition().z);
 	}
 }
