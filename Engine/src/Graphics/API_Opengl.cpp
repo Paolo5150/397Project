@@ -32,6 +32,12 @@ void API_Opengl::Initialize()
 	glClear(GL_COLOR_BUFFER_BIT);	
 }
 
+void API_Opengl::SetClearColor(float r, float g, float b)
+{
+	glClearColor(r, g, b, 1.0);
+}
+
+
 void API_Opengl::ClearColorBuffer()
 {
 	glClear(GL_COLOR_BUFFER_BIT);

@@ -104,6 +104,17 @@ public:
 	virtual void SetViewPort(int w, int h) = 0;
 
 	/**
+	* @brief		Set the clear color
+	*
+	* @pre			The graphics API object must exist
+	* @post			The clear color is set
+	* @param r		The red channel value
+	* @param g		The green channel value
+	* @param b		The blue channel value
+	*/
+	virtual void SetClearColor(float r, float g, float b) = 0;
+
+	/**
 	* @brief		Create a new shader
 	*
 	* @pre			The graphics API object must exist

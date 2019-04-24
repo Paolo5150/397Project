@@ -81,6 +81,8 @@ public:
 
 	void AddGUIObject(GUIObject* gobj, bool preserve = false);
 
+	void SetBackgroundColor(float r, float g, float b, float a);
+
 
 
 private:

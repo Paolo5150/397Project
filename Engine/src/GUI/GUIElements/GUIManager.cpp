@@ -50,12 +50,12 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 	if (forceClear)
 		Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 
+	
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::SetNextWindowBgAlpha(0.0f);
-
+	SetBackgroundColor(1, 1, 1, 1);
 	int x, y;
 	Window::Instance().GetWindowSize(x, y);
 	ImGui::SetNextWindowSize(ImVec2(x, y));
@@ -79,7 +79,7 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
+	ImGui::PopStyleColor();
 	if (forceRefresh)
 		Window::Instance().Refresh();
 }
@@ -110,6 +110,10 @@ void GUIManager::DeleteGUIObjects(bool preservedToo)
 }
 
 
+void GUIManager::SetBackgroundColor(float r, float g, float b, float a)
+{
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(r,g,b,a));
+}
 void GUIManager::Shutdown()
 {
 	// Cleanup
