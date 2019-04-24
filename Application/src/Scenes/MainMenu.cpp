@@ -39,7 +39,7 @@ void MainMenuScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(new GUIButton("tet", "Start", []{ 
 		
 		Input::SetCursorMode("disabled");
-		Input::SetIsEnabled(0);
+
 		SceneManager::Instance().LoadNewScene("MainScene"); 
 
 	

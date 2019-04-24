@@ -289,7 +289,7 @@ void MainScene::Initialize() {
 	w->transform.SetScale(3000, 3000, 1);
 
 	Lua::CloseLua();
-	Input::Update();
+
 	cam->transform.SetRotation(0, 0, 0);		
 	cam->transform.Update();
 

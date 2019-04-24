@@ -40,7 +40,7 @@ void MainCamera::UpdateControls()
 	//Handle rotation
 		if (!_isTopView)
 		{
-			if (counter != 0)
+			if (counter != 0) // Super hack to fix the camera going weird
 			{
 
 			this->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
