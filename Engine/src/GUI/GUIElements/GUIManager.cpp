@@ -6,6 +6,7 @@
 #include <thread>
 
 
+
 GUIManager& GUIManager::Instance()
 {
 	static GUIManager instance;
@@ -20,6 +21,15 @@ void GUIManager::Initialize()
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(Window::Instance().window, false);
 	ImGui_ImplOpenGL3_Init("#version 430");
+
+	// Load fonts
+	ImFont* defaultF = ImGui::GetIO().Fonts->AddFontDefault();
+
+	ImFont* arcade = ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets\\Fonts\\arcadeclassic\\ARCADECLASSIC.TTF", 25);
+	
+	allFonts["defaultFont"] = arcade;
+
+	allFonts["arcadeFont"] = arcade;
 
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
 
@@ -55,6 +65,7 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	
 	SetBackgroundColor(1, 1, 1, 1);
 	int x, y;
 	Window::Instance().GetWindowSize(x, y);
@@ -76,6 +87,7 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 		it->second->RenderImGuiElement();
 	}
 
+
 	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -84,20 +96,36 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 		Window::Instance().Refresh();
 }
 
+void GUIManager::SelectFont(std::string fontName)
+{
+	auto it = allFonts.find(fontName);
+
+	if (it != allFonts.end())
+		ImGui::PushFont(allFonts[fontName]);
+	else
+		ImGui::PushFont(allFonts["defaultFont"]);
+}
+
 
 void GUIManager::DeleteGUIObjects(bool preservedToo)
 {
-	auto it = allGUI.begin();
-
-	for (; it != allGUI.end(); it++)
 	{
-		delete (it->second);
+
+		auto it = allGUI.begin();
+
+		for (; it != allGUI.end(); it++)
+		{
+			delete (it->second);
+		}
+
+		allGUI.clear();
 	}
 
-	allGUI.clear();
+	{
+
 	if (preservedToo)
 	{
-		it = allGUIPreserved.begin();
+		auto it = allGUIPreserved.begin();
 
 		for (; it != allGUIPreserved.end(); it++)
 		{
@@ -105,8 +133,10 @@ void GUIManager::DeleteGUIObjects(bool preservedToo)
 		}
 
 		allGUIPreserved.clear();
-
 	}
+}
+
+
 }
 
 
@@ -118,7 +148,7 @@ void GUIManager::Shutdown()
 {
 	// Cleanup
 	DeleteGUIObjects(1);
-
+	ImGui::GetIO().Fonts->ClearFonts();
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();

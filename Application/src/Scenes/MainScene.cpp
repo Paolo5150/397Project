@@ -16,6 +16,8 @@
 #include "Utils\GameAssetFactory.h"
 #include "Core\Lua.h"
 #include "GUI\GUIElements\GUIText.h"
+#include "GUI\GUIElements\GUIImage.h"
+
 #include "GUI\GUIElements\GUIManager.h"
 #include "Components\BoxCollider.h"
 #include "Components\SphereCollider.h"

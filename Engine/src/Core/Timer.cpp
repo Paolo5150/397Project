@@ -4,6 +4,8 @@
 #include "..\Event\TimerEvents.h"
 #include "Logger.h"
 #include "..\GUI\GUIElements\GUIManager.h"
+#include "..\GUI\GUIElements\GUIText.h"
+
 #include "..\Core\Input.h"
 #include  <sstream>
 
@@ -31,7 +33,7 @@ void Timer::Initialize()
 	m_displayFPS = 0;
 	tickCount = 0;
 
-	FPSText = new GUIText("FPS text","", 10, 10);
+	FPSText = new GUIText("FPS text","","", 10, 10);
 	GUIManager::Instance().AddGUIObject(FPSText,1);
 }
 

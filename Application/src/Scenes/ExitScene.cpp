@@ -41,9 +41,9 @@ void ExitScene::Initialize() {
 	 GUIManager::Instance().AddGUIObject(new GUIImage("dylanImage", AssetLoader::Instance().GetAsset<Texture2D>("dylan"), 40, 20, 25, 35, true));
 	 GUIManager::Instance().AddGUIObject(new GUIImage("mitchImage", AssetLoader::Instance().GetAsset<Texture2D>("mitch"), 70, 20, 25, 35, true));
 
-	 GUIManager::Instance().AddGUIObject(new GUIText("paoloText", "Paolo Ferri", 10, 60, 0.1f, 0.1f, 0.1f, true));
-	 GUIManager::Instance().AddGUIObject(new GUIText("dylanText", "Dylan Green", 40, 60, 0.1f, 0.1f, 0.1f, true));
-	 GUIManager::Instance().AddGUIObject(new GUIText("mitchText", "Mitchell Hollings", 70, 60, 0.1f, 0.1f, 0.1f, true));
+	 GUIManager::Instance().AddGUIObject(new GUIText("paoloText", "Paolo Ferri", "Assets\\Fonts\\arcadeclassic\\ARCADECLASSIC.TTF",10, 60, 0.1f, 0.1f, 0.1f, true));
+	 GUIManager::Instance().AddGUIObject(new GUIText("dylanText", "Dylan Green","Assets\\Fonts\\arcadeclassic\\ARCADECLASSIC.TTF", 40, 60, 0.1f, 0.1f, 0.1f, true));
+	 GUIManager::Instance().AddGUIObject(new GUIText("mitchText", "Mitchell Hollings", "Assets\\Fonts\\arcadeclassic\\ARCADECLASSIC.TTF",70, 60, 0.1f, 0.1f, 0.1f, true));
 
 
 

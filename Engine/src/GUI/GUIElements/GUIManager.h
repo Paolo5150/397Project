@@ -3,14 +3,15 @@
 #include "imgui.h"
 #include "..\imgui_impl_glfw.h"
 #include "..\imgui_impl_opengl3.h"
-#include "GUIText.h"
-#include "GUIImage.h"
+
 
 #include <list>
 #include <unordered_map>
 #include "..\..\Event\EventDispatcher.h"
 
 class GUIObject;
+class GUIText;
+class GUIImage;
 
 /**
 * @class GUIManager
@@ -83,6 +84,8 @@ public:
 
 	void SetBackgroundColor(float r, float g, float b, float a);
 
+	void SelectFont(std::string fontName);
+	void ResetFont(){ ImGui::PopFont(); }
 
 
 private:
@@ -96,6 +99,8 @@ private:
 	* @brief				The list of GUIObjects preserved
 	*/
 	std::unordered_map<std::string, GUIObject*> allGUIPreserved;
+
+	std::unordered_map<std::string, ImFont*> allFonts;
 
 	/**
 	* @brief		Create the GUIManager instance
