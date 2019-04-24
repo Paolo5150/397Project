@@ -118,14 +118,14 @@ void MainScene::Initialize() {
 
 
 	// Uncomment this to force a wood material!
-	/*Material mat_wood;
+	Material mat_wood;
 	mat_wood.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 
 	mat_wood.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
 	mat_wood.LoadCubemap(&skybox->GetCubeMap());
 
 	mat_wood.LoadFloat("shininess", 1000.0f);
-	mat_wood.LoadFloat("reflectivness", 1.0);*/
+	mat_wood.LoadFloat("reflectivness", 1.0);
 
 	Material mat_crate;
 	mat_crate.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
@@ -133,7 +133,7 @@ void MainScene::Initialize() {
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_normal"), TextureUniform::NORMAL0);
 
 
-/*	Material mat_ship;
+	Material mat_ship;
 	mat_ship.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	mat_ship.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("shipTexture"));
 	mat_ship.LoadCubemap(&skybox->GetCubeMap());
@@ -144,7 +144,7 @@ void MainScene::Initialize() {
 	Material mat_cabin;
 	mat_cabin.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
 	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
-	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);*/
+	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);
 
 
 	//Terrain
@@ -167,8 +167,8 @@ void MainScene::Initialize() {
 
 	Water* w = (Water*)Lua::GetCreatedAsset(1);
 	luaAssetOffset++;
-	//w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
-	/*nanosuits = new GameObject*[Lua::GetIntFromStack("npc_nanosuits")];
+	w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
+	nanosuits = new GameObject*[Lua::GetIntFromStack("npc_nanosuits")];
 	for (int i = 0; i < Lua::GetIntFromStack("npc_nanosuits"); i++)
 	{
 		nanosuits[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
@@ -179,11 +179,11 @@ void MainScene::Initialize() {
 		float posZ = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "Z");
 		nanosuits[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
-	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");*/
+	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");
 
 
 
-	/*pumpkins = new GameObject*[Lua::GetIntFromStack("npc_pumpkins")];
+	pumpkins = new GameObject*[Lua::GetIntFromStack("npc_pumpkins")];
 	for (int i = 0; i < Lua::GetIntFromStack("npc_pumpkins"); i++)
 	{
 		pumpkins[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
@@ -194,9 +194,9 @@ void MainScene::Initialize() {
 		float posZ = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "Z");
 		pumpkins[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
-	luaAssetOffset += Lua::GetIntFromStack("npc_pumpkins");*/
+	luaAssetOffset += Lua::GetIntFromStack("npc_pumpkins");
 
-	/*barrels = new GameObject*[Lua::GetIntFromStack("prop_barrels")];
+	barrels = new GameObject*[Lua::GetIntFromStack("prop_barrels")];
 	for (int i = 0; i < Lua::GetIntFromStack("prop_barrels"); i++)
 	{
 		barrels[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
@@ -207,9 +207,9 @@ void MainScene::Initialize() {
 		float posZ = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "Z");
 		barrels[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
-	luaAssetOffset += Lua::GetIntFromStack("prop_barrels");*/
+	luaAssetOffset += Lua::GetIntFromStack("prop_barrels");
 
-	/*crates = new GameObject*[Lua::GetIntFromStack("prop_crates")];
+	crates = new GameObject*[Lua::GetIntFromStack("prop_crates")];
 	for (int i = 0; i < Lua::GetIntFromStack("prop_crates"); i++)
 	{
 		crates[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
@@ -221,29 +221,29 @@ void MainScene::Initialize() {
 		float posZ = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "Z");
 		crates[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
-	luaAssetOffset += Lua::GetIntFromStack("prop_crates");*/
+	luaAssetOffset += Lua::GetIntFromStack("prop_crates");
 
-/*	gun = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
+	gun = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	AddGameObject(gun);
 	gun->transform.SetScale(Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"));
 	gun->transform.SetPosition(Lua::GetFloatFromStack("gunX"), terrain->GetHeightAt(Lua::GetFloatFromStack("gunX"), Lua::GetFloatFromStack("gunZ")) + Lua::GetFloatFromStack("gunY"), Lua::GetFloatFromStack("gunZ"));
 	gun->transform.SetRotation(0, 0, 90);
-	luaAssetOffset++;*/
+	luaAssetOffset++;
 
-	/*ship = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
+	ship = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	ship->ApplyMaterial(mat_ship);
 	AddGameObject(ship);
 	ship->transform.SetScale(Lua::GetFloatFromStack("shipScale"), Lua::GetFloatFromStack("shipScale"), Lua::GetFloatFromStack("shipScale"));
 	ship->transform.SetPosition(Lua::GetFloatFromStack("shipX"), terrain->GetHeightAt(Lua::GetFloatFromStack("shipX"), Lua::GetFloatFromStack("shipZ")) + Lua::GetFloatFromStack("shipY"), Lua::GetFloatFromStack("shipZ"));
-	luaAssetOffset++;*/
+	luaAssetOffset++;
 
-	/*cabin = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
+	cabin = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	cabin->ApplyMaterial(mat_cabin);
 	AddGameObject(cabin);
 	cabin->transform.SetScale(Lua::GetFloatFromStack("cabinScale"), Lua::GetFloatFromStack("cabinScale"), Lua::GetFloatFromStack("cabinScale"));
 	cabin->transform.SetPosition(Lua::GetFloatFromStack("cabinX"), terrain->GetHeightAt(Lua::GetFloatFromStack("cabinX"), Lua::GetFloatFromStack("cabinZ")) + Lua::GetFloatFromStack("cabinY"), Lua::GetFloatFromStack("cabinZ"));
 	cabin->transform.SetRotation(-90, 0, 0);
-	luaAssetOffset++;*/
+	luaAssetOffset++;
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(x, y, z);
