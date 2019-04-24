@@ -97,13 +97,18 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 	int x, y;
 	Window::Instance().GetWindowSize(x, y);
 	ImGui::SetNextWindowSize(ImVec2(x, y));
+
 	ImGui::Begin("Hello, world!",0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
-
-	ImGui::SetWindowFontScale(1.5);
-	
-	Refresh();
+	bool h = 1;
+	ImGui::SetWindowFontScale(1.5);	
+	ImGui::Text("This is some useful text.");       
+	ImGui::SetWindowFontScale(5.5);
+	// Display some text (you can use a format strings too)
+	ImGui::Checkbox("Demo Window",&h);      // Edit bools storing our window open/close state
+	ImGui::Checkbox("Another Window",&h);
+	//Refresh();
 
 	ImGui::End();
 	ImGui::Render();
