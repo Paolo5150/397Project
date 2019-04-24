@@ -91,7 +91,7 @@ void MainScene::Initialize() {
 	
 	//nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 	//GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
-	manual = new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
+	manual = new GUIImage("manualImage",AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
 	manual->isActive = 0;
 	GUIManager::Instance().AddGUIObject(manual);
 

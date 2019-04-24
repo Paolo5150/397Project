@@ -23,19 +23,7 @@ void GUIManager::Initialize()
 
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
 
-		auto it = allGUI[typeid(GUIText).name()].begin();
-		for (; it != allGUI[typeid(GUIText).name()].end(); it++)
-			delete (*it);
-
-		allGUI[typeid(GUIText).name()].clear();
-
-		it = allGUI[typeid(GUIImage).name()].begin();
-		for (; it != allGUI[typeid(GUIImage).name()].end(); it++)
-			delete (*it);
-
-		allGUI[typeid(GUIImage).name()].clear();
-
-
+		DeleteGUIObjects(0);
 		return 0;
 	});
 }
@@ -45,43 +33,17 @@ void GUIManager::Initialize()
 void GUIManager::Refresh()
 {
 
-	//Render text
-	auto it = allGUI[typeid(GUIText).name()].begin();
-	for (; it != allGUI[typeid(GUIText).name()].end(); it++)
-	{
-		if ((*it)->isActive)
-		{
-			ImGui::GetWindowDrawList()->AddText(Maths::vec2ToImVec2((*it)->position),
-				ImGui::GetColorU32(Maths::vec4ToImVec4(((GUIText*)(*it))->_color))
-				, ((GUIText*)(*it))->_message.c_str());
-		}
-
-	}
-
-	it = allGUIPreserved[typeid(GUIText).name()].begin();
-	for (; it != allGUIPreserved[typeid(GUIText).name()].end(); it++)
-	{
-		if ((*it)->isActive)
-		{
-			ImGui::GetWindowDrawList()->AddText(Maths::vec2ToImVec2((*it)->position),
-				ImGui::GetColorU32(Maths::vec4ToImVec4(((GUIText*)(*it))->_color))
-				, ((GUIText*)(*it))->_message.c_str());
-		}
-
-	}
-
-	it = allGUI[typeid(GUIImage).name()].begin();
-	for (; it != allGUI[typeid(GUIImage).name()].end(); it++)
-	{
-		if ((*it)->isActive)
-		{
-			ImGui::GetWindowDrawList()->AddImage(((GUIImage*)(*it))->GetTextureID(),
-				Maths::vec2ToImVec2((*it)->position), Maths::vec2ToImVec2((*it)->position + (*it)->size));
-		}
-
-	}
+	
 }
 
+void GUIManager::AddGUIObject(GUIObject* gobj, bool preserve )
+{
+	if (preserve)
+		allGUIPreserved[gobj->name] = gobj;
+	else
+		allGUI[gobj->name] = gobj;
+
+}
 
 void GUIManager::Render(bool forceRefresh, bool forceClear)
 {
@@ -101,14 +63,17 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 	ImGui::Begin("Hello, world!",0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
-	bool h = 1;
-	ImGui::SetWindowFontScale(1.5);	
-	ImGui::Text("This is some useful text.");       
-	ImGui::SetWindowFontScale(5.5);
-	// Display some text (you can use a format strings too)
-	ImGui::Checkbox("Demo Window",&h);      // Edit bools storing our window open/close state
-	ImGui::Checkbox("Another Window",&h);
-	//Refresh();
+
+
+	for (auto it = allGUI.begin(); it != allGUI.end(); it++)
+	{
+		it->second->RenderImGuiElement();
+	}
+
+	for (auto it = allGUIPreserved.begin(); it != allGUIPreserved.end(); it++)
+	{
+		it->second->RenderImGuiElement();
+	}
 
 	ImGui::End();
 	ImGui::Render();
@@ -119,27 +84,35 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 }
 
 
+void GUIManager::DeleteGUIObjects(bool preservedToo)
+{
+	auto it = allGUI.begin();
+
+	for (; it != allGUI.end(); it++)
+	{
+		delete (it->second);
+	}
+
+	allGUI.clear();
+	if (preservedToo)
+	{
+		it = allGUIPreserved.begin();
+
+		for (; it != allGUIPreserved.end(); it++)
+		{
+			delete (it->second);
+		}
+
+		allGUIPreserved.clear();
+
+	}
+}
+
+
 void GUIManager::Shutdown()
 {
 	// Cleanup
-	auto it = allGUI[typeid(GUIText).name()].begin();
-	for (; it != allGUI[typeid(GUIText).name()].end(); it++)
-		delete (*it);
-
-	allGUI[typeid(GUIText).name()].clear();
-
-	it = allGUIPreserved[typeid(GUIText).name()].begin();
-	for (; it != allGUIPreserved[typeid(GUIText).name()].end(); it++)
-		delete (*it);
-
-	allGUIPreserved[typeid(GUIText).name()].clear();
-
-
-	it = allGUI[typeid(GUIImage).name()].begin();
-	for (; it != allGUI[typeid(GUIImage).name()].end(); it++)
-		delete (*it);
-
-	allGUI[typeid(GUIImage).name()].clear();
+	DeleteGUIObjects(1);
 
 
 	ImGui_ImplOpenGL3_Shutdown();

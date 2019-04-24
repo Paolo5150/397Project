@@ -31,8 +31,8 @@ void Timer::Initialize()
 	m_displayFPS = 0;
 	tickCount = 0;
 
-	FPSText = new GUIText("", 10, 10);
-	GUIManager::Instance().AddGUIObject<GUIText>(FPSText,1);
+	FPSText = new GUIText("FPS text","", 10, 10);
+	GUIManager::Instance().AddGUIObject(FPSText,1);
 }
 
 std::string Timer::GetFPSString()

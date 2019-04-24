@@ -29,7 +29,7 @@ public:
 	* @param sizeY	The height size of the image
 	* @param isPercentage	Wether the details provided are percentage of the current window
 	*/
-	GUIImage(Texture2D* t, float posX = 0, float posY = 0, float sizeX = 10, float sizeY = 10, bool isPercentage = false) {
+	GUIImage(std::string uniqueName, Texture2D* t, float posX = 0, float posY = 0, float sizeX = 10, float sizeY = 10, bool isPercentage = false) : GUIObject(uniqueName){
 		int winX, winY;
 		Window::Instance().GetWindowSize(winX, winY);
 		if (!isPercentage)
@@ -59,6 +59,15 @@ public:
 	* @return		The GUIImage id
 	*/
 	ImTextureID GetTextureID(){ return (ImTextureID)_imageID; }
+
+
+	void RenderImGuiElement() override
+	{
+		ImGui::SetCursorPosX(position.x);
+		ImGui::SetCursorPosY(position.y);
+		ImGui::Image(GetTextureID(), ImVec2(size.x, size.y));
+	}
+
 private:
 
 	/**

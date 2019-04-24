@@ -42,7 +42,8 @@ void MainMenuScene::LogicUpdate() {
 	//Logger::LogInfo("Updating scene", name);
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
-		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
+		SceneManager::Instance().LoadNewScene("ExitScene");
+
 
 	if (Input::GetKeyPressed(GLFW_KEY_ENTER))
 		SceneManager::Instance().LoadNewScene("MainScene");

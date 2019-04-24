@@ -37,13 +37,13 @@ void ExitScene::QuitScene() {
 
 void ExitScene::Initialize() {
 
-	 GUIManager::Instance().AddGUIObject(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("paolo"), 10, 20, 25, 35, true)); 
-	 GUIManager::Instance().AddGUIObject(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("dylan"), 40, 20, 25, 35, true));
-	 GUIManager::Instance().AddGUIObject(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("mitch"), 70, 20, 25, 35, true));
+	 GUIManager::Instance().AddGUIObject(new GUIImage("paoloImage",AssetLoader::Instance().GetAsset<Texture2D>("paolo"), 10, 20, 25, 35, true)); 
+	 GUIManager::Instance().AddGUIObject(new GUIImage("dylanImage", AssetLoader::Instance().GetAsset<Texture2D>("dylan"), 40, 20, 25, 35, true));
+	 GUIManager::Instance().AddGUIObject(new GUIImage("mitchImage", AssetLoader::Instance().GetAsset<Texture2D>("mitch"), 70, 20, 25, 35, true));
 
-	 GUIManager::Instance().AddGUIObject(new GUIText("Paolo Ferri", 10, 60, 0.1f, 0.1f, 0.1f, true));
-	 GUIManager::Instance().AddGUIObject(new GUIText("Dylan Green", 40, 60, 0.1f, 0.1f, 0.1f, true));
-	 GUIManager::Instance().AddGUIObject(new GUIText("Mitchell Hollings", 70, 60, 0.1f, 0.1f, 0.1f, true));
+	 GUIManager::Instance().AddGUIObject(new GUIText("paoloText", "Paolo Ferri", 10, 60, 0.1f, 0.1f, 0.1f, true));
+	 GUIManager::Instance().AddGUIObject(new GUIText("dylanText", "Dylan Green", 40, 60, 0.1f, 0.1f, 0.1f, true));
+	 GUIManager::Instance().AddGUIObject(new GUIText("mitchText", "Mitchell Hollings", 70, 60, 0.1f, 0.1f, 0.1f, true));
 
 
 

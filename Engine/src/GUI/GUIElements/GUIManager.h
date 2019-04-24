@@ -78,8 +78,8 @@ public:
 	* @param gobj			The GUIObject
 	* @param preserve		Whether the object will be preserved between scenes
 	*/
-	template <class T>
-	void AddGUIObject(T* gobj, bool preserve = false);
+
+	void AddGUIObject(GUIObject* gobj, bool preserve = false);
 
 
 
@@ -88,12 +88,12 @@ private:
 	/**
 	* @brief				The list of GUIObjects not preserve
 	*/
-	std::map<std::string,std::list<GUIObject*>> allGUI;
+	std::map<std::string,GUIObject*> allGUI;
 
 	/**
 	* @brief				The list of GUIObjects preserved
 	*/
-	std::map<std::string, std::list<GUIObject*>> allGUIPreserved;
+	std::map<std::string, GUIObject*> allGUIPreserved;
 
 	/**
 	* @brief		Create the GUIManager instance
@@ -101,15 +101,8 @@ private:
 	* @post			The GUIManager instance is created
 	*/
 	GUIManager(){};
+
+	void DeleteGUIObjects(bool preservedToo);
 };
 
-template <class T>
-void GUIManager::AddGUIObject(T* gobj, bool preserve)
-{
-	std::string type = typeid(T).name();
-	if (!preserve)
-		allGUI[type].push_back(gobj);
-	else
-		allGUIPreserved[type].push_back(gobj);
 
-}

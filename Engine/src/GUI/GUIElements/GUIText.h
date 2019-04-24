@@ -27,7 +27,7 @@ public:
 	* @param b				The blue channel of the color
 	* @param isPercentage	Wether the details provided are percentage of the current window
 	*/
-	GUIText(std::string message, float posX = 0, float posY = 0, float r = 1, float g = 1, float b = 1, bool isPercentage = false) : _message(message){
+	GUIText(std::string uniqueName, std::string message, float posX = 0, float posY = 0, float r = 1, float g = 1, float b = 1, bool isPercentage = false) : GUIObject(uniqueName), _message(message){
 		_color = glm::vec4(r, g, b, 1);
 		int winX, winY;
 		Window::Instance().GetWindowSize(winX, winY);
@@ -38,7 +38,7 @@ public:
 
 		position = glm::vec2(posX * winX / 100, posY * winY / 100);
 	
-	};
+	}
 
 	/**
 	* @brief		Destroy the GUIText
@@ -57,4 +57,12 @@ public:
 	* @brief		The mtext color
 	*/
 	glm::vec4 _color;
+
+	void RenderImGuiElement() override
+	{
+		ImGui::SetCursorPosX(position.x);
+		ImGui::SetCursorPosY(position.y);		
+		ImGui::TextColored(ImVec4(_color.x,_color.y,_color.z,_color.w),_message.c_str());
+	}
+
 };

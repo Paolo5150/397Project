@@ -69,9 +69,9 @@ void Core::Initialize()
 	int wx, wy;
 	Window::Instance().GetWindowSize(wx, wy);
 
-	loading = new GUIText("Loading...", 20, wy - 50, 0.2f, 0.2f, 0.2f);
-	GUIManager::Instance().AddGUIObject<GUIText>(loading);
-	GUIManager::Instance().AddGUIObject<GUIImage>(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("logo"),
+	loading = new GUIText("LoadingText","Loading...", 20, wy - 50, 0.2f, 0.2f, 0.2f);
+	GUIManager::Instance().AddGUIObject(loading);
+	GUIManager::Instance().AddGUIObject(new GUIImage("Logo",AssetLoader::Instance().GetAsset<Texture2D>("logo"),
 		0 + 50, 0 + 50,
 		wx - 100, wy - 50));
 	LoadBasicAssets();
