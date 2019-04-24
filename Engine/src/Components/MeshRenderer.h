@@ -1,8 +1,7 @@
 #pragma once
 #include "Renderer.h"
 #include "..\Graphics\Mesh.h"
-#include "..\Graphics\ArrayBuffer.h"
-#include "..\Graphics\VertexArray.h"
+
 
 
 /**
@@ -66,18 +65,6 @@ class MeshRenderer : public Renderer
 		*/
 		void SetMesh(Mesh* m);
 
-		/**
-		* @brief		Re/send vertices to GPU
-		* @post			The vertices are re sent to the GPU
-		*/
-		void RefreshVertices();
-
-		/**
-		* @brief		Return the array buffer of vertex
-		* @post			The arrayBuffer of vertices is returned
-		*/
-		ArrayBuffer<Vertex>& GetArrayBufferVertex(){ return *vertexBuffer; };
-
 	private:
 
 		/**
@@ -86,24 +73,7 @@ class MeshRenderer : public Renderer
 		Mesh* mesh;
 
 
-		/**
-		* @brief		The vertex buffer for the GPU
-		*/
-		ArrayBuffer<Vertex>* vertexBuffer;
-
-
-		/**
-		* @brief		The indices buffer for the GPU
-		*/
-		ArrayBuffer<unsigned>* indexBuffer;	
-
-
-		/**
-		* @brief		The vertex array of array buffers
-		*/
-		VertexArray* vertexArray;
-
-
+		
 		/**
 		* @brief		Initialize vertex array and load vertices
 		*
@@ -111,6 +81,8 @@ class MeshRenderer : public Renderer
 		* @post			The vertives are loaded to GPU
 		*/
 		void Initialize();
+
+
 
 	};
 

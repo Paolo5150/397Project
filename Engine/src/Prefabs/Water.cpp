@@ -64,7 +64,7 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	material->LoadFloat("UVScale", 3.0f);
 
 	AssetLoader::Instance().GetAsset<Model>("Quad")->PopulateGameObject(this);
-	meshRenderer = dynamic_cast<MeshRenderer*>(GetChild("QuadMesh")->GetComponentByType("Renderer"));
+	meshRenderer =(GetChild("QuadMesh")->GetComponentByType<MeshRenderer>("Renderer"));
 	meshRenderer->AddPreRenderCallback(std::bind(&Water::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
 	meshRenderer->SetIsCullable(false);
 	SetIsStatic(true);

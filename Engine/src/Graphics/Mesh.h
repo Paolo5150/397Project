@@ -3,7 +3,9 @@
 #include <vector>
 #include "Vertex.h"
 #include "..\Core\Logger.h"
-#include <vector>
+#include "..\Graphics\ArrayBuffer.h"
+#include "..\Graphics\VertexArray.h"
+#include "..\Core\Camera.h"
 
 
 
@@ -11,7 +13,7 @@
 
 
 // Used for skeletal animation
-/*struct VertexBoneData
+struct VertexBoneData
 {
 	unsigned ids[NUM_BONES_PER_VEREX];   // we have 4 bone ids for EACH vertex & 4 weights for EACH vertex
 	float weights[NUM_BONES_PER_VEREX];
@@ -24,7 +26,7 @@
 	}
 
 	void addBoneData(unsigned bone_id, float weight);
-};*/
+};
 
 
 /**
@@ -89,5 +91,34 @@ public:
 	*/
 	void CalculateNormals();
 
+	ArrayBuffer<Vertex>& GetVertexBuffer() { return *vertexBuffer; };
+
+
+	void Render(Camera& cam);
+
+	void RefreshVertexBuffer() { vertexBuffer->AddData(vertices); };
+	void InitializeVertexArray();
+
+	std::string name;
+	std::vector<VertexBoneData> bones_id_weights_for_each_vertex;
+private:
+	/**
+	* @brief		The vertex buffer for the GPU
+	*/
+	ArrayBuffer<Vertex>* vertexBuffer;
+
+
+	/**
+	* @brief		The indices buffer for the GPU
+	*/
+	ArrayBuffer<unsigned>* indexBuffer;
+
+
+	/**
+	* @brief		The vertex array of array buffers
+	*/
+	VertexArray* vertexArray;
+
+	unsigned VBO_bones;
 
 };

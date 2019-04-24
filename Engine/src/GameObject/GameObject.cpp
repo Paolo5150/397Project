@@ -50,6 +50,21 @@ void GameObject::FlagToBeDestroyed()
 	
 }
 
+void GameObject::OnAddToScene()
+{
+	for (auto it = std::begin(_components); it != std::end(_components); it++)
+	{
+		(*it)->OnGameObjectAddedToScene(this);
+	}
+
+
+	for (auto it = std::begin(_children); it != std::end(_children); it++)
+		{
+		(*it)->OnAddToScene();
+		}
+	
+}
+
 void GameObject::SetActive(bool active, bool includeChildren)
 {
 	_isActive = active;
@@ -141,12 +156,15 @@ void GameObject::AddChild(GameObject* child)
 	}
 }
 
-void GameObject::AddComponent(Component* component)
+Component* GameObject::AddComponent(Component* component)
 {
 	//if (HasComponent(component->GetName()) == false)
 	//{
 		component->SetParent(this);
 		_components.push_back(component);
+
+		component->OnAttach(this);
+		return component;
 	//}
 }
 
@@ -196,47 +214,6 @@ GameObject* GameObject::GetChild(std::string childName) const
 	}
 }
 
-Component* GameObject::GetComponent(std::string componentName) const
-{
-	std::list<Component*>::const_iterator it;
-	it = std::find_if(std::begin(_components), std::end(_components), [&](Component* const component) -> Component* {if (component->GetName() == componentName){ return component; } else { return nullptr; }});
-
-	if (it != std::end(_components))
-	{
-		return *it;
-	}
-	else
-	{
-		return nullptr;
-	}
-}
-
-Component* GameObject::GetComponentByType(std::string componentType) const
-{
-	std::list<Component*>::const_iterator it;
-	it = std::find_if(std::begin(_components), std::end(_components), [&](Component* const component) -> Component* {if (component->GetType() == componentType){ return component; } else { return nullptr; }});
-
-	if (it != std::end(_components))
-	{
-		return *it;
-	}
-	else
-	{
-		return nullptr;
-	}
-}
-
-Component* GameObject::GetComponentInChild(std::string childName, std::string componentName) const
-{
-	if (HasChild(childName) == true)
-	{
-		return GetChild(childName)->GetComponent(componentName);
-	}
-	else
-	{
-		return nullptr;
-	}
-}
 
 std::list<GameObject*>& GameObject::GetChildList()
 {
@@ -349,7 +326,7 @@ GameObject* GameObject::GetRoot()
 
 void GameObject::ApplyColor(float r, float g, float b)
 {
-	Renderer* rend = dynamic_cast<Renderer*>(GetComponentByType("Renderer"));
+	Renderer* rend = (GetComponentByType<Renderer>("Renderer"));
 
 	if (rend != nullptr)
 	{
@@ -371,7 +348,7 @@ void GameObject::ApplyColor(float r, float g, float b)
 void GameObject::ApplyMaterial(Material mat, MaterialType mt)
 
 {
-	Renderer* r = dynamic_cast<Renderer*>(GetComponentByType("Renderer"));	
+	Renderer* r = (GetComponentByType<Renderer>("Renderer"));	
 
 	if (r != nullptr)
 	{

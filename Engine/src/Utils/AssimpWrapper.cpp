@@ -3,6 +3,7 @@
 #include "AssetLoader.h"
 #include "FileUtils.h"
 #include "Maths.h"
+#include "..\Graphics\AnimatedModel.h"
 
 static std::string fileNameOnly;
 static std::string modelFolderName;
@@ -13,7 +14,7 @@ Model* AssimpWrapper::LoadModel(const std::string& path)
 	Assimp::Importer import;
 
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_FixInfacingNormals |
-		aiProcess_ForceGenNormals | aiProcessPreset_TargetRealtime_Quality);
+		aiProcess_GenNormals | aiProcessPreset_TargetRealtime_Quality);
 
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -24,15 +25,36 @@ Model* AssimpWrapper::LoadModel(const std::string& path)
 	modelFolderName = FileUtils::GetLastFolderNameFromAbsolutePath(path);
 
 	pathToFolder = "Assets\\Models\\" + modelFolderName ;
-	Model* model = new Model();	
+	Model* model = NULL;
+	AnimatedModel* animatedModel = NULL;
 
-	ProcessNode(scene->mRootNode, scene, NULL, model, false);
-	model->name = modelFolderName;
+	if (scene->HasAnimations())
+	{
+		//Logger::LogInfo("This model", modelFolderName, "is animated");
+		animatedModel = new AnimatedModel();
+		animatedModel->m_global_inverse_transform = glm::inverse(Maths::aiMatrix4x4ToGlm(scene->mRootNode->mTransformation));
+		ProcessNode(scene->mRootNode, scene, NULL, animatedModel, true);
+
+
+		LoadAnimations(scene, animatedModel);
+		animatedModel->name = modelFolderName;
+	}
+	else
+	{
+
+
+		model = new Model();
+		ProcessNode(scene->mRootNode, scene, NULL, model, false);
+		model->name = modelFolderName;
+
+	}
 
 	import.FreeScene();
 
 	if (model != NULL)
 		return model;
+	else
+		return animatedModel;
 }
 
 void AssimpWrapper::ProcessNode(aiNode* node, const aiScene* scene, ModelNode* parentNode, Model* model, bool isAnimated)
@@ -40,18 +62,22 @@ void AssimpWrapper::ProcessNode(aiNode* node, const aiScene* scene, ModelNode* p
 	ModelNode* n = new ModelNode();
 	n->name = node->mName.C_Str();
 	n->transform = Maths::aiMatrix4x4ToGlm(node->mTransformation);
-//	model->allNodes[n->name] = n;
-
-	//if (model->rootNode == NULL)
-	//	model->rootNode = n;
+	if (isAnimated)
+	{
+	((AnimatedModel*)model)->allNodes[n->name] = n;
+	if (((AnimatedModel*)model)->rootNode == NULL)
+		((AnimatedModel*)model)->rootNode = n;
 
 	if (parentNode != NULL)
 		parentNode->children.push_back(n);
 
+	}
+
+
 	for (unsigned i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* ai_mesh = scene->mMeshes[node->mMeshes[i]];
-		//V2_WARNING("Processing mesh {}", ai_mesh->mName.C_Str());
+
 		ProcessMesh(ai_mesh, scene, model, isAnimated);
 
 	}
@@ -107,14 +133,14 @@ void AssimpWrapper::ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model
 	else
 	{
 		//Logger::LogInfo("No material, applying default one {}", mesh->mMaterialIndex);
-		associatedMaterial = Material(AssetLoader::Instance().GetAsset<Shader>("ColorOnly")); 
+		associatedMaterial = Material(AssetLoader::Instance().GetAsset<Shader>("ColorOnlyStatic")); 
 		associatedMaterial.LoadVec3("color", 1,0,1);
 
 	}
 
 
-	//if (scene->HasAnimations())
-	//	associatedMaterial.SetShader(defaultShader);
+	if (scene->HasAnimations())
+		associatedMaterial.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 
 	int index = model->allMaterials.size();
 
@@ -127,12 +153,12 @@ void AssimpWrapper::LoadMesh(aiMesh* mesh, Model* model, bool isanimated)
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
 	std::vector<Texture2D> textures;
-	//std::vector<VertexBoneData> bones_id_weights_for_each_vertex;
+	std::vector<VertexBoneData> bones_id_weights_for_each_vertex;
 
 	vertices.reserve(mesh->mNumVertices);
 	indices.reserve(mesh->mNumVertices);
 
-//	bones_id_weights_for_each_vertex.resize(mesh->mNumVertices);
+	bones_id_weights_for_each_vertex.resize(mesh->mNumVertices);
 
 	//vertices
 	for (unsigned i = 0; i < mesh->mNumVertices; i++)
@@ -183,17 +209,19 @@ void AssimpWrapper::LoadMesh(aiMesh* mesh, Model* model, bool isanimated)
 
 	}
 
-	//if (isAnimated)
-	//	LoadBones(mesh, dynamic_cast<AnimatedModel*>(model), bones_id_weights_for_each_vertex);
+	if (isanimated)
+		LoadBones(mesh, dynamic_cast<AnimatedModel*>(model), bones_id_weights_for_each_vertex);
 
-	Mesh* meshReturn = new Mesh();
-	meshReturn->vertices = vertices;
-	meshReturn->indices = indices;
-	//meshReturn->bones_id_weights_for_each_vertex = bones_id_weights_for_each_vertex;
-	meshReturn->CalculateNormals();
 
 	int index = model->allMeshes.size();
-	model->allMeshes[index] = meshReturn;
+
+	model->allMeshes[index].vertices = vertices;
+	model->allMeshes[index].indices = indices;
+	model->allMeshes[index].CalculateNormals();
+	model->allMeshes[index].bones_id_weights_for_each_vertex = bones_id_weights_for_each_vertex;
+	model->allMeshes[index].name = mesh->mName.C_Str();
+	model->allMeshes[index].InitializeVertexArray();
+
 	model->meshesNames[index] = mesh->mName.C_Str();
 }
 
@@ -240,5 +268,99 @@ void AssimpWrapper::LoadTextureIntoMaterial(aiTextureType type, aiMaterial* mate
 		//Logger::LogInfo("Loaded {} {}, counter {}", typeInString, assimpPath.C_Str(), i);
 
 	}
+}
+
+void AssimpWrapper::LoadBones(aiMesh* mesh, AnimatedModel* model, std::vector<VertexBoneData>& bones_id_weights_for_each_vertex)
+{
+
+	//Load bones
+	for (unsigned i = 0; i < mesh->mNumBones; i++)
+	{
+		unsigned index = 0;
+		std::string boneName = mesh->mBones[i]->mName.C_Str();
+
+		auto b = model->myBoneMapping.find(boneName);
+
+
+		if (b == model->myBoneMapping.end())
+		{
+			ModelBone bone;
+			bone.index = model->totalBones;
+			index = bone.index;
+			model->totalBones++;
+
+			bone.offsetMatrix = Maths::aiMatrix4x4ToGlm(mesh->mBones[i]->mOffsetMatrix);
+			model->myBoneMapping[boneName] = bone;
+		}
+		else
+			index = b->second.index;
+
+		for (unsigned j = 0; j < mesh->mBones[i]->mNumWeights; j++)
+		{
+			unsigned vertex_id = mesh->mBones[i]->mWeights[j].mVertexId;
+			float weight = mesh->mBones[i]->mWeights[j].mWeight;
+			bones_id_weights_for_each_vertex[vertex_id].addBoneData(index, weight);
+
+
+		}
+	}
+}
+
+
+void AssimpWrapper::LoadAnimations(const aiScene* scene, AnimatedModel* model)
+{
+
+
+	for (int i = 0; i < scene->mNumAnimations; i++)
+	{
+		ModelAnimation a;
+		a.duration = scene->mAnimations[i]->mDuration;
+		a.animationName = scene->mAnimations[i]->mName.C_Str();
+		a.ticksPerSecond = scene->mAnimations[i]->mTicksPerSecond;
+		if (a.ticksPerSecond == 0)
+			a.ticksPerSecond = 25.0f;
+
+		//Load node animation info
+		for (int anim = 0; anim < scene->mAnimations[i]->mNumChannels; anim++)
+		{
+			ModelNodeAnimationInfo animInfo;
+			std::string nodeName = scene->mAnimations[i]->mChannels[anim]->mNodeName.C_Str();
+			animInfo.actualNode = model->allNodes[nodeName];
+
+			//Translation keys
+			for (unsigned int k = 0; k < scene->mAnimations[i]->mChannels[anim]->mNumPositionKeys; k++)
+			{
+				double time = scene->mAnimations[i]->mChannels[anim]->mPositionKeys[k].mTime;
+				glm::vec3 value = Maths::aiVector3ToGlm(scene->mAnimations[i]->mChannels[anim]->mPositionKeys[k].mValue);
+				animInfo.translateKeys.push_back(TranslateKey(time, value));
+
+			}
+
+			//Scale keys
+			for (unsigned int k = 0; k < scene->mAnimations[i]->mChannels[anim]->mNumScalingKeys; k++)
+			{
+				double time = scene->mAnimations[i]->mChannels[anim]->mScalingKeys[k].mTime;
+				glm::vec3 value = Maths::aiVector3ToGlm(scene->mAnimations[i]->mChannels[anim]->mScalingKeys[k].mValue);
+				animInfo.scaleKeys.push_back(ScaleKey(time, value));
+
+			}
+
+			//Rotation keys
+			for (unsigned int k = 0; k < scene->mAnimations[i]->mChannels[anim]->mNumRotationKeys; k++)
+			{
+				double time = scene->mAnimations[i]->mChannels[anim]->mRotationKeys[k].mTime;
+				glm::quat value = Maths::aiQuaternionToGlm(scene->mAnimations[i]->mChannels[anim]->mRotationKeys[k].mValue);
+				animInfo.rotationKey.push_back(RotationKey(time, value));
+
+			}
+
+
+			a.allNodeAnimations[nodeName] = animInfo;
+		}
+
+		model->allAnimations.push_back(a);
+	}
+	//This one will move from here
+	model->currentAnimation = &(model->allAnimations[0]);
 }
 

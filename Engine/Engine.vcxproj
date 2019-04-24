@@ -100,18 +100,19 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bullet\include;$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(SolutionDir)PCH\$(ProjectName)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>assimp-vc140-mt.lib;Luabuild_vs2013_D.lib;Lua_5.1_vs2013_D.lib;SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalDependencies>BulletCollision_Debug.lib;BulletDynamics_Debug.lib;Bullet3Collision_Debug.lib;Bullet3Dynamics_Debug.lib;LinearMath_Debug.lib;assimp-vc140-mt.lib;Luabuild_vs2013_D.lib;Lua_5.1_vs2013_D.lib;SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\Luabind\lib;$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Bullet\lib\Debug;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\Luabind\lib;$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,8 +147,9 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bullet\include;$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>$(SolutionDir)PCH\$(ProjectName)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,10 +158,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>assimp-vc140-mt.lib;Luabuild_vs2013.lib;Lua_5.1_vs2013.lib;SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalDependencies>BulletCollision.lib;BulletDynamics.lib;Bullet3Collision.lib;Bullet3Dynamics.lib;LinearMath.lib;assimp-vc140-mt.lib;Luabuild_vs2013.lib;Lua_5.1_vs2013.lib;SOIL.lib;glew32s.lib;opengl32.lib;glfw3.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\Luabind\lib;$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\Bullet\lib\Release;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\Luabind\lib;$(SolutionDir)Dependencies\soil\SOIL\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2015;$(SolutionDir)Dependencies\GLEW\lib\Rel\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -187,8 +189,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\BoxCollider.h" />
+    <ClInclude Include="src\Components\Collider.h" />
+    <ClInclude Include="src\Components\RigidBody.h" />
+    <ClInclude Include="src\Components\SphereCollider.h" />
     <ClInclude Include="src\Core\LuaRegistry.h" />
     <ClInclude Include="src\Core\Lua.h" />
+    <ClInclude Include="src\Components\Animator.h" />
     <ClInclude Include="src\Core\MainCamera.h" />
     <ClInclude Include="src\Components\LineRenderer.h" />
     <ClInclude Include="src\Components\MeshRenderer.h" />
@@ -212,6 +219,7 @@
     <ClInclude Include="src\Event\WindowEvents.h" />
     <ClInclude Include="src\GameObject\Component.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
+    <ClInclude Include="src\Graphics\AnimatedModel.h" />
     <ClInclude Include="src\Graphics\API_Opengl.h" />
     <ClInclude Include="src\Graphics\ArrayBuffer.h" />
     <ClInclude Include="src\Graphics\ArrayBufferGL.h" />
@@ -224,6 +232,8 @@
     <ClInclude Include="src\Graphics\Material.h" />
     <ClInclude Include="src\Graphics\Mesh.h" />
     <ClInclude Include="src\Graphics\Model.h" />
+    <ClInclude Include="src\Graphics\ModelAnimation.h" />
+    <ClInclude Include="src\Graphics\ModelBone.h" />
     <ClInclude Include="src\Graphics\ModelNode.h" />
     <ClInclude Include="src\Graphics\RenderingEngine.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
@@ -253,6 +263,8 @@
     <ClInclude Include="src\Lighting\LightingManager.h" />
     <ClInclude Include="src\Lighting\PointLight.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Physics\CollisionChecks.h" />
+    <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Axis.h" />
     <ClInclude Include="src\Prefabs\GridMesh.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
@@ -266,11 +278,17 @@
     <ClInclude Include="src\Utils\FileUtils.h" />
     <ClInclude Include="src\Utils\GameAssetFactory.h" />
     <ClInclude Include="src\Utils\Maths.h" />
+    <ClInclude Include="src\Utils\Quadtree.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\BoxCollider.cpp" />
+    <ClCompile Include="src\Components\Collider.cpp" />
+    <ClCompile Include="src\Components\RigidBody.cpp" />
+    <ClCompile Include="src\Components\SphereCollider.cpp" />
     <ClCompile Include="src\Core\LuaRegistry.cpp" />
     <ClCompile Include="src\Core\Lua.cpp" />
+    <ClCompile Include="src\Components\Animator.cpp" />
     <ClCompile Include="src\Core\MainCamera.cpp" />
     <ClCompile Include="src\Components\LineRenderer.cpp" />
     <ClCompile Include="src\Components\MeshRenderer.cpp" />
@@ -288,9 +306,11 @@
     <ClCompile Include="src\Event\EventDispatcher.cpp" />
     <ClCompile Include="src\GameObject\Component.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
+    <ClCompile Include="src\Graphics\AnimatedModel.cpp" />
     <ClCompile Include="src\Graphics\API_Opengl.cpp" />
     <ClCompile Include="src\Graphics\CubeMapGL.cpp" />
     <ClCompile Include="src\Graphics\FrameBufferGL.cpp" />
+    <ClCompile Include="src\Graphics\ModelAnimation.cpp" />
     <ClCompile Include="src\Graphics\SkyBox.cpp" />
     <ClCompile Include="src\GUI\GUIElements\GUIManager.cpp" />
     <ClCompile Include="src\GUI\GUIElements\GUIObject.cpp" />
@@ -300,6 +320,8 @@
     <ClCompile Include="src\GUI\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\GUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\GUI\imgui_widgets.cpp" />
+    <ClCompile Include="src\Physics\CollisionChecks.cpp" />
+    <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\GridMesh.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
@@ -330,6 +352,7 @@
     <ClCompile Include="src\Utils\FileUtils.cpp" />
     <ClCompile Include="src\Utils\GameAssetFactory.cpp" />
     <ClCompile Include="src\Utils\Maths.cpp" />
+    <ClCompile Include="src\Utils\Quadtree.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,7 +17,12 @@
 #include "Core\Lua.h"
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIManager.h"
+#include "Components\BoxCollider.h"
+#include "Components\SphereCollider.h"
 
+#include "Components\RigidBody.h"
+
+#include "Physics\PhysicsWorld.h"
 
 MainCamera* cam;
 int luaAssetOffset = 0;
@@ -31,6 +36,11 @@ GameObject* cabin;
 PointLight* pLight;
 DirectionalLight* dirLight;
 Terrain* terrain;
+btDefaultMotionState* motionstate;
+btRigidBody *rigidBody;
+
+GameObject* c1;
+GameObject* c2;
 
 
 MainScene::MainScene() : Scene("MainScene")
@@ -49,6 +59,8 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");	
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
+	//AssetLoader::Instance().LoadModel("Assets\\Models\\Wolf\\wolf.fbx");
+
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
@@ -72,7 +84,7 @@ void MainScene::QuitScene() {
 void MainScene::Initialize() {
 
 	Lua::RunLua("Assets\\Scripts\\Level1.lua");
-
+	gContactAddedCallback = PhysicsWorld::CollisionCallback;
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
 	Timer::SetDisplayFPS(true);
@@ -80,15 +92,18 @@ void MainScene::Initialize() {
 	//nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 	//GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
 	manual = new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
+	manual->isActive = 0;
 	GUIManager::Instance().AddGUIObject(manual);
 
+	
+
 	//Lights
-	LightManager::Instance().SetAmbientLight(0.4f, 0.4f, 0.2f);
+	LightManager::Instance().SetAmbientLight(0.5f, 0.5f, 0.2f);
 
 	dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(45, 117, 0);
-	dirLight->SetIntensity(0.7f);
+	dirLight->SetIntensity(0.9f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
@@ -117,6 +132,7 @@ void MainScene::Initialize() {
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_diffuse"));
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_normal"), TextureUniform::NORMAL0);
 
+
 	Material mat_ship;
 	mat_ship.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	mat_ship.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("shipTexture"));
@@ -130,21 +146,6 @@ void MainScene::Initialize() {
 	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
 	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);
 
-	
-
-	/*n2->ApplyMaterial(mat_cabin);
-	n2->transform.SetScale(100, 100,100);
-	n2->transform.SetRotation(-90, 0, 0);*/
-
-
-	float ar = Window::Instance().GetAspectRatio();
-	/*cam = (MainCamera*)GameAssetFactory::Instance().Create("MainCamera");
-	cam->transform.SetPosition(0,35, 0);
-	cam->transform.SetRotation(30, 180, 0);
-	cam->SetMovementSpeed(500);
-	
-
-	cam->RemoveLayerMask(Layers::GUI);*/
 
 	//Terrain
 	terrain = new Terrain(256);
@@ -152,7 +153,6 @@ void MainScene::Initialize() {
 
 	terrain->transform.SetScale(20 ,600, 20);
 	terrain->transform.Translate(0, 0, 0);
-	AddGameObject(terrain);
 
 	//GameObjects
 	cam = (MainCamera*)Lua::GetCreatedAsset(0);
@@ -161,11 +161,13 @@ void MainScene::Initialize() {
 	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
 	cam->SetMovementSpeed(500);
 	cam->RemoveLayerMask(Layers::GUI);
-	AddGameObject(cam);
+	cam->sphereCollider->collisionCallback = [](GameObject* go){
+		Logger::LogInfo("Camera is colliding");
+	};
 
 	Water* w = (Water*)Lua::GetCreatedAsset(1);
 	luaAssetOffset++;
-	//w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
+	w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
 	nanosuits = new GameObject*[Lua::GetIntFromStack("npc_nanosuits")];
 	for (int i = 0; i < Lua::GetIntFromStack("npc_nanosuits"); i++)
 	{
@@ -178,6 +180,8 @@ void MainScene::Initialize() {
 		nanosuits[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);
 	}
 	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");
+
+
 
 	pumpkins = new GameObject*[Lua::GetIntFromStack("npc_pumpkins")];
 	for (int i = 0; i < Lua::GetIntFromStack("npc_pumpkins"); i++)
@@ -240,58 +244,80 @@ void MainScene::Initialize() {
 	cabin->transform.SetPosition(Lua::GetFloatFromStack("cabinX"), terrain->GetHeightAt(Lua::GetFloatFromStack("cabinX"), Lua::GetFloatFromStack("cabinZ")) + Lua::GetFloatFromStack("cabinY"), Lua::GetFloatFromStack("cabinZ"));
 	cabin->transform.SetRotation(-90, 0, 0);
 	luaAssetOffset++;
+	int x, y, z;
+	terrain->GetCenter(x, y, z);
+	cam->transform.SetPosition(x, y, z);
+	PhysicsWorld::Instance().InitializeQuadtree(x, z, terrain->GetTerrainMaxX() - terrain->GetTerrainMinX(), terrain->GetTerrainMaxZ() - terrain->GetTerrainMinZ());
+	
+	/*GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
+	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
+	AddGameObject(woof);*/
 
+	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
+	c1->transform.SetPosition(cam->transform.GetPosition().x+20,400, cam->transform.GetPosition().z + 400);
+
+	c1->transform.SetScale(3, 3, 3);
+	c1->AddComponent(new SphereCollider());
+	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetScale(18, 18, 18);
+	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetPosition(0, 7, 0);
+	c1->GetComponent<SphereCollider>("SphereCollider")->collisionCallback = [](GameObject* go){
+		Logger::LogInfo("C1 colliding");
+	};
+
+	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
+	c2->transform.SetPosition(cam->transform.GetPosition().x+20 , 400, cam->transform.GetPosition().z + 200);
+	c2->transform.SetScale(3, 3, 3);
+	c2->AddComponent(new BoxCollider());
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(9, 9, 9);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
+
+	AddGameObject(c2);
+	AddGameObject(c1);
 	AddGameObject(w);
+
 
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
-
 	AddGameObject(pLight);
-	Axis* a = new Axis();
-	a->transform.SetScale(10, 10, 10);
-	AddGameObject(a);
+	AddGameObject(terrain);
+	AddGameObject(terrain);
 	AddGameObject(cam);
-	//AddGameObject(nanosuit);
-	//AddGameObject(n2);
 
-
-	int x, y, z;
-	terrain->GetCenter(x, y, z);
-	cam->transform.SetPosition(x, y,z);
-
-	//nanosuit->transform.SetPosition(x, terrain->GetHeightAt(x,z+500) + 4, z+500);
-
-	//n2->transform.SetPosition(x+300, terrain->GetHeightAt(x+300, z + 1200) + 50, z + 1200);
-	cam->AddChild(pLight);
-	//pLight->transform.SetPosition(0, 0, 10);
-
-	w->transform.SetPosition(x, 100, z);
+	w->transform.SetPosition(x, 50, z);
 	w->transform.SetScale(3000, 3000, 1);
 
 	Lua::CloseLua();
-	cam->transform.SetRotation(0, 0, 0);
+	cam->transform.SetRotation(0, 0, 0);		
+
+
+
 }
 void MainScene::LogicUpdate() {
-
+	PhysicsWorld::Instance().FillQuadtree();
+	//c1->GetComponent<RigidBody>("RigidBody")->btrb->translate(btVector3(0, -1, 0));
 	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));
 	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
 	int s = glm::sign(cross.y);
 
-
+	
 	glm::vec3 np = nanosuit->transform.GetPosition();
 	np += nanosuit->transform.GetLocalFront() * 0.5f;
 	float y = terrain->GetHeightAt(np.x, np.z);
 	nanosuit->transform.SetPosition(np.x, y, np.z);*/
 
+	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
+	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
 
-	/*pLight->transform.Translate(0.05f, 0, 0);
-	nanosuit->transform.RotateBy(0.51f, 0,1,0);*/
+	c1->transform.RotateBy(0.5f,0,1,0);
+	c1->transform.Translate(0.0, 0, -0.2);
 
+
+	
 	if (!cam->IsTopView())
 	{
-		float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
-		cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+		//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+		//cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 		// Limit camera position within terrain
 		if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)

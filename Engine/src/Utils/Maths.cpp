@@ -1,3 +1,4 @@
+#include "..\pch.h"
 #include "Maths.h"
 #include <sstream>
 std::string Maths::Vec3ToString(glm::vec3& v)

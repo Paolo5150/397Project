@@ -83,6 +83,15 @@ public:
 	*/
 	glm::mat4& GetGlobalRotation();
 
+
+	/**
+	* @brief		Return the rotation quaternion
+	* @pre			The game object owning the transform exists
+	* @post			The direction the object is facing of the game object is return and left unchanged
+	*
+	*/
+	glm::quat& GetRotationQuat() { return rotationQuat; };
+
 	/**
 	* @brief		Return the direction the object is facing
 	* @pre			The game object owning the transform exists
@@ -177,6 +186,17 @@ public:
 	void SetRotation(float x, float y, float z);
 
 	/**
+	* @brief		Set the rotation of the object
+	* @pre			The game object owning the transform exists
+	* @post			The object is rotated
+	*
+	* @param x		The x value of the rotation
+	* @param y		The y value of the rotation
+	* @param z		The z value of the rotation
+	*/
+	void SetRotation(float x, float y, float z, float w);
+
+	/**
 	* @brief		Set the position of the object
 	* @pre			The game object owning the transform exists
 	* @post			The object is positioned at the new location
@@ -239,6 +259,9 @@ public:
 	* @pre			The game object owning the transform exists
 	*/
 	std::string VectorsToString();
+
+
+	void SetIgnoreParentRotation(bool i) { ignoreParentRotation = i; }
 
 private:
 	/**
@@ -315,4 +338,6 @@ private:
 	* @brief		Create and return the rotation matrix
 	*/
 	glm::mat4 GetRotationMatrix();
+
+	bool ignoreParentRotation;
 };

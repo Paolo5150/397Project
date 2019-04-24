@@ -147,5 +147,6 @@ std::string EventDispatcher::SubscribeCallback(std::function<bool(Event*)> callb
 	ss << *(long *)(char *)&callback;
 
 	allCallbacks[eventName].push_back(CallbackObj(ss.str(),callback));
-	return ss.str();
+	std::string myS = ss.str();
+	return myS;
 }

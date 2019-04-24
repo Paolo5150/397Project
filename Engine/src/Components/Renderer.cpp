@@ -9,8 +9,6 @@
 #include "..\Lighting\LightingManager.h"
 
 
-
-
 Renderer::Renderer(std::string name, Material m) : Component(name) {
 
 	submitted = 0;
@@ -35,9 +33,19 @@ Renderer::Renderer(std::string name) : Component(name) {
 
 void Renderer::CreateOtherMaterials(Material& defaultMat)
 {
+
+	std::size_t res =  defaultMat.GetShader().name.find("Static");
+	std::string colorOnlyShader = "ColorOnlyStatic";
+	std::string nolightShader = "DefaultStaticNoLight";
+
+	if (res == std::string::npos)
+	{
+		colorOnlyShader = "ColorOnlyAnimated";
+		nolightShader = "DefaultAnimatedNoLight";
+	}
 	//Create a ColorOnly material for all renderers
 	Material co;
-	co.SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnly"));
+	co.SetShader(AssetLoader::Instance().GetAsset<Shader>(colorOnlyShader));
 
 	float r, g, b;
 	defaultMat.GetColor(r, g, b);
@@ -45,11 +53,17 @@ void Renderer::CreateOtherMaterials(Material& defaultMat)
 	SetMaterial(co, COLORONLY);
 
 	//Create a NoLight material for all renderers, copy from default one (textures and color)
+	
 
 	Material nolight(defaultMat); //Copy from default
-	nolight.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
+	nolight.SetShader(AssetLoader::Instance().GetAsset<Shader>(nolightShader));
 	nolight.SetColor(r, g, b);
 	SetMaterial(nolight, NOLIGHT);
+}
+
+void Renderer::OnAttach(GameObject* go)
+{
+	transform = &go->transform;
 }
 
 void Renderer::EngineUpdate()
@@ -58,7 +72,7 @@ void Renderer::EngineUpdate()
 	{
 		if (isCullable)
 		{
-			glm::vec3 camToHere = glm::normalize(_parent->transform.GetGlobalPosition() - Camera::GetCameraByName("Main Camera")->transform.GetPosition());
+			glm::vec3 camToHere = glm::normalize(transform->GetGlobalPosition() - Camera::GetCameraByName("Main Camera")->transform.GetPosition());
 			float d = glm::dot(camToHere, Camera::GetCameraByName("Main Camera")->transform.GetLocalFront());
 			if (d >= 0.1)
 			{
@@ -93,9 +107,9 @@ void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 {
 	//Logger::LogInfo("Prerender called on", _parent->GetName());
 	
-	glm::mat4 mvp = cam.GetProjectionMatrix() * cam.GetViewMatrix() * _parent->transform.GetMatrix();
+	glm::mat4 mvp = cam.GetProjectionMatrix() * cam.GetViewMatrix() * transform->GetMatrix();
 	Shader::GetCurrentShader().SetMat4("u_mvp", mvp);
-	Shader::GetCurrentShader().SetMat4("u_model", _parent->transform.GetMatrix());
+	Shader::GetCurrentShader().SetMat4("u_model", transform->GetMatrix());
 	Shader::GetCurrentShader().SetMat4("u_view", cam.GetViewMatrix());
 	Shader::GetCurrentShader().SetMat4("u_projection", cam.GetProjectionMatrix());
 	Shader::GetCurrentShader().SetVec3("u_cameraPosition", cam.transform.GetPosition());

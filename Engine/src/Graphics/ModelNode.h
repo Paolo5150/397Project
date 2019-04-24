@@ -32,7 +32,7 @@ public:
 	std::vector<ModelNode*> children;
 };
 
-/*
+
 class TranslateKey
 {
 public:
@@ -77,4 +77,3 @@ public:
 	unsigned int index;
 };
 
-*/

@@ -8,6 +8,7 @@ Transform::Transform()
 	scale = glm::vec3(1, 1, 1);
 	SetRotation(0,0,0);
 	parent = NULL;
+	ignoreParentRotation = 0;
 
 }
 
@@ -45,6 +46,18 @@ void Transform::SetRotation(float x, float y, float z)
 	rotation.y = y;
 	rotation.z = z;
 	rotationQuat = glm::quat(glm::radians(rotation));
+	rotationMatrix = glm::toMat4(rotationQuat);
+
+	localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
+	localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
+	localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
+
+}
+
+void Transform::SetRotation(float x, float y, float z, float w)
+{
+
+	rotationQuat = glm::quat(x,y,z,w);
 	rotationMatrix = glm::toMat4(rotationQuat);
 
 	localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
@@ -95,8 +108,11 @@ void Transform::Update()
 	}
 	else
 	{
-
+		if (!ignoreParentRotation)
 		modelMatrix = parent->GetMatrix()  * GetTranslateMatrix()* GetRotationMatrix() * GetScaleMatrix();
+		else
+			modelMatrix = (parent->GetTranslateMatrix() * parent->GetScaleMatrix()) * GetTranslateMatrix()* GetRotationMatrix() * GetScaleMatrix();
+
 	}
 
 }
@@ -128,7 +144,7 @@ glm::mat4& Transform::GetGlobalRotation()
 
 glm::vec3& Transform::GetGlobalPosition()
 {
-
+	Update();
 	globalPosition.x = modelMatrix[3][0];
 	globalPosition.y = modelMatrix[3][1];
 	globalPosition.z = modelMatrix[3][2];

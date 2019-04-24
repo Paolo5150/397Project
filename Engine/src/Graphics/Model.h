@@ -46,7 +46,7 @@ public:
 	* @post			The list of meshes of the model is returned
 	* @return		The list of meshes of this model
 	*/
-	std::vector<Mesh> GetMeshes();
+	std::vector<Mesh*> GetMeshes();
 
 	/**
 	* @brief		Create a GameObject with the needed component attached to render the model
@@ -71,7 +71,7 @@ public:
 	/**
 	* @brief		The map of meshes
 	*/
-	std::map<int, Mesh*>& GetMEshesMap(){ return allMeshes; };
+	std::map<int, Mesh>& GetMEshesMap(){ return allMeshes; };
 protected:
 
 	//ModelNode* rootNode;
@@ -85,7 +85,7 @@ protected:
 	/**
 	* @brief The meshes of the model
 	*/
-	std::map<int, Mesh*> allMeshes;
+	std::map<int, Mesh> allMeshes;
 
 	/**
 	* @brief The materials of the model (when imported from external asset)
