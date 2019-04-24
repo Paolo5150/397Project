@@ -28,7 +28,6 @@ PhysicsWorld::PhysicsWorld()
 	// The world.
 	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 	SetGravity(0.0f, -40.0f, 0.0f);
-	
 
 }
 
@@ -162,21 +161,11 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 			for (; it2 != node->gameObjects.end(); it2++)
 			{
 				if (*it == *it2) continue;
-				if ((*it2)->colliderType == Collider::BOX)
+				
+				if (CollisionChecks::Collision((*it), (*it2)))
 				{
-					if ((*it)->IsColliding(dynamic_cast<BoxCollider*>(*it2)))
-					{
-						(*it)->collisionCallback((*it2)->GetParent());
-					}
+					(*it)->collisionCallback((*it2)->GetParent());
 				}
-			/*	else
-				{
-					if ((*it)->IsColliding(dynamic_cast<SphereCollider*>(*it2)))
-					{
-						(*it)->collisionCallback((*it2)->GetParent());
-					}
-
-				}*/
 
 			}
 		}

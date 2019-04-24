@@ -18,6 +18,6 @@ public:
 	virtual void InitializeMeshRenderer() override;
 	void Update() override;
 
-	bool IsColliding(BoxCollider* other) override;
+
 
 };

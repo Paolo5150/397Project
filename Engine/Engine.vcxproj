@@ -263,6 +263,7 @@
     <ClInclude Include="src\Lighting\LightingManager.h" />
     <ClInclude Include="src\Lighting\PointLight.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Physics\CollisionChecks.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Axis.h" />
     <ClInclude Include="src\Prefabs\GridMesh.h" />
@@ -319,6 +320,7 @@
     <ClCompile Include="src\GUI\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\GUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\GUI\imgui_widgets.cpp" />
+    <ClCompile Include="src\Physics\CollisionChecks.cpp" />
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\GridMesh.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />

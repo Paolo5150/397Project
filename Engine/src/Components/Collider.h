@@ -4,6 +4,7 @@
 #include "..\Components\MeshRenderer.h"
 #include "Bullet\btBulletCollisionCommon.h"
 #include "Bullet\btBulletDynamicsCommon.h"
+#include "..\Physics\CollisionChecks.h"
 #include <functional>
 
 class SphereCollider;
@@ -39,10 +40,6 @@ public:
 		transform.Update(); }
 
 	bool enableRender;
-
-	virtual bool IsColliding(BoxCollider* other){ return 0; };
-	virtual bool IsColliding(SphereCollider* other){ return 0; };
-
 
 	std::function<void(GameObject*)> collisionCallback;
 	COLLIDER_TYPE colliderType;

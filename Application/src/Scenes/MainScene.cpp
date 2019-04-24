@@ -161,7 +161,7 @@ void MainScene::Initialize() {
 	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
 	cam->SetMovementSpeed(500);
 	cam->RemoveLayerMask(Layers::GUI);
-	cam->boxCollider->collisionCallback = [](GameObject* go){
+	cam->sphereCollider->collisionCallback = [](GameObject* go){
 		Logger::LogInfo("Camera is colliding");
 	};
 
@@ -257,10 +257,10 @@ void MainScene::Initialize() {
 	c1->transform.SetPosition(cam->transform.GetPosition().x+20,400, cam->transform.GetPosition().z + 400);
 
 	c1->transform.SetScale(3, 3, 3);
-	c1->AddComponent(new BoxCollider());
-	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(8,8,8);
-	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
-	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go){
+	c1->AddComponent(new SphereCollider());
+	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetScale(18, 18, 18);
+	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetPosition(0, 7, 0);
+	c1->GetComponent<SphereCollider>("SphereCollider")->collisionCallback = [](GameObject* go){
 		Logger::LogInfo("C1 colliding");
 	};
 
@@ -268,7 +268,7 @@ void MainScene::Initialize() {
 	c2->transform.SetPosition(cam->transform.GetPosition().x+20 , 400, cam->transform.GetPosition().z + 200);
 	c2->transform.SetScale(3, 3, 3);
 	c2->AddComponent(new BoxCollider());
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(9,9,9);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(9, 9, 9);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
 	AddGameObject(c2);
@@ -310,7 +310,7 @@ void MainScene::LogicUpdate() {
 	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
 
 	c1->transform.RotateBy(0.5f,0,1,0);
-	c1->transform.Translate(0.0, 0, -0.1);
+	c1->transform.Translate(0.0, 0, -0.2);
 
 
 	

@@ -12,7 +12,6 @@ void BoxCollider::InitializeMeshRenderer()
 	meshRenderer = new MeshRenderer(mesh, m);
 	collisionShape = new btBoxShape(btVector3(1,1,1));
 	collisionShape->setLocalScaling(btVector3(transform.GetGlobalScale().x, transform.GetGlobalScale().y, transform.GetGlobalScale().z));
-	
 
 }
 
@@ -24,15 +23,3 @@ void BoxCollider::Update()
 	
 }
 
-bool BoxCollider::IsColliding(BoxCollider* other)
-{
-	if (transform.GetGlobalPosition().x + transform.GetGlobalScale().x  > other->transform.GetGlobalPosition().x - other->transform.GetGlobalScale().x  &&
-		transform.GetGlobalPosition().x - transform.GetGlobalScale().x  < other->transform.GetGlobalPosition().x + other->transform.GetGlobalScale().x  &&
-		transform.GetGlobalPosition().y + transform.GetGlobalScale().y  > other->transform.GetGlobalPosition().y - other->transform.GetGlobalScale().y  && 
-		transform.GetGlobalPosition().y - transform.GetGlobalScale().y  < other->transform.GetGlobalPosition().y + other->transform.GetGlobalScale().y &&
-		transform.GetGlobalPosition().z + transform.GetGlobalScale().z  > other->transform.GetGlobalPosition().z - other->transform.GetGlobalScale().z  &&
-		transform.GetGlobalPosition().z - transform.GetGlobalScale().z  < other->transform.GetGlobalPosition().z+ other->transform.GetGlobalScale().z)
-		return 1;
-
-	return 0;
-}

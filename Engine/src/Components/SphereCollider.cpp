@@ -23,13 +23,4 @@ void SphereCollider::Update()
 
 }
 
-bool SphereCollider::IsColliding(SphereCollider* other)
-{
-	float dist = glm::length2(other->transform.GetGlobalPosition() - transform.GetGlobalPosition());
-	float sum = transform.GetGlobalScale().x + other->transform.GetGlobalScale().x;
 
-	if (dist < sum * sum)
-		return 1;
-
-	return 0;
-}
