@@ -7,7 +7,7 @@
 #include "GUIImage.h"
 
 #include <list>
-#include <map>
+#include <unordered_map>
 #include "..\..\Event\EventDispatcher.h"
 
 class GUIObject;
@@ -88,12 +88,12 @@ private:
 	/**
 	* @brief				The list of GUIObjects not preserve
 	*/
-	std::map<std::string,GUIObject*> allGUI;
+	std::unordered_map<std::string,GUIObject*> allGUI;
 
 	/**
 	* @brief				The list of GUIObjects preserved
 	*/
-	std::map<std::string, GUIObject*> allGUIPreserved;
+	std::unordered_map<std::string, GUIObject*> allGUIPreserved;
 
 	/**
 	* @brief		Create the GUIManager instance

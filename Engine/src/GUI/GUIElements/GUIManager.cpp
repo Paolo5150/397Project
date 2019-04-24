@@ -64,6 +64,7 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
 
+	ImGui::SetWindowFontScale(1.5);
 
 	for (auto it = allGUI.begin(); it != allGUI.end(); it++)
 	{

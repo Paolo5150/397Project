@@ -61,7 +61,8 @@ public:
 	void RenderImGuiElement() override
 	{
 		ImGui::SetCursorPosX(position.x);
-		ImGui::SetCursorPosY(position.y);		
+		ImGui::SetCursorPosY(position.y);	
+
 		ImGui::TextColored(ImVec4(_color.x,_color.y,_color.z,_color.w),_message.c_str());
 	}
 
