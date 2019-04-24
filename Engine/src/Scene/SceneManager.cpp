@@ -5,6 +5,7 @@
 #include "..\Event\EventDispatcher.h"
 #include "..\Event\ApplicationEvents.h"
 #include "Scene.h"
+#include "..\Core\Input.h"
 #include <stdlib.h>
 SceneManager::SceneManager()
 {
@@ -67,6 +68,8 @@ void SceneManager::LoadNewScene(std::string sceneName)
 	m_currentScene->LoadAssets();
 	m_currentScene->Initialize();
 	m_currentScene->m_isReady = true;
+	Input::SetIsEnabled(1);
+
 }
 
 void SceneManager::DestroyAllScenes()

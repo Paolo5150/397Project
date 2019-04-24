@@ -5,6 +5,7 @@ namespace {
 
 	const float MIN_SPEED = 0;
 	const float MAX_SPEED = 400;
+	float counter = 0;
 }
 
 MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f)
@@ -35,16 +36,20 @@ void MainCamera::Update()
 
 void MainCamera::UpdateControls()
 {
+	
 	//Handle rotation
 		if (!_isTopView)
 		{
-		this->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
-		this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
+			if (counter != 0)
+			{
 
-		
+			this->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
+			this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());		
 	
 			if (glm::dot(transform.GetLocalFront(), glm::vec3(0, -1, 0)) > 0.8 || glm::dot(transform.GetLocalFront(), glm::vec3(0, 1, 0)) > 0.8)
 				this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), -transform.GetLocalRight());
+			}
+			
 		}
 		else
 		{
@@ -103,6 +108,7 @@ void MainCamera::UpdateControls()
 
 	_movementSpeed = glm::clamp(_movementSpeed, MIN_SPEED, MAX_SPEED);
 
+	counter = 1;
 	//Logger::LogInfo(transform.ToString());
 }
 

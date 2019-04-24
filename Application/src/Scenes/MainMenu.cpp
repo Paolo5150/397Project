@@ -36,9 +36,10 @@ void MainMenuScene::QuitScene() {
 void MainMenuScene::Initialize() {
 
 	Input::SetCursorMode("normal");
-	GUIManager::Instance().AddGUIObject(new GUIButton("tet", "Click me", []{ 
+	GUIManager::Instance().AddGUIObject(new GUIButton("tet", "Start", []{ 
 		
-
+		Input::SetCursorMode("disabled");
+		Input::SetIsEnabled(0);
 		SceneManager::Instance().LoadNewScene("MainScene"); 
 
 	

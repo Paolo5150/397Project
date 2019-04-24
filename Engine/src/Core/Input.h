@@ -165,6 +165,11 @@ public:
 	static bool GetCursorInWindow();
 
 
+	static void SetIsEnabled(bool s){ isEnabled = s; }
+
+	static bool GetIsEnabled(){ return isEnabled; }
+
+
 private:
 	static GLFWwindow* window;
 	static int prevKeys[400]; //Stores the previous value of the keys
@@ -178,6 +183,7 @@ private:
 
 	static bool cursorInWindow; //Whether the cursor is currently in the window
 
+	static bool isEnabled;
 //---- Private Member Functions ----//
 	//-- GLFW Callbacks --//
 	/**
