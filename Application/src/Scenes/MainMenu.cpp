@@ -38,12 +38,12 @@ void MainMenuScene::Initialize() {
 	Input::SetCursorMode("normal");
 	GUIManager::Instance().AddGUIObject(new GUIButton("tet", "Click me", []{ 
 		
-		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0.0);
-		GUIManager::Instance().Render(1);
+
 		SceneManager::Instance().LoadNewScene("MainScene"); 
+
 	
 	},"",10,10,45,45,1,1,1,1));
-	//GUIManager::Instance().AddGUIObject(new GUIText("paoloText", "Paolo Ferri", "invasionFont", 10, 60, 0.1f, 0.1f, 0.1f, true));
+
 
 
 

@@ -30,10 +30,12 @@ void GUIManager::Initialize()
 
 
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
-
+		sceneHasChanged = 1;
 		DeleteGUIObjects(0);
 		return 0;
 	});
+
+
 }
 
 
@@ -55,15 +57,16 @@ void GUIManager::AddGUIObject(GUIObject* gobj, bool preserve )
 
 void GUIManager::Render(bool forceRefresh, bool forceClear)
 {
+
 	if (forceClear)
 		Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 
 	
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w));
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w));
 	
 	int x, y;
 	Window::Instance().GetWindowSize(x, y);
@@ -75,16 +78,29 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 
 	ImGui::SetWindowFontScale(1.5);
 
-	for (auto it = allGUI.begin(); it != allGUI.end(); it++)
+	for (auto it = allGUI.begin(); it != allGUI.end();)
 	{
 		if (it->second->isActive)
 		it->second->RenderImGuiElement();
+
+		// Buttons can change scene
+		// When that happens, the map of gui objects is deleted!
+		// So, if the scene has changed, exit the loop, otherwise keep going
+		if (sceneHasChanged)
+			break;
+		else
+			it++;
 	}
 
-	for (auto it = allGUIPreserved.begin(); it != allGUIPreserved.end(); it++)
+	for (auto it = allGUIPreserved.begin(); it != allGUIPreserved.end();)
 	{
 		if (it->second->isActive)
 		it->second->RenderImGuiElement();
+
+		if (sceneHasChanged)
+			break;
+		else
+			it++;
 	}
 
 
@@ -94,6 +110,8 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 	ImGui::PopStyleColor();
 	if (forceRefresh)
 		Window::Instance().Refresh();
+
+	sceneHasChanged = 0;
 }
 
 void GUIManager::SelectFont(std::string fontName)
@@ -123,18 +141,18 @@ void GUIManager::DeleteGUIObjects(bool preservedToo)
 
 	{
 
-	if (preservedToo)
-	{
-		auto it = allGUIPreserved.begin();
-
-		for (; it != allGUIPreserved.end(); it++)
+		if (preservedToo)
 		{
-			delete (it->second);
-		}
+			auto it = allGUIPreserved.begin();
 
-		allGUIPreserved.clear();
+			for (; it != allGUIPreserved.end(); it++)
+			{
+				delete (it->second);
+			}
+
+			allGUIPreserved.clear();
+		}
 	}
-}
 
 
 }

@@ -104,6 +104,8 @@ private:
 
 	glm::vec4 backgroundColor;
 
+	bool sceneHasChanged;
+
 	/**
 	* @brief		Create the GUIManager instance
 	*
