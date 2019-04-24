@@ -23,13 +23,11 @@ void GUIManager::Initialize()
 	ImGui_ImplOpenGL3_Init("#version 430");
 
 	// Load fonts
-	ImFont* defaultF = ImGui::GetIO().Fonts->AddFontDefault();
-
-	ImFont* arcade = ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets\\Fonts\\arcadeclassic\\ARCADECLASSIC.TTF", 25);
 	
-	allFonts["defaultFont"] = arcade;
+	allFonts["defaultFont"] = ImGui::GetIO().Fonts->AddFontDefault();;
+	allFonts["arcadeFont"] = ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets\\Fonts\\arcadeclassic\\ARCADECLASSIC.TTF", 25);;
+	allFonts["invasionFont"] = ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets\\Fonts\\invasion2000\\INVASION2000.TTF", 25);;
 
-	allFonts["arcadeFont"] = arcade;
 
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
 
