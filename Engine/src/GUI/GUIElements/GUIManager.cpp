@@ -63,8 +63,8 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w));
 	
-	SetBackgroundColor(1, 1, 1, 1);
 	int x, y;
 	Window::Instance().GetWindowSize(x, y);
 	ImGui::SetNextWindowSize(ImVec2(x, y));
@@ -77,11 +77,13 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 
 	for (auto it = allGUI.begin(); it != allGUI.end(); it++)
 	{
+		if (it->second->isActive)
 		it->second->RenderImGuiElement();
 	}
 
 	for (auto it = allGUIPreserved.begin(); it != allGUIPreserved.end(); it++)
 	{
+		if (it->second->isActive)
 		it->second->RenderImGuiElement();
 	}
 
@@ -140,7 +142,11 @@ void GUIManager::DeleteGUIObjects(bool preservedToo)
 
 void GUIManager::SetBackgroundColor(float r, float g, float b, float a)
 {
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(r,g,b,a));
+	backgroundColor.x = r;
+	backgroundColor.y = g;
+	backgroundColor.z = b;
+	backgroundColor.w = a;
+
 }
 void GUIManager::Shutdown()
 {

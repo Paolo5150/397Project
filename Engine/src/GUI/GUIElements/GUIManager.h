@@ -102,6 +102,8 @@ private:
 
 	std::unordered_map<std::string, ImFont*> allFonts;
 
+	glm::vec4 backgroundColor;
+
 	/**
 	* @brief		Create the GUIManager instance
 	*

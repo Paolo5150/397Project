@@ -291,7 +291,8 @@ void MainScene::Initialize() {
 	Lua::CloseLua();
 	cam->transform.SetRotation(0, 0, 0);		
 
-
+	Input::SetCursorMode("disabled");
+	Input::Update();
 
 }
 void MainScene::LogicUpdate() {
