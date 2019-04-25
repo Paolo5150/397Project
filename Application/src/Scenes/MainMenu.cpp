@@ -35,18 +35,32 @@ void MainMenuScene::QuitScene() {
 
 void MainMenuScene::Initialize() {
 
+	int wx, wy;
+	Window::Instance().GetWindowSize(wx, wy);
+	loadingImage = new GUIImage("Logo", AssetLoader::Instance().GetAsset<Texture2D>("logo"),
+		0 + 50, 0 + 50,
+		wx - 100, wy - 50);
+
+	loadingImage->isActive = 0;
+
+
 	Input::SetCursorMode("normal");
-	GUIManager::Instance().AddGUIObject(new GUIButton("tet", "Start", []{ 
-		
+	startButton = (new GUIButton("tet", "Start", [&]{
+
 		Input::SetCursorMode("disabled");
+		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+		loadingImage->isActive = 1;
+		startButton->isActive = 0;
+		GUIManager::Instance().RenderNoButtonCallbacks();
 
-		SceneManager::Instance().LoadNewScene("MainScene"); 
-
-	
-	},"",10,10,45,45,1,1,1,1));
+		SceneManager::Instance().LoadNewScene("MainScene");
 
 
 
+	}, "", 10, 10, 45, 45, 1, 1, 1, 1));
+
+	GUIManager::Instance().AddGUIObject(startButton);
+	GUIManager::Instance().AddGUIObject(loadingImage);
 
 }
 void MainMenuScene::LogicUpdate() {
@@ -58,7 +72,8 @@ void MainMenuScene::LogicUpdate() {
 
 	if (Input::GetKeyPressed(GLFW_KEY_ENTER))
 	{
-		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 1);
+
 		GUIManager::Instance().Render(1);
 		SceneManager::Instance().LoadNewScene("MainScene");
 	}

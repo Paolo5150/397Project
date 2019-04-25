@@ -66,6 +66,15 @@ public:
 	void Render(bool forceRefresh = false, bool forceClear = false);
 
 	/**
+	* @brief				Render all the GUIObjects submitted
+	* @pre					The GUIObjects in the list must exist
+	* @post					TThe GUIObjects in the list are rendered on the screen
+	* @param forceRefresh	Whether the window will be refreshed
+	* @param forceClear		Whether the window will be cleared
+	*/
+	void RenderNoButtonCallbacks();
+
+	/**
 	* @brief				Add the GUIObjects to the ImGui list
 	* @pre					The GUIManager instance must exist
 	* @post					The GUIObjects are added to the ImGui render list
@@ -87,7 +96,7 @@ public:
 	void SelectFont(std::string fontName);
 	void ResetFont(){ ImGui::PopFont(); }
 
-
+	std::list<std::function<void()>> buttonCallbacks;
 private:
 
 	/**

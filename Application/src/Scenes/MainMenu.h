@@ -2,6 +2,8 @@
 #include "Scene/Scene.h"
 #include "GUI\GUIElements\GUIImage.h"
 #include "GUI\GUIElements\GUIText.h"
+#include "GUI\GUIElements\GUIButton.h"
+
 
 /**
 * @class MainMenuScene
@@ -60,6 +62,8 @@ public:
 
 private:
 
+	GUIImage* loadingImage;
+	GUIButton* startButton;
 
 
 };

@@ -112,6 +112,68 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 		Window::Instance().Refresh();
 
 	sceneHasChanged = 0;
+
+	for (auto it = buttonCallbacks.begin(); it != buttonCallbacks.end();)
+	{
+		(*it)();
+		it = buttonCallbacks.erase(it);
+		
+	}
+}
+
+void GUIManager::RenderNoButtonCallbacks()
+{
+	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w));
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+
+	int x, y;
+	Window::Instance().GetWindowSize(x, y);
+	ImGui::SetNextWindowSize(ImVec2(x, y));
+
+	ImGui::Begin("Hello, world!", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
+		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
+
+	ImGui::SetWindowFontScale(1.5);
+
+	for (auto it = allGUI.begin(); it != allGUI.end();)
+	{
+		if (it->second->isActive)
+			it->second->RenderImGuiElement();
+
+		// Buttons can change scene
+		// When that happens, the map of gui objects is deleted!
+		// So, if the scene has changed, exit the loop, otherwise keep going
+		if (sceneHasChanged)
+			break;
+		else
+			it++;
+	}
+
+	for (auto it = allGUIPreserved.begin(); it != allGUIPreserved.end();)
+	{
+		if (it->second->isActive)
+			it->second->RenderImGuiElement();
+
+		if (sceneHasChanged)
+			break;
+		else
+			it++;
+	}
+
+
+	ImGui::End();
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	ImGui::PopStyleColor();
+
+	Window::Instance().Refresh();
+
+	sceneHasChanged = 0;
 }
 
 void GUIManager::SelectFont(std::string fontName)
@@ -127,6 +189,7 @@ void GUIManager::SelectFont(std::string fontName)
 
 void GUIManager::DeleteGUIObjects(bool preservedToo)
 {
+	
 	{
 
 		auto it = allGUI.begin();

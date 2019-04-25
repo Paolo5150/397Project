@@ -44,6 +44,7 @@ public:
 		this->fontName = fontName;
 		this->OnClick = onclick;
 
+
 	}
 
 	/**
@@ -81,7 +82,10 @@ public:
 		//	OnClick();
 		
 		if (ImGui::Button(_message.c_str(), ImVec2(size.x, size.y)))
-			OnClick();
+		{
+			GUIManager::Instance().buttonCallbacks.push_back(OnClick);
+
+		}
 
 		GUIManager::Instance().ResetFont();
 
