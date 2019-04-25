@@ -104,9 +104,11 @@ void Transform::Update()
 
 	}
 
-	localFront = glm::normalize(glm::quat(GetGlobalRotation()) * glm::vec3(0, 0, 1));
-	localRight = glm::normalize(glm::quat(GetGlobalRotation()) * glm::vec3(-1, 0, 0));
-	localUp = glm::normalize(glm::quat(GetGlobalRotation()) * glm::vec3(0, 1, 0));
+	rotationQuat = glm::quat(GetGlobalRotation());
+
+	localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
+	localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
+	localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
 
 }
 
@@ -158,6 +160,22 @@ glm::vec3& Transform::GetGlobalScale()
 
 
 }
+
+std::string Transform::RotationQuatToString()
+{
+	glm::quat q = glm::quat(GetGlobalRotation());
+	std::stringstream ss;
+	ss << "RQ:{" << q.x;
+	ss << " " << q.y;
+	ss << " " << q.z;
+	ss << " " << q.w;
+	ss << "} ";
+
+
+
+	return ss.str();
+}
+
 
 glm::mat4 Transform::GetRotationMatrix()
 {

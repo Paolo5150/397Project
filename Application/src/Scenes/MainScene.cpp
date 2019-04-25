@@ -270,10 +270,10 @@ void MainScene::Initialize() {
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c2->transform.SetPosition(cam->transform.GetPosition().x+20 , 400, cam->transform.GetPosition().z + 200);
-	c2->transform.SetScale(3, 3, 3);
-	c2->AddComponent(new SphereCollider());
-	c2->GetComponent<SphereCollider>("SphereCollider")->transform.SetScale(19, 19, 19);
-	c2->GetComponent<SphereCollider>("SphereCollider")->transform.SetPosition(0, 7, 0);
+	c2->transform.SetScale(3,3,3);
+	c2->AddComponent(new BoxCollider());
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(25, 25, 25);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
 	AddGameObject(c2);
 	AddGameObject(c1);
@@ -316,6 +316,9 @@ void MainScene::LogicUpdate() {
 
 	//c1->transform.RotateBy(0.5f,0,1,0);
 	c1->transform.Translate(0, 0, -0.2f);
+//	Logger::LogInfo("C1", c1->transform.RotationQuatToString());
+//	Logger::LogInfo("C2", c2->transform.RotationQuatToString());
+
 
 	//c1->transform.SetPosition(c1->transform.GetGlobalPosition() + c1->transform.GetLocalFront() * 0.2f);
 
