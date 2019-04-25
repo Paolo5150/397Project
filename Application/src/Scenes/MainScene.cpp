@@ -275,6 +275,9 @@ void MainScene::Initialize() {
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
+
+	w->transform.SetPosition(x, 50, z);
+	w->transform.SetScale(3000, 3000, 1);
 	AddGameObject(c2);
 	AddGameObject(c1);
 	AddGameObject(w);
@@ -287,8 +290,7 @@ void MainScene::Initialize() {
 	AddGameObject(terrain);
 	AddGameObject(cam);
 
-	w->transform.SetPosition(x, 50, z);
-	w->transform.SetScale(3000, 3000, 1);
+
 
 	Lua::CloseLua();
 

@@ -64,7 +64,7 @@ public:
 	*/
 	static long long& GetTickCount();
 
-
+	static void ResetTickCount(){ tickCount = 0; }
 	/**
 	* @brief Helper method the builds a string with FPS information to be displayed
 	*/

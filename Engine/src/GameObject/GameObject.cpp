@@ -262,7 +262,7 @@ bool GameObject::ChildHasComponent(std::string childName, std::string componentN
 
 void GameObject::Update()
 {
-	if (Timer::GetTickCount() == 0 || !_isStatic)
+	if (Timer::GetTickCount() <= 1 || !_isStatic)
 	{
 		transform.Update();
 	}
