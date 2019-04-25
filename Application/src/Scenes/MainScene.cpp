@@ -262,7 +262,7 @@ void MainScene::Initialize() {
 	c1->transform.RotateBy(-45.0f,0,1,0);
 
 	c1->AddComponent(new BoxCollider());
-	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(18, 18, 18);
+	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go){
 		Logger::LogInfo("C1 colliding");
@@ -272,7 +272,7 @@ void MainScene::Initialize() {
 	c2->transform.SetPosition(cam->transform.GetPosition().x+20 , 400, cam->transform.GetPosition().z + 200);
 	c2->transform.SetScale(3,3,3);
 	c2->AddComponent(new BoxCollider());
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(25, 25, 25);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
 	AddGameObject(c2);

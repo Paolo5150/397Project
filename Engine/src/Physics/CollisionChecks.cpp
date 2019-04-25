@@ -51,8 +51,8 @@ bool CollisionChecks::Collision(SphereCollider* s, SphereCollider* b)
 bool CollisionChecks::Collision(BoxCollider* s, BoxCollider* b)
 {
 
-	if (s->transform.GetRotationQuat().x == 0 && s->transform.GetRotationQuat().y == 0 && s->transform.GetRotationQuat().z == 0 && s->transform.GetRotationQuat().w == 1 && 
-		b->transform.GetRotationQuat().x == 0 && b->transform.GetRotationQuat().y == 0 && b->transform.GetRotationQuat().z == 0 && b->transform.GetRotationQuat().w == 1)
+	if (s->GetParent()->transform.GetRotationQuat().x == 0 && s->GetParent()->transform.GetRotationQuat().y == 0 && s->GetParent()->transform.GetRotationQuat().z == 0 && s->GetParent()->transform.GetRotationQuat().w == 1 &&
+		b->GetParent()->transform.GetRotationQuat().x == 0 && b->GetParent()->transform.GetRotationQuat().y == 0 && b->GetParent()->transform.GetRotationQuat().z == 0 && b->GetParent()->transform.GetRotationQuat().w == 1)
 	{
 
 		if (s->transform.GetGlobalPosition().x + s->transform.GetGlobalScale().x  > b->transform.GetGlobalPosition().x - b->transform.GetGlobalScale().x  &&
@@ -68,6 +68,8 @@ bool CollisionChecks::Collision(BoxCollider* s, BoxCollider* b)
 	}
 	else
 	{	
+		s->transform.UpdateVectors();
+		b->transform.UpdateVectors();
 		return getCollision(s, b);
 	}
 

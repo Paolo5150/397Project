@@ -266,6 +266,8 @@ public:
 	*/
 	std::string RotationQuatToString();
 
+	void UpdateVectors();
+
 	
 	void SetIgnoreParentRotation(bool i) { ignoreParentRotation = i; }
 

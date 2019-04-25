@@ -39,6 +39,7 @@ void Collider::OnAttach(GameObject* go)
 	});
 
 	Initialize();
+	
 	PhysicsWorld::Instance().AddCollider(this);
 }
 
