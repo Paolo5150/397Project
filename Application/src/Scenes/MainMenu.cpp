@@ -51,6 +51,8 @@ void MainMenuScene::Initialize() {
 		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
 		loadingImage->isActive = 1;
 		startButton->isActive = 0;
+		loadingText->isActive = 1;
+
 		GUIManager::Instance().RenderNoButtonCallbacks();
 
 		SceneManager::Instance().LoadNewScene("MainScene");
@@ -59,8 +61,11 @@ void MainMenuScene::Initialize() {
 
 	}, "", 10, 10, 45, 45, 1, 1, 1, 1));
 
+	loadingText = new GUIText("LoadingText", "Loading scene...", "invasionFont", 20, wy - 50, 0.2f, 0.2f, 0.2f);
+	loadingText->isActive = 0;
 	GUIManager::Instance().AddGUIObject(startButton);
 	GUIManager::Instance().AddGUIObject(loadingImage);
+	GUIManager::Instance().AddGUIObject(loadingText);
 
 }
 void MainMenuScene::LogicUpdate() {

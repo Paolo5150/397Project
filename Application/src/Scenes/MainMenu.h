@@ -63,6 +63,7 @@ public:
 private:
 
 	GUIImage* loadingImage;
+	GUIText* loadingText;
 	GUIButton* startButton;
 
 
