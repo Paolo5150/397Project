@@ -423,6 +423,9 @@ public:
 	*/
 	void SetIsStatic(bool st, bool includeChildren = true);
 
+	bool GetIsStatic() { return _isStatic; }
+
+
 	virtual void OnCollision(GameObject* go){};
 
 	void OnAddToScene();

@@ -5,6 +5,7 @@
 #include "Bullet\btBulletCollisionCommon.h"
 #include "Bullet\btBulletDynamicsCommon.h"
 #include "..\Physics\CollisionChecks.h"
+#include "..\Core\Timer.h"
 #include <functional>
 
 class SphereCollider;
@@ -39,6 +40,7 @@ public:
 
 	void Update() override {
 		
+		if (Timer::GetTickCount() == 0 || !_parent->GetIsStatic())
 		transform.Update(); }
 
 	bool enableRender;
