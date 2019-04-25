@@ -48,9 +48,6 @@ void Transform::SetRotation(float x, float y, float z)
 	rotationQuat = glm::quat(glm::radians(rotation));
 	rotationMatrix = glm::toMat4(rotationQuat);
 
-	localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
-	localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
-	localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
 
 }
 
@@ -60,9 +57,6 @@ void Transform::SetRotation(float x, float y, float z, float w)
 	rotationQuat = glm::quat(x,y,z,w);
 	rotationMatrix = glm::toMat4(rotationQuat);
 
-	localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
-	localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
-	localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
 
 }
 
@@ -72,11 +66,6 @@ void Transform::RotateBy(float angle, glm::vec3 axis)
 	glm::quat q(axis * glm::radians(angle));
 	rotationQuat = q * rotationQuat;
 	rotationMatrix = glm::toMat4(rotationQuat);
-
-	localFront = glm::normalize(q * localFront);
-	localRight = glm::normalize(q * localRight);
-	localUp = glm::normalize(q * localUp);
-	rotation = glm::degrees(glm::eulerAngles(rotationQuat));
 
 	
 }
@@ -114,6 +103,10 @@ void Transform::Update()
 			modelMatrix = (parent->GetTranslateMatrix() * parent->GetScaleMatrix()) * GetTranslateMatrix()* GetRotationMatrix() * GetScaleMatrix();
 
 	}
+
+	localFront = glm::normalize(glm::quat(GetGlobalRotation()) * glm::vec3(0, 0, 1));
+	localRight = glm::normalize(glm::quat(GetGlobalRotation()) * glm::vec3(-1, 0, 0));
+	localUp = glm::normalize(glm::quat(GetGlobalRotation()) * glm::vec3(0, 1, 0));
 
 }
 

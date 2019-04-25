@@ -17,6 +17,7 @@ public:
 
 	virtual void InitializeMeshRenderer() override;
 	void Update() override;
+	void Initialize(){ transform.SetIgnoreParentRotation(1); };
 
 
 
