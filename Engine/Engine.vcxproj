@@ -246,6 +246,7 @@
     <ClInclude Include="src\Graphics\Vertex.h" />
     <ClInclude Include="src\Graphics\VertexArray.h" />
     <ClInclude Include="src\Graphics\VertexArrayGL.h" />
+    <ClInclude Include="src\GUI\GUIElements\GUIButton.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIImage.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIManager.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIObject.h" />

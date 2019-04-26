@@ -48,22 +48,37 @@ void Transform::SetRotation(float x, float y, float z)
 	rotationQuat = glm::quat(glm::radians(rotation));
 	rotationMatrix = glm::toMat4(rotationQuat);
 
-	localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
-	localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
-	localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
+	UpdateVectors();
+
 
 }
+
+void Transform::UpdateVectors()
+{
+	if (parent == nullptr)
+	{
+		localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
+		localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
+		localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
+
+	}
+	else
+	{
+		rotationQuat = glm::quat(parent->GetRotationMatrix() * rotationMatrix);
+		localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
+		localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
+		localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
+	}
+}
+
 
 void Transform::SetRotation(float x, float y, float z, float w)
 {
 
 	rotationQuat = glm::quat(x,y,z,w);
 	rotationMatrix = glm::toMat4(rotationQuat);
-
-	localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
-	localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
-	localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
-
+	UpdateVectors();
+	
 }
 
 void Transform::RotateBy(float angle, glm::vec3 axis)
@@ -72,11 +87,7 @@ void Transform::RotateBy(float angle, glm::vec3 axis)
 	glm::quat q(axis * glm::radians(angle));
 	rotationQuat = q * rotationQuat;
 	rotationMatrix = glm::toMat4(rotationQuat);
-
-	localFront = glm::normalize(q * localFront);
-	localRight = glm::normalize(q * localRight);
-	localUp = glm::normalize(q * localUp);
-	rotation = glm::degrees(glm::eulerAngles(rotationQuat));
+	UpdateVectors();
 
 	
 }
@@ -165,6 +176,22 @@ glm::vec3& Transform::GetGlobalScale()
 
 
 }
+
+std::string Transform::RotationQuatToString()
+{
+	glm::quat q = glm::quat(GetGlobalRotation());
+	std::stringstream ss;
+	ss << "RQ:{" << q.x;
+	ss << " " << q.y;
+	ss << " " << q.z;
+	ss << " " << q.w;
+	ss << "} ";
+
+
+
+	return ss.str();
+}
+
 
 glm::mat4 Transform::GetRotationMatrix()
 {

@@ -176,12 +176,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Scenes\ExitScene.h" />
+    <ClInclude Include="src\Scenes\MainMenu.h" />
     <ClInclude Include="src\Scenes\MainScene.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Scenes\ExitScene.cpp" />
+    <ClCompile Include="src\Scenes\MainMenu.cpp" />
     <ClCompile Include="src\Scenes\MainScene.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />

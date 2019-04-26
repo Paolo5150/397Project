@@ -14,6 +14,9 @@
 #include "..\Lighting\LightingManager.h"
 #include "Input.h"
 #include "..\GUI\GUIElements\GUIManager.h"
+#include "..\GUI\GUIElements\GUIText.h"
+#include "..\GUI\GUIElements\GUIImage.h"
+
 #include <thread>
 #include <stdint.h>
 
@@ -69,9 +72,9 @@ void Core::Initialize()
 	int wx, wy;
 	Window::Instance().GetWindowSize(wx, wy);
 
-	loading = new GUIText("Loading...", 20, wy - 50, 0.2f, 0.2f, 0.2f);
-	GUIManager::Instance().AddGUIObject<GUIText>(loading);
-	GUIManager::Instance().AddGUIObject<GUIImage>(new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("logo"),
+	loading = new GUIText("LoadingText","Loading...","invasionFont", 20, wy - 50, 0.2f, 0.2f, 0.2f);
+	GUIManager::Instance().AddGUIObject(loading);
+	GUIManager::Instance().AddGUIObject(new GUIImage("Logo",AssetLoader::Instance().GetAsset<Texture2D>("logo"),
 		0 + 50, 0 + 50,
 		wx - 100, wy - 50));
 	LoadBasicAssets();
@@ -105,11 +108,11 @@ void Core::Shutdown()
 	AssetLoader::Instance().UnloadPreserved<Texture2D>();
 	AssetLoader::Instance().UnloadPreserved<Model>();
 
-	GUIManager::Instance().Shutdown();
 
 	graphicsAPI->Shutdown();
 	Window::Instance().Destroy();
 	glfwTerminate();
+	GUIManager::Instance().Shutdown();
 }
 
 Core& Core::Instance()

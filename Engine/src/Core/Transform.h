@@ -260,7 +260,15 @@ public:
 	*/
 	std::string VectorsToString();
 
+	/**
+	* @brief		Print front vector, right vector and up vector
+	* @pre			The game object owning the transform exists
+	*/
+	std::string RotationQuatToString();
 
+	void UpdateVectors();
+
+	
 	void SetIgnoreParentRotation(bool i) { ignoreParentRotation = i; }
 
 private:

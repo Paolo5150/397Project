@@ -5,6 +5,7 @@
 #include "Bullet\btBulletCollisionCommon.h"
 #include "Bullet\btBulletDynamicsCommon.h"
 #include "..\Physics\CollisionChecks.h"
+#include "..\Core\Timer.h"
 #include <functional>
 
 class SphereCollider;
@@ -35,8 +36,11 @@ public:
 	void EngineUpdate() override;
 	virtual void InitializeMeshRenderer(){};
 	glm::vec3 GlobalTranslationFromGameObject();
+	virtual void Initialize(){};
 
 	void Update() override {
+		
+		if (Timer::GetTickCount() == 0 || !_parent->GetIsStatic())
 		transform.Update(); }
 
 	bool enableRender;

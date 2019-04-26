@@ -3,14 +3,15 @@
 #include "imgui.h"
 #include "..\imgui_impl_glfw.h"
 #include "..\imgui_impl_opengl3.h"
-#include "GUIText.h"
-#include "GUIImage.h"
+
 
 #include <list>
-#include <map>
+#include <unordered_map>
 #include "..\..\Event\EventDispatcher.h"
 
 class GUIObject;
+class GUIText;
+class GUIImage;
 
 /**
 * @class GUIManager
@@ -65,6 +66,15 @@ public:
 	void Render(bool forceRefresh = false, bool forceClear = false);
 
 	/**
+	* @brief				Render all the GUIObjects submitted
+	* @pre					The GUIObjects in the list must exist
+	* @post					TThe GUIObjects in the list are rendered on the screen
+	* @param forceRefresh	Whether the window will be refreshed
+	* @param forceClear		Whether the window will be cleared
+	*/
+	void RenderNoButtonCallbacks();
+
+	/**
 	* @brief				Add the GUIObjects to the ImGui list
 	* @pre					The GUIManager instance must exist
 	* @post					The GUIObjects are added to the ImGui render list
@@ -78,22 +88,32 @@ public:
 	* @param gobj			The GUIObject
 	* @param preserve		Whether the object will be preserved between scenes
 	*/
-	template <class T>
-	void AddGUIObject(T* gobj, bool preserve = false);
 
+	void AddGUIObject(GUIObject* gobj, bool preserve = false);
 
+	void SetBackgroundColor(float r, float g, float b, float a);
 
+	void SelectFont(std::string fontName);
+	void ResetFont(){ ImGui::PopFont(); }
+
+	std::list<std::function<void()>> buttonCallbacks;
 private:
 
 	/**
 	* @brief				The list of GUIObjects not preserve
 	*/
-	std::map<std::string,std::list<GUIObject*>> allGUI;
+	std::unordered_map<std::string,GUIObject*> allGUI;
 
 	/**
 	* @brief				The list of GUIObjects preserved
 	*/
-	std::map<std::string, std::list<GUIObject*>> allGUIPreserved;
+	std::unordered_map<std::string, GUIObject*> allGUIPreserved;
+
+	std::unordered_map<std::string, ImFont*> allFonts;
+
+	glm::vec4 backgroundColor;
+
+	bool sceneHasChanged;
 
 	/**
 	* @brief		Create the GUIManager instance
@@ -101,15 +121,8 @@ private:
 	* @post			The GUIManager instance is created
 	*/
 	GUIManager(){};
+
+	void DeleteGUIObjects(bool preservedToo);
 };
 
-template <class T>
-void GUIManager::AddGUIObject(T* gobj, bool preserve)
-{
-	std::string type = typeid(T).name();
-	if (!preserve)
-		allGUI[type].push_back(gobj);
-	else
-		allGUIPreserved[type].push_back(gobj);
 
-}

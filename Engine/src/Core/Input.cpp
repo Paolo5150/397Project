@@ -54,6 +54,7 @@ void Input::Init(bool disableCursor, bool logGlfwErrors)
 
 void Input::Update()
 {
+	
 	for (int i = 0; i < 400; i++)
 	{
 		prevKeys[i] = keys[i];
@@ -196,11 +197,13 @@ double Input::mouseX;
 double Input::mouseY;
 double Input::deltaMouseX;
 double Input::deltaMouseY;
-
+bool Input::isEnabled;
 bool Input::cursorInWindow;
 
 void Input::Key_Callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+	if (!isEnabled) return;
+
 	if (key >= 0 && key < 400)
 	{
 		prevKeys[key] = keys[key];
@@ -214,6 +217,7 @@ void Input::Key_Callback(GLFWwindow* window, int key, int scancode, int action, 
 
 void Input::Cursor_Pos_Callback(GLFWwindow* window, double xpos, double ypos)
 {
+	if (!isEnabled) return;
 
 	deltaMouseX = mouseX - xpos;
 	deltaMouseY = mouseY - ypos;
@@ -231,11 +235,15 @@ void Input::Cursor_Pos_Callback(GLFWwindow* window, double xpos, double ypos)
 
 void Input::Mouse_Button_Callback(GLFWwindow* window, int button, int action, int mods)
 {
+	if (!isEnabled) return;
+
 	mouseButtons[button] = action;
 }
 
 void Input::Cursor_Enter_Callback(GLFWwindow* window, int entered)
 {
+	if (!isEnabled) return;
+
 	if (entered) //Cursor has entered the window
 	{
 		cursorInWindow = true;

@@ -70,6 +70,17 @@ public:
 	void ClearDepthBuffer() override;
 
 	/**
+	* @brief		Set the clear color
+	*
+	* @pre			The graphics API object must exist
+	* @post			The clear color is set
+	* @param r		The red channel value
+	* @param g		The green channel value
+	* @param b		The blue channel value
+	*/
+	virtual void SetClearColor(float r, float g, float b) override;
+
+	/**
 	* @brief		Set the view port
 	*
 	* @pre			The graphics API object must exist

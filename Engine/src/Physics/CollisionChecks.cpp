@@ -36,6 +36,7 @@ bool CollisionChecks::Collision(SphereCollider* s, BoxCollider* b)
 	return (cornerDistance_sq < (s->transform.GetGlobalScale().x / 2 * s->transform.GetGlobalScale().x / 2));
 	return 0;
 
+
 }
 bool CollisionChecks::Collision(SphereCollider* s, SphereCollider* b)
 {
@@ -49,13 +50,54 @@ bool CollisionChecks::Collision(SphereCollider* s, SphereCollider* b)
 }
 bool CollisionChecks::Collision(BoxCollider* s, BoxCollider* b)
 {
-	if (s->transform.GetGlobalPosition().x + s->transform.GetGlobalScale().x  > b->transform.GetGlobalPosition().x - b->transform.GetGlobalScale().x  &&
-		s->transform.GetGlobalPosition().x - s->transform.GetGlobalScale().x  < b->transform.GetGlobalPosition().x + b->transform.GetGlobalScale().x  &&
-		s->transform.GetGlobalPosition().y + s->transform.GetGlobalScale().y  > b->transform.GetGlobalPosition().y - b->transform.GetGlobalScale().y  &&
-		s->transform.GetGlobalPosition().y - s->transform.GetGlobalScale().y  < b->transform.GetGlobalPosition().y + b->transform.GetGlobalScale().y &&
-		s->transform.GetGlobalPosition().z + s->transform.GetGlobalScale().z  > b->transform.GetGlobalPosition().z - b->transform.GetGlobalScale().z  &&
-		s->transform.GetGlobalPosition().z - s->transform.GetGlobalScale().z  < b->transform.GetGlobalPosition().z + b->transform.GetGlobalScale().z)
-		return 1;
 
-	return 0;
+	if (s->GetParent()->transform.GetRotationQuat().x == 0 && s->GetParent()->transform.GetRotationQuat().y == 0 && s->GetParent()->transform.GetRotationQuat().z == 0 && s->GetParent()->transform.GetRotationQuat().w == 1 &&
+		b->GetParent()->transform.GetRotationQuat().x == 0 && b->GetParent()->transform.GetRotationQuat().y == 0 && b->GetParent()->transform.GetRotationQuat().z == 0 && b->GetParent()->transform.GetRotationQuat().w == 1)
+	{
+
+		if (s->transform.GetGlobalPosition().x + s->transform.GetGlobalScale().x  > b->transform.GetGlobalPosition().x - b->transform.GetGlobalScale().x  &&
+			s->transform.GetGlobalPosition().x - s->transform.GetGlobalScale().x  < b->transform.GetGlobalPosition().x + b->transform.GetGlobalScale().x  &&
+			s->transform.GetGlobalPosition().y + s->transform.GetGlobalScale().y  > b->transform.GetGlobalPosition().y - b->transform.GetGlobalScale().y  &&
+			s->transform.GetGlobalPosition().y - s->transform.GetGlobalScale().y  < b->transform.GetGlobalPosition().y + b->transform.GetGlobalScale().y &&
+			s->transform.GetGlobalPosition().z + s->transform.GetGlobalScale().z  > b->transform.GetGlobalPosition().z - b->transform.GetGlobalScale().z  &&
+			s->transform.GetGlobalPosition().z - s->transform.GetGlobalScale().z  < b->transform.GetGlobalPosition().z + b->transform.GetGlobalScale().z)
+			return 1;
+
+		return 0;
+
+	}
+	else
+	{	
+		s->transform.UpdateVectors();
+		b->transform.UpdateVectors();
+		return getCollision(s, b);
+	}
+
+	
+}
+
+bool CollisionChecks::getSeparatingPlane(glm::vec3 RPos, glm::vec3 Plane, BoxCollider* box1, BoxCollider* box2)
+{
+	return (glm::abs(glm::dot(RPos, Plane)) >(glm::abs(glm::dot((box1->transform.GetLocalRight() *box1->transform.GetGlobalScale().x ), Plane)) + glm::abs(glm::dot((box1->transform.GetLocalUp() *box1->transform.GetGlobalScale().y ), Plane)) + glm::abs(glm::dot((box1->transform.GetLocalFront() *box1->transform.GetGlobalScale().z ), Plane)) +
+		glm::abs(glm::dot((box2->transform.GetLocalRight() *box2->transform.GetGlobalScale().x ), Plane)) + glm::abs(glm::dot((box2->transform.GetLocalUp() *box2->transform.GetGlobalScale().y ), Plane)) + glm::abs(glm::dot((box2->transform.GetLocalFront() *box2->transform.GetGlobalScale().z ), Plane)) ));
+}
+
+bool CollisionChecks::getCollision(BoxCollider* box1, BoxCollider* box2)
+{
+	static glm::vec3 RPos;
+	RPos = box2->transform.GetGlobalPosition() - box1->transform.GetGlobalPosition();
+
+	//Logger::LogInfo("Box front", box2->transform.VectorsToString());
+	//Logger::LogError("Box front2", box1->transform.VectorsToString());
+
+	if (getSeparatingPlane(RPos, box1->transform.GetLocalRight(), box1, box2) || getSeparatingPlane(RPos, box1->transform.GetLocalUp(), box1, box2) || getSeparatingPlane(RPos, box1->transform.GetLocalFront(), box1, box2) ||
+		getSeparatingPlane(RPos, box2->transform.GetLocalRight(), box1, box2) || getSeparatingPlane(RPos, box2->transform.GetLocalUp(), box1, box2) || getSeparatingPlane(RPos, box2->transform.GetLocalFront(), box1, box2) ||
+		getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalRight()) ^ glm::int3(box2->transform.GetLocalRight()), box1, box2) || getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalRight()) ^ glm::int3(box2->transform.GetLocalUp()), box1, box2) ||
+		getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalRight()) ^ glm::int3(box2->transform.GetLocalFront()), box1, box2) || getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalUp()) ^ glm::int3(box2->transform.GetLocalRight()), box1, box2) ||
+		getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalUp()) ^ glm::int3(box2->transform.GetLocalUp()), box1, box2) || getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalUp()) ^ glm::int3(box2->transform.GetLocalFront()), box1, box2) ||
+		getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalFront()) ^ glm::int3(box2->transform.GetLocalRight()), box1, box2) || getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalFront()) ^ glm::int3(box2->transform.GetLocalUp()), box1, box2) ||
+		getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalFront()) ^ glm::int3(box2->transform.GetLocalFront()), box1, box2)) return false;
+
+
+	return true;
 }

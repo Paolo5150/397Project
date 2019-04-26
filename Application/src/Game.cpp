@@ -6,6 +6,8 @@
 
 #include "Scenes/MainScene.h"
 #include "Scenes/ExitScene.h"
+#include "Scenes/MainMenu.h"
+
 
 
 Application* CreateApplication()
@@ -30,10 +32,12 @@ void Game::AppInitialize()
 	//Create all scenes here, might need to use LUA...?
 	SceneManager::Instance().AddScene(new MainScene());
 	SceneManager::Instance().AddScene(new ExitScene());
+	SceneManager::Instance().AddScene(new MainMenuScene());
+
 
 
 	//Load first scene
-	SceneManager::Instance().LoadNewScene("MainScene"); //Scene initialize is called here
+	SceneManager::Instance().LoadNewScene("MainMenuScene"); //Scene initialize is called here
 
 
 	

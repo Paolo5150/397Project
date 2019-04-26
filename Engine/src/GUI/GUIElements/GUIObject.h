@@ -4,7 +4,7 @@
 #include "..\imgui_impl_glfw.h"
 #include "..\imgui_impl_opengl3.h"
 #include "..\..\Core\Window.h"
-
+#include <functional>
 /**
 * @class GUIObject
 * @brief Parent abstract class to all GUI objects
@@ -24,7 +24,7 @@ public:
 	*
 	* @post			The GUIObject object is created
 	*/
-	GUIObject() {
+	GUIObject(std::string uniqueName) : name(uniqueName){
 		isActive = 1;
 	};
 
@@ -50,6 +50,10 @@ public:
 	* @brief		Whether the GUIObject is active or not
 	*/
 	bool isActive;
+
+	std::string name;
+
+	virtual void RenderImGuiElement() = 0;
 
 };
 

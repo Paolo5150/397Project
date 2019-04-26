@@ -14,7 +14,7 @@
 *
 * @bug No known bugs.
 */
-class GUIText : public GUIObject
+class GUIButton : public GUIObject
 {
 public:
 	/**
@@ -29,7 +29,7 @@ public:
 	* @param b				The blue channel of the color
 	* @param isPercentage	Wether the details provided are percentage of the current window
 	*/
-	GUIText(std::string uniqueName, std::string message, std::string fontName = "defaultFont", float posX = 0, float posY = 0, float r = 1, float g = 1, float b = 1, bool isPercentage = false) : GUIObject(uniqueName), _message(message){
+	GUIButton(std::string uniqueName, std::string message, std::function<void()> onclick,std::string fontName = "defaultFont", float sizeX = 50, float sizeY = 50, float posX = 0, float posY = 0, float r = 1, float g = 1, float b = 1, bool isPercentage = false) : GUIObject(uniqueName), _message(message){
 		_color = glm::vec4(r, g, b, 1);
 		int winX, winY;
 		Window::Instance().GetWindowSize(winX, winY);
@@ -39,9 +39,12 @@ public:
 		}
 
 		position = glm::vec2(posX * winX / 100, posY * winY / 100);
-
+		size.x = sizeX * winX / 100;
+		size.y = sizeY * winY / 100;
 		this->fontName = fontName;
-	
+		this->OnClick = onclick;
+
+
 	}
 
 	/**
@@ -50,10 +53,12 @@ public:
 	* @pre			The GUIText object must exist
 	* @post			The GUIText object is destroyed
 	*/
-	~GUIText(){
-
+	~GUIButton(){
+		OnClick = nullptr;
 	};
-	
+
+	std::function<void()> OnClick;
+
 	/**
 	* @brief		The message to be displayed
 	*/
@@ -69,11 +74,19 @@ public:
 	void RenderImGuiElement() override
 	{
 		ImGui::SetCursorPosX(position.x);
-		ImGui::SetCursorPosY(position.y);	
+		ImGui::SetCursorPosY(position.y);
 
 		GUIManager::Instance().SelectFont(fontName);
+		
+		//if (ImGui::ColorButton(_message.c_str(), ImVec4(_color.r, _color.g, _color.b, _color.a), ImGuiColorEditFlags_NoTooltip, ImVec2(size.x, size.y)))
+		//	OnClick();
+		
+		if (ImGui::Button(_message.c_str(), ImVec2(size.x, size.y)))
+		{
+			GUIManager::Instance().buttonCallbacks.push_back(OnClick);
 
-		ImGui::TextColored(ImVec4(_color.x,_color.y,_color.z,_color.w),_message.c_str());
+		}
+
 		GUIManager::Instance().ResetFont();
 
 

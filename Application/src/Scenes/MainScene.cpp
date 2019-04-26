@@ -16,6 +16,8 @@
 #include "Utils\GameAssetFactory.h"
 #include "Core\Lua.h"
 #include "GUI\GUIElements\GUIText.h"
+#include "GUI\GUIElements\GUIImage.h"
+
 #include "GUI\GUIElements\GUIManager.h"
 #include "Components\BoxCollider.h"
 #include "Components\SphereCollider.h"
@@ -91,7 +93,7 @@ void MainScene::Initialize() {
 	
 	//nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 	//GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
-	manual = new GUIImage(AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
+	manual = new GUIImage("manualImage",AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
 	manual->isActive = 0;
 	GUIManager::Instance().AddGUIObject(manual);
 
@@ -257,20 +259,25 @@ void MainScene::Initialize() {
 	c1->transform.SetPosition(cam->transform.GetPosition().x+20,400, cam->transform.GetPosition().z + 400);
 
 	c1->transform.SetScale(3, 3, 3);
-	c1->AddComponent(new SphereCollider());
-	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetScale(18, 18, 18);
-	c1->GetComponent<SphereCollider>("SphereCollider")->transform.SetPosition(0, 7, 0);
-	c1->GetComponent<SphereCollider>("SphereCollider")->collisionCallback = [](GameObject* go){
+	c1->transform.RotateBy(-45.0f,0,1,0);
+
+	c1->AddComponent(new BoxCollider());
+	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
+	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
+	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go){
 		Logger::LogInfo("C1 colliding");
 	};
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c2->transform.SetPosition(cam->transform.GetPosition().x+20 , 400, cam->transform.GetPosition().z + 200);
-	c2->transform.SetScale(3, 3, 3);
+	c2->transform.SetScale(3,3,3);
 	c2->AddComponent(new BoxCollider());
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(9, 9, 9);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
+
+	w->transform.SetPosition(x, 50, z);
+	w->transform.SetScale(3000, 3000, 1);
 	AddGameObject(c2);
 	AddGameObject(c1);
 	AddGameObject(w);
@@ -283,12 +290,12 @@ void MainScene::Initialize() {
 	AddGameObject(terrain);
 	AddGameObject(cam);
 
-	w->transform.SetPosition(x, 50, z);
-	w->transform.SetScale(3000, 3000, 1);
+
 
 	Lua::CloseLua();
-	cam->transform.SetRotation(0, 0, 0);		
 
+	cam->transform.SetRotation(0, 0, 0);		
+	cam->transform.Update();
 
 
 }
@@ -309,8 +316,14 @@ void MainScene::LogicUpdate() {
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
 
-	c1->transform.RotateBy(0.5f,0,1,0);
-	c1->transform.Translate(0.0, 0, -0.2);
+	//c1->transform.RotateBy(0.5f,0,1,0);
+	c1->transform.Translate(0, 0, -0.2f);
+//	Logger::LogInfo("C1", c1->transform.RotationQuatToString());
+//	Logger::LogInfo("C2", c2->transform.RotationQuatToString());
+
+
+	//c1->transform.SetPosition(c1->transform.GetGlobalPosition() + c1->transform.GetLocalFront() * 0.2f);
+
 
 
 	
