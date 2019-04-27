@@ -26,6 +26,11 @@
 
 #include "Physics\PhysicsWorld.h"
 
+
+#include "Utils\RandUtils.h"
+#include "Components\AI_Enemy.h"
+
+
 MainCamera* cam;
 int luaAssetOffset = 0;
 GameObject** nanosuits;
@@ -86,6 +91,7 @@ void MainScene::QuitScene() {
 void MainScene::Initialize() {
 
 	Lua::RunLua("Assets\\Scripts\\Level1.lua");
+	RandUtils::SeedRand();
 	gContactAddedCallback = PhysicsWorld::CollisionCallback;
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
@@ -202,6 +208,7 @@ void MainScene::Initialize() {
 	for (int i = 0; i < Lua::GetIntFromStack("prop_barrels"); i++)
 	{
 		barrels[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
+		barrels[i]->AddComponent(AI_Enemy());
 		AddGameObject(barrels[i]);
 		barrels[i]->transform.SetScale(Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"));
 		float posX = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "X");

@@ -189,6 +189,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\AI_Enemy.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />
     <ClInclude Include="src\Components\Collider.h" />
     <ClInclude Include="src\Components\RigidBody.h" />
@@ -280,9 +281,12 @@
     <ClInclude Include="src\Utils\GameAssetFactory.h" />
     <ClInclude Include="src\Utils\Maths.h" />
     <ClInclude Include="src\Utils\Quadtree.h" />
+    <ClInclude Include="src\Utils\RandUtils.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\AIState.h" />
+    <ClCompile Include="src\Components\AI_Enemy.cpp" />
     <ClCompile Include="src\Components\BoxCollider.cpp" />
     <ClCompile Include="src\Components\Collider.cpp" />
     <ClCompile Include="src\Components\RigidBody.cpp" />
@@ -354,6 +358,7 @@
     <ClCompile Include="src\Utils\GameAssetFactory.cpp" />
     <ClCompile Include="src\Utils\Maths.cpp" />
     <ClCompile Include="src\Utils\Quadtree.cpp" />
+    <ClCompile Include="src\Utils\RandUtils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

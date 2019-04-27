@@ -67,6 +67,9 @@
     <ClCompile Include="src\Components\SphereCollider.cpp" />
     <ClCompile Include="src\Utils\Quadtree.cpp" />
     <ClCompile Include="src\Physics\CollisionChecks.cpp" />
+    <ClCompile Include="src\Components\AI_Enemy.cpp" />
+    <ClCompile Include="src\Components\AIState.h" />
+    <ClCompile Include="src\Utils\RandUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -161,5 +164,7 @@
     <ClInclude Include="src\Utils\Quadtree.h" />
     <ClInclude Include="src\Physics\CollisionChecks.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIButton.h" />
+    <ClInclude Include="src\Components\AI_Enemy.h" />
+    <ClInclude Include="src\Utils\RandUtils.h" />
   </ItemGroup>
 </Project>
