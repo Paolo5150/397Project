@@ -102,7 +102,7 @@ void Water::Update()
 	
 
 	waterCamera->SetActive(1);
-	glm::vec3 color = glm::vec3(1, 1, 1);
+	glm::vec3 color = glm::vec3(0.5,0.5,0.5);
 	if (mainCamera->transform.GetGlobalPosition().y > transform.GetPosition().y)
 	{
 	LightManager::Instance().SetClippingPlane(glm::vec4(0, -1, 0, transform.GetPosition().y));
@@ -110,7 +110,7 @@ void Water::Update()
 	else
 	{
 		LightManager::Instance().SetClippingPlane(glm::vec4(0, 1, 0, transform.GetPosition().y));
-		color = glm::vec3(0.4,0.4,0.7);
+		color = glm::vec3(0.321, 0.3529, 0.3550);
 
 	}
 	//Refraction
