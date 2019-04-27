@@ -28,6 +28,12 @@ void Mesh::Render(Camera& cam)
 
 	vertexArray->RenderArrayTriangles(indices.size());
 }
+void Mesh::Render()
+{
+	vertexArray->RenderArrayTriangles(indices.size());
+
+}
+
 
 
 glm::vec3 Mesh::GetCenter()

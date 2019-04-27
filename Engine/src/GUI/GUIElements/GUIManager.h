@@ -96,6 +96,7 @@ public:
 	void SelectFont(std::string fontName);
 	void ResetFont(){ ImGui::PopFont(); }
 
+	void DeleteGUIObjects(bool preservedToo);
 	std::list<std::function<void()>> buttonCallbacks;
 private:
 
@@ -122,7 +123,6 @@ private:
 	*/
 	GUIManager(){};
 
-	void DeleteGUIObjects(bool preservedToo);
 };
 
 

@@ -123,6 +123,7 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 
 void GUIManager::RenderNoButtonCallbacks()
 {
+
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w));
 	ImGui_ImplOpenGL3_NewFrame();
