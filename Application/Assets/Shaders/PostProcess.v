@@ -14,7 +14,7 @@ void main()
 
 gl_Position = vec4(inPosition,1.0);
 
-Textcoords = inTextcoords;
+Textcoords = vec2(inTextcoords.x,  inTextcoords.y);
 
 
 }

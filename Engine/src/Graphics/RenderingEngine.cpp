@@ -104,6 +104,9 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 	static float timer = 0;
 	timer += Timer::GetDeltaS();
 	postProcessShader->SetFloat("timer", timer);
+	if (Camera::GetCameraByName("Main Camera") != nullptr)
+	postProcessShader->SetInt("underwater", Camera::GetCameraByName("Main Camera")->transform.GetPosition().y < 50 ? 1 : 0);
+
 	glActiveTexture(GL_TEXTURE0);
 	renderTexture->GetColorTexture()->Bind();
 	postProcessShader->SetInt("diffuse0", 0);

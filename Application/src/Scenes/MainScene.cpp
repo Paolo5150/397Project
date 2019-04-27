@@ -163,9 +163,7 @@ void MainScene::Initialize() {
 	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
 	cam->SetMovementSpeed(500);
 	cam->RemoveLayerMask(Layers::GUI);
-	cam->sphereCollider->collisionCallback = [](GameObject* go){
-		Logger::LogInfo("Camera is colliding");
-	};
+
 
 	Water* w = (Water*)Lua::GetCreatedAsset(1);
 	luaAssetOffset++;
@@ -265,7 +263,7 @@ void MainScene::Initialize() {
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go){
-		Logger::LogInfo("C1 colliding");
+		//Logger::LogInfo("C1 colliding");
 	};
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
@@ -329,8 +327,8 @@ void MainScene::LogicUpdate() {
 	
 	if (!cam->IsTopView())
 	{
-		//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
-		//cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+		float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+		cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 		// Limit camera position within terrain
 		if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)

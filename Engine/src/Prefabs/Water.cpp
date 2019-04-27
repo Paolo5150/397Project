@@ -37,6 +37,8 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	waterCamera->RemoveAllMaskLayers();
 	waterCamera->AddLayerMask(Layers::DEFAULT);
 	waterCamera->AddLayerMask(Layers::TERRAIN);
+	//waterCamera->AddLayerMask(Layers::SKYBOX);
+
 
 	waterCamera->SetActive(false);
 
@@ -66,6 +68,8 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	AssetLoader::Instance().GetAsset<Model>("Quad")->PopulateGameObject(this);
 	meshRenderer =(GetChild("QuadMesh")->GetComponentByType<MeshRenderer>("Renderer"));
 	meshRenderer->AddPreRenderCallback(std::bind(&Water::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
+	meshRenderer->AddPostRenderCallback(std::bind(&Water::OnPostRender, this, std::placeholders::_1, std::placeholders::_2));
+
 	meshRenderer->SetIsCullable(false);
 	SetIsStatic(true);
 	SetLayer(0);
@@ -98,8 +102,18 @@ void Water::Update()
 	
 
 	waterCamera->SetActive(1);
-	//Refraction
+	glm::vec3 color = glm::vec3(1, 1, 1);
+	if (mainCamera->transform.GetGlobalPosition().y > transform.GetPosition().y)
+	{
 	LightManager::Instance().SetClippingPlane(glm::vec4(0, -1, 0, transform.GetPosition().y));
+	}
+	else
+	{
+		LightManager::Instance().SetClippingPlane(glm::vec4(0, 1, 0, transform.GetPosition().y));
+		color = glm::vec3(0.4,0.4,0.7);
+
+	}
+	//Refraction
 	refractionBuffer->Bind();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
@@ -107,13 +121,14 @@ void Water::Update()
 	waterCamera->transform = mainCamera->transform;
 	waterCamera->Update();
 	//Logger::LogInfo("Wat cam", mainCamera->transform.VectorsToString());
-	RenderingEngine::Instance().RenderBuffer(waterCamera, MaterialType::NOLIGHT);
+	RenderingEngine::Instance().RenderBufferOverrideColor(waterCamera,color, MaterialType::NOLIGHT);
 
 	refractionBuffer->Unbind();
 
 	//Reflection
 	
 	reflectionBuffer->Bind();
+	Core::Instance().GetGraphicsAPI().SetClearColor(0.321, 0.3529, 0.3550);
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 
@@ -135,10 +150,20 @@ void Water::Update()
 
 }
 
+void Water::OnPostRender(Camera& camera, Shader* currentShader)
+{
+	glEnable(GL_CULL_FACE);
+
+}
+
 void Water::OnPreRender(Camera& camera, Shader* currentShader)
 {
+	glDisable(GL_CULL_FACE);
+
 	//Logger::LogInfo("Water pre render");
 	currentShader->SetFloat("timer", timer);
+	currentShader->SetInt("underwater", mainCamera->transform.GetPosition().y <  transform.GetPosition().y ? 1 : 0);
+
 
 	if (SceneManager::Instance().GetCurrentScene().GetSkyBox() != nullptr && !cubemapLoaded)
 	{
