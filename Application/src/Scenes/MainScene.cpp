@@ -28,7 +28,7 @@
 
 
 #include "Utils\RandUtils.h"
-#include "Components\AI_Enemy.h"
+#include "Components\AIBase.h"
 
 
 MainCamera* cam;
@@ -208,7 +208,7 @@ void MainScene::Initialize() {
 	for (int i = 0; i < Lua::GetIntFromStack("prop_barrels"); i++)
 	{
 		barrels[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		barrels[i]->AddComponent(AI_Enemy());
+		barrels[i]->AddComponent(new AIBase());
 		AddGameObject(barrels[i]);
 		barrels[i]->transform.SetScale(Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"));
 		float posX = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "X");
@@ -304,7 +304,6 @@ void MainScene::Initialize() {
 	cam->transform.SetRotation(0, 0, 0);		
 	cam->transform.Update();
 
-
 }
 void MainScene::LogicUpdate() {
 	PhysicsWorld::Instance().FillQuadtree();
@@ -358,6 +357,34 @@ void MainScene::LogicUpdate() {
 		cam->transform.LookAt(x, y, z);
 	}	
 
+	for (int i = 0; i < 10; i++) //TEMPORARY !-----!-----!-----!
+	{
+		float h = terrain->GetHeightAt(barrels[i]->transform.GetPosition().x, barrels[i]->transform.GetPosition().z);
+		barrels[i]->transform.SetPosition(barrels[i]->transform.GetPosition().x, h, barrels[i]->transform.GetPosition().z);
+
+		if (barrels[i]->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)
+		{
+			barrels[i]->transform.SetPosition(terrain->GetTerrainMaxX() - 50, barrels[i]->transform.GetPosition().y, barrels[i]->transform.GetPosition().z);
+			barrels[i]->transform.RotateBy(180, glm::vec3(0, 1, 0));
+		}
+		else if (barrels[i]->transform.GetPosition().x < terrain->GetTerrainMinX() + 50)
+		{
+			barrels[i]->transform.SetPosition(terrain->GetTerrainMinX() + 50, barrels[i]->transform.GetPosition().y, barrels[i]->transform.GetPosition().z);
+			barrels[i]->transform.RotateBy(180, glm::vec3(0, 1, 0));
+		}
+
+		if (barrels[i]->transform.GetPosition().z > terrain->GetTerrainMaxZ() - 50)
+		{
+			barrels[i]->transform.SetPosition(barrels[i]->transform.GetPosition().x, barrels[i]->transform.GetPosition().y, terrain->GetTerrainMaxZ() - 50);
+			barrels[i]->transform.RotateBy(180, glm::vec3(0, 1, 0));
+		}
+		else if (barrels[i]->transform.GetPosition().z < terrain->GetTerrainMinZ() + 50)
+		{
+			barrels[i]->transform.SetPosition(barrels[i]->transform.GetPosition().x, barrels[i]->transform.GetPosition().y, terrain->GetTerrainMinZ() + 50);
+			barrels[i]->transform.RotateBy(180, glm::vec3(0, 1, 0));
+		}
+	}
+
 	if (Input::GetKeyPressed(GLFW_KEY_M))
 		manual->isActive = !manual->isActive;
 
@@ -365,6 +392,22 @@ void MainScene::LogicUpdate() {
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		SceneManager::Instance().LoadNewScene("ExitScene");
 
+	if (Input::GetKeyPressed(GLFW_KEY_PAGE_DOWN)) //TEMPORARY !-----!-----!-----!
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			AIBase* ai = (AIBase*)(barrels[i]->GetComponent<AIBase>("AIBase"));
+			ai->SetMoveSpeed(ai->GetMoveSpeed() - 2);
+		}
+	}
+	else if (Input::GetKeyPressed(GLFW_KEY_PAGE_UP)) //TEMPORARY !-----!-----!-----!
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			AIBase* ai = (AIBase*)(barrels[i]->GetComponent<AIBase>("AIBase"));
+			ai->SetMoveSpeed(ai->GetMoveSpeed() + 2);
+		}
+	}
 
 	Scene::LogicUpdate(); //Must be last statement!
 }

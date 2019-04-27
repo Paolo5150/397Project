@@ -4,23 +4,31 @@
 #include "..\GameObject\Component.h"
 #include "AIState.h"
 #include "..\Utils\RandUtils.h"
+#include "..\Core\Timer.h"
 
-class AI_Enemy : public Component
+class AIBase : public Component
 {
 public:
-	AI_Enemy(AIState state = AIState::Wander);
-	~AI_Enemy();
+	AIBase(AIState state = AIState::Wander);
+	~AIBase();
 
 	void SetState(AIState state);
 
+	void SetMoveSpeed(float moveSpeed);
+
 	AIState GetState() const;
+
+	float GetMoveSpeed() const;
 
 	void Update() override;
 
+	virtual void OnAttach(GameObject* go) override;
+
 private:
 	AIState _state;
-	Transform _parentTransform;
+	Transform* _parentTransform;
 	float _moveDir;
+	float _moveSpeed;
 
 	void Think();
 	void Wander();
