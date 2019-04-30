@@ -15,7 +15,7 @@
 class AssimpWrapper
 {
 public:
-	Model* LoadModel(const std::string& folderAndFilename);
+	Model* LoadModel(const std::string& folderAndFilename, bool LoadTextures);
 	void ProcessNode(aiNode* node, const aiScene* scene, ModelNode* parentNode, Model* model, bool isAnimated);
 	void ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model, bool isAnimated);
 

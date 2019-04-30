@@ -5,14 +5,18 @@
 #include "Maths.h"
 #include "..\Graphics\AnimatedModel.h"
 
+namespace
+{
+
 static std::string fileNameOnly;
 static std::string modelFolderName;
 static std::string pathToFolder;
-
-Model* AssimpWrapper::LoadModel(const std::string& path)
+static bool texturesAsWell = true;
+}
+Model* AssimpWrapper::LoadModel(const std::string& path, bool loadTextures)
 {
 	Assimp::Importer import;
-
+	texturesAsWell = loadTextures;
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_FixInfacingNormals |
 		aiProcess_GenNormals | aiProcessPreset_TargetRealtime_Quality);
 
@@ -94,7 +98,7 @@ void AssimpWrapper::ProcessMesh(aiMesh* mesh, const aiScene* scene, Model* model
 	//Logger::LogInfo("Processing mesh {}", mesh->mName.C_Str());
 	Material associatedMaterial ;
 	//material
-	if (mesh->mMaterialIndex >= 0 && scene->mNumMaterials != 0)
+	if (texturesAsWell &&  mesh->mMaterialIndex >= 0 && scene->mNumMaterials != 0)
 	{
 		//all pointers created in assimp will be deleted automaticaly when we call import.FreeScene();
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];

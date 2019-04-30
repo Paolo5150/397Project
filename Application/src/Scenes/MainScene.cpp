@@ -17,6 +17,7 @@
 #include "Core\Lua.h"
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIImage.h"
+#include "Components\Animator.h"
 
 #include "GUI\GUIElements\GUIManager.h"
 #include "Components\BoxCollider.h"
@@ -62,7 +63,9 @@ void MainScene::LoadAssets() {
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
 	//AssetLoader::Instance().LoadModel("Assets\\Models\\Wolf\\wolf.fbx");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Spider\\spider_3.fbx",0);
 
+	AssetLoader::Instance().LoadTexture("Assets\\Models\\Spider\\textures\\Spinnen_Bein_tex_COLOR_.jpg");
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
@@ -252,6 +255,18 @@ void MainScene::Initialize() {
 	/*GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
 	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
 	AddGameObject(woof);*/
+
+	Material spiderMat;
+	spiderMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("Spinnen_Bein_tex_COLOR_"));
+	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
+
+	GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
+	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
+	woof->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
+	woof->ApplyMaterial(spiderMat);
+	woof->PrintHierarchy();
+	
+	AddGameObject(woof);
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c1->transform.SetPosition(cam->transform.GetPosition().x+20,400, cam->transform.GetPosition().z + 400);

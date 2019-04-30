@@ -76,6 +76,7 @@ void RenderingEngine::Initialize()
 
 void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 {
+
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 	renderTexture->Bind();
