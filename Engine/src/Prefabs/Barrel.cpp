@@ -17,8 +17,6 @@ Barrel::Barrel() : GameObject("Barrel")
 	sc->transform.SetPosition(0, 0.7, 0);
 	sc->enableRender = 1;
 	AddComponent(sc);
-
-
 }
 
 Barrel::~Barrel()

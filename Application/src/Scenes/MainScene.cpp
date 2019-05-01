@@ -25,6 +25,8 @@
 #include "Prefabs\Pumpkin.h"
 #include "Prefabs\Crate.h"
 #include "Prefabs\Barrel.h"
+#include "Prefabs\Cabin.h"
+
 
 #include "Physics\PhysicsWorld.h"
 
@@ -293,7 +295,7 @@ void MainScene::Initialize() {
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
-	Barrel* pum = new Barrel();
+	Cabin* pum = new Cabin();
 	pum->transform.SetPosition(cam->transform.GetPosition().x + 180, 400, cam->transform.GetPosition().z + 200);
 	AddGameObject(pum);
 
@@ -328,7 +330,7 @@ void MainScene::LogicUpdate() {
 	glm::vec3 cross = glm::normalize(glm::cross(spider->transform.GetLocalFront(), glm::normalize(toCam)));
 	int s = glm::sign(cross.y);	
 	glm::vec3 np = spider->transform.GetPosition();
-	np += spider->transform.GetLocalFront() * 0.5f;
+	np -= spider->transform.GetLocalFront() * 0.8f;
 	float y = terrain->GetHeightAt(np.x, np.z);
 	spider->transform.SetPosition(np.x, y, np.z);
 	spider->transform.RotateBy(yAngle * s, 0, 1, 0);

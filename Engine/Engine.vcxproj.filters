@@ -70,6 +70,7 @@
     <ClCompile Include="src\Prefabs\Pumpkin.cpp" />
     <ClCompile Include="src\Prefabs\Crate.cpp" />
     <ClCompile Include="src\Prefabs\Barrel.cpp" />
+    <ClCompile Include="src\Prefabs\Cabin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -168,5 +169,6 @@
     <ClInclude Include="src\Prefabs\Pumpkin.h" />
     <ClInclude Include="src\Prefabs\Crate.h" />
     <ClInclude Include="src\Prefabs\Barrel.h" />
+    <ClInclude Include="src\Prefabs\Cabin.h" />
   </ItemGroup>
 </Project>

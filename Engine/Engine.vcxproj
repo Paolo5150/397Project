@@ -269,6 +269,7 @@
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Axis.h" />
     <ClInclude Include="src\Prefabs\Barrel.h" />
+    <ClInclude Include="src\Prefabs\Cabin.h" />
     <ClInclude Include="src\Prefabs\Crate.h" />
     <ClInclude Include="src\Prefabs\GridMesh.h" />
     <ClInclude Include="src\Prefabs\Pumpkin.h" />
@@ -328,6 +329,7 @@
     <ClCompile Include="src\Physics\CollisionChecks.cpp" />
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\Barrel.cpp" />
+    <ClCompile Include="src\Prefabs\Cabin.cpp" />
     <ClCompile Include="src\Prefabs\Crate.cpp" />
     <ClCompile Include="src\Prefabs\GridMesh.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
