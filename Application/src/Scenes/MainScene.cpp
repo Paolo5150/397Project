@@ -42,9 +42,11 @@ Terrain* terrain;
 btDefaultMotionState* motionstate;
 btRigidBody *rigidBody;
 
+GameObject* spider;
 GameObject* c1;
 GameObject* c2;
 
+int animIndex = 0;
 
 MainScene::MainScene() : Scene("MainScene")
 {
@@ -260,13 +262,13 @@ void MainScene::Initialize() {
 	spiderMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("Spinnen_Bein_tex_COLOR_"));
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 
-	GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
-	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
-	woof->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
-	woof->ApplyMaterial(spiderMat);
-	woof->PrintHierarchy();
+	spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
+	spider->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
+	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
+	spider->ApplyMaterial(spiderMat);
+	spider->PrintHierarchy();
 	
-	AddGameObject(woof);
+	AddGameObject(spider);
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c1->transform.SetPosition(cam->transform.GetPosition().x+20,400, cam->transform.GetPosition().z + 400);
@@ -315,16 +317,16 @@ void MainScene::Initialize() {
 void MainScene::LogicUpdate() {
 	PhysicsWorld::Instance().FillQuadtree();
 	//c1->GetComponent<RigidBody>("RigidBody")->btrb->translate(btVector3(0, -1, 0));
-	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, nanosuit->transform.GetPosition().y, cam->transform.GetPosition().z) - nanosuit->transform.GetPosition();
-	float yAngle = glm::degrees(glm::angle(nanosuit->transform.GetLocalFront(),glm::normalize(toCam)));
-	glm::vec3 cross = glm::normalize(glm::cross(nanosuit->transform.GetLocalFront(), glm::normalize(toCam)));
-	int s = glm::sign(cross.y);
-
-	
-	glm::vec3 np = nanosuit->transform.GetPosition();
-	np += nanosuit->transform.GetLocalFront() * 0.5f;
+	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, spider->transform.GetPosition().y, cam->transform.GetPosition().z) - spider->transform.GetPosition();
+	float yAngle = glm::degrees(glm::angle(spider->transform.GetLocalFront(), glm::normalize(toCam)));
+	glm::vec3 cross = glm::normalize(glm::cross(spider->transform.GetLocalFront(), glm::normalize(toCam)));
+	int s = glm::sign(cross.y);	
+	glm::vec3 np = spider->transform.GetPosition();
+	np += spider->transform.GetLocalFront() * 0.5f;
 	float y = terrain->GetHeightAt(np.x, np.z);
-	nanosuit->transform.SetPosition(np.x, y, np.z);*/
+	spider->transform.SetPosition(np.x, y, np.z);
+	spider->transform.RotateBy(yAngle * s, 0, 1, 0);
+	spider->transform.RotateBy(180, 0, 1, 0);
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
@@ -334,7 +336,13 @@ void MainScene::LogicUpdate() {
 //	Logger::LogInfo("C1", c1->transform.RotationQuatToString());
 //	Logger::LogInfo("C2", c2->transform.RotationQuatToString());
 
+	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(animIndex);
 
+	if (Input::GetKeyPressed(GLFW_KEY_O))
+	{
+		animIndex++;		
+
+	}
 	//c1->transform.SetPosition(c1->transform.GetGlobalPosition() + c1->transform.GetLocalFront() * 0.2f);
 
 
