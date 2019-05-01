@@ -85,6 +85,10 @@ void Core::Initialize()
 	m_runningApplication = CreateApplication();
 	Window::Instance().SetWindowTitle(m_runningApplication->name.c_str()); //Window title -> game title
 
+	RenderingEngine::Instance().postProcessShader = AssetLoader::Instance().GetAsset<Shader>("PostProcess");
+	RenderingEngine::Instance().distortionTexture = AssetLoader::Instance().GetAsset<Texture2D>("dudv");
+
+
 	//Start update loop
 	m_isRunning = true;
 }
@@ -171,8 +175,8 @@ bool Core::Render(Event* e)
 	//Logger::LogInfo("Core rendering");
 
 	LightManager::Instance().Update();
-	RenderingEngine::Instance().RenderBuffer();
-	GUIManager::Instance().Render();	
+	RenderingEngine::Instance().RenderBufferToTexture();
+	GUIManager::Instance().Render();
 
 	Window::Instance().Refresh();
 	return 0;
@@ -205,6 +209,8 @@ void Core::LoadBasicAssets()
 	AssetLoader::Instance().LoadShader("DefaultStaticNormalMap", "Assets\\Shaders\\DefaultStaticNormalMap.v", "Assets\\Shaders\\DefaultStaticNormalMap.f", true);
 	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
 	AssetLoader::Instance().LoadShader("DefaultAnimatedNoLight", "Assets\\Shaders\\DefaultAnimatedNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
+	AssetLoader::Instance().LoadShader("PostProcess", "Assets\\Shaders\\PostProcess.v", "Assets\\Shaders\\PostProcess.f", true);
+
 
 	AssetLoader::Instance().LoadShader("Terrain", "Assets\\Shaders\\Terrain.v", "Assets\\Shaders\\Terrain.f", true);
 	AssetLoader::Instance().LoadShader("Water", "Assets\\Shaders\\Water.v", "Assets\\Shaders\\Water.f", true);

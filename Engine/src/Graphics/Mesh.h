@@ -95,6 +95,8 @@ public:
 
 
 	void Render(Camera& cam);
+	void Render();
+
 
 	void RefreshVertexBuffer() { vertexBuffer->AddData(vertices); };
 	void InitializeVertexArray();

@@ -2,6 +2,8 @@
 #include "Core\CameraPerspective.h"
 #include "ExitScene.h"
 #include "Core/Logger.h"
+#include "Core/Core.h"
+
 #include "Scene/SceneManager.h"
 
 #include "Core\Window.h"
@@ -36,7 +38,7 @@ void ExitScene::QuitScene() {
 }
 
 void ExitScene::Initialize() {
-
+	Core::Instance().GetGraphicsAPI().SetClearColor(0.8f, 0.8f, 0.8f);
 	 GUIManager::Instance().AddGUIObject(new GUIImage("paoloImage",AssetLoader::Instance().GetAsset<Texture2D>("paolo"), 10, 20, 25, 35, true)); 
 	 GUIManager::Instance().AddGUIObject(new GUIImage("dylanImage", AssetLoader::Instance().GetAsset<Texture2D>("dylan"), 40, 20, 25, 35, true));
 	 GUIManager::Instance().AddGUIObject(new GUIImage("mitchImage", AssetLoader::Instance().GetAsset<Texture2D>("mitch"), 70, 20, 25, 35, true));

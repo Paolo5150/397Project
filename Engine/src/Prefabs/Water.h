@@ -81,6 +81,9 @@ public:
 	*/
 	void OnPreRender(Camera& camera, Shader* currentShader = nullptr) ;
 
+	void OnPostRender(Camera& camera, Shader* currentShader = nullptr);
+
+
 	/**
 	* @brief		The mesh renderer component
 	*/

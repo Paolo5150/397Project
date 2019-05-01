@@ -7,6 +7,7 @@
 
 #include <map>
 
+class FrameBuffer;
 
 /**
 * @class RenderingEngine
@@ -59,6 +60,18 @@ public:
 	void RenderBuffer(Camera* camera, MaterialType mt = DEFAULT);	
 
 	/**
+	* @brief		Render the current buffer of renderers with a specified material and camera
+	* @pre			The instance exists
+	* @post			The renderers are drawn to the screen
+	*/
+	/**
+	* @brief		Render the current buffer of renderers with a specified material and all available cameras
+	* @pre			The instance exists
+	* @post			The renderers are drawn to the screen
+	*/
+	void RenderBufferToTexture(MaterialType mt = DEFAULT);
+
+	/**
 	* @brief		Render the current buffer of renderers with a specified material and camera and force a color to the renderers
 	* @pre			The instance exists
 	* @post			The renderers are drawn to the screen with the color applied
@@ -85,6 +98,9 @@ public:
 	*/
 	static std::vector<Renderer*> allRenderers;
 
+	FrameBuffer* renderTexture;
+	Shader* postProcessShader;
+	Texture2D* distortionTexture;
 private:
 	/**
 	* @brief		The lconstructor, private as this is a singleton
@@ -115,6 +131,6 @@ private:
 	*/
 	void RenderVectorOverrideColor(Camera& cam, std::vector<Renderer*>& r, glm::vec3 color,MaterialType m = MaterialType::DEFAULT);
 
-
+	Mesh* quadMesh;
 
 };

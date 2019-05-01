@@ -100,7 +100,7 @@ public:
 	* @param path					The absolute path to the model file
 	* @param preserve				Whether the asset will be preserved between scenes
 	*/
-	Model* LoadModel(std::string path, bool preserve = false);
+	Model* LoadModel(std::string path, bool loadTextures = true,bool preserve = false);
 	
 	/**
 	* @brief						Unload a specific set of asset type

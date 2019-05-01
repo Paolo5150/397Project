@@ -6,6 +6,9 @@
 #include "..\Components\Renderer.h"
 #include "..\Core\Camera.h"
 #include "..\Lighting\LightingManager.h"
+#include "FrameBuffer.h"
+#include "..\Utils\AssetLoader.h"
+#include "..\GUI\GUIElements\GUIManager.h"
 
 #include <algorithm>
 std::vector<Renderer*> RenderingEngine::allRenderers;
@@ -25,7 +28,7 @@ RenderingEngine::RenderingEngine()
 
 RenderingEngine::~RenderingEngine()
 {
-
+	delete renderTexture;
 }
 
 void RenderingEngine::Initialize()
@@ -35,7 +38,90 @@ void RenderingEngine::Initialize()
 		ClearRendererList();
 		return 0;
 	});
+
+	int w, h;
+	Window::Instance().GetWindowSize(w, h);
+	renderTexture = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);	
+	postProcessShader = AssetLoader::Instance().GetAsset<Shader>("PostProcess");
+
+	Vertex v1(-1.0, -1.0, 0.0);
+	v1.UV = glm::vec2(0, 0);
+
+	Vertex v2(1.0, -1.0, 0.0);
+	v2.UV = glm::vec2(1, 0);
+
+	Vertex v3(1.0, 1.0, 0.0);
+	v3.UV = glm::vec2(1, 1);
+
+	Vertex v4(-1.0, 1.0, 0.0);
+	v4.UV = glm::vec2(0, 1);
+
+	std::vector<Vertex> vertices;
+	vertices.push_back(v1);
+	vertices.push_back(v2);
+	vertices.push_back(v3);
+	vertices.push_back(v4);
+
+	std::vector<unsigned> indices;
+	indices.push_back(0);
+	indices.push_back(1);
+	indices.push_back(2);
+	indices.push_back(2);
+	indices.push_back(3);
+	indices.push_back(0);
+
+	quadMesh = new Mesh(vertices, indices);
+
 }
+
+void RenderingEngine::RenderBufferToTexture(MaterialType mt )
+{
+
+	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
+	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
+	renderTexture->Bind();
+	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
+	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
+
+	int previousDepth = 0;
+	//Render opaque
+	for (int camIndex = 0; camIndex < Camera::GetAllCameras().size(); camIndex++)
+	{
+		Camera& cam = *Camera::GetAllCameras()[camIndex];
+
+		if (!cam.GetActive()) continue;
+
+		if (previousDepth != cam.GetDepth())
+			Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
+
+		RenderVector(cam, allRenderers, mt);
+		previousDepth = cam.GetDepth();
+
+	}
+	Core::Instance().GetGraphicsAPI().ResetTextures();
+	renderTexture->Unbind();
+
+	postProcessShader->Bind();
+	static float timer = 0;
+	timer += Timer::GetDeltaS();
+	postProcessShader->SetFloat("timer", timer);
+	if (Camera::GetCameraByName("Main Camera") != nullptr)
+	postProcessShader->SetInt("underwater", Camera::GetCameraByName("Main Camera")->transform.GetPosition().y < 50 ? 1 : 0);
+
+	glActiveTexture(GL_TEXTURE0);
+	renderTexture->GetColorTexture()->Bind();
+	postProcessShader->SetInt("diffuse0", 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	postProcessShader->SetInt("special0", 1);
+	distortionTexture->Bind();
+	quadMesh->Render();
+
+	glActiveTexture(GL_TEXTURE0);
+
+
+}
+
 
 
 void RenderingEngine::SubmitRenderer(Renderer* rend)
@@ -53,18 +139,16 @@ void RenderingEngine::SubmitRenderer(Renderer* rend)
 
 void RenderingEngine::RenderBuffer(Camera* cam,MaterialType mt)
 {
-
-	RenderVector(*cam, allRenderers, mt);
-	
+	RenderVector(*cam, allRenderers, mt);	
 	Core::Instance().GetGraphicsAPI().ResetTextures();
+
 }
 
 void RenderingEngine::RenderBuffer(MaterialType mt)
 {
+
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
-
-
 
 	int previousDepth = 0;
 	//Render opaque
