@@ -133,8 +133,6 @@ float AIBase::GetMaxFollowDistance() const
 
 void AIBase::Update()
 {
-	Logger::LogInfo(GetBearingToTarget());
-
 	Think();
 }
 
@@ -194,11 +192,8 @@ void AIBase::Wander()
 		_targetDirection += RandUtils::RandFloat(-0, 10);
 	}
 
-	/*if (_parentTransform->GetLocalFront() < _targetDirection)
-	{
 		_parentTransform->RotateBy(_targetDirection, glm::vec3(0, 1, 0));
 		_parentTransform->SetPosition(_parentTransform->GetPosition() + (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
-	}*/
 
 	if (RandUtils::RandInt(1, 100) < 10 && Timer::GetTimeS() - _lastStateChange > 5.0f)
 	{
