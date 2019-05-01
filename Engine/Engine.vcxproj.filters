@@ -161,5 +161,6 @@
     <ClInclude Include="src\Utils\Quadtree.h" />
     <ClInclude Include="src\Physics\CollisionChecks.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIButton.h" />
+    <ClInclude Include="src\Physics\CollisionLayer.h" />
   </ItemGroup>
 </Project>

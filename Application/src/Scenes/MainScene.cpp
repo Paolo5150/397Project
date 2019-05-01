@@ -279,8 +279,11 @@ void MainScene::Initialize() {
 	c1->AddComponent(new BoxCollider());
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
+	c1->GetComponent<BoxCollider>("BoxCollider")->ResetCollisionLayer();
+	c1->GetComponent<BoxCollider>("BoxCollider")->AddCollisionLayer(CollisionLayers::OBSTACLE);
+
 	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go){
-		//Logger::LogInfo("C1 colliding");
+		Logger::LogInfo("C1 colliding");
 	};
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();

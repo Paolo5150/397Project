@@ -265,6 +265,7 @@
     <ClInclude Include="src\Lighting\PointLight.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Physics\CollisionChecks.h" />
+    <ClInclude Include="src\Physics\CollisionLayer.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Axis.h" />
     <ClInclude Include="src\Prefabs\GridMesh.h" />

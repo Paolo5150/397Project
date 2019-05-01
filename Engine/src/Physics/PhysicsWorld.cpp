@@ -161,12 +161,13 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 			for (; it2 != node->gameObjects.end(); it2++)
 			{
 				if (*it == *it2) continue;
-				
-				if (CollisionChecks::Collision((*it), (*it2)))
+				if ((*it)->GetCollisionLayer() & (*it2)->GetCollideAgainstLayer())
 				{
-					(*it)->collisionCallback((*it2)->GetParent());
+					if (CollisionChecks::Collision((*it), (*it2)))
+					{
+						(*it)->collisionCallback((*it2)->GetParent());
+					}
 				}
-
 			}
 		}
 	}
