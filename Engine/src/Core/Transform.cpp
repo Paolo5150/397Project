@@ -6,6 +6,7 @@
 Transform::Transform()
 {
 	scale = glm::vec3(1, 1, 1);
+	SetPosition(0,0,0);
 	SetRotation(0,0,0);
 	parent = NULL;
 	ignoreParentRotation = 0;

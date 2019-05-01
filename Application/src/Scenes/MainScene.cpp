@@ -211,7 +211,7 @@ void MainScene::Initialize() {
 	for (int i = 0; i < Lua::GetIntFromStack("prop_barrels"); i++)
 	{
 		barrels[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		barrels[i]->AddComponent(new AIBase(cam->transform));
+		//barrels[i]->AddComponent(new AIBase(cam->transform));
 		AddGameObject(barrels[i]);
 		barrels[i]->transform.SetScale(Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"));
 		float posX = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "X");
@@ -270,6 +270,7 @@ void MainScene::Initialize() {
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 
 	spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
+	spider->AddComponent(new AIBase(cam->transform));
 	spider->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
 	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
 	spider->ApplyMaterial(spiderMat);
@@ -330,9 +331,9 @@ void MainScene::LogicUpdate() {
 	glm::vec3 np = spider->transform.GetPosition();
 	np += spider->transform.GetLocalFront() * 0.5f;
 	float y = terrain->GetHeightAt(np.x, np.z);
-	spider->transform.SetPosition(np.x, y, np.z);
-	spider->transform.RotateBy(yAngle * s, 0, 1, 0);
-	spider->transform.RotateBy(180, 0, 1, 0);
+	//spider->transform.SetPosition(np.x, y, np.z);
+	//spider->transform.RotateBy(yAngle * s, 0, 1, 0);
+	//spider->transform.RotateBy(180, 0, 1, 0);
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
@@ -378,33 +379,33 @@ void MainScene::LogicUpdate() {
 		cam->transform.LookAt(x, y, z);
 	}	
 
-	for (int i = 0; i < 10; i++) //TEMPORARY !-----!-----!-----!
-	{
-		float h = terrain->GetHeightAt(barrels[i]->transform.GetPosition().x, barrels[i]->transform.GetPosition().z);
-		barrels[i]->transform.SetPosition(barrels[i]->transform.GetPosition().x, h, barrels[i]->transform.GetPosition().z);
+	//for (int i = 0; i < 10; i++) //TEMPORARY !-----!-----!-----!
+	//{
+		float h = terrain->GetHeightAt(spider->transform.GetPosition().x, spider->transform.GetPosition().z);
+		spider->transform.SetPosition(spider->transform.GetPosition().x, h, spider->transform.GetPosition().z);
 
-		if (barrels[i]->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)
+		if (spider->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)
 		{
-			barrels[i]->transform.SetPosition(terrain->GetTerrainMaxX() - 50, barrels[i]->transform.GetPosition().y, barrels[i]->transform.GetPosition().z);
-			barrels[i]->transform.RotateBy(180, glm::vec3(0, 1, 0));
+			spider->transform.SetPosition(terrain->GetTerrainMaxX() - 50, spider->transform.GetPosition().y, spider->transform.GetPosition().z);
+			spider->transform.RotateBy(180, glm::vec3(0, 1, 0));
 		}
-		else if (barrels[i]->transform.GetPosition().x < terrain->GetTerrainMinX() + 50)
+		else if (spider->transform.GetPosition().x < terrain->GetTerrainMinX() + 50)
 		{
-			barrels[i]->transform.SetPosition(terrain->GetTerrainMinX() + 50, barrels[i]->transform.GetPosition().y, barrels[i]->transform.GetPosition().z);
-			barrels[i]->transform.RotateBy(180, glm::vec3(0, 1, 0));
+			spider->transform.SetPosition(terrain->GetTerrainMinX() + 50, spider->transform.GetPosition().y, spider->transform.GetPosition().z);
+			spider->transform.RotateBy(180, glm::vec3(0, 1, 0));
 		}
 
-		if (barrels[i]->transform.GetPosition().z > terrain->GetTerrainMaxZ() - 50)
+		if (spider->transform.GetPosition().z > terrain->GetTerrainMaxZ() - 50)
 		{
-			barrels[i]->transform.SetPosition(barrels[i]->transform.GetPosition().x, barrels[i]->transform.GetPosition().y, terrain->GetTerrainMaxZ() - 50);
-			barrels[i]->transform.RotateBy(180, glm::vec3(0, 1, 0));
+			spider->transform.SetPosition(spider->transform.GetPosition().x, spider->transform.GetPosition().y, terrain->GetTerrainMaxZ() - 50);
+			spider->transform.RotateBy(180, glm::vec3(0, 1, 0));
 		}
-		else if (barrels[i]->transform.GetPosition().z < terrain->GetTerrainMinZ() + 50)
+		else if (spider->transform.GetPosition().z < terrain->GetTerrainMinZ() + 50)
 		{
-			barrels[i]->transform.SetPosition(barrels[i]->transform.GetPosition().x, barrels[i]->transform.GetPosition().y, terrain->GetTerrainMinZ() + 50);
-			barrels[i]->transform.RotateBy(180, glm::vec3(0, 1, 0));
+			spider->transform.SetPosition(spider->transform.GetPosition().x, spider->transform.GetPosition().y, terrain->GetTerrainMinZ() + 50);
+			spider->transform.RotateBy(180, glm::vec3(0, 1, 0));
 		}
-	}
+	//}
 
 	if (Input::GetKeyPressed(GLFW_KEY_M))
 		manual->isActive = !manual->isActive;
@@ -413,23 +414,6 @@ void MainScene::LogicUpdate() {
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		SceneManager::Instance().LoadNewScene("ExitScene");
 
-	if (Input::GetKeyPressed(GLFW_KEY_PAGE_DOWN)) //TEMPORARY !-----!-----!-----!
-	{
-		for (int i = 0; i < 10; i++)
-		{
-			AIBase* ai = (AIBase*)(barrels[i]->GetComponent<AIBase>("AIBase"));
-			ai->SetMovementSpeed(ai->GetMovementSpeed() - 2);
-		}
-	}
-	else if (Input::GetKeyPressed(GLFW_KEY_PAGE_UP)) //TEMPORARY !-----!-----!-----!
-	{
-		for (int i = 0; i < 10; i++)
-		{
-			AIBase* ai = (AIBase*)(barrels[i]->GetComponent<AIBase>("AIBase"));
-			ai->SetMovementSpeed(ai->GetMovementSpeed() + 2);
-		}
-	}	
-	
 	Scene::LogicUpdate(); //Must be last statement!
 }
 

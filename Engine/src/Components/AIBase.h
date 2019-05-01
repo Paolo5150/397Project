@@ -9,17 +9,17 @@
 class AIBase : public Component
 {
 public:
-	AIBase(AIState state = AIState::Wander);
-	AIBase(Transform targetTransform, AIState state = AIState::Wander);
+	AIBase(AIState state = AIState::Idle);
+	AIBase(Transform& targetTransform, AIState state = AIState::Idle);
 	~AIBase();
 
 	float GetBearing() const;
 
-	void SetTarget(Transform targetTransform);
+	void SetTarget(Transform& targetTransform);
 
 	float GetDistanceToTarget() const;
 
-	int GetBearingToTarget() const;
+	float GetBearingToTarget() const;
 
 	Transform* GetTarget() const;
 

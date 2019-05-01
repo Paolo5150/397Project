@@ -8,13 +8,17 @@ AIBase::AIBase(AIState state) : Component("AIBase")
 	_movementSpeed = 50.0f;
 }
 
-AIBase::AIBase(Transform targetTransform, AIState state) : Component("AIBase")
+AIBase::AIBase(Transform& targetTransform, AIState state) : Component("AIBase")
 {
 	_type = "AI";
 	SetState(state);
 	_targetDirection = RandUtils::RandFloat(0, 360);
 	_movementSpeed = 50.0f;
+	_rotationSpeed = 2.0f;
 	_targetTransform = &targetTransform;
+	SetAgroDistance(500.0f);
+	SetMaxFollowDistance(600.0f);
+	SetFleeDistance(600.0f);
 }
 
 AIBase::~AIBase()
@@ -28,7 +32,7 @@ float AIBase::GetBearing() const
 	return result * (180.0f / pi);
 }
 
-void AIBase::SetTarget(Transform targetTransform)
+void AIBase::SetTarget(Transform& targetTransform)
 {
 	_targetTransform = &targetTransform;
 }
@@ -38,16 +42,13 @@ float AIBase::GetDistanceToTarget() const
 	return sqrt(pow(_targetTransform->GetPosition().x - _parentTransform->GetPosition().x, 2) + pow(_targetTransform->GetPosition().y - _parentTransform->GetPosition().y, 2) + pow(_targetTransform->GetPosition().z - _parentTransform->GetPosition().z, 2));
 }
 
-int AIBase::GetBearingToTarget() const
+float AIBase::GetBearingToTarget() const
 {
-	//float result = glm::dot(_parentTransform->GetLocalFront(), _targetTransform->GetLocalFront());
-	//return result * 360.0f;
-
 	glm::vec3 toThis = glm::vec3(_parentTransform->GetPosition().x, _targetTransform->GetPosition().y, _parentTransform->GetPosition().z) - _targetTransform->GetPosition();
-	float yAngle = glm::degrees(glm::angle(_targetTransform->GetLocalFront(),glm::normalize(toThis)));
+	float yAngle = glm::degrees(glm::angle(_targetTransform->GetLocalFront(), glm::normalize(toThis)));
 	glm::vec3 cross = glm::normalize(glm::cross(_targetTransform->GetLocalFront(), glm::normalize(toThis)));
 	int s = glm::sign(cross.y);
-	return s;
+	return yAngle * s;
 }
 
 Transform* AIBase::GetTarget() const
@@ -174,7 +175,7 @@ void AIBase::Idle()
 		SetState(AIState::Wander);
 	}
 
-	if (GetDistanceToTarget() < 100.0f)
+	if (GetDistanceToTarget() <= _agroDistance)
 	{
 		Logger::LogInfo("Now Seeking");
 		SetState(AIState::Seek);
@@ -192,16 +193,15 @@ void AIBase::Wander()
 		_targetDirection += RandUtils::RandFloat(-0, 10);
 	}
 
-		_parentTransform->RotateBy(_targetDirection, glm::vec3(0, 1, 0));
-		_parentTransform->SetPosition(_parentTransform->GetPosition() + (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
+	_parentTransform->SetPosition(_parentTransform->GetPosition() + (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
 
 	if (RandUtils::RandInt(1, 100) < 10 && Timer::GetTimeS() - _lastStateChange > 5.0f)
 	{
-		Logger::LogInfo("Now Idle");
-		SetState(AIState::Idle);
+		//Logger::LogInfo("Now Idle");
+		//SetState(AIState::Idle);
 	}
 
-	if (GetDistanceToTarget() < 100.0f)
+	if (GetDistanceToTarget() <= _agroDistance)
 	{
 		Logger::LogInfo("Now Seeking");
 		SetState(AIState::Seek);
@@ -210,8 +210,15 @@ void AIBase::Wander()
 
 void AIBase::Seek()
 {
-	if (GetDistanceToTarget() > 150.0f)
+	glm::vec3 np = _parentTransform->GetPosition();
+	np += _parentTransform->GetLocalFront() * 0.5f;
+	_parentTransform->RotateBy(GetBearingToTarget() * GetRotationSpeed() * Timer::GetDeltaS(), 0, 1, 0);
+	_parentTransform->RotateBy(180, 0, 1, 0);
+	_parentTransform->SetPosition(_parentTransform->GetPosition() + (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
+
+	if (GetDistanceToTarget() >= _maxFollowDistance)
 	{
+		Logger::LogInfo("Returning to Wander");
 		SetState(AIState::Wander);
 	}
 }
