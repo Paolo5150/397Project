@@ -23,6 +23,8 @@
 #include "Components\BoxCollider.h"
 #include "Components\SphereCollider.h"
 #include "Prefabs\Pumpkin.h"
+#include "Prefabs\Crate.h"
+
 #include "Components\RigidBody.h"
 
 #include "Physics\PhysicsWorld.h"
@@ -292,7 +294,7 @@ void MainScene::Initialize() {
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
-	Pumpkin* pum = new Pumpkin();
+	Crate* pum = new Crate();
 	pum->transform.SetPosition(cam->transform.GetPosition().x + 180, 400, cam->transform.GetPosition().z + 200);
 	AddGameObject(pum);
 
