@@ -22,22 +22,29 @@ AIBase::~AIBase()
 
 }
 
+float AIBase::GetBearing() const
+{
+	float result = atan(_parentTransform->GetLocalFront().y / _parentTransform->GetLocalFront().x);
+	return result * (180.0f / pi);
+}
+
 void AIBase::SetTarget(Transform targetTransform)
 {
 	_targetTransform = &targetTransform;
 }
 
-float AIBase::GetDistanceToTarget()
+float AIBase::GetDistanceToTarget() const
 {
 	return sqrt(pow(_targetTransform->GetPosition().x - _parentTransform->GetPosition().x, 2) + pow(_targetTransform->GetPosition().y - _parentTransform->GetPosition().y, 2) + pow(_targetTransform->GetPosition().z - _parentTransform->GetPosition().z, 2));
 }
 
-float AIBase::GetBearingToTarget()
+float AIBase::GetBearingToTarget() const
 {
-	Transform* toCam = glm::dot(_parentTransform, _targetTransform);
+	float result = glm::dot(_parentTransform->GetLocalFront(), _targetTransform->GetLocalFront());
+	return result * 360.0f;
 }
 
-Transform* AIBase::GetTarget()
+Transform* AIBase::GetTarget() const
 {
 	return _targetTransform;
 }
@@ -81,32 +88,41 @@ float AIBase::GetRotationSpeed() const
 
 void AIBase::SetFleeDistance(float fleeDistance)
 {
-	_fle
+	if (fleeDistance >= 0)
+	{
+		_fleeDistance = fleeDistance;
+	}
 }
 
-float AIBase::GetFleeDistance()
+float AIBase::GetFleeDistance() const
 {
-
+	return _fleeDistance;
 }
 
 void AIBase::SetAgroDistance(float agroDistance)
 {
-
+	if (agroDistance >= 0)
+	{
+		_agroDistance = agroDistance;
+	}
 }
 
-float AIBase::GetAgroDistance()
+float AIBase::GetAgroDistance() const
 {
-
+	return _agroDistance;
 }
 
 void AIBase::SetMaxFollowDistance(float maxFollowDistance)
 {
-
+	if (maxFollowDistance >= 0)
+	{
+		_maxFollowDistance = maxFollowDistance;
+	}
 }
 
-float AIBase::GetMaxFollowDistance()
+float AIBase::GetMaxFollowDistance() const
 {
-
+	return _maxFollowDistance;
 }
 
 void AIBase::Update()
@@ -170,11 +186,11 @@ void AIBase::Wander()
 		_targetDirection += RandUtils::RandFloat(-0, 10);
 	}
 
-	/*if (_parentTransform->GetLocalFront() < _targetDirection)
+	if (_parentTransform->GetLocalFront() < _targetDirection)
 	{
 		_parentTransform->RotateBy(_targetDirection, glm::vec3(0, 1, 0));
 		_parentTransform->SetPosition(_parentTransform->GetPosition() + (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
-	}*/
+	}
 
 	if (RandUtils::RandInt(1, 100) < 10 && Timer::GetTimeS() - _lastStateChange > 5.0f)
 	{

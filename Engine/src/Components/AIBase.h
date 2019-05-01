@@ -13,13 +13,15 @@ public:
 	AIBase(Transform targetTransform, AIState state = AIState::Wander);
 	~AIBase();
 
+	float GetBearing() const;
+
 	void SetTarget(Transform targetTransform);
 
-	float GetDistanceToTarget();
+	float GetDistanceToTarget() const;
 
-	float GetBearingToTarget();
+	float GetBearingToTarget() const;
 
-	Transform* GetTarget();
+	Transform* GetTarget() const;
 
 	void SetState(AIState state);
 
@@ -35,15 +37,15 @@ public:
 
 	void SetFleeDistance(float fleeDistance);
 
-	float GetFleeDistance();
+	float GetFleeDistance() const;
 
 	void SetAgroDistance(float agroDistance);
 
-	float GetAgroDistance();
+	float GetAgroDistance() const;
 
 	void SetMaxFollowDistance(float maxFollowDistance);
 
-	float GetMaxFollowDistance();
+	float GetMaxFollowDistance() const;
 
 	void Update() override;
 
@@ -62,6 +64,8 @@ private:
 	float _fleeDistance; //Distance the ai will try and get to before stopping fleeing
 	float _agroDistance; //Distance the ai will notice and start following the target
 	float _maxFollowDistance; //Distance the ai will stop following the target
+
+	double pi = 3.1415926535897;
 
 	//AI Functions
 	void Think();
