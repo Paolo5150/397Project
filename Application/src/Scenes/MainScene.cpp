@@ -208,7 +208,7 @@ void MainScene::Initialize() {
 	for (int i = 0; i < Lua::GetIntFromStack("prop_barrels"); i++)
 	{
 		barrels[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		barrels[i]->AddComponent(new AIBase());
+		barrels[i]->AddComponent(new AIBase(cam->transform));
 		AddGameObject(barrels[i]);
 		barrels[i]->transform.SetScale(Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"));
 		float posX = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "X");
@@ -397,7 +397,7 @@ void MainScene::LogicUpdate() {
 		for (int i = 0; i < 10; i++)
 		{
 			AIBase* ai = (AIBase*)(barrels[i]->GetComponent<AIBase>("AIBase"));
-			ai->SetMoveSpeed(ai->GetMoveSpeed() - 2);
+			ai->SetMovementSpeed(ai->GetMovementSpeed() - 2);
 		}
 	}
 	else if (Input::GetKeyPressed(GLFW_KEY_PAGE_UP)) //TEMPORARY !-----!-----!-----!
@@ -405,10 +405,10 @@ void MainScene::LogicUpdate() {
 		for (int i = 0; i < 10; i++)
 		{
 			AIBase* ai = (AIBase*)(barrels[i]->GetComponent<AIBase>("AIBase"));
-			ai->SetMoveSpeed(ai->GetMoveSpeed() + 2);
+			ai->SetMovementSpeed(ai->GetMovementSpeed() + 2);
 		}
-	}
-
+	}	
+	
 	Scene::LogicUpdate(); //Must be last statement!
 }
 

@@ -4,8 +4,17 @@ AIBase::AIBase(AIState state) : Component("AIBase")
 {
 	_type = "AI";
 	SetState(state);
-	_moveDir = RandUtils::RandFloat(0, 360);
-	_moveSpeed = 50.0f;
+	_targetDirection = RandUtils::RandFloat(0, 360);
+	_movementSpeed = 50.0f;
+}
+
+AIBase::AIBase(Transform targetTransform, AIState state) : Component("AIBase")
+{
+	_type = "AI";
+	SetState(state);
+	_targetDirection = RandUtils::RandFloat(0, 360);
+	_movementSpeed = 50.0f;
+	_targetTransform = &targetTransform;
 }
 
 AIBase::~AIBase()
@@ -13,17 +22,30 @@ AIBase::~AIBase()
 
 }
 
+void AIBase::SetTarget(Transform targetTransform)
+{
+	_targetTransform = &targetTransform;
+}
+
+float AIBase::GetDistanceToTarget()
+{
+	return sqrt(pow(_targetTransform->GetPosition().x - _parentTransform->GetPosition().x, 2) + pow(_targetTransform->GetPosition().y - _parentTransform->GetPosition().y, 2) + pow(_targetTransform->GetPosition().z - _parentTransform->GetPosition().z, 2));
+}
+
+float AIBase::GetBearingToTarget()
+{
+	Transform* toCam = glm::dot(_parentTransform, _targetTransform);
+}
+
+Transform* AIBase::GetTarget()
+{
+	return _targetTransform;
+}
+
 void AIBase::SetState(AIState state)
 {
 	_state = state;
-}
-
-void AIBase::SetMoveSpeed(float moveSpeed)
-{
-	if (moveSpeed >= 0)
-	{
-		_moveSpeed = moveSpeed;
-	}
+	_lastStateChange = Timer::GetTimeS();
 }
 
 AIState AIBase::GetState() const
@@ -31,13 +53,66 @@ AIState AIBase::GetState() const
 	return _state;
 }
 
-float AIBase::GetMoveSpeed() const
+void AIBase::SetMovementSpeed(float movementSpeed)
 {
-	return _moveSpeed;
+	if (movementSpeed >= 0)
+	{
+		_movementSpeed = movementSpeed;
+	}
+}
+
+float AIBase::GetMovementSpeed() const
+{
+	return _movementSpeed;
+}
+
+void AIBase::SetRotationSpeed(float rotationSpeed)
+{
+	if (rotationSpeed >= 0)
+	{
+		_rotationSpeed = rotationSpeed;
+	}
+}
+
+float AIBase::GetRotationSpeed() const
+{
+	return _rotationSpeed;
+}
+
+void AIBase::SetFleeDistance(float fleeDistance)
+{
+	_fle
+}
+
+float AIBase::GetFleeDistance()
+{
+
+}
+
+void AIBase::SetAgroDistance(float agroDistance)
+{
+
+}
+
+float AIBase::GetAgroDistance()
+{
+
+}
+
+void AIBase::SetMaxFollowDistance(float maxFollowDistance)
+{
+
+}
+
+float AIBase::GetMaxFollowDistance()
+{
+
 }
 
 void AIBase::Update()
 {
+	Logger::LogInfo(GetBearingToTarget());
+
 	Think();
 }
 
@@ -50,6 +125,9 @@ void AIBase::Think()
 {
 	switch (_state)
 	{
+		case AIState::Idle:
+			Idle();
+			break;
 		case AIState::Wander:
 			Wander();
 			break;
@@ -68,39 +146,61 @@ void AIBase::Think()
 	}
 }
 
+void AIBase::Idle()
+{
+	if (RandUtils::RandInt(1, 100) < 10 && Timer::GetTimeS() - _lastStateChange > 5.0f)
+	{
+		SetState(AIState::Wander);
+	}
+
+	if (GetDistanceToTarget() < 100.0f)
+	{
+		SetState(AIState::Seek);
+	}
+}
+
 void AIBase::Wander()
 {
 	if (RandUtils::RandInt(1, 100) <= 10)
 	{
-		_moveDir = RandUtils::RandFloat(-10, 0);
+		_targetDirection += RandUtils::RandFloat(-10, 0);
 	}
 	else if (RandUtils::RandInt(1, 100) >= 90)
 	{
-		_moveDir = RandUtils::RandFloat(-0, 10);
-	}
-	else
-	{
-		_moveDir = 0.0f;
+		_targetDirection += RandUtils::RandFloat(-0, 10);
 	}
 
-	if (RandUtils::RandInt(1, 100) < 90)
+	/*if (_parentTransform->GetLocalFront() < _targetDirection)
 	{
-		_parentTransform->RotateBy(_moveDir, glm::vec3(0, 1, 0));
-		_parentTransform->SetPosition(_parentTransform->GetPosition() + (GetMoveSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
+		_parentTransform->RotateBy(_targetDirection, glm::vec3(0, 1, 0));
+		_parentTransform->SetPosition(_parentTransform->GetPosition() + (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
+	}*/
+
+	if (RandUtils::RandInt(1, 100) < 10 && Timer::GetTimeS() - _lastStateChange > 5.0f)
+	{
+		SetState(AIState::Idle);
+	}
+
+	if (GetDistanceToTarget() < 100.0f)
+	{
+		SetState(AIState::Seek);
 	}
 }
 
 void AIBase::Seek()
 {
-
+	if (GetDistanceToTarget() > 150.0f)
+	{
+		SetState(AIState::Wander);
+	}
 }
 
 void AIBase::Fight()
 {
-
+	//Attack the target here
 }
 
 void AIBase::Flee()
 {
-
+	//Pick the opposite direction to the target and run until you are x distance away
 }
