@@ -38,10 +38,16 @@ float AIBase::GetDistanceToTarget() const
 	return sqrt(pow(_targetTransform->GetPosition().x - _parentTransform->GetPosition().x, 2) + pow(_targetTransform->GetPosition().y - _parentTransform->GetPosition().y, 2) + pow(_targetTransform->GetPosition().z - _parentTransform->GetPosition().z, 2));
 }
 
-float AIBase::GetBearingToTarget() const
+int AIBase::GetBearingToTarget() const
 {
-	float result = glm::dot(_parentTransform->GetLocalFront(), _targetTransform->GetLocalFront());
-	return result * 360.0f;
+	//float result = glm::dot(_parentTransform->GetLocalFront(), _targetTransform->GetLocalFront());
+	//return result * 360.0f;
+
+	glm::vec3 toThis = glm::vec3(_parentTransform->GetPosition().x, _targetTransform->GetPosition().y, _parentTransform->GetPosition().z) - _targetTransform->GetPosition();
+	float yAngle = glm::degrees(glm::angle(_targetTransform->GetLocalFront(),glm::normalize(toThis)));
+	glm::vec3 cross = glm::normalize(glm::cross(_targetTransform->GetLocalFront(), glm::normalize(toThis)));
+	int s = glm::sign(cross.y);
+	return s;
 }
 
 Transform* AIBase::GetTarget() const
@@ -166,11 +172,13 @@ void AIBase::Idle()
 {
 	if (RandUtils::RandInt(1, 100) < 10 && Timer::GetTimeS() - _lastStateChange > 5.0f)
 	{
+		Logger::LogInfo("Now Wandering");
 		SetState(AIState::Wander);
 	}
 
 	if (GetDistanceToTarget() < 100.0f)
 	{
+		Logger::LogInfo("Now Seeking");
 		SetState(AIState::Seek);
 	}
 }
@@ -186,19 +194,21 @@ void AIBase::Wander()
 		_targetDirection += RandUtils::RandFloat(-0, 10);
 	}
 
-	if (_parentTransform->GetLocalFront() < _targetDirection)
+	/*if (_parentTransform->GetLocalFront() < _targetDirection)
 	{
 		_parentTransform->RotateBy(_targetDirection, glm::vec3(0, 1, 0));
 		_parentTransform->SetPosition(_parentTransform->GetPosition() + (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
-	}
+	}*/
 
 	if (RandUtils::RandInt(1, 100) < 10 && Timer::GetTimeS() - _lastStateChange > 5.0f)
 	{
+		Logger::LogInfo("Now Idle");
 		SetState(AIState::Idle);
 	}
 
 	if (GetDistanceToTarget() < 100.0f)
 	{
+		Logger::LogInfo("Now Seeking");
 		SetState(AIState::Seek);
 	}
 }

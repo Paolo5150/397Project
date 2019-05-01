@@ -19,7 +19,7 @@ public:
 
 	float GetDistanceToTarget() const;
 
-	float GetBearingToTarget() const;
+	int GetBearingToTarget() const;
 
 	Transform* GetTarget() const;
 
