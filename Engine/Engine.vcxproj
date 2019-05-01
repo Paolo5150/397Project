@@ -269,6 +269,7 @@
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Axis.h" />
     <ClInclude Include="src\Prefabs\GridMesh.h" />
+    <ClInclude Include="src\Prefabs\Pumpkin.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
     <ClInclude Include="src\Prefabs\Water.h" />
     <ClInclude Include="src\Scene\Scene.h" />
@@ -344,6 +345,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Prefabs\Axis.cpp" />
+    <ClCompile Include="src\Prefabs\Pumpkin.cpp" />
     <ClCompile Include="src\Prefabs\Terrain.cpp" />
     <ClCompile Include="src\Prefabs\Water.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />

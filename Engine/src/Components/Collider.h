@@ -63,9 +63,6 @@ public:
 	void RemoveCollideAgainstLayer(unsigned layer) { collideAgainstLayer = collideAgainstLayer & (~layer); }
 	unsigned GetCollideAgainstLayer() { return collideAgainstLayer; }
 
-
-
-
 protected:
 	btCollisionShape* collisionShape;
 	int collisionLayer;

@@ -22,7 +22,7 @@
 #include "GUI\GUIElements\GUIManager.h"
 #include "Components\BoxCollider.h"
 #include "Components\SphereCollider.h"
-
+#include "Prefabs\Pumpkin.h"
 #include "Components\RigidBody.h"
 
 #include "Physics\PhysicsWorld.h"
@@ -169,7 +169,6 @@ void MainScene::Initialize() {
 	cam->SetMovementSpeed(500);
 	cam->RemoveLayerMask(Layers::GUI);
 
-
 	Water* w = (Water*)Lua::GetCreatedAsset(1);
 	luaAssetOffset++;
 	w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
@@ -267,7 +266,7 @@ void MainScene::Initialize() {
 	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
 	spider->ApplyMaterial(spiderMat);
 	spider->PrintHierarchy();
-	
+
 	AddGameObject(spider);
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
@@ -283,7 +282,7 @@ void MainScene::Initialize() {
 	c1->GetComponent<BoxCollider>("BoxCollider")->AddCollisionLayer(CollisionLayers::OBSTACLE);
 
 	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go){
-		Logger::LogInfo("C1 colliding");
+	//	Logger::LogInfo("C1 colliding");
 	};
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
@@ -293,6 +292,9 @@ void MainScene::Initialize() {
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
+	Pumpkin* pum = new Pumpkin();
+	pum->transform.SetPosition(cam->transform.GetPosition().x + 180, 400, cam->transform.GetPosition().z + 200);
+	AddGameObject(pum);
 
 	w->transform.SetPosition(x, 50, z);
 	w->transform.SetScale(3000, 3000, 1);
@@ -353,8 +355,8 @@ void MainScene::LogicUpdate() {
 	
 	if (!cam->IsTopView())
 	{
-		float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
-		cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+		//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+		//cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 		// Limit camera position within terrain
 		if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)
