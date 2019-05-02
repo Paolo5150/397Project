@@ -2,6 +2,7 @@
 #include <string>
 
 #include "..\GameObject\Component.h"
+#include "Animator.h"
 #include "AIState.h"
 #include "..\Utils\RandUtils.h"
 #include "..\Core\Timer.h"
@@ -9,17 +10,15 @@
 class AIBase : public Component
 {
 public:
-	AIBase(AIState state = AIState::Idle);
 	AIBase(Transform& targetTransform, AIState state = AIState::Idle);
-	~AIBase();
 
-	float GetBearing() const;
+	~AIBase();
 
 	void SetTarget(Transform& targetTransform);
 
 	float GetDistanceToTarget() const;
 
-	float GetBearingToTarget() const;
+	float GetRotationToTarget() const;
 
 	Transform* GetTarget() const;
 
@@ -47,6 +46,10 @@ public:
 
 	float GetMaxFollowDistance() const;
 
+	void SetAttackDistance(float attackDistance);
+
+	float GetAttackDistance() const;
+
 	void Update() override;
 
 	virtual void OnAttach(GameObject* go) override;
@@ -56,16 +59,16 @@ private:
 	Transform* _parentTransform;
 	Transform* _targetTransform;
 
-	float _targetDirection;
+	//float _wanderDirection;
 	float _movementSpeed;
 	float _rotationSpeed;
 	float _lastStateChange;
+	float _randomTimer; //Timer for managing 
 
 	float _fleeDistance; //Distance the ai will try and get to before stopping fleeing
 	float _agroDistance; //Distance the ai will notice and start following the target
 	float _maxFollowDistance; //Distance the ai will stop following the target
-
-	double pi = 3.1415926535897;
+	float _attackDistance; //Distance the ai will switch to fighting
 
 	//AI Functions
 	void Think();

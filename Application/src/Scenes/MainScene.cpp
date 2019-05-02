@@ -324,16 +324,18 @@ void MainScene::Initialize() {
 void MainScene::LogicUpdate() {
 	PhysicsWorld::Instance().FillQuadtree();
 	//c1->GetComponent<RigidBody>("RigidBody")->btrb->translate(btVector3(0, -1, 0));
-	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, spider->transform.GetPosition().y, cam->transform.GetPosition().z) - spider->transform.GetPosition();
-	float yAngle = glm::degrees(glm::angle(spider->transform.GetLocalFront(), glm::normalize(toCam)));
+	/*glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, spider->transform.GetPosition().y, cam->transform.GetPosition().z) - spider->transform.GetPosition();
+	float yAngle = glm::degrees(glm::angle(spider->transform.GetLocalFront(), glm::normalize(toCam))) - 180;
 	glm::vec3 cross = glm::normalize(glm::cross(spider->transform.GetLocalFront(), glm::normalize(toCam)));
 	int s = glm::sign(cross.y);	
 	glm::vec3 np = spider->transform.GetPosition();
-	np += spider->transform.GetLocalFront() * 0.5f;
+	np -= spider->transform.GetLocalFront() * 0.5f;
 	float y = terrain->GetHeightAt(np.x, np.z);
-	//spider->transform.SetPosition(np.x, y, np.z);
-	//spider->transform.RotateBy(yAngle * s, 0, 1, 0);
-	//spider->transform.RotateBy(180, 0, 1, 0);
+	spider->transform.SetPosition(np.x, y, np.z);
+	float val1 = yAngle * s * Timer::GetDeltaS();
+	float val2 = 180 * Timer::GetDeltaS();
+	spider->transform.RotateBy(val1, 0, 1, 0);
+	spider->transform.RotateBy(val2, 0, 1, 0);*/
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
@@ -343,7 +345,7 @@ void MainScene::LogicUpdate() {
 //	Logger::LogInfo("C1", c1->transform.RotationQuatToString());
 //	Logger::LogInfo("C2", c2->transform.RotationQuatToString());
 
-	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(animIndex);
+	//spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(animIndex);
 
 	if (Input::GetKeyPressed(GLFW_KEY_O))
 	{

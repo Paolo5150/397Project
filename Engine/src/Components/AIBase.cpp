@@ -1,35 +1,23 @@
 #include "AIBase.h"
 
-AIBase::AIBase(AIState state) : Component("AIBase")
-{
-	_type = "AI";
-	SetState(state);
-	_targetDirection = RandUtils::RandFloat(0, 360);
-	_movementSpeed = 50.0f;
-}
-
 AIBase::AIBase(Transform& targetTransform, AIState state) : Component("AIBase")
 {
 	_type = "AI";
 	SetState(state);
-	_targetDirection = RandUtils::RandFloat(0, 360);
-	_movementSpeed = 50.0f;
-	_rotationSpeed = 2.0f;
-	_targetTransform = &targetTransform;
+	//_wanderDirection = RandUtils::RandFloat(0, 360);
+	SetMovementSpeed(100.0f);
+	SetRotationSpeed(1.0f);
+	_lastStateChange = 0.0f;
+	SetTarget(targetTransform);
 	SetAgroDistance(500.0f);
-	SetMaxFollowDistance(600.0f);
-	SetFleeDistance(600.0f);
+	SetMaxFollowDistance(1000.0f);
+	SetFleeDistance(1000.0f);
+	SetAttackDistance(150.0f);
 }
 
 AIBase::~AIBase()
 {
 
-}
-
-float AIBase::GetBearing() const
-{
-	float result = atan(_parentTransform->GetLocalFront().y / _parentTransform->GetLocalFront().x);
-	return result * (180.0f / pi);
 }
 
 void AIBase::SetTarget(Transform& targetTransform)
@@ -42,11 +30,11 @@ float AIBase::GetDistanceToTarget() const
 	return sqrt(pow(_targetTransform->GetPosition().x - _parentTransform->GetPosition().x, 2) + pow(_targetTransform->GetPosition().y - _parentTransform->GetPosition().y, 2) + pow(_targetTransform->GetPosition().z - _parentTransform->GetPosition().z, 2));
 }
 
-float AIBase::GetBearingToTarget() const
+float AIBase::GetRotationToTarget() const
 {
-	glm::vec3 toThis = glm::vec3(_parentTransform->GetPosition().x, _targetTransform->GetPosition().y, _parentTransform->GetPosition().z) - _targetTransform->GetPosition();
-	float yAngle = glm::degrees(glm::angle(_targetTransform->GetLocalFront(), glm::normalize(toThis)));
-	glm::vec3 cross = glm::normalize(glm::cross(_targetTransform->GetLocalFront(), glm::normalize(toThis)));
+	glm::vec3 toTarget = glm::vec3(_targetTransform->GetPosition().x, _parentTransform->GetPosition().y, _targetTransform->GetPosition().z) - _parentTransform->GetPosition();
+	float yAngle = glm::degrees(glm::angle(_parentTransform->GetLocalFront(), glm::normalize(toTarget))) - 180;
+	glm::vec3 cross = glm::normalize(glm::cross(_parentTransform->GetLocalFront(), glm::normalize(toTarget)));
 	int s = glm::sign(cross.y);
 	return yAngle * s;
 }
@@ -132,6 +120,19 @@ float AIBase::GetMaxFollowDistance() const
 	return _maxFollowDistance;
 }
 
+void AIBase::SetAttackDistance(float attackDistance)
+{
+	if (attackDistance >= 0)
+	{
+		_attackDistance = attackDistance;
+	}
+}
+
+float AIBase::GetAttackDistance() const
+{
+	return _attackDistance;
+}
+
 void AIBase::Update()
 {
 	Think();
@@ -162,6 +163,7 @@ void AIBase::Think()
 			Flee();
 			break;
 		default:
+			Logger::LogError("Invalid AI State");
 			throw "Invalid_AI_State";
 			break;
 	}
@@ -169,63 +171,105 @@ void AIBase::Think()
 
 void AIBase::Idle()
 {
-	if (RandUtils::RandInt(1, 100) < 10 && Timer::GetTimeS() - _lastStateChange > 5.0f)
-	{
-		Logger::LogInfo("Now Wandering");
-		SetState(AIState::Wander);
-	}
+	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(14);
 
-	if (GetDistanceToTarget() <= _agroDistance)
+	if (Timer::GetTimeS() - _randomTimer > 0.5f && Timer::GetTimeS() - _lastStateChange > 5.0f)
 	{
-		Logger::LogInfo("Now Seeking");
-		SetState(AIState::Seek);
+		_randomTimer = Timer::GetTimeS();
+
+		if (RandUtils::RandInt(1, 100) < 10)
+		{
+			Logger::LogInfo("Now Wandering");
+			SetState(AIState::Wander);
+		}
+
+		if (GetDistanceToTarget() <= GetAgroDistance())
+		{
+			Logger::LogInfo("Now Seeking");
+			SetState(AIState::Seek);
+		}
 	}
 }
 
 void AIBase::Wander()
 {
+	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(7);
+
+	float rotateAmount = 0;
+
 	if (RandUtils::RandInt(1, 100) <= 10)
 	{
-		_targetDirection += RandUtils::RandFloat(-10, 0);
+		rotateAmount += RandUtils::RandFloat(-10, 0);
 	}
 	else if (RandUtils::RandInt(1, 100) >= 90)
 	{
-		_targetDirection += RandUtils::RandFloat(-0, 10);
+		rotateAmount += RandUtils::RandFloat(-0, 10);
 	}
 
-	_parentTransform->SetPosition(_parentTransform->GetPosition() + (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
+	_parentTransform->RotateBy(rotateAmount * GetRotationSpeed() * Timer::GetDeltaS(), 0, 1, 0);
+	//_parentTransform->RotateBy(180 * GetRotationSpeed() * Timer::GetDeltaS(), 0, 1, 0);
+	_parentTransform->SetPosition(_parentTransform->GetPosition() - (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
 
-	if (RandUtils::RandInt(1, 100) < 10 && Timer::GetTimeS() - _lastStateChange > 5.0f)
+	if (Timer::GetTimeS() - _randomTimer > 0.5f && Timer::GetTimeS() - _lastStateChange > 5.0f)
 	{
-		//Logger::LogInfo("Now Idle");
-		//SetState(AIState::Idle);
-	}
+		_randomTimer = Timer::GetTimeS();
 
-	if (GetDistanceToTarget() <= _agroDistance)
-	{
-		Logger::LogInfo("Now Seeking");
-		SetState(AIState::Seek);
+		if (RandUtils::RandInt(1, 100) < 10)
+		{
+			Logger::LogInfo("Now Idle");
+			SetState(AIState::Idle);
+		}
+
+		if (GetDistanceToTarget() <= GetAgroDistance())
+		{
+			Logger::LogInfo("Now Seeking");
+			SetState(AIState::Seek);
+		}
+
 	}
 }
 
 void AIBase::Seek()
 {
-	glm::vec3 np = _parentTransform->GetPosition();
-	np += _parentTransform->GetLocalFront() * 0.5f;
-	_parentTransform->RotateBy(GetBearingToTarget() * GetRotationSpeed() * Timer::GetDeltaS(), 0, 1, 0);
-	_parentTransform->RotateBy(180, 0, 1, 0);
-	_parentTransform->SetPosition(_parentTransform->GetPosition() + (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
+	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(7);
 
-	if (GetDistanceToTarget() >= _maxFollowDistance)
+	float rotation = GetRotationToTarget() * GetRotationSpeed() * Timer::GetDeltaS();
+	//_wanderDirection = rotation;
+	_parentTransform->RotateBy(rotation, 0, 1, 0);
+	//_parentTransform->RotateBy(180 * GetRotationSpeed() * Timer::GetDeltaS(), 0, 1, 0);
+	_parentTransform->SetPosition(_parentTransform->GetPosition() - (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
+
+	if (Timer::GetTimeS() - _randomTimer > 0.5f && Timer::GetTimeS() - _lastStateChange > 5.0f)
 	{
-		Logger::LogInfo("Returning to Wander");
-		SetState(AIState::Wander);
+		_randomTimer = Timer::GetTimeS();
+
+		if (GetDistanceToTarget() >= GetMaxFollowDistance())
+		{
+			Logger::LogInfo("Returning to Wander");
+			SetState(AIState::Wander);
+		}
+		else if (GetDistanceToTarget() <= GetAttackDistance())
+		{
+			Logger::LogInfo("Now Fighting");
+			SetState(AIState::Fight);
+		}
 	}
 }
 
 void AIBase::Fight()
 {
-	//Attack the target here
+	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
+
+	if (Timer::GetTimeS() - _randomTimer > 0.5f && Timer::GetTimeS() - _lastStateChange > 5.0f)
+	{
+		_randomTimer = Timer::GetTimeS();
+
+		if (GetDistanceToTarget() > GetAttackDistance())
+		{
+			Logger::LogInfo("Now Seeking");
+			SetState(AIState::Seek);
+		}
+	}
 }
 
 void AIBase::Flee()
