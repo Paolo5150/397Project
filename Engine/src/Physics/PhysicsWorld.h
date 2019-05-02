@@ -20,7 +20,7 @@ public:
 
 	void SetGravity(float x, float y, float z);
 	void Update(float deltaS);
-	void AddRigidBody(RigidBody* rb);
+	//void AddRigidBody(RigidBody* rb);
 	void AddCollider(Collider* c);
 
 	void RemoveRigidBody(RigidBody* rb);

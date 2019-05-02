@@ -25,13 +25,7 @@ public:
 		BOX
 	};
 
-	Collider(std::string name) : Component(name){ 
-		_type = "Collider";
-		enableRender = 1;
-		collisionLayer = CollisionLayers::DEFAULT;
-		collideAgainstLayer = CollisionLayers::DEFAULT;
-
-	}
+	Collider(std::string name);
 	virtual ~Collider(){ delete meshRenderer; };
 
 	Transform transform;

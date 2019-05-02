@@ -1,11 +1,26 @@
 #include "Collider.h"
 #include "..\Physics\PhysicsWorld.h"
+
+
+Collider::Collider(std::string name) : Component(name){
+	_type = "Collider";
+	enableRender = 1;
+	collisionLayer = CollisionLayers::DEFAULT;
+	collideAgainstLayer = CollisionLayers::DEFAULT;
+
+}
+
+
 void Collider::EngineUpdate()
 {
-	if (enableRender)
+	if ( _isActive)
 	{
-		meshRenderer->EngineUpdate();
+		if (!_parent->GetIsStatic())
+		PhysicsWorld::Instance().AddCollider(this);
 		
+		if (enableRender)
+			meshRenderer->EngineUpdate();
+
 	}
 
 
@@ -21,6 +36,7 @@ glm::vec3 Collider::GlobalTranslationFromGameObject()
 
 void Collider::OnAttach(GameObject* go)
 {
+	PhysicsWorld::Instance().AddCollider(this);
 	transform.parent = &go->transform;
 	InitializeMeshRenderer();
 	meshRenderer->transform = &transform;
@@ -40,7 +56,6 @@ void Collider::OnAttach(GameObject* go)
 
 	Initialize();
 	
-	PhysicsWorld::Instance().AddCollider(this);
 }
 
 

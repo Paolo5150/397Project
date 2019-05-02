@@ -18,16 +18,16 @@ PhysicsWorld&  PhysicsWorld::Instance()
 
 PhysicsWorld::PhysicsWorld()
 {
-	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+	//btBroadphaseInterface* broadphase = new btDbvtBroadphase();
 	// Set up the collision configuration and dispatcher
-	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-	btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+	//btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+	//btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
 
 	// The actual physics solver
-	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+	//btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
 	// The world.
-	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	SetGravity(0.0f, -40.0f, 0.0f);
+	//dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+	//SetGravity(0.0f, -40.0f, 0.0f);
 
 }
 
@@ -39,13 +39,15 @@ void PhysicsWorld::InitializeQuadtree(int x, int y, int w, int h)
 void PhysicsWorld::FillQuadtree()
 {
 	quadtree->ClearNodes();
-	auto it = allColliders.begin();
 
-	for (; it != allColliders.end(); it++)
+
+	for (unsigned i = 0; i < allColliders.size(); i++)
 	{
-		if ((*it)->GetActive())
-		quadtree->AddElement((*it), (*it)->transform.GetGlobalPosition().x, (*it)->transform.GetGlobalPosition().z);
+		quadtree->AddElement(allColliders[i], allColliders[i]->transform.GetGlobalPosition().x, allColliders[i]->transform.GetGlobalPosition().z,
+			allColliders[i]->transform.GetGlobalScale().x, allColliders[i]->transform.GetGlobalScale().z);
 	}
+
+	allColliders.clear();
 }
 
 PhysicsWorld::~PhysicsWorld()
@@ -56,7 +58,7 @@ PhysicsWorld::~PhysicsWorld()
 	quadtree->ClearNodes();
 	delete quadtree;
 }
-
+/*
 void PhysicsWorld::AddRigidBody(RigidBody* rb)
 {
 	bool found = 0;
@@ -75,23 +77,10 @@ void PhysicsWorld::AddRigidBody(RigidBody* rb)
 		dynamicsWorld->addRigidBody(rb->btrb);
 	}
 }
-
+*/
 void PhysicsWorld::AddCollider(Collider* rb)
 {
-	bool found = 0;
-
-	auto it = allColliders.begin();
-
-	for (; it != allColliders.end() && !found; it++)
-	{
-		if ((*it) == rb)
-			found = 1;
-	}
-
-	if (!found)
-	{
-		allColliders.push_back(rb);
-	}
+	allColliders.push_back(rb);
 }
 
 void PhysicsWorld::RemoveRigidBody(RigidBody* rb)
@@ -120,6 +109,7 @@ void PhysicsWorld::SetGravity(float x, float y, float z)
 
 void PhysicsWorld::Update(float deltaS)
 {
+	FillQuadtree();
 	PerformCollisions();
 	/*auto it = allRigidBodies.begin();
 	for (; it != allRigidBodies.end(); it++)
@@ -161,7 +151,7 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 			for (; it2 != node->gameObjects.end(); it2++)
 			{
 				if (*it == *it2) continue;
-				if ((*it)->GetCollisionLayer() & (*it2)->GetCollideAgainstLayer())
+				if (1)
 				{
 					if (CollisionChecks::Collision((*it), (*it2)))
 					{

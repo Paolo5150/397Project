@@ -1,6 +1,7 @@
 #pragma once
 #include "..\GameObject\GameObject.h"
 #include <list>
+#include <set>
 
 template <class T>
 class QuadNode
@@ -21,7 +22,7 @@ public:
 	QuadNode<T> *topRight;
 	QuadNode<T> *bottomRight;
 
-	std::list<T> gameObjects;
+	std::set<T> gameObjects;
 
 	void Split();
 
@@ -37,11 +38,13 @@ public:
 	QuadNode<T>* root;
 
 	void AddElement(T go, float posX, float posZ);
+	void AddElement(T go, float posX, float posZ, float sizeX, float sizeZ);
 	int GameObjectInQuadrant(int x, int y);
 	void ClearNodes();
 
 private:
 	void AddElement(T go, float posX, float posZ, QuadNode<T>* &node);
+	void AddElement(T go, float posX, float posZ, float sizeX, float sizeZ, QuadNode<T>* &node);
 	void ClearNode(QuadNode<T>* &node);
 	int GameObjectInQuadrant(int x, int y, QuadNode<T>* node);
 	void DeleteNode(QuadNode<T>*& n);
@@ -111,6 +114,12 @@ void QuadTree<T>::AddElement(T go, float posX, float posZ)
 }
 
 template <class T>
+void QuadTree<T>::AddElement(T go, float posX, float posZ, float sizeX, float sizeZ)
+{
+	AddElement(go, posX, posZ, sizeX, sizeZ, root);
+}
+
+template <class T>
 int QuadTree<T>::GameObjectInQuadrant(int x, int y)
 {
 	return GameObjectInQuadrant(x, y, root);
@@ -175,6 +184,73 @@ void QuadTree<T>::AddElement(T go, float posX, float posZ, QuadNode<T>* &node)
 	else
 		node->gameObjects.push_back(go);
 }
+
+
+template <class T>
+void QuadTree<T>::AddElement(T go, float posX, float posZ, float sizeX, float sizeZ,  QuadNode<T>* &node)
+{
+	if (node->isSplit)
+	{
+		//Logger::LogError("Added object at", posX, posZ);
+
+		if (posX - sizeX / 2 <= node->centerX && posZ - sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->topLeft);
+
+		else if (posX - sizeX / 2 >= node->centerX && posZ - sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->topRight);
+
+		if (posX - sizeX / 2 >= node->centerX && posZ - sizeZ / 2 <= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomRight);
+
+		else if (posX - sizeX / 2 <= node->centerX && posZ - sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomLeft);
+
+		/**/
+		if (posX + sizeX / 2 <= node->centerX && posZ - sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->topLeft);
+
+		else if (posX + sizeX / 2 >= node->centerX && posZ - sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->topRight);
+
+		if (posX + sizeX / 2 >= node->centerX && posZ - sizeZ / 2 <= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomRight);
+
+		else if (posX + sizeX / 2 <= node->centerX && posZ - sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomLeft);
+
+		/**/
+		if (posX - sizeX / 2 <= node->centerX && posZ + sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->topLeft);
+
+		else if (posX - sizeX / 2 >= node->centerX && posZ + sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->topRight);
+
+		if (posX - sizeX / 2 >= node->centerX && posZ + sizeZ / 2 <= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomRight);
+
+		else if (posX - sizeX / 2 <= node->centerX && posZ + sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomLeft);
+
+		/**/
+		if (posX + sizeX / 2 <= node->centerX && posZ + sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->topLeft);
+
+		else if (posX + sizeX / 2 >= node->centerX && posZ + sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->topRight);
+
+		if (posX + sizeX / 2 >= node->centerX && posZ + sizeZ / 2 <= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomRight);
+
+		else if (posX + sizeX / 2 <= node->centerX && posZ + sizeZ / 2 >= node->centerY)
+			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomLeft);
+
+
+
+	}
+	else
+		node->gameObjects.insert(go);
+}
+
 
 template <class T>
 void QuadTree<T>::ClearNodes()

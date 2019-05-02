@@ -7,7 +7,7 @@ Barrel::Barrel() : GameObject("Barrel")
 
 	AssetLoader::Instance().GetAsset<Model>("Barrel")->PopulateGameObject(this);
 	transform.SetScale(80, 80, 80);
-
+	SetIsStatic(1);
 	BoxCollider* sc = new BoxCollider();
 	sc->ResetCollisionLayer();
 	sc->AddCollisionLayer(CollisionLayers::OBSTACLE);

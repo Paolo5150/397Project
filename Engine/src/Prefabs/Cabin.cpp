@@ -4,6 +4,7 @@
 
 Cabin::Cabin() : GameObject("Cabin")
 {
+	SetIsStatic(1);
 
 	AssetLoader::Instance().GetAsset<Model>("Cabin")->PopulateGameObject(this);
 	transform.SetScale(50, 50, 50);

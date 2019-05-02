@@ -26,7 +26,7 @@
 #include "Prefabs\Crate.h"
 #include "Prefabs\Barrel.h"
 #include "Prefabs\Cabin.h"
-
+#include "Components\PathNode.h"
 
 #include "Physics\PhysicsWorld.h"
 
@@ -44,7 +44,7 @@ DirectionalLight* dirLight;
 Terrain* terrain;
 btDefaultMotionState* motionstate;
 btRigidBody *rigidBody;
-
+Crate* crate;
 GameObject* spider;
 GameObject* c1;
 GameObject* c2;
@@ -159,10 +159,20 @@ void MainScene::Initialize() {
 
 	//Terrain
 	terrain = new Terrain(256);
-	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
 
-	terrain->transform.SetScale(20 ,600, 20);
-	terrain->transform.Translate(0, 0, 0);
+	std::vector<PathNode*> pns;
+	for (int x = terrain->GetTerrainMinX()+100; x < terrain->GetTerrainMaxX()-100; x += 100)
+	{
+		for (int z = terrain->GetTerrainMinZ()+100; z < terrain->GetTerrainMaxZ()-100; z += 100)
+		{
+			PathNode* pn = new PathNode();
+			pn->transform.SetPosition(x, terrain->GetHeightAt(x, z), z);
+			AddGameObject(pn);
+			pns.push_back(pn);
+
+		}
+	}
+
 
 	//GameObjects
 	cam = (MainCamera*)Lua::GetCreatedAsset(0);
@@ -270,7 +280,7 @@ void MainScene::Initialize() {
 	spider->ApplyMaterial(spiderMat);
 	spider->PrintHierarchy();
 
-	AddGameObject(spider);
+	//AddGameObject(spider);
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c1->transform.SetPosition(cam->transform.GetPosition().x+20,400, cam->transform.GetPosition().z + 400);
@@ -295,17 +305,16 @@ void MainScene::Initialize() {
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
-	Cabin* pum = new Cabin();
-	pum->transform.SetPosition(cam->transform.GetPosition().x + 180, 400, cam->transform.GetPosition().z + 200);
-	AddGameObject(pum);
+	crate = new Crate();
+	crate->transform.SetPosition(cam->transform.GetPosition().x + 20, terrain->GetHeightAt(cam->transform.GetPosition().x + 20, cam->transform.GetPosition().z + 200), cam->transform.GetPosition().z + 200);
 
 	w->transform.SetPosition(x, 50, z);
 	w->transform.SetScale(3000, 3000, 1);
-	AddGameObject(c2);
-	AddGameObject(c1);
+	//AddGameObject(c2);
+	//AddGameObject(c1);
 	AddGameObject(w);
 
-
+	AddGameObject(crate);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(pLight);
@@ -321,11 +330,12 @@ void MainScene::Initialize() {
 	cam->transform.Update();
 
 
+
 }
 void MainScene::LogicUpdate() {
-	PhysicsWorld::Instance().FillQuadtree();
-	//c1->GetComponent<RigidBody>("RigidBody")->btrb->translate(btVector3(0, -1, 0));
-	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, spider->transform.GetPosition().y, cam->transform.GetPosition().z) - spider->transform.GetPosition();
+
+
+/*	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, spider->transform.GetPosition().y, cam->transform.GetPosition().z) - spider->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(spider->transform.GetLocalFront(), glm::normalize(toCam)));
 	glm::vec3 cross = glm::normalize(glm::cross(spider->transform.GetLocalFront(), glm::normalize(toCam)));
 	int s = glm::sign(cross.y);	
@@ -334,24 +344,26 @@ void MainScene::LogicUpdate() {
 	float y = terrain->GetHeightAt(np.x, np.z);
 	spider->transform.SetPosition(np.x, y, np.z);
 	spider->transform.RotateBy(yAngle * s, 0, 1, 0);
-	spider->transform.RotateBy(180, 0, 1, 0);
+	spider->transform.RotateBy(180, 0, 1, 0);*/
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
-	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
 
-	//c1->transform.RotateBy(0.5f,0,1,0);
+	/*if (CollisionChecks::Collision(cam->boxCollider, crate->GetComponent<BoxCollider>("BoxCollider")))
+	{
+		cam->boxCollider->collisionCallback(crate);
+	}*/
+	
+	//Logger::LogInfo("Objs in quad",PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetPosition().x, cam->transform.GetPosition().z));
+
+
 	c1->transform.Translate(0, 0, -0.2f);
-//	Logger::LogInfo("C1", c1->transform.RotationQuatToString());
-//	Logger::LogInfo("C2", c2->transform.RotationQuatToString());
-
 	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(animIndex);
 
 	if (Input::GetKeyPressed(GLFW_KEY_O))
 	{
-		animIndex++;		
-
+		animIndex++;
 	}
-	//c1->transform.SetPosition(c1->transform.GetGlobalPosition() + c1->transform.GetLocalFront() * 0.2f);
+
 
 
 
