@@ -6,11 +6,14 @@
 #include "AIState.h"
 #include "..\Utils\RandUtils.h"
 #include "..\Core\Timer.h"
+#include "..\Core\Lua.h"
 
 class AIBase : public Component
 {
 public:
-	AIBase(Transform& targetTransform, AIState state = AIState::Idle);
+	AIBase(std::string luaScriptFolder, AIState state = AIState::Idle); //Note: do not call a seeking function without setting a target first!
+
+	AIBase(Transform& targetTransform, std::string luaScriptFolder, AIState state = AIState::Idle);
 
 	~AIBase();
 
@@ -58,6 +61,9 @@ private:
 	AIState _state;
 	Transform* _parentTransform;
 	Transform* _targetTransform;
+	lua_State* _luaState;
+
+	std::string _scriptFolderName;
 
 	//float _wanderDirection;
 	float _movementSpeed;

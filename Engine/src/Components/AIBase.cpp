@@ -1,10 +1,23 @@
 #include "AIBase.h"
 
-AIBase::AIBase(Transform& targetTransform, AIState state) : Component("AIBase")
+AIBase::AIBase(std::string luaScriptFolder, AIState state) : Component("AIBase")
 {
 	_type = "AI";
 	SetState(state);
-	//_wanderDirection = RandUtils::RandFloat(0, 360);
+	SetMovementSpeed(100.0f);
+	SetRotationSpeed(1.0f);
+	_lastStateChange = 0.0f;
+	SetAgroDistance(500.0f);
+	SetMaxFollowDistance(1000.0f);
+	SetFleeDistance(1000.0f);
+	SetAttackDistance(150.0f);
+	_scriptFolderName = luaScriptFolder;
+}
+
+AIBase::AIBase(Transform& targetTransform, std::string luaScriptFolder, AIState state) : Component("AIBase")
+{
+	_type = "AI";
+	SetState(state);
 	SetMovementSpeed(100.0f);
 	SetRotationSpeed(1.0f);
 	_lastStateChange = 0.0f;
@@ -13,11 +26,13 @@ AIBase::AIBase(Transform& targetTransform, AIState state) : Component("AIBase")
 	SetMaxFollowDistance(1000.0f);
 	SetFleeDistance(1000.0f);
 	SetAttackDistance(150.0f);
+	_scriptFolderName = luaScriptFolder;
+	Lua::InitLua(_luaState);
 }
 
 AIBase::~AIBase()
 {
-
+	
 }
 
 void AIBase::SetTarget(Transform& targetTransform)
@@ -231,6 +246,8 @@ void AIBase::Wander()
 
 void AIBase::Seek()
 {
+	Lua::ExecuteLuaScript(_luaState, _scriptFolderName + "\\Seek.lua");
+
 	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(7);
 
 	float rotation = GetRotationToTarget() * GetRotationSpeed() * Timer::GetDeltaS();

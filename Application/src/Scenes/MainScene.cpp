@@ -30,6 +30,7 @@
 
 #include "Utils\RandUtils.h"
 #include "Components\AIBase.h"
+#include "Prefabs\Spider.h"
 
 
 MainCamera* cam;
@@ -269,8 +270,9 @@ void MainScene::Initialize() {
 	spiderMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("Spinnen_Bein_tex_COLOR_"));
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 
-	spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
-	spider->AddComponent(new AIBase(cam->transform));
+	spider = new Spider(cam->transform);
+	//spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
+	//spider->AddComponent(new AIBase(cam->transform, "Assets\\Scripts\\AI"));
 	spider->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
 	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
 	spider->ApplyMaterial(spiderMat);

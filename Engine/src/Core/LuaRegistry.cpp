@@ -18,14 +18,13 @@ int LuaRegistry::Lua_Create(lua_State* L)
 	std::string assetType;
 	InternalAsset* asset;
 
-	if (numParams == 5)
+	if (numParams == 2)
 	{
 		name = lua_tostring(L, -1); //Get the parameters from the stack
 		assetType = lua_tostring(L, -2);
 		lua_pop(L, -1);
 		lua_pop(L, -2);
 		asset = GameAssetFactory::Instance().Create(assetType, name); //Create Asset
-		((GameObject*)asset)->transform.SetPosition(x, y, z);
 	}
 	else
 	{

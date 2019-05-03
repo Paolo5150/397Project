@@ -1,9 +1,17 @@
 #include "Spider.h"
 
+Spider::Spider() : GameObject("Spider")
+{
+	AddComponent(new AIBase("Assets\\Scripts\\AI"));
+	//AddComponent(new Animator());
+	AddComponent(new BoxCollider());
+}
+
 Spider::Spider(Transform& targetTransform) : GameObject("Spider")
 {
-	AddComponent(new AIBase(targetTransform));
+	AddComponent(new AIBase(targetTransform, "Assets\\Scripts\\AI"));
 	AddComponent(new BoxCollider());
+	AddComponent(new Animator(new AnimatedModel()));
 }
 
 Spider::~Spider()
