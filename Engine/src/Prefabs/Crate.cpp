@@ -13,19 +13,26 @@ Crate::Crate() : GameObject("Crate")
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_diffuse"));
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_normal"), TextureUniform::NORMAL0);
 
+	SetIsStatic(1);
+	
+
+	ApplyMaterial(mat_crate);
+}
+
+void Crate::Start()
+{
 	BoxCollider* sc = new BoxCollider();
 	sc->ResetCollisionLayer();
 	sc->AddCollisionLayer(CollisionLayers::OBSTACLE);
 	sc->ResetCollideAgainstLayer();
 	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
-	sc->transform.SetScale(8,8,8);
+	sc->transform.SetScale(8, 8, 8);
 	sc->transform.SetPosition(0, 8, 0);
 	sc->enableRender = 1;
 	AddComponent(sc);
-	SetIsStatic(1);
-
-	ApplyMaterial(mat_crate);
+	Logger::LogError("Crate start");
 }
+
 
 Crate::~Crate()
 {

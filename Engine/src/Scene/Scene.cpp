@@ -28,6 +28,18 @@ void Scene::AddGameObject(GameObject* go)
 	go->transform.Update();
 }
 
+void Scene::Start()
+{
+	auto it = m_allGameObjects.begin();
+
+	for (; it != m_allGameObjects.end(); it++)
+	{
+	
+		(*it)->Start();
+	}
+}
+
+
 
 void Scene::LateUpdate()
 {

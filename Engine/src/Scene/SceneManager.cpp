@@ -68,6 +68,7 @@ void SceneManager::LoadNewScene(std::string sceneName)
 	m_currentScene->LoadAssets();
 	m_currentScene->Initialize();
 	m_currentScene->m_isReady = true;
+	m_currentScene->Start();
 	Input::SetIsEnabled(1);
 	Timer::ResetTickCount();
 

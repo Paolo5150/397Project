@@ -9,6 +9,7 @@ public:
 	~PathNode();
 
 	void OnCollision(GameObject* go) override;
+	void Start() override;
 
 
 };

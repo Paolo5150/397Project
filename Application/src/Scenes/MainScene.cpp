@@ -161,9 +161,9 @@ void MainScene::Initialize() {
 	terrain = new Terrain(256);
 
 	std::vector<PathNode*> pns;
-	for (int x = terrain->GetTerrainMinX()+100; x < terrain->GetTerrainMaxX()-100; x += 100)
+	for (int x = terrain->GetTerrainMinX()+200; x < terrain->GetTerrainMaxX()-200; x += 180)
 	{
-		for (int z = terrain->GetTerrainMinZ()+100; z < terrain->GetTerrainMaxZ()-100; z += 100)
+		for (int z = terrain->GetTerrainMinZ()+200; z < terrain->GetTerrainMaxZ()-200; z += 180)
 		{
 			PathNode* pn = new PathNode();
 			pn->transform.SetPosition(x, terrain->GetHeightAt(x, z), z);
@@ -332,6 +332,15 @@ void MainScene::Initialize() {
 
 
 }
+
+void MainScene::Start()
+{
+	Scene::Start();
+	PhysicsWorld::Instance().FillQuadtree(true);
+	PhysicsWorld::Instance().PerformCollisions(true);
+
+}
+
 void MainScene::LogicUpdate() {
 
 
@@ -346,7 +355,7 @@ void MainScene::LogicUpdate() {
 	spider->transform.RotateBy(yAngle * s, 0, 1, 0);
 	spider->transform.RotateBy(180, 0, 1, 0);*/
 
-	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
+	//PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
 	/*if (CollisionChecks::Collision(cam->boxCollider, crate->GetComponent<BoxCollider>("BoxCollider")))
 	{

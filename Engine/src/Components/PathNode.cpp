@@ -4,6 +4,15 @@
 
 PathNode::PathNode() : GameObject("PathNode")
 {
+	
+	SetIsStatic(1);
+}
+PathNode::~PathNode()
+{}
+
+
+void PathNode::Start()
+{
 	BoxCollider* sc = new BoxCollider();
 	sc->enableRender = 1;
 	sc->ResetCollideAgainstLayer();
@@ -12,15 +21,13 @@ PathNode::PathNode() : GameObject("PathNode")
 	sc->AddCollideAgainstLayer(CollisionLayers::OBSTACLE);
 	sc->AddCollisionLayer(CollisionLayers::PATHNODE);
 
-	sc->transform.SetScale(50, 50, 50);
+	sc->transform.SetScale(100, 100, 100);
 	AddComponent(sc);
-	SetIsStatic(1);
 }
-PathNode::~PathNode()
-{}
 
 void PathNode::OnCollision(GameObject* go)
 {
-	SetActive(0);
-	Logger::LogInfo("Node collided");
+	//SetActive(0);
+	GetComponent<BoxCollider>("BoxCollider")->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+	//Logger::LogInfo("Node collided against",go->GetName());
 }

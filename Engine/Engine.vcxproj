@@ -364,7 +364,6 @@
     <ClCompile Include="src\Utils\FileUtils.cpp" />
     <ClCompile Include="src\Utils\GameAssetFactory.cpp" />
     <ClCompile Include="src\Utils\Maths.cpp" />
-    <ClCompile Include="src\Utils\Quadtree.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

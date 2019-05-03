@@ -15,8 +15,8 @@ void Collider::EngineUpdate()
 {
 	if ( _isActive)
 	{
-		if (!_parent->GetIsStatic())
-		PhysicsWorld::Instance().AddCollider(this);
+		//if (!_parent->GetIsStatic())
+	//	PhysicsWorld::Instance().AddCollider(this);
 		
 		if (enableRender)
 			meshRenderer->EngineUpdate();
@@ -36,8 +36,8 @@ glm::vec3 Collider::GlobalTranslationFromGameObject()
 
 void Collider::OnAttach(GameObject* go)
 {
-	PhysicsWorld::Instance().AddCollider(this);
 	transform.parent = &go->transform;
+	transform.Update();
 	InitializeMeshRenderer();
 	meshRenderer->transform = &transform;
 	meshRenderer->SetParent(go);
@@ -55,6 +55,7 @@ void Collider::OnAttach(GameObject* go)
 	});
 
 	Initialize();
+	PhysicsWorld::Instance().AddCollider(this);
 	
 }
 

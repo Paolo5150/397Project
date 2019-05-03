@@ -65,7 +65,6 @@
     <ClCompile Include="src\Components\BoxCollider.cpp" />
     <ClCompile Include="src\Components\RigidBody.cpp" />
     <ClCompile Include="src\Components\SphereCollider.cpp" />
-    <ClCompile Include="src\Utils\Quadtree.cpp" />
     <ClCompile Include="src\Physics\CollisionChecks.cpp" />
     <ClCompile Include="src\Prefabs\Pumpkin.cpp" />
     <ClCompile Include="src\Prefabs\Crate.cpp" />

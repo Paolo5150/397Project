@@ -9,6 +9,8 @@ public:
 	Crate();
 	~Crate();
 
+	void Start() override;
+
 private:
 
 };

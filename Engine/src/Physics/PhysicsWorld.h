@@ -25,15 +25,19 @@ public:
 
 	void RemoveRigidBody(RigidBody* rb);
 	void InitializeQuadtree(int x, int y, int w, int h);
-	void FillQuadtree();
+	void FillQuadtree(bool staticToo);
 
 	btDynamicsWorld* dynamicsWorld;
 	std::vector<RigidBody*> allRigidBodies;
 
 	static bool  CollisionCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1);
-	std::vector<Collider*> allColliders;
-	QuadTree<Collider*>* quadtree;
+	std::vector<Collider*> allNonStaticColliders;
+	std::vector<Collider*> allStaticColliders;
+
+	QuadTree<Collider*>* nonStaticQuadtree;
+	QuadTree<Collider*>* staticQuadtree;
+
+	void PerformCollisions(bool staticToo);
 private:
-	void PerformCollisions();
 	void PerformCollisions(QuadNode<Collider*>* node);
 };
