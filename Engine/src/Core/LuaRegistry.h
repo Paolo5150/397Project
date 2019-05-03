@@ -31,5 +31,6 @@ public:
 	* @see			GameAssetFactory#Create
 	*/
 	static int LuaRegistry::Lua_Create(lua_State* L);
-};
 
+	static int LuaRegistry::Lua_CreateObject(lua_State* L);
+};

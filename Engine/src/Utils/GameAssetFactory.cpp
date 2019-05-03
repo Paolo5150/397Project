@@ -2,6 +2,7 @@
 #include "..\Prefabs\Water.h"
 #include "..\Prefabs\Terrain.h"
 #include "..\Core\MainCamera.h"
+#include "..\Prefabs\Spider.h"
 
 
 GameAssetFactory GameAssetFactory::Instance()
@@ -44,4 +45,6 @@ InternalAsset* GameAssetFactory::Create(std::string type, std::string name)
 	}
 	else if (type == "Model")
 		return AssetLoader::Instance().GetAsset<Model>(name)->CreateGameObject();
+	else if (type == "Spider")
+		return new Spider();
 }

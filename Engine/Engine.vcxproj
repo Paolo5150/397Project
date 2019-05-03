@@ -189,6 +189,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Prefabs\Spider.h" />
     <ClInclude Include="src\Components\AIBase.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />
     <ClInclude Include="src\Components\Collider.h" />
@@ -285,6 +286,7 @@
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Prefabs\Spider.cpp" />
     <ClCompile Include="src\Components\AIState.h" />
     <ClCompile Include="src\Components\AIBase.cpp" />
     <ClCompile Include="src\Components\BoxCollider.cpp" />
