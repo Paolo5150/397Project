@@ -271,7 +271,7 @@ void MainScene::Initialize() {
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 
 	spider = new Spider(cam->transform);
-	spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
+	//spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
 	//spider->AddComponent(new AIBase(cam->transform, "Assets\\Scripts\\AI"));
 	spider->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
 	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);

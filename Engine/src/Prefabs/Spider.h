@@ -4,7 +4,7 @@
 #include "../Components/AIBase.h"
 #include "../Components/BoxCollider.h"
 
-class Spider : public AnimatedModel
+class Spider : public GameObject
 {
 public:
 	Spider();

@@ -7,6 +7,7 @@ AIBase::AIBase(std::string luaScriptFolder, AIState state) : Component("AIBase")
 	SetMovementSpeed(100.0f);
 	SetRotationSpeed(1.0f);
 	_lastStateChange = 0.0f;
+	_wanderDirection = 0.0f;
 	SetAgroDistance(500.0f);
 	SetMaxFollowDistance(1000.0f);
 	SetFleeDistance(1000.0f);
@@ -21,6 +22,7 @@ AIBase::AIBase(Transform& targetTransform, std::string luaScriptFolder, AIState 
 	SetMovementSpeed(100.0f);
 	SetRotationSpeed(1.0f);
 	_lastStateChange = 0.0f;
+	_wanderDirection = 0.0f;
 	SetTarget(targetTransform);
 	SetAgroDistance(500.0f);
 	SetMaxFollowDistance(1000.0f);
@@ -32,7 +34,7 @@ AIBase::AIBase(Transform& targetTransform, std::string luaScriptFolder, AIState 
 
 AIBase::~AIBase()
 {
-	
+
 }
 
 void AIBase::SetTarget(Transform& targetTransform)
@@ -197,12 +199,12 @@ void AIBase::Idle()
 			Logger::LogInfo("Now Wandering");
 			SetState(AIState::Wander);
 		}
+	}
 
-		if (GetDistanceToTarget() <= GetAgroDistance())
-		{
-			Logger::LogInfo("Now Seeking");
-			SetState(AIState::Seek);
-		}
+	if (GetDistanceToTarget() <= GetAgroDistance())
+	{
+		Logger::LogInfo("Now Seeking");
+		SetState(AIState::Seek);
 	}
 }
 
@@ -210,20 +212,22 @@ void AIBase::Wander()
 {
 	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(7);
 
-	float rotateAmount = 0;
-
-	if (RandUtils::RandInt(1, 100) <= 10)
+	if (_wanderDirection > -2 && _wanderDirection < 2)
 	{
-		rotateAmount += RandUtils::RandFloat(-10, 0);
-	}
-	else if (RandUtils::RandInt(1, 100) >= 90)
-	{
-		rotateAmount += RandUtils::RandFloat(-0, 10);
+		if (RandUtils::RandInt(1, 100) <= 10)
+		{
+			_wanderDirection += RandUtils::RandFloat(-90, 0);
+		}
+		else if (RandUtils::RandInt(1, 100) >= 90)
+		{
+			_wanderDirection += RandUtils::RandFloat(-0, 90);
+		}
 	}
 
-	_parentTransform->RotateBy(rotateAmount * GetRotationSpeed() * Timer::GetDeltaS(), 0, 1, 0);
-	//_parentTransform->RotateBy(180 * GetRotationSpeed() * Timer::GetDeltaS(), 0, 1, 0);
+	_parentTransform->RotateBy(_wanderDirection * GetRotationSpeed() * Timer::GetDeltaS(), 0, 1, 0);
 	_parentTransform->SetPosition(_parentTransform->GetPosition() - (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
+
+	_wanderDirection -= _wanderDirection * GetRotationSpeed() * Timer::GetDeltaS();
 
 	if (Timer::GetTimeS() - _randomTimer > 0.5f && Timer::GetTimeS() - _lastStateChange > 5.0f)
 	{
@@ -234,13 +238,12 @@ void AIBase::Wander()
 			Logger::LogInfo("Now Idle");
 			SetState(AIState::Idle);
 		}
+	}
 
-		if (GetDistanceToTarget() <= GetAgroDistance())
-		{
-			Logger::LogInfo("Now Seeking");
-			SetState(AIState::Seek);
-		}
-
+	if (GetDistanceToTarget() <= GetAgroDistance())
+	{
+		Logger::LogInfo("Now Seeking");
+		SetState(AIState::Seek);
 	}
 }
 
@@ -251,25 +254,19 @@ void AIBase::Seek()
 	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(7);
 
 	float rotation = GetRotationToTarget() * GetRotationSpeed() * Timer::GetDeltaS();
-	//_wanderDirection = rotation;
 	_parentTransform->RotateBy(rotation, 0, 1, 0);
-	//_parentTransform->RotateBy(180 * GetRotationSpeed() * Timer::GetDeltaS(), 0, 1, 0);
 	_parentTransform->SetPosition(_parentTransform->GetPosition() - (GetMovementSpeed() * Timer::GetDeltaS() * _parentTransform->GetLocalFront()));
 
-	if (Timer::GetTimeS() - _randomTimer > 0.5f && Timer::GetTimeS() - _lastStateChange > 5.0f)
-	{
-		_randomTimer = Timer::GetTimeS();
 
-		if (GetDistanceToTarget() >= GetMaxFollowDistance())
-		{
-			Logger::LogInfo("Returning to Wander");
-			SetState(AIState::Wander);
-		}
-		else if (GetDistanceToTarget() <= GetAttackDistance())
-		{
-			Logger::LogInfo("Now Fighting");
-			SetState(AIState::Fight);
-		}
+	if (GetDistanceToTarget() >= GetMaxFollowDistance())
+	{
+		Logger::LogInfo("Returning to Wander");
+		SetState(AIState::Wander);
+	}
+	else if (GetDistanceToTarget() <= GetAttackDistance())
+	{
+		Logger::LogInfo("Now Fighting");
+		SetState(AIState::Fight);
 	}
 }
 
@@ -277,15 +274,14 @@ void AIBase::Fight()
 {
 	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
 
-	if (Timer::GetTimeS() - _randomTimer > 0.5f && Timer::GetTimeS() - _lastStateChange > 5.0f)
-	{
-		_randomTimer = Timer::GetTimeS();
+	float rotation = GetRotationToTarget() * GetRotationSpeed() * Timer::GetDeltaS();
+	Logger::LogInfo("Rotation: ", rotation);
+	_parentTransform->RotateBy(rotation, 0, 1, 0);
 
-		if (GetDistanceToTarget() > GetAttackDistance())
-		{
-			Logger::LogInfo("Now Seeking");
-			SetState(AIState::Seek);
-		}
+	if (GetDistanceToTarget() > GetAttackDistance())
+	{
+		Logger::LogInfo("Now Seeking");
+		SetState(AIState::Seek);
 	}
 }
 

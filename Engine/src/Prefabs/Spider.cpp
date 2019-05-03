@@ -1,18 +1,17 @@
 #include "Spider.h"
 
-Spider::Spider() : AnimatedModel()
+Spider::Spider() : GameObject("Spider")
 {
-	
+	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 	AddComponent(new AIBase("Assets\\Scripts\\AI"));
-	AddComponent(new Animator());
 	AddComponent(new BoxCollider());
 }
 
-Spider::Spider(Transform& targetTransform) : AnimatedModel()
+Spider::Spider(Transform& targetTransform) : GameObject("Spider")
 {
+	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 	AddComponent(new AIBase(targetTransform, "Assets\\Scripts\\AI"));
 	AddComponent(new BoxCollider());
-	AddComponent(new Animator(new AnimatedModel()));
 }
 
 Spider::~Spider()

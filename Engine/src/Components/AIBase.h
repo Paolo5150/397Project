@@ -65,11 +65,11 @@ private:
 
 	std::string _scriptFolderName;
 
-	//float _wanderDirection;
+	float _wanderDirection;
 	float _movementSpeed;
 	float _rotationSpeed;
-	float _lastStateChange;
-	float _randomTimer; //Timer for managing 
+	float _lastStateChange; //Time since the last succesful state change
+	float _randomTimer; //Timer for managing random state changes
 
 	float _fleeDistance; //Distance the ai will try and get to before stopping fleeing
 	float _agroDistance; //Distance the ai will notice and start following the target
