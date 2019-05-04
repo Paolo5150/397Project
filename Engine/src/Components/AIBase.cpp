@@ -186,7 +186,7 @@ int AIBase::Lua_Think()
 	lua_pushnumber(_luaState, GetRotationToTarget());
 	lua_pushnumber(_luaState, Timer::GetTimeS());
 	lua_pushnumber(_luaState, Timer::GetDeltaS());
-	lua_pushnumber(_luaState, _wanderDirection);
+	//lua_pushnumber(_luaState, _wanderDirection);
 	lua_pushnumber(_luaState, GetMovementSpeed());
 	lua_pushnumber(_luaState, GetRotationSpeed());
 	lua_pushnumber(_luaState, _lastStateChange);
@@ -204,6 +204,7 @@ int AIBase::Lua_Think()
 	}
 	Rotate(Lua::GetFloatFromStack("rotation", _luaState));
 	Move(Lua::GetFloatFromStack("fowardMovement", _luaState), Lua::GetFloatFromStack("rightMovement", _luaState));
+	SetAnimation(Lua::GetIntFromStack("animation", _luaState));
 
 	Lua::CloseLua(_luaState);
 }
