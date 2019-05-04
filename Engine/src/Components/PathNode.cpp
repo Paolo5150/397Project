@@ -34,3 +34,9 @@ void PathNode::OnCollision(GameObject* go)
 	cost = 100000;
 	//Logger::LogInfo("Node collided against",go->GetName());
 }
+
+
+float PathNode::DistanceTo(PathNode* n)
+{
+	return glm::length(transform.GetPosition() - n->transform.GetPosition());
+}

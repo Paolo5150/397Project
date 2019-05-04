@@ -2,6 +2,7 @@
 
 #include "..\GameObject\GameObject.h"
 #include "BoxCollider.h"
+#include <vector>
 
 class PathNode : public GameObject
 {
@@ -14,5 +15,7 @@ public:
 
 	int cost;
 	BoxCollider* sc;
+	std::vector<PathNode*> neighbors;
+	float DistanceTo(PathNode* n);
 
 };

@@ -12,10 +12,11 @@ public:
 	static PathFinder& Instance();
 	void Generate(Terrain* terrain);
 	~PathFinder();
-	void NodeAt(int x, int z);
+	void ClosestNodeAt(int x, int y, int z);
 
 	void Start();
 	QuadTree<PathNode*>* nodesQT;
+	std::vector<std::vector<PathNode*>> nodeMap;
 
 	std::vector<PathNode*> pathNodes;
 private:
