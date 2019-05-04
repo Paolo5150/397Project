@@ -27,9 +27,11 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	boxCollider->ResetCollisionLayer();
 	boxCollider->AddCollisionLayer(CollisionLayers::PLAYER);
 	boxCollider->AddCollideAgainstLayer(CollisionLayers::OBSTACLE);
+	//boxCollider->AddCollideAgainstLayer(CollisionLayers::PATHNODE);
+
 
 	boxCollider->collisionCallback = [](GameObject* go){
-		Logger::LogInfo("Camera collided");
+		//Logger::LogInfo("Camera collided");
 	};
 }
 

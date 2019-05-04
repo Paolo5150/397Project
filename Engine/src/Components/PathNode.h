@@ -11,5 +11,7 @@ public:
 	void OnCollision(GameObject* go) override;
 	void Start() override;
 
+	int cost;
+
 
 };

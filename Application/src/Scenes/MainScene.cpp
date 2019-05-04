@@ -305,8 +305,10 @@ void MainScene::Initialize() {
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
-	crate = new Crate();
-	crate->transform.SetPosition(cam->transform.GetPosition().x + 20, terrain->GetHeightAt(cam->transform.GetPosition().x + 20, cam->transform.GetPosition().z + 200), cam->transform.GetPosition().z + 200);
+	//crate = new Crate();
+
+	Cabin* cabin = new Cabin();
+	cabin->transform.SetPosition(cam->transform.GetPosition().x + 400, terrain->GetHeightAt(cam->transform.GetPosition().x + 400, cam->transform.GetPosition().z + 200), cam->transform.GetPosition().z + 200);
 
 	w->transform.SetPosition(x, 50, z);
 	w->transform.SetScale(3000, 3000, 1);
@@ -314,7 +316,7 @@ void MainScene::Initialize() {
 	//AddGameObject(c1);
 	AddGameObject(w);
 
-	AddGameObject(crate);
+	AddGameObject(cabin);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(pLight);

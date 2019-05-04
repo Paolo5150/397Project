@@ -8,7 +8,7 @@ class Cabin : public GameObject
 public:
 	Cabin();
 	~Cabin();
-
+	void Start() override;
 private:
 
 };
