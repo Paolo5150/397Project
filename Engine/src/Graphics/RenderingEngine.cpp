@@ -39,6 +39,15 @@ void RenderingEngine::Initialize()
 		return 0;
 	});
 
+	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>([this](Event* e){
+
+		WindowResizeEvent* wc = dynamic_cast<WindowResizeEvent*>(e);
+
+		renderTexture->ResizeTexture(wc->width, wc->height);
+		renderTexture->ResizeTexture(wc->width, wc->height);
+		return 0;
+	});
+
 	int w, h;
 	Window::Instance().GetWindowSize(w, h);
 	renderTexture = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);	
