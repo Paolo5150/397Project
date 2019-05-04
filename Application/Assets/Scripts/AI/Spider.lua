@@ -1,10 +1,10 @@
 --Script variables
 movementSpeed = 100;
 rotationSpeed = 1;
-fleeDistance = 1000;
-agroDistance = 500;
-maxFollowDistance = 1000;
-attackDistance = 150;
+fleeDistance = 1000; --Distance the ai will try and get to before stopping fleeing
+agroDistance = 500; --Distance the ai will notice and start following the target
+maxFollowDistance = 1000; --Distance the ai will stop following the target
+attackDistance = 150; --Distance the ai will switch to fighting
 fowardMovement = 0;
 rightMovement = 0;
 rotation = 0;
@@ -14,16 +14,18 @@ animation = 0;
 _state = "";
 _targetDistance = 0;
 _targetRotation = 0;
+_targetRotationReverse = 0;
 _wanderDirection = 0;
 _timerCurrentTime = 0;
 _timerDeltaS = 0;
 _lastStateChange = 0;
 _randomTimer = 0;
 
-function PopulateVariables(state, targetDistance, targetRotation, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
+function PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
     _state = state;
     _targetDistance = targetDistance;
     _targetRotation = targetRotation;
+    _targetRotationReverse = targetRotationReverse;
     _timerCurrentTime = timerCurrentTime;
     _timerDeltaS = timerDeltaS;
     _lastStateChange = lastStateChange;
@@ -32,8 +34,8 @@ end
 
 --Entry function
 --Returns: state, animation, fowardMovement, rightMovement, rotation(left/right), wanderDirection
-function Think(state, targetDistance, targetRotation, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
-    PopulateVariables(state, targetDistance, targetRotation, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer);
+function Think(state, targetDistance, targetRotation, targetRotationReverse, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
+    PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer);
     
     if(_state == "Idle") then
         Idle();
@@ -107,7 +109,7 @@ end
 function Seek()
     animation = 7;
 
-    rotation = -(_targetRotation * rotationSpeed * _timerDeltaS);
+    rotation = _targetRotationReverse * rotationSpeed * _timerDeltaS;
     _wanderDirection = rotation;
     fowardMovement = -(movementSpeed * _timerDeltaS);
     rightMovement = 0;
@@ -124,7 +126,7 @@ end
 function Fight()
     animation = 0;
 
-    rotation = -(_targetRotation * rotationSpeed * _timerDeltaS);
+    rotation = _targetRotationReverse * rotationSpeed * _timerDeltaS;
     fowardMovement = 0;
     rightMovement = 0;
 

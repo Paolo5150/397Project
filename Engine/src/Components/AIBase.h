@@ -23,6 +23,8 @@ public:
 
 	float GetRotationToTarget() const;
 
+	float GetReverseRotationToTarget() const; //Same as above but reversed by 180 degrees
+
 	Transform* GetTarget() const;
 
 	void SetState(std::string state);
@@ -33,31 +35,7 @@ public:
 
 	void Rotate(float amount = 0.0f);
 
-	void SetAnimation(int index);
-
-	void SetMovementSpeed(float movementSpeed);
-
-	float GetMovementSpeed() const;
-
-	void SetRotationSpeed(float rotationSpeed);
-
-	float GetRotationSpeed() const;
-
-	void SetFleeDistance(float fleeDistance);
-
-	float GetFleeDistance() const;
-
-	void SetAgroDistance(float agroDistance);
-
-	float GetAgroDistance() const;
-
-	void SetMaxFollowDistance(float maxFollowDistance);
-
-	float GetMaxFollowDistance() const;
-
-	void SetAttackDistance(float attackDistance);
-
-	float GetAttackDistance() const;
+	void SetAnimation(int index = 0);
 
 	void Update() override;
 
@@ -72,27 +50,11 @@ private:
 	std::string _scriptPath;
 
 	float _wanderDirection;
-	float _movementSpeed;
-	float _rotationSpeed;
 	float _lastStateChange; //Time since the last succesful state change
 	float _randomTimer; //Timer for managing random state changes
 
-	float _fleeDistance; //Distance the ai will try and get to before stopping fleeing
-	float _agroDistance; //Distance the ai will notice and start following the target
-	float _maxFollowDistance; //Distance the ai will stop following the target
-	float _attackDistance; //Distance the ai will switch to fighting
-
-	//Lua Functions
-	void Lua_Think();
-	//----------
-
 	//AI Functions
 	void Think();
-	void Idle();
-	void Wander();
-	void Seek();
-	void Fight();
-	void Flee();
 	//----------
 };
 

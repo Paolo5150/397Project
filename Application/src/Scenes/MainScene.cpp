@@ -183,11 +183,6 @@ void MainScene::Initialize() {
 		nanosuits[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
 		nanosuits[i]->transform.SetPosition(nanosuits[i]->transform.GetPosition().x, terrain->GetHeightAt(nanosuits[i]->transform.GetPosition().x, nanosuits[i]->transform.GetPosition().z), nanosuits[i]->transform.GetPosition().z);
 		AddGameObject(nanosuits[i]);
-		/*nanosuits[i]->transform.SetScale(Lua::GetFloatFromStack("nanosuitScale"), Lua::GetFloatFromStack("nanosuitScale"), Lua::GetFloatFromStack("nanosuitScale"));
-		float posX = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "X");
-		float posY = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "Y");
-		float posZ = Lua::GetFloatFromStack("nanosuit" + std::to_string(i + 1) + "Z");
-		nanosuits[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);*/
 	}
 	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");
 
@@ -199,11 +194,6 @@ void MainScene::Initialize() {
 		pumpkins[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
 		pumpkins[i]->transform.SetPosition(pumpkins[i]->transform.GetPosition().x, terrain->GetHeightAt(pumpkins[i]->transform.GetPosition().x, pumpkins[i]->transform.GetPosition().z), pumpkins[i]->transform.GetPosition().z);
 		AddGameObject(pumpkins[i]);
-		/*pumpkins[i]->transform.SetScale(Lua::GetFloatFromStack("pumpkinScale"), Lua::GetFloatFromStack("pumpkinScale"), Lua::GetFloatFromStack("pumpkinScale"));
-		float posX = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "X");
-		float posY = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "Y");
-		float posZ = Lua::GetFloatFromStack("pumpkin" + std::to_string(i + 1) + "Z");
-		pumpkins[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);*/
 	}
 	luaAssetOffset += Lua::GetIntFromStack("npc_pumpkins");
 
@@ -212,13 +202,7 @@ void MainScene::Initialize() {
 	{
 		barrels[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
 		barrels[i]->transform.SetPosition(barrels[i]->transform.GetPosition().x, terrain->GetHeightAt(barrels[i]->transform.GetPosition().x, barrels[i]->transform.GetPosition().z), barrels[i]->transform.GetPosition().z);
-		//barrels[i]->AddComponent(new AIBase(cam->transform));
 		AddGameObject(barrels[i]);
-		/*barrels[i]->transform.SetScale(Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"), Lua::GetFloatFromStack("barrelScale"));
-		float posX = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "X");
-		float posY = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "Y");
-		float posZ = Lua::GetFloatFromStack("barrel" + std::to_string(i + 1) + "Z");
-		barrels[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);*/
 	}
 	luaAssetOffset += Lua::GetIntFromStack("prop_barrels");
 
@@ -229,25 +213,8 @@ void MainScene::Initialize() {
 		crates[i]->transform.SetPosition(crates[i]->transform.GetPosition().x, terrain->GetHeightAt(crates[i]->transform.GetPosition().x, crates[i]->transform.GetPosition().z), crates[i]->transform.GetPosition().z);
 		crates[i]->ApplyMaterial(mat_crate);
 		AddGameObject(crates[i]);
-		/*crates[i]->transform.SetScale(Lua::GetFloatFromStack("crateScale"), Lua::GetFloatFromStack("crateScale"), Lua::GetFloatFromStack("crateScale"));
-		float posX = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "X");
-		float posY = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "Y");
-		float posZ = Lua::GetFloatFromStack("crate" + std::to_string(i + 1) + "Z");
-		crates[i]->transform.SetPosition(posX, terrain->GetHeightAt(posX, posZ) + posY, posZ);*/
 	}
 	luaAssetOffset += Lua::GetIntFromStack("prop_crates");
-
-	//Material spiderMat;
-	//spiderMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("Spinnen_Bein_tex_COLOR_"));
-	//spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
-
-	//spider = new Spider(cam->transform);
-	//spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
-	//spider->AddComponent(new AIBase(cam->transform, "Assets\\Scripts\\AI"));
-	//spider->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
-	//spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
-	//spider->ApplyMaterial(spiderMat);
-	//spider->PrintHierarchy();
 
 	spider = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	((AIBase*)spider->GetComponent<AIBase>("AIBase"))->SetTarget(cam->transform);
@@ -257,27 +224,20 @@ void MainScene::Initialize() {
 	gun = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	gun->transform.SetPosition(gun->transform.GetPosition().x, terrain->GetHeightAt(gun->transform.GetPosition().x, gun->transform.GetPosition().z), gun->transform.GetPosition().z);
 	AddGameObject(gun);
-	/*gun->transform.SetScale(Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"));
-	gun->transform.SetPosition(Lua::GetFloatFromStack("gunX"), terrain->GetHeightAt(Lua::GetFloatFromStack("gunX"), Lua::GetFloatFromStack("gunZ")) + Lua::GetFloatFromStack("gunY"), Lua::GetFloatFromStack("gunZ"));
-	gun->transform.SetRotation(0, 0, 90);*/
 	luaAssetOffset++;
 
 	ship = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	ship->transform.SetPosition(ship->transform.GetPosition().x, terrain->GetHeightAt(ship->transform.GetPosition().x, ship->transform.GetPosition().z), ship->transform.GetPosition().z);
 	ship->ApplyMaterial(mat_ship);
 	AddGameObject(ship);
-	/*ship->transform.SetScale(Lua::GetFloatFromStack("shipScale"), Lua::GetFloatFromStack("shipScale"), Lua::GetFloatFromStack("shipScale"));
-	ship->transform.SetPosition(Lua::GetFloatFromStack("shipX"), terrain->GetHeightAt(Lua::GetFloatFromStack("shipX"), Lua::GetFloatFromStack("shipZ")) + Lua::GetFloatFromStack("shipY"), Lua::GetFloatFromStack("shipZ"));
-	luaAssetOffset++;*/
+	luaAssetOffset++;
 
 	cabin = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	cabin->transform.SetPosition(cabin->transform.GetPosition().x, terrain->GetHeightAt(cabin->transform.GetPosition().x, cabin->transform.GetPosition().z), cabin->transform.GetPosition().z);
 	cabin->ApplyMaterial(mat_cabin);
 	AddGameObject(cabin);
-	/*cabin->transform.SetScale(Lua::GetFloatFromStack("cabinScale"), Lua::GetFloatFromStack("cabinScale"), Lua::GetFloatFromStack("cabinScale"));
-	cabin->transform.SetPosition(Lua::GetFloatFromStack("cabinX"), terrain->GetHeightAt(Lua::GetFloatFromStack("cabinX"), Lua::GetFloatFromStack("cabinZ")) + Lua::GetFloatFromStack("cabinY"), Lua::GetFloatFromStack("cabinZ"));
-	cabin->transform.SetRotation(-90, 0, 0);*/
 	luaAssetOffset++;
+
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	cam->transform.SetPosition(x, y, z);

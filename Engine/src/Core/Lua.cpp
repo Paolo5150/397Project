@@ -144,6 +144,11 @@ void Lua::AddCreatedAsset(InternalAsset* asset)
 	createdAssetsLength++; //Increase the length count by one
 }
 
+int Lua::GetCreatedAssetLength()
+{
+	return createdAssetsLength;
+}
+
 InternalAsset* Lua::GetCreatedAsset(unsigned int index)
 {
 	if (index < createdAssetsLength)
