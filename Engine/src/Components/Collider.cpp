@@ -15,8 +15,8 @@ void Collider::EngineUpdate()
 {
 	if ( _isActive)
 	{
-		//if (!_parent->GetIsStatic())
-	//	PhysicsWorld::Instance().AddCollider(this);
+		if (!_parent->GetIsStatic())
+			PhysicsWorld::Instance().AddCollider(this);
 		
 		if (enableRender)
 			meshRenderer->EngineUpdate();

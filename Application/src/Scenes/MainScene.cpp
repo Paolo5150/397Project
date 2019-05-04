@@ -355,7 +355,7 @@ void MainScene::LogicUpdate() {
 	spider->transform.RotateBy(yAngle * s, 0, 1, 0);
 	spider->transform.RotateBy(180, 0, 1, 0);*/
 
-	//PhysicsWorld::Instance().Update(Timer::GetDeltaS());
+	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
 	/*if (CollisionChecks::Collision(cam->boxCollider, crate->GetComponent<BoxCollider>("BoxCollider")))
 	{

@@ -48,8 +48,7 @@ void PhysicsWorld::FillQuadtree(bool staticToo)
 		nonStaticQuadtree->AddElement(allNonStaticColliders[i], allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z,
 			allNonStaticColliders[i]->transform.GetGlobalScale().x, allNonStaticColliders[i]->transform.GetGlobalScale().z);
 	}
-
-	allNonStaticColliders.clear();
+	
 
 	if (staticToo)
 	{
@@ -133,6 +132,7 @@ void PhysicsWorld::Update(float deltaS)
 {
 	FillQuadtree(0);
 	PerformCollisions(false);
+	allNonStaticColliders.clear();
 	/*auto it = allRigidBodies.begin();
 	for (; it != allRigidBodies.end(); it++)
 		(*it)->PrePhysicsUpdate();*/
@@ -150,6 +150,24 @@ bool PhysicsWorld::CollisionCallback(btManifoldPoint& cp, const btCollisionObjec
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {
 	PerformCollisions(nonStaticQuadtree->root);
+
+
+	for (unsigned i = 0; i < allNonStaticColliders.size(); i++)
+	{
+		std::set<Collider*>& staticCols = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z);
+		
+		for (auto it = staticCols.begin(); it != staticCols.end(); it++)
+		{
+			if (allNonStaticColliders[i]->GetCollideAgainstLayer() & (*it)->GetCollisionLayer())
+			{
+				if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
+				{
+					allNonStaticColliders[i]->collisionCallback((*it)->GetParent());
+				}
+			}
+		}
+		
+	}
 
 	if (staticToo)
 	PerformCollisions(staticQuadtree->root);
@@ -170,13 +188,13 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 	}
 	else
 	{
-		auto it = node->gameObjects.begin();
+		auto it = node->elements.begin();
 
-		for (; it != node->gameObjects.end(); it++)
+		for (; it != node->elements.end(); it++)
 		{
-			auto it2 = node->gameObjects.begin();
+			auto it2 = node->elements.begin();
 
-			for (; it2 != node->gameObjects.end(); it2++)
+			for (; it2 != node->elements.end(); it2++)
 			{
 				if (*it == *it2) continue;
 				if ((*it)->GetCollideAgainstLayer() & (*it2)->GetCollisionLayer())

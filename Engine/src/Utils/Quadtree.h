@@ -22,7 +22,7 @@ public:
 	QuadNode<T> *topRight;
 	QuadNode<T> *bottomRight;
 
-	std::set<T> gameObjects;
+	std::set<T> elements;
 
 	void Split();
 
@@ -41,12 +41,15 @@ public:
 	void AddElement(T go, float posX, float posZ, float sizeX, float sizeZ);
 	int GameObjectInQuadrant(int x, int y);
 	void ClearNodes();
+	std::set<T>& GameObjectsAt(int x, int y);
 
 private:
 	void AddElement(T go, float posX, float posZ, QuadNode<T>* &node);
 	void AddElement(T go, float posX, float posZ, float sizeX, float sizeZ, QuadNode<T>* &node);
 	void ClearNode(QuadNode<T>* &node);
 	int GameObjectInQuadrant(int x, int y, QuadNode<T>* node);
+	std::set<T>& GameObjectsAt(int x, int y, QuadNode<T>* node);
+
 	void DeleteNode(QuadNode<T>*& n);
 
 };
@@ -126,6 +129,33 @@ int QuadTree<T>::GameObjectInQuadrant(int x, int y)
 }
 
 template <class T>
+std::set<T>& QuadTree<T>::GameObjectsAt(int x, int y)
+{
+	return GameObjectsAt(x, y, root);
+}
+
+template <class T>
+std::set<T>& QuadTree<T>::GameObjectsAt(int x, int z, QuadNode<T>* node)
+{
+	if (node->isSplit)
+	{
+		if (x <= node->centerX && z >= node->centerY)
+			return GameObjectsAt(x, z, node->topLeft);
+
+		if (x <= node->centerX && z <= node->centerY)
+			return GameObjectsAt(x, z, node->bottomLeft);
+
+		if (x >= node->centerX && z >= node->centerY)
+			return GameObjectsAt(x, z, node->topRight);
+
+		if (x >= node->centerX && z <= node->centerY)
+			return GameObjectsAt(x, z, node->bottomRight);
+	}
+	else
+		return node->elements;
+}
+
+template <class T>
 int QuadTree<T>::GameObjectInQuadrant(int x, int z, QuadNode<T>* node)
 {
 	if (node->isSplit)
@@ -143,7 +173,7 @@ int QuadTree<T>::GameObjectInQuadrant(int x, int z, QuadNode<T>* node)
 			return GameObjectInQuadrant(x, z, node->bottomRight);
 	}
 	else
-		return node->gameObjects.size();
+		return node->elements.size();
 }
 
 template <class T>
@@ -182,7 +212,7 @@ void QuadTree<T>::AddElement(T go, float posX, float posZ, QuadNode<T>* &node)
 		}
 	}
 	else
-		node->gameObjects.push_back(go);
+		node->elements.push_back(go);
 }
 
 
@@ -248,7 +278,7 @@ void QuadTree<T>::AddElement(T go, float posX, float posZ, float sizeX, float si
 
 	}
 	else
-		node->gameObjects.insert(go);
+		node->elements.insert(go);
 }
 
 
@@ -261,7 +291,7 @@ void QuadTree<T>::ClearNodes()
 template <class T>
 void QuadTree<T>::ClearNode(QuadNode<T>* &node)
 {
-	node->gameObjects.clear();
+	node->elements.clear();
 
 	if (node->isSplit)
 	{
