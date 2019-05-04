@@ -71,6 +71,7 @@
     <ClCompile Include="src\Utils\RandUtils.cpp" />
     <ClCompile Include="src\Components\AIBase.cpp" />
     <ClCompile Include="src\Prefabs\Spider.cpp" />
+    <ClCompile Include="src\Components\AIEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -168,5 +169,6 @@
     <ClInclude Include="src\Utils\RandUtils.h" />
     <ClInclude Include="src\Components\AIBase.h" />
     <ClInclude Include="src\Prefabs\Spider.h" />
+    <ClInclude Include="src\Components\AIEnemy.h" />
   </ItemGroup>
 </Project>
