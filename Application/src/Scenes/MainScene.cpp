@@ -364,20 +364,13 @@ void MainScene::LogicUpdate() {
 	spider->transform.RotateBy(180, 0, 1, 0);*/
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
-	/*if (CollisionChecks::Collision(cam->boxCollider, crate->GetComponent<BoxCollider>("BoxCollider")))
-	{
-		cam->boxCollider->collisionCallback(crate);
-	}*/
-	
-	//Logger::LogInfo("Objs in quad",PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetPosition().x, cam->transform.GetPosition().z));
-
 
 	c1->transform.Translate(0, 0, -0.2f);
-	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(animIndex);
 
 	if (Input::GetKeyPressed(GLFW_KEY_O))
 	{
 		animIndex++;
+	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(animIndex);
 	}
 
 

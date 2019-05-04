@@ -1,6 +1,7 @@
 #pragma once
 
 #include "..\Components\PathNode.h"
+#include "Quadtree.h"
 #include <vector>
 
 class Terrain;
@@ -11,8 +12,9 @@ public:
 	static PathFinder& Instance();
 	void Generate(Terrain* terrain);
 
-	void EngineUpdate();
-	void Update();
+	void NodeAt(int x, int z);
+
+	QuadTree<PathNode*>* nodesQT;
 
 	std::vector<PathNode*> pathNodes;
 private:

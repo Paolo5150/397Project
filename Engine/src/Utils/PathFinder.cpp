@@ -11,6 +11,16 @@ PathFinder& PathFinder::Instance()
 PathFinder::PathFinder()
 {}
 
+PathFinder::~PathFinder()
+{
+	delete nodesQT;
+}
+
+
+void PathFinder::NodeAt(int x, int z)
+{
+
+}
 
 void PathFinder::Generate(Terrain* terrain)
 {
@@ -24,9 +34,12 @@ void PathFinder::Generate(Terrain* terrain)
 
 		}
 	}
+
+	int x, y, z;
+	terrain->GetCenter(x, y, z);
+	nodesQT = new QuadTree<PathNode*>(x, z, terrain->GetTerrainMaxX() - terrain->GetTerrainMinX(), terrain->GetTerrainMaxZ() - terrain->GetTerrainMinZ());
+
+	for (unsigned i = 0; i < pathNodes.size(); i++)
+		nodesQT->AddElement(pathNodes[i], pathNodes[i]->sc->transform.GetGlobalPosition().x, pathNodes[i]->sc->transform.GetGlobalPosition().z, pathNodes[i]->sc->transform.GetGlobalScale().x, pathNodes[i]->sc->transform.GetGlobalScale().z);
 }
 
-void PathFinder::Update()
-{
-
-}

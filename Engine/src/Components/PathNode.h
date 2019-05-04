@@ -1,6 +1,7 @@
 #pragma once
 
 #include "..\GameObject\GameObject.h"
+#include "BoxCollider.h"
 
 class PathNode : public GameObject
 {
@@ -12,6 +13,6 @@ public:
 	void Start() override;
 
 	int cost;
-
+	BoxCollider* sc;
 
 };

@@ -13,7 +13,7 @@ PathNode::~PathNode()
 
 void PathNode::Start()
 {
-	BoxCollider* sc = new BoxCollider();
+	sc = new BoxCollider();
 	sc->enableRender = 1;
 	sc->ResetCollideAgainstLayer();
 	sc->ResetCollisionLayer();
