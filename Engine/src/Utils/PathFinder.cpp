@@ -23,17 +23,18 @@ PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)
 {
 	std::set<PathNode*>& nodes = nodesQT->GameObjectsAt(x,z);
 
-	double dist = 1000000000;
+	double dist = 99999999999999999;
 	PathNode* closest = nullptr;
 	for (auto it = nodes.begin(); it != nodes.end(); it++)
 	{
+		(*it)->sc->meshRenderer->GetMaterial().SetColor(0, 0, 0);
 		if (closest == nullptr)
 			closest = (*it);
-		double length2 = glm::length2((*it)->sc->transform.GetGlobalPosition() - glm::vec3(x, y, z));
+		double length = glm::length((*it)->sc->transform.GetGlobalPosition() - glm::vec3(x, y, z));
 		
-		if (length2 < dist)
+		if (length < dist)
 		{
-			dist = length2;
+			dist = length;
 			closest = (*it);
 		}
 	
@@ -126,11 +127,21 @@ void PathFinder::Start()
 std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finish)
 {
 	for (int i = 0; i < pathNodes.size(); i++)
-		pathNodes[i]->sc->enableRender = 0;
+	{
+		pathNodes[i]->sc->enableRender = 1;
+		pathNodes[i]->sc->meshRenderer->GetMaterial().SetColor(0, 1, 0);
+
+	}
 
 
 	PathNode* startNode = ClosestNodeAt(start.x, start.y, start.z);
 	PathNode* goalNode = ClosestNodeAt(finish.x, finish.y, finish.z);
+
+	goalNode->sc->meshRenderer->GetMaterial().SetColor(0, 1, 1);
+	for (int i = 0; i < goalNode->neighbors.size(); i++)
+	{
+		goalNode->neighbors[i]->sc->meshRenderer->GetMaterial().SetColor(0, 1, 1);
+	}
 
 	PathNode* currentNode = startNode;
 
@@ -161,7 +172,7 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 	while (currentNode->previousNode != nullptr)
 	{
-		currentNode->sc->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+		//currentNode->sc->meshRenderer->GetMaterial().SetColor(1, 0, 0);
 		currentNode->sc->enableRender = 1;
 		currentNode = currentNode->previousNode;
 

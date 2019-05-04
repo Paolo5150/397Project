@@ -4,7 +4,7 @@
 namespace {
 
 	const float MIN_SPEED = 0;
-	const float MAX_SPEED = 400;
+	const float MAX_SPEED = 1000;
 	float counter = 0;
 }
 

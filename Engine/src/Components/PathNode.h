@@ -17,7 +17,6 @@ public:
 	PathNode* previousNode;
 	BoxCollider* sc;
 	std::vector<PathNode*> neighbors;
-	float DistanceTo(PathNode* n);
 	double distanceFromPrevious;
 	double distanceFromTarget;
 	double cost;

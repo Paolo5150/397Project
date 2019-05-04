@@ -345,8 +345,6 @@ void MainScene::Start()
 {
 	Scene::Start();
 
-
-
 	PathFinder::Instance().Start();
 
 	PhysicsWorld::Instance().FillQuadtree(true);
