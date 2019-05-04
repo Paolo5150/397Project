@@ -254,7 +254,7 @@ void QuadTree<T>::AddElement(NodeElement<T> go, float posX, float posZ, float si
 		if (posX - sizeX / 2 >= node->centerX && posZ - sizeZ / 2 <= node->centerY)
 			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomRight);
 
-		else if (posX - sizeX / 2 <= node->centerX && posZ - sizeZ / 2 >= node->centerY)
+		else if (posX - sizeX / 2 <= node->centerX && posZ - sizeZ / 2 <= node->centerY)
 			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomLeft);
 
 		/**/
@@ -267,7 +267,7 @@ void QuadTree<T>::AddElement(NodeElement<T> go, float posX, float posZ, float si
 		if (posX + sizeX / 2 >= node->centerX && posZ - sizeZ / 2 <= node->centerY)
 			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomRight);
 
-		else if (posX + sizeX / 2 <= node->centerX && posZ - sizeZ / 2 >= node->centerY)
+		else if (posX + sizeX / 2 <= node->centerX && posZ - sizeZ / 2 <= node->centerY)
 			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomLeft);
 
 		/**/
@@ -280,7 +280,7 @@ void QuadTree<T>::AddElement(NodeElement<T> go, float posX, float posZ, float si
 		if (posX - sizeX / 2 >= node->centerX && posZ + sizeZ / 2 <= node->centerY)
 			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomRight);
 
-		else if (posX - sizeX / 2 <= node->centerX && posZ + sizeZ / 2 >= node->centerY)
+		else if (posX - sizeX / 2 <= node->centerX && posZ + sizeZ / 2 <= node->centerY)
 			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomLeft);
 
 		/**/
@@ -293,7 +293,7 @@ void QuadTree<T>::AddElement(NodeElement<T> go, float posX, float posZ, float si
 		if (posX + sizeX / 2 >= node->centerX && posZ + sizeZ / 2 <= node->centerY)
 			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomRight);
 
-		else if (posX + sizeX / 2 <= node->centerX && posZ + sizeZ / 2 >= node->centerY)
+		else if (posX + sizeX / 2 <= node->centerX && posZ + sizeZ / 2 <= node->centerY)
 			AddElement(go, posX, posZ, sizeX, sizeZ, node->bottomLeft);
 
 
