@@ -50,12 +50,12 @@ int LuaRegistry::Lua_CreateObject(lua_State* L)
 {
 	int numParams = lua_gettop(L); //Number of parameters on the stack
 
-	if (numParams == 5) //Check we have enough parameters
+	if (numParams != 5) //Check we have enough parameters
 	{
 		Logger::LogError("Lua_Create: not enough parameters for CreateObject function");
 	}
 
-	if (!Lua::LuaType(L, -5, "string") && !Lua::LuaType(L, -4, "string") && !Lua::LuaType(L, -3, "number") && !Lua::LuaType(L, -2, "number") && !Lua::LuaType(L, -1, "number")) //Check all the parameters are correct
+	if (!Lua::LuaType(L, -5, "string") && !Lua::LuaType(L, -4, "number") && !Lua::LuaType(L, -3, "number") && !Lua::LuaType(L, -2, "number") && !Lua::LuaType(L, -1, "number")) //Check all the parameters are correct
 	{
 		Logger::LogError("Lua_CreateObject: parameters are not valid!");
 	}
@@ -66,32 +66,26 @@ int LuaRegistry::Lua_CreateObject(lua_State* L)
 
 	if (numParams == 5)
 	{
-		float z = lua_tonumber(L, -1);
-		float y = lua_tonumber(L, -2);
-		float x = lua_tonumber(L, -3);
-		name = lua_tostring(L, -4); //Get the parameters from the stack
+		float scale = lua_tonumber(L, -1);
+		float z = lua_tonumber(L, -2);
+		float y = lua_tonumber(L, -3);
+		float x = lua_tonumber(L, -4);
 		assetType = lua_tostring(L, -5);
 		lua_pop(L, -1);
 		lua_pop(L, -2);
 		lua_pop(L, -3);
 		lua_pop(L, -4);
 		lua_pop(L, -5);
-		asset = GameAssetFactory::Instance().Create(assetType, name); //Create Asset
+		asset = GameAssetFactory::Instance().Create(assetType); //Create Asset
+		
 		((GameObject*)asset)->transform.SetPosition(x, y, z);
+
+		((GameObject*)asset)->transform.SetScale(scale, scale, scale);
 	}
 	else
 	{
-		assetType = lua_tostring(L, -1); //Get the parameter from the stack
-		lua_pop(L, -1);
-		if (assetType != "Model" && assetType != "GameObject")
-		{
-			asset = GameAssetFactory::Instance().Create(assetType); //Create Asset
-		}
-		else
-		{
-			Logger::LogError("Lua_Create: Not enough parameters to create a ", assetType, "!");
-			throw "Lua_Create: Not enough parameters to create requested type!";
-		}
+		Logger::LogError("Lua_Create: Not enough parameters to create a ", assetType, "!");
+		throw "Lua_Create: Not enough parameters to create requested type!";
 	}
 
 	Lua::AddCreatedAsset(asset);

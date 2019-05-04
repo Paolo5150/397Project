@@ -40,6 +40,8 @@ do
 end
     crateScale = 1;
 
+CreateObject("Spider", 80, 0, 1298, 1)
+
 CreateAsset("Model", "Gun");
 gunX, gunY, gunZ = 1637, 16, 1555; --Same x and z location as crate 1, y = 16 is to lay the gun on a crate
 gunScale = 0.8;

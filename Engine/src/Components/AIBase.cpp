@@ -13,6 +13,7 @@ AIBase::AIBase(std::string luaScriptFolder, AIState state) : Component("AIBase")
 	SetFleeDistance(1000.0f);
 	SetAttackDistance(150.0f);
 	_scriptFolderName = luaScriptFolder;
+	Lua::InitLua(_luaState);
 }
 
 AIBase::AIBase(Transform& targetTransform, std::string luaScriptFolder, AIState state) : Component("AIBase")

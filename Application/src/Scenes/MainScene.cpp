@@ -27,11 +27,8 @@
 
 #include "Physics\PhysicsWorld.h"
 
-
 #include "Utils\RandUtils.h"
 #include "Components\AIBase.h"
-#include "Prefabs\Spider.h"
-
 
 MainCamera* cam;
 int luaAssetOffset = 0;
@@ -169,7 +166,7 @@ void MainScene::Initialize() {
 	terrain->transform.Translate(0, 0, 0);
 
 	//GameObjects
-	cam = (MainCamera*)Lua::GetCreatedAsset(0);
+	cam = (MainCamera*)Lua::GetCreatedAsset(luaAssetOffset);
 	luaAssetOffset++;
 	cam->transform.SetPosition(Lua::GetFloatFromStack("camX"), Lua::GetFloatFromStack("camY"), Lua::GetFloatFromStack("camZ"));
 	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
@@ -177,7 +174,7 @@ void MainScene::Initialize() {
 	cam->RemoveLayerMask(Layers::GUI);
 
 
-	Water* w = (Water*)Lua::GetCreatedAsset(1);
+	Water* w = (Water*)Lua::GetCreatedAsset(luaAssetOffset);
 	luaAssetOffset++;
 	w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
 	nanosuits = new GameObject*[Lua::GetIntFromStack("npc_nanosuits")];
@@ -236,6 +233,23 @@ void MainScene::Initialize() {
 	}
 	luaAssetOffset += Lua::GetIntFromStack("prop_crates");
 
+	//Material spiderMat;
+	//spiderMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("Spinnen_Bein_tex_COLOR_"));
+	//spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
+
+	//spider = new Spider(cam->transform);
+	//spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
+	//spider->AddComponent(new AIBase(cam->transform, "Assets\\Scripts\\AI"));
+	//spider->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
+	//spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
+	//spider->ApplyMaterial(spiderMat);
+	//spider->PrintHierarchy();
+
+	spider = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
+	((AIBase*)spider->GetComponent<AIBase>("AIBase"))->SetTarget(cam->transform);
+	AddGameObject(spider);
+	luaAssetOffset++;
+
 	gun = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
 	AddGameObject(gun);
 	gun->transform.SetScale(Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"), Lua::GetFloatFromStack("gunScale"));
@@ -265,20 +279,6 @@ void MainScene::Initialize() {
 	/*GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
 	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
 	AddGameObject(woof);*/
-
-	Material spiderMat;
-	spiderMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("Spinnen_Bein_tex_COLOR_"));
-	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
-
-	spider = new Spider(cam->transform);
-	//spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
-	//spider->AddComponent(new AIBase(cam->transform, "Assets\\Scripts\\AI"));
-	spider->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
-	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
-	spider->ApplyMaterial(spiderMat);
-	spider->PrintHierarchy();
-	
-	AddGameObject(spider);
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c1->transform.SetPosition(cam->transform.GetPosition().x+20,400, cam->transform.GetPosition().z + 400);
@@ -382,7 +382,7 @@ void MainScene::LogicUpdate() {
 		terrain->GetCenter(x, y, z);
 		cam->transform.LookAt(x, y, z);
 	}	
-
+	
 	//for (int i = 0; i < 10; i++) //TEMPORARY !-----!-----!-----!
 	//{
 		float h = terrain->GetHeightAt(spider->transform.GetPosition().x, spider->transform.GetPosition().z);
@@ -410,6 +410,7 @@ void MainScene::LogicUpdate() {
 			spider->transform.RotateBy(180, glm::vec3(0, 1, 0));
 		}
 	//}
+	
 
 	if (Input::GetKeyPressed(GLFW_KEY_M))
 		manual->isActive = !manual->isActive;
