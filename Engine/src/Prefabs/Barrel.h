@@ -7,7 +7,7 @@ class Barrel : public GameObject
 public:
 	Barrel();
 	~Barrel();
-
+	void Start() override;
 private:
 
 };

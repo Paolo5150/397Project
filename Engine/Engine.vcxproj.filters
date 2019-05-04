@@ -71,6 +71,7 @@
     <ClCompile Include="src\Prefabs\Barrel.cpp" />
     <ClCompile Include="src\Prefabs\Cabin.cpp" />
     <ClCompile Include="src\Components\PathNode.cpp" />
+    <ClCompile Include="src\Utils\PathFinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -171,5 +172,6 @@
     <ClInclude Include="src\Prefabs\Barrel.h" />
     <ClInclude Include="src\Prefabs\Cabin.h" />
     <ClInclude Include="src\Components\PathNode.h" />
+    <ClInclude Include="src\Utils\PathFinder.h" />
   </ItemGroup>
 </Project>

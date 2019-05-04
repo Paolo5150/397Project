@@ -8,6 +8,7 @@ class Pumpkin : public GameObject
 public:
 	Pumpkin();
 	~Pumpkin();
+	void Start() override;
 
 private:
 

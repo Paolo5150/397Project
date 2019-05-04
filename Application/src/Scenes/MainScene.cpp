@@ -26,7 +26,8 @@
 #include "Prefabs\Crate.h"
 #include "Prefabs\Barrel.h"
 #include "Prefabs\Cabin.h"
-#include "Components\PathNode.h"
+#include "Utils\PathFinder.h"
+
 
 #include "Physics\PhysicsWorld.h"
 
@@ -159,8 +160,10 @@ void MainScene::Initialize() {
 
 	//Terrain
 	terrain = new Terrain(256);
+	PathFinder::Instance().Generate(terrain);
 
-	std::vector<PathNode*> pns;
+
+	/*std::vector<PathNode*> pns;
 	for (int x = terrain->GetTerrainMinX()+200; x < terrain->GetTerrainMaxX()-200; x += 180)
 	{
 		for (int z = terrain->GetTerrainMinZ()+200; z < terrain->GetTerrainMaxZ()-200; z += 180)
@@ -171,7 +174,7 @@ void MainScene::Initialize() {
 			pns.push_back(pn);
 
 		}
-	}
+	}*/
 
 
 	//GameObjects
@@ -275,12 +278,13 @@ void MainScene::Initialize() {
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 
 	spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
-	spider->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
+	spider->transform.SetPosition(cam->transform.GetPosition().x + 180, 240, cam->transform.GetPosition().z + 200);
+	spider->transform.SetScale(0.8, 0.8, 0.8);
 	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
 	spider->ApplyMaterial(spiderMat);
 	spider->PrintHierarchy();
 
-	//AddGameObject(spider);
+	AddGameObject(spider);
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
 	c1->transform.SetPosition(cam->transform.GetPosition().x+20,400, cam->transform.GetPosition().z + 400);
@@ -324,7 +328,9 @@ void MainScene::Initialize() {
 	AddGameObject(terrain);
 	AddGameObject(cam);
 
-
+	//Only for debugging
+	for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
+		AddGameObject(PathFinder::Instance().pathNodes[i]);
 
 	Lua::CloseLua();
 
@@ -356,7 +362,6 @@ void MainScene::LogicUpdate() {
 	spider->transform.SetPosition(np.x, y, np.z);
 	spider->transform.RotateBy(yAngle * s, 0, 1, 0);
 	spider->transform.RotateBy(180, 0, 1, 0);*/
-
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
 	/*if (CollisionChecks::Collision(cam->boxCollider, crate->GetComponent<BoxCollider>("BoxCollider")))
