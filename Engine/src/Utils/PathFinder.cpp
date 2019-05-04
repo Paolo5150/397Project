@@ -136,7 +136,7 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 	PathNode* startNode = ClosestNodeAt(start.x, start.y, start.z);
 	PathNode* goalNode = ClosestNodeAt(finish.x, finish.y, finish.z);
 
-	//Logger::LogInfo("Goal node h", goalNode->transform.GetGlobalPosition().y);
+	Logger::LogInfo("Goal node h", goalNode->transform.GetGlobalPosition().y);
 
 	/*goalNode->sc->meshRenderer->GetMaterial().SetColor(0, 1, 1);
 	for (int i = 0; i < goalNode->neighbors.size(); i++)
@@ -146,6 +146,7 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 	PathNode* currentNode = startNode;
 
+	std::vector<glm::vec3> path;
 	do
 	{
 
@@ -166,24 +167,19 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 		shortest->previousNode = currentNode;
 		currentNode = shortest;
+		if (shortest != nullptr)
+		{
+			shortest->sc->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+			shortest->sc->enableRender = 1;
+			path.push_back(shortest->transform.GetPosition());
+		}
+		else
+			Logger::LogError("Error while getting path");
 
 	} while (currentNode != goalNode);
 
-	std::vector<glm::vec3> path;
 
-	if (currentNode != nullptr && currentNode->previousNode!= nullptr)
-	{
 
-		while (currentNode->previousNode != nullptr)
-		{
-			currentNode->sc->meshRenderer->GetMaterial().SetColor(1, 0, 0);
-			currentNode->sc->enableRender = 1;
-			currentNode = currentNode->previousNode;
-
-			if (currentNode != nullptr)
-			path.push_back(currentNode->transform.GetPosition());
-		}
-	}
 	return path;
 
 }
