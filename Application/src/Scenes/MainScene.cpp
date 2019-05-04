@@ -315,7 +315,7 @@ void MainScene::Initialize() {
 	Cabin* cabin = new Cabin();
 	cabin->transform.SetPosition(cam->transform.GetPosition().x + 400, terrain->GetHeightAt(cam->transform.GetPosition().x + 400, cam->transform.GetPosition().z + 200), cam->transform.GetPosition().z + 200);
 
-	w->transform.SetPosition(x, 50, z);
+	w->transform.SetPosition(x, 150, z);
 	w->transform.SetScale(3000, 3000, 1);
 	//AddGameObject(c2);
 	//AddGameObject(c1);
@@ -383,8 +383,8 @@ void MainScene::LogicUpdate() {
 	
 	if (!cam->IsTopView())
 	{
-		float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
-		cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+		//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+		//cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 		// Limit camera position within terrain
 		if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)

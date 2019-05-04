@@ -33,7 +33,6 @@ PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)
 		{
 			dist = length;
 			closest = (*it);
-	
 
 		}
 	
@@ -85,6 +84,9 @@ void PathFinder::Start()
 	for (int x = 0; x < nodeMap.size(); x++) {
 		for (int y = 0; y < nodeMap[0].size(); y++) {
 
+			if (nodeMap[x][y]->transform.GetPosition().y < 150)
+				nodeMap[x][y]->cost = 5000;
+
 			if (x > 0) {
 				nodeMap[x][y]->neighbors.push_back(nodeMap[x - 1][y]);
 
@@ -135,8 +137,9 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 	PathNode* startNode = ClosestNodeAt(start.x, start.y, start.z);
 	PathNode* goalNode = ClosestNodeAt(finish.x, finish.y, finish.z);
+	float absoluteDistance = 0;
+	float previousAbsoluteDistance = 0;
 
-	Logger::LogInfo("Goal node h", goalNode->transform.GetGlobalPosition().y);
 
 	/*goalNode->sc->meshRenderer->GetMaterial().SetColor(0, 1, 1);
 	for (int i = 0; i < goalNode->neighbors.size(); i++)
@@ -146,18 +149,37 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 	PathNode* currentNode = startNode;
 
+	absoluteDistance = glm::length(currentNode->transform.GetPosition() - goalNode->transform.GetPosition());
+	previousAbsoluteDistance = absoluteDistance;
+	int quitCounter = 0;
+	PathNode* shortest = nullptr;
 	std::vector<glm::vec3> path;
 	do
 	{
 
-		PathNode* shortest = nullptr;
+		shortest = nullptr;
 		double minDist = 99999999999999999;
+		absoluteDistance = glm::length(currentNode->transform.GetPosition() - goalNode->transform.GetPosition());
+
+		if (absoluteDistance > previousAbsoluteDistance)
+			break;
+
+		if (quitCounter > 10)
+			break;
+		previousAbsoluteDistance = absoluteDistance;
+		
 		for (unsigned i = 0; i < currentNode->neighbors.size(); i++)
 		{
+
+		/*	if (currentNode->neighbors[i]->cost == 0)
+				currentNode->neighbors[i]->sc->meshRenderer->GetMaterial().SetColor(0, 1, 1);
+			else
+				currentNode->neighbors[i]->sc->meshRenderer->GetMaterial().SetColor(1, 0, 0);*/
+
 			currentNode->neighbors[i]->distanceFromPrevious = glm::length(currentNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
 			currentNode->neighbors[i]->distanceFromTarget = glm::length(goalNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
 			double total = currentNode->neighbors[i]->distanceFromPrevious + currentNode->neighbors[i]->distanceFromTarget + currentNode->neighbors[i]->cost;
-
+			
 			if (total < minDist)
 			{
 				shortest = currentNode->neighbors[i];
@@ -165,18 +187,20 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 			}
 		}
 
-		shortest->previousNode = currentNode;
-		currentNode = shortest;
 		if (shortest != nullptr)
 		{
-			shortest->sc->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+
+			shortest->sc->meshRenderer->GetMaterial().SetColor(1, 1, 1);
 			shortest->sc->enableRender = 1;
 			path.push_back(shortest->transform.GetPosition());
+
 		}
 		else
 			Logger::LogError("Error while getting path");
 
-	} while (currentNode != goalNode);
+		currentNode = shortest;
+
+	} while (shortest != goalNode);
 
 
 
