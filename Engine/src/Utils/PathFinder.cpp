@@ -22,6 +22,7 @@ void PathFinder::NodeAt(int x, int z)
 
 }
 
+
 void PathFinder::Generate(Terrain* terrain)
 {
 	for (int x = terrain->GetTerrainMinX() + 200; x < terrain->GetTerrainMaxX() - 200; x += 180)
@@ -30,6 +31,7 @@ void PathFinder::Generate(Terrain* terrain)
 		{
 			PathNode* pn = new PathNode();
 			pn->transform.SetPosition(x, terrain->GetHeightAt(x, z), z);
+			pn->transform.Update();
 			pathNodes.push_back(pn);
 
 		}
@@ -39,7 +41,17 @@ void PathFinder::Generate(Terrain* terrain)
 	terrain->GetCenter(x, y, z);
 	nodesQT = new QuadTree<PathNode*>(x, z, terrain->GetTerrainMaxX() - terrain->GetTerrainMinX(), terrain->GetTerrainMaxZ() - terrain->GetTerrainMinZ());
 
-	for (unsigned i = 0; i < pathNodes.size(); i++)
-		nodesQT->AddElement(pathNodes[i], pathNodes[i]->sc->transform.GetGlobalPosition().x, pathNodes[i]->sc->transform.GetGlobalPosition().z, pathNodes[i]->sc->transform.GetGlobalScale().x, pathNodes[i]->sc->transform.GetGlobalScale().z);
 }
 
+void PathFinder::Start()
+{
+
+	for (unsigned i = 0; i < pathNodes.size(); i++)
+		nodesQT->AddElement(pathNodes[i], pathNodes[i]->sc->transform.GetGlobalPosition().x, pathNodes[i]->sc->transform.GetGlobalPosition().z, pathNodes[i]->sc->transform.GetGlobalScale().x, pathNodes[i]->sc->transform.GetGlobalScale().z);
+
+	std::set<PathNode*>& nodes = nodesQT->GameObjectsAt(0, 0);
+
+	for (auto it = nodes.begin(); it != nodes.end(); it++)
+		(*it)->sc->meshRenderer->GetMaterial().SetColor(0, 0, 1);
+
+}

@@ -161,7 +161,8 @@ void MainScene::Initialize() {
 	//Terrain
 	terrain = new Terrain(256);
 	PathFinder::Instance().Generate(terrain);
-
+	for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
+		AddGameObject(PathFinder::Instance().pathNodes[i]);
 
 	/*std::vector<PathNode*> pns;
 	for (int x = terrain->GetTerrainMinX()+200; x < terrain->GetTerrainMaxX()-200; x += 180)
@@ -329,8 +330,7 @@ void MainScene::Initialize() {
 	AddGameObject(cam);
 
 	//Only for debugging
-	for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
-		AddGameObject(PathFinder::Instance().pathNodes[i]);
+
 
 	Lua::CloseLua();
 
@@ -344,6 +344,11 @@ void MainScene::Initialize() {
 void MainScene::Start()
 {
 	Scene::Start();
+
+
+
+	PathFinder::Instance().Start();
+
 	PhysicsWorld::Instance().FillQuadtree(true);
 	PhysicsWorld::Instance().PerformCollisions(true);
 
