@@ -11,9 +11,9 @@
 class AIBase : public Component
 {
 public:
-	AIBase(std::string luaScriptFolder, AIState state = AIState::Idle); //Note: do not call a seeking function without setting a target first!
+	AIBase(std::string scriptPath, AIState state = AIState::Idle); //Note: do not call a seeking function without setting a target first!
 
-	AIBase(Transform& targetTransform, std::string luaScriptFolder, AIState state = AIState::Idle);
+	AIBase(Transform& targetTransform, std::string scriptPath, AIState state = AIState::Idle);
 
 	~AIBase();
 
@@ -25,9 +25,15 @@ public:
 
 	Transform* GetTarget() const;
 
-	void SetState(AIState state);
+	void SetState(std::string state);
 
-	AIState GetState() const;
+	std::string GetState() const;
+
+	void Move(float forward = 0.0f, float right = 0.0f);
+
+	void Rotate(float amount = 0.0f);
+
+	void SetAnimation(int index);
 
 	void SetMovementSpeed(float movementSpeed);
 
@@ -58,12 +64,12 @@ public:
 	virtual void OnAttach(GameObject* go) override;
 
 private:
-	AIState _state;
+	std::string _state;
 	Transform* _parentTransform;
 	Transform* _targetTransform;
 	lua_State* _luaState;
 
-	std::string _scriptFolderName;
+	std::string _scriptPath;
 
 	float _wanderDirection;
 	float _movementSpeed;
@@ -75,6 +81,10 @@ private:
 	float _agroDistance; //Distance the ai will notice and start following the target
 	float _maxFollowDistance; //Distance the ai will stop following the target
 	float _attackDistance; //Distance the ai will switch to fighting
+
+	//Lua Functions
+	int Lua_Think();
+	//----------
 
 	//AI Functions
 	void Think();

@@ -1,6 +1,6 @@
 #include "AIBase.h"
 
-AIBase::AIBase(std::string luaScriptFolder, AIState state) : Component("AIBase")
+AIBase::AIBase(std::string scriptPath, AIState state) : Component("AIBase")
 {
 	_type = "AI";
 	SetState(state);
@@ -12,11 +12,10 @@ AIBase::AIBase(std::string luaScriptFolder, AIState state) : Component("AIBase")
 	SetMaxFollowDistance(1000.0f);
 	SetFleeDistance(1000.0f);
 	SetAttackDistance(150.0f);
-	_scriptFolderName = luaScriptFolder;
-	Lua::InitLua(_luaState);
+	_scriptPath = scriptPath;
 }
 
-AIBase::AIBase(Transform& targetTransform, std::string luaScriptFolder, AIState state) : Component("AIBase")
+AIBase::AIBase(Transform& targetTransform, std::string scriptPath, AIState state) : Component("AIBase")
 {
 	_type = "AI";
 	SetState(state);
@@ -29,8 +28,7 @@ AIBase::AIBase(Transform& targetTransform, std::string luaScriptFolder, AIState 
 	SetMaxFollowDistance(1000.0f);
 	SetFleeDistance(1000.0f);
 	SetAttackDistance(150.0f);
-	_scriptFolderName = luaScriptFolder;
-	Lua::InitLua(_luaState);
+	_scriptPath = scriptPath;
 }
 
 AIBase::~AIBase()
@@ -51,7 +49,7 @@ float AIBase::GetDistanceToTarget() const
 float AIBase::GetRotationToTarget() const
 {
 	glm::vec3 toTarget = glm::vec3(_targetTransform->GetPosition().x, _parentTransform->GetPosition().y, _targetTransform->GetPosition().z) - _parentTransform->GetPosition();
-	float yAngle = glm::degrees(glm::angle(_parentTransform->GetLocalFront(), glm::normalize(toTarget))) - 180;
+	float yAngle = glm::degrees(glm::angle(_parentTransform->GetLocalFront(), glm::normalize(toTarget)));
 	glm::vec3 cross = glm::normalize(glm::cross(_parentTransform->GetLocalFront(), glm::normalize(toTarget)));
 	int s = glm::sign(cross.y);
 	return yAngle * s;
@@ -62,15 +60,31 @@ Transform* AIBase::GetTarget() const
 	return _targetTransform;
 }
 
-void AIBase::SetState(AIState state)
+void AIBase::SetState(std::string state)
 {
 	_state = state;
 	_lastStateChange = Timer::GetTimeS();
 }
 
-AIState AIBase::GetState() const
+std::string AIBase::GetState() const
 {
 	return _state;
+}
+
+void AIBase::Move(float forward, float right)
+{
+	_parentTransform->SetPosition(_parentTransform->GetPosition() + (forward * _parentTransform->GetLocalFront()));
+	_parentTransform->SetPosition(_parentTransform->GetPosition() + (right * _parentTransform->GetLocalRight()));
+}
+
+void AIBase::Rotate(float amount)
+{
+	_parentTransform->RotateBy(amount, 0, 1, 0);
+}
+
+void AIBase::SetAnimation(int index)
+{
+	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(index);
 }
 
 void AIBase::SetMovementSpeed(float movementSpeed)
@@ -161,9 +175,44 @@ void AIBase::OnAttach(GameObject* go)
 	_parentTransform = &go->transform;
 }
 
+int AIBase::Lua_Think()
+{
+	Lua::InitLua(_luaState);
+	Lua::ExecuteLuaScript(_luaState, _scriptPath);
+	lua_getglobal(_luaState, "Think");
+
+	lua_pushstring(_luaState, GetState().c_str());
+	lua_pushnumber(_luaState, GetDistanceToTarget());
+	lua_pushnumber(_luaState, GetRotationToTarget());
+	lua_pushnumber(_luaState, Timer::GetTimeS());
+	lua_pushnumber(_luaState, Timer::GetDeltaS());
+	lua_pushnumber(_luaState, _wanderDirection);
+	lua_pushnumber(_luaState, GetMovementSpeed());
+	lua_pushnumber(_luaState, GetRotationSpeed());
+	lua_pushnumber(_luaState, _lastStateChange);
+	lua_pushnumber(_luaState, _randomTimer);
+	lua_pushnumber(_luaState, GetFleeDistance());
+	lua_pushnumber(_luaState, GetAgroDistance());
+	lua_pushnumber(_luaState, GetMaxFollowDistance());
+	lua_pushnumber(_luaState, GetAttackDistance());
+
+	lua_call(_luaState, 12, 13); //call the function with 12 arguments and return 12 results
+
+	if (GetState() != Lua::GetStringFromStack("_state", _luaState))
+	{
+		SetState(Lua::GetStringFromStack("_state", _luaState));
+	}
+	Rotate(Lua::GetFloatFromStack("rotation", _luaState));
+	Move(Lua::GetFloatFromStack("fowardMovement", _luaState), Lua::GetFloatFromStack("rightMovement", _luaState));
+
+	Lua::CloseLua(_luaState);
+}
+
 void AIBase::Think()
 {
-	switch (_state)
+	Lua::ExecuteLuaScript(_luaState, _scriptPath + "\\Seek.lua");
+
+	/*switch (_state)
 	{
 		case AIState::Idle:
 			Idle();
@@ -184,7 +233,7 @@ void AIBase::Think()
 			Logger::LogError("Invalid AI State");
 			throw "Invalid_AI_State";
 			break;
-	}
+	}*/
 }
 
 void AIBase::Idle()
@@ -250,7 +299,7 @@ void AIBase::Wander()
 
 void AIBase::Seek()
 {
-	Lua::ExecuteLuaScript(_luaState, _scriptFolderName + "\\Seek.lua");
+	Lua::ExecuteLuaScript(_luaState, _scriptPath + "\\Seek.lua");
 
 	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(7);
 
