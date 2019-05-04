@@ -27,18 +27,20 @@ PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)
 	PathNode* closest = nullptr;
 	for (auto it = nodes.begin(); it != nodes.end(); it++)
 	{
-		
-		if (closest == nullptr)
-			closest = (*it);
 		double length = glm::length((*it)->sc->transform.GetGlobalPosition() - glm::vec3(x, y, z));
 		
-		if (length < dist)
+		if (length < dist && (*it)->cost == 0)
 		{
 			dist = length;
 			closest = (*it);
+	
+
 		}
 	
 	}
+
+	if (closest == nullptr)
+		Logger::LogError("Cannot find closest");
 
 	return closest;
 }
@@ -68,8 +70,6 @@ void PathFinder::Generate(Terrain* terrain)
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
 	nodesQT = new QuadTree<PathNode*>(x, z, terrain->GetTerrainMaxX() - terrain->GetTerrainMinX(), terrain->GetTerrainMaxZ() - terrain->GetTerrainMinZ());
-	
-	
 
 }
 
@@ -136,6 +136,8 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 	PathNode* startNode = ClosestNodeAt(start.x, start.y, start.z);
 	PathNode* goalNode = ClosestNodeAt(finish.x, finish.y, finish.z);
 
+	//Logger::LogInfo("Goal node h", goalNode->transform.GetGlobalPosition().y);
+
 	/*goalNode->sc->meshRenderer->GetMaterial().SetColor(0, 1, 1);
 	for (int i = 0; i < goalNode->neighbors.size(); i++)
 	{
@@ -169,13 +171,18 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 	std::vector<glm::vec3> path;
 
-	while (currentNode->previousNode != nullptr)
+	if (currentNode != nullptr && currentNode->previousNode!= nullptr)
 	{
-		currentNode->sc->meshRenderer->GetMaterial().SetColor(1, 0, 0);
-		currentNode->sc->enableRender = 1;
-		currentNode = currentNode->previousNode;
 
-		path.push_back(currentNode->transform.GetPosition());
+		while (currentNode->previousNode != nullptr)
+		{
+			currentNode->sc->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+			currentNode->sc->enableRender = 1;
+			currentNode = currentNode->previousNode;
+
+			if (currentNode != nullptr)
+			path.push_back(currentNode->transform.GetPosition());
+		}
 	}
 	return path;
 

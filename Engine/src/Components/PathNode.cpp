@@ -35,7 +35,7 @@ void PathNode::OnCollision(GameObject* go)
 {
 	//SetActive(0);
 	//GetComponent<BoxCollider>("BoxCollider")->meshRenderer->GetMaterial().SetColor(1, 0, 0);
-	cost = 10000;
+	cost = 1000;
 	//Logger::LogInfo("Node collided against",go->GetName());
 }
 
