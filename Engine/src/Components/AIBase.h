@@ -83,7 +83,7 @@ private:
 	float _attackDistance; //Distance the ai will switch to fighting
 
 	//Lua Functions
-	int Lua_Think();
+	void Lua_Think();
 	//----------
 
 	//AI Functions

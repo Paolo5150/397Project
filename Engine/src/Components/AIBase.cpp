@@ -3,37 +3,44 @@
 AIBase::AIBase(std::string scriptPath, AIState state) : Component("AIBase")
 {
 	_type = "AI";
-	SetState(state);
+	_state = "";
+	//SetState(state);
 	SetMovementSpeed(100.0f);
 	SetRotationSpeed(1.0f);
 	_lastStateChange = 0.0f;
 	_wanderDirection = 0.0f;
+	_randomTimer = 0.0f;
 	SetAgroDistance(500.0f);
 	SetMaxFollowDistance(1000.0f);
 	SetFleeDistance(1000.0f);
 	SetAttackDistance(150.0f);
 	_scriptPath = scriptPath;
+	//Lua::InitLua(_luaState);
+	_luaState = NULL;
 }
 
 AIBase::AIBase(Transform& targetTransform, std::string scriptPath, AIState state) : Component("AIBase")
 {
 	_type = "AI";
-	SetState(state);
+	_state = "";
+	//SetState(state);
 	SetMovementSpeed(100.0f);
 	SetRotationSpeed(1.0f);
 	_lastStateChange = 0.0f;
 	_wanderDirection = 0.0f;
+	_randomTimer = 0.0f;
 	SetTarget(targetTransform);
 	SetAgroDistance(500.0f);
 	SetMaxFollowDistance(1000.0f);
 	SetFleeDistance(1000.0f);
 	SetAttackDistance(150.0f);
 	_scriptPath = scriptPath;
+	//Lua::InitLua(_luaState);
+	_luaState = NULL;
 }
 
 AIBase::~AIBase()
 {
-
 }
 
 void AIBase::SetTarget(Transform& targetTransform)
@@ -167,7 +174,7 @@ float AIBase::GetAttackDistance() const
 
 void AIBase::Update()
 {
-	Think();
+	Lua_Think();
 }
 
 void AIBase::OnAttach(GameObject* go)
@@ -175,36 +182,31 @@ void AIBase::OnAttach(GameObject* go)
 	_parentTransform = &go->transform;
 }
 
-int AIBase::Lua_Think()
+void AIBase::Lua_Think()
 {
 	Lua::InitLua(_luaState);
 	Lua::ExecuteLuaScript(_luaState, _scriptPath);
-	lua_getglobal(_luaState, "Think");
 
+	lua_settop(_luaState, 0);
+	lua_getglobal(_luaState, "Think");
 	lua_pushstring(_luaState, GetState().c_str());
 	lua_pushnumber(_luaState, GetDistanceToTarget());
 	lua_pushnumber(_luaState, GetRotationToTarget());
 	lua_pushnumber(_luaState, Timer::GetTimeS());
 	lua_pushnumber(_luaState, Timer::GetDeltaS());
-	//lua_pushnumber(_luaState, _wanderDirection);
-	lua_pushnumber(_luaState, GetMovementSpeed());
-	lua_pushnumber(_luaState, GetRotationSpeed());
 	lua_pushnumber(_luaState, _lastStateChange);
 	lua_pushnumber(_luaState, _randomTimer);
-	lua_pushnumber(_luaState, GetFleeDistance());
-	lua_pushnumber(_luaState, GetAgroDistance());
-	lua_pushnumber(_luaState, GetMaxFollowDistance());
-	lua_pushnumber(_luaState, GetAttackDistance());
 
-	lua_call(_luaState, 12, 13); //call the function with 12 arguments and return 12 results
+	lua_call(_luaState, 7, 6); //call the function with 7 arguments and return 6 results
 
-	if (GetState() != Lua::GetStringFromStack("_state", _luaState))
+	if (Lua::GetStringFromStack("_state", _luaState) != GetState())
 	{
 		SetState(Lua::GetStringFromStack("_state", _luaState));
 	}
 	Rotate(Lua::GetFloatFromStack("rotation", _luaState));
 	Move(Lua::GetFloatFromStack("fowardMovement", _luaState), Lua::GetFloatFromStack("rightMovement", _luaState));
 	SetAnimation(Lua::GetIntFromStack("animation", _luaState));
+	_wanderDirection = Lua::GetFloatFromStack("_wanderDirection", _luaState);
 
 	Lua::CloseLua(_luaState);
 }
@@ -248,14 +250,14 @@ void AIBase::Idle()
 		if (RandUtils::RandInt(1, 100) < 10)
 		{
 			Logger::LogInfo("Now Wandering");
-			SetState(AIState::Wander);
+			//SetState(AIState::Wander);
 		}
 	}
 
 	if (GetDistanceToTarget() <= GetAgroDistance())
 	{
 		Logger::LogInfo("Now Seeking");
-		SetState(AIState::Seek);
+		//SetState(AIState::Seek);
 	}
 }
 
@@ -287,14 +289,14 @@ void AIBase::Wander()
 		if (RandUtils::RandInt(1, 100) < 10)
 		{
 			Logger::LogInfo("Now Idle");
-			SetState(AIState::Idle);
+			//SetState(AIState::Idle);
 		}
 	}
 
 	if (GetDistanceToTarget() <= GetAgroDistance())
 	{
 		Logger::LogInfo("Now Seeking");
-		SetState(AIState::Seek);
+		//SetState(AIState::Seek);
 	}
 }
 
@@ -312,12 +314,12 @@ void AIBase::Seek()
 	if (GetDistanceToTarget() >= GetMaxFollowDistance())
 	{
 		Logger::LogInfo("Returning to Wander");
-		SetState(AIState::Wander);
+		//SetState(AIState::Wander);
 	}
 	else if (GetDistanceToTarget() <= GetAttackDistance())
 	{
 		Logger::LogInfo("Now Fighting");
-		SetState(AIState::Fight);
+		//SetState(AIState::Fight);
 	}
 }
 
@@ -332,7 +334,7 @@ void AIBase::Fight()
 	if (GetDistanceToTarget() > GetAttackDistance())
 	{
 		Logger::LogInfo("Now Seeking");
-		SetState(AIState::Seek);
+		//SetState(AIState::Seek);
 	}
 }
 

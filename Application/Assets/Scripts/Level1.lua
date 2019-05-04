@@ -1,13 +1,19 @@
-CreateAsset("MainCamera", 0, 35, 0, 30, 180, 0);
+prop_crates = 20;
+prop_barrels = 20;
+npc_pumpkins = 20;
+npc_nanosuits = 2;
+
+camScale = 1;
+CreateObject("MainCamera", 0, 35, 0, camScale, camScale, camScale, 30, 180, 0);
 camRotX, camRotY, camRotZ = 30, 180, 0;
 
 waterScaleX, waterScaleY, waterScaleZ = 2000, 2000, 1;
-CreateAsset("Water", 0, 100, 0, waterScaleX, waterScaleY, waterScaleZ);
+CreateAsset("Water", "Water", 0, 100, 0, waterScaleX, waterScaleY, waterScaleZ);
 
 --Create all npcs and props
 nanosuitScale = 2;
-CreateObject("Model", "Nanosuit", 1900, 0, 1900, nanosuitScale, nanosuitScale, nanosuitScale);
-CreateObject("Model", "Nanosuit", 1700, 0, 2300, nanosuitScale, nanosuitScale, nanosuitScale);
+CreateAsset("Model", "Nanosuit", 1900, 0, 1900, nanosuitScale, nanosuitScale, nanosuitScale);
+CreateAsset("Model", "Nanosuit", 1700, 0, 2300, nanosuitScale, nanosuitScale, nanosuitScale);
 
 pumpkinScale = 20;
 CreateAsset("Model", "Pumpkin", 2234, 0, 1833, pumpkinScale, pumpkinScale, pumpkinScale);
@@ -32,7 +38,6 @@ CreateAsset("Model", "Pumpkin", 209, 0, 774, pumpkinScale, pumpkinScale, pumpkin
 CreateAsset("Model", "Pumpkin", 219, 0, 874, pumpkinScale, pumpkinScale, pumpkinScale);
 
 barrelScale = 20;
-CreateAsset("Model", "Barrel", 1116, 0, 1327, barrelScale, barrelScale, barrelScale);
 CreateAsset("Model", "Barrel", 1116, 0, 1327, barrelScale, barrelScale, barrelScale);
 CreateAsset("Model", "Barrel", 1289, 0, 1066, barrelScale, barrelScale, barrelScale);
 CreateAsset("Model", "Barrel", 1325, 0, 1826, barrelScale, barrelScale, barrelScale);
@@ -80,10 +85,10 @@ spiderScale = 1;
 CreateObject("Spider", 80, 0, 1298, spiderScale, spiderScale, spiderScale);
 
 gunScale = 0.8;
-CreateAsset("Model", "Gun", 1637, 16, 1555, gunScale, gunScale, gunScale); --Same x and z location as crate 1, y = 16 is to lay the gun on a crate
+CreateAsset("Model", "Gun", 1637, 16, 1555, gunScale, gunScale, gunScale, 0, 90, 0); --Same x and z location as crate 1, y = 16 is to lay the gun on a crate
 
 shipScale = 20;
 CreateAsset("Model", "Ship", 1545, 0, 1414, shipScale, shipScale, shipScale);
 
 cabinScale = 100;
-CreateAsset("Model", "Cabin", 300, 50, 1200, cabinScale, cabinScale, cabinScale);
+CreateAsset("Model", "Cabin", 300, 50, 1200, cabinScale, cabinScale, cabinScale, -90, 0, 0);

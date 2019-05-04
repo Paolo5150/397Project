@@ -9,7 +9,7 @@ Spider::Spider() : GameObject("Spider")
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 	this->ApplyMaterial(spiderMat);
 
-	AddComponent(new AIBase("Assets\\Scripts\\AI"));
+	AddComponent(new AIBase("Assets\\Scripts\\AI\\Spider.lua"));
 	AddComponent(new BoxCollider());
 }
 
@@ -22,7 +22,7 @@ Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 	this->ApplyMaterial(spiderMat);
 
-	AddComponent(new AIBase("Assets\\Scripts\\AI"));
+	AddComponent(new AIBase("Assets\\Scripts\\AI\\Spider.lua"));
 	AddComponent(new BoxCollider());
 	transform.SetPosition(posX, posY, posZ);
 }
@@ -36,7 +36,7 @@ Spider::Spider(Transform& targetTransform) : GameObject("Spider")
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 	this->ApplyMaterial(spiderMat);
 
-	AddComponent(new AIBase(targetTransform, "Assets\\Scripts\\AI"));
+	AddComponent(new AIBase(targetTransform, "Assets\\Scripts\\AI\\Spider.lua"));
 	AddComponent(new BoxCollider());
 }
 
@@ -49,7 +49,7 @@ Spider::Spider(Transform& targetTransform, float posX, float posY, float posZ) :
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 	this->ApplyMaterial(spiderMat);
 
-	AddComponent(new AIBase(targetTransform, "Assets\\Scripts\\AI"));
+	AddComponent(new AIBase(targetTransform, "Assets\\Scripts\\AI\\Spider.lua"));
 	AddComponent(new BoxCollider());
 	transform.SetPosition(posX, posY, posZ);
 }
