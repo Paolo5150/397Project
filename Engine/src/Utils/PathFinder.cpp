@@ -122,76 +122,6 @@ void PathFinder::Start()
 
 }
 
-/*
-void tes1()
-{
-	std::list<PathNode*> uncheckedNodes;
-	std::vector<PathNode*> currentPath;
-	for (unsigned i = 0; i < pathNodes.size(); i++)
-	{
-		if (pathNodes[i] != startNode)
-		{
-			pathNodes[i]->distanceFromSource = 999999999999999;
-			pathNodes[i]->previousNode = nullptr;
-		}
-		uncheckedNodes.push_back(pathNodes[i]);
-	}
-
-	double dist = 999999999999999999;
-	PathNode* nodeMinDistance = nullptr;
-	for (auto it = uncheckedNodes.begin(); it != uncheckedNodes.end(); it++)
-	{
-		double length = glm::length((*it)->sc->transform.GetGlobalPosition() - startNode->sc->transform.GetGlobalPosition());
-
-		if (length < dist)
-		{
-			nodeMinDistance = (*it);
-			nodeMinDistance->distanceFromSource = length;
-			dist = length;
-		}
-
-	}
-
-	for (auto it1 = uncheckedNodes.begin(); it1 != uncheckedNodes.end();)
-	{
-
-		if (nodeMinDistance == goalNode)
-			break;
-
-		it1 = uncheckedNodes.erase(it1);
-
-		for (unsigned i = 0; i < nodeMinDistance->neighbors.size(); i++)
-		{
-			double distance = nodeMinDistance->distanceFromSource + nodeMinDistance->neighbors[i]->DistanceTo(nodeMinDistance) + nodeMinDistance->neighbors[i]->cost;
-
-			if (distance <  nodeMinDistance->neighbors[i]->distanceFromSource) {
-				nodeMinDistance->neighbors[i]->distanceFromSource = distance;
-				nodeMinDistance->neighbors[i]->previousNode = nodeMinDistance;
-
-			}
-
-		}
-	}
-
-	if (goalNode->previousNode == nullptr) {
-		Logger::LogInfo("No path found");
-
-	}
-	else {
-
-		PathNode* current = goalNode;
-		while (current != nullptr) {
-			currentPath.push_back(current);
-			current = current->previousNode;
-		}
-
-		Logger::LogInfo("Path size", currentPath.size());
-		for (unsigned i = 0; i < currentPath.size(); i++)
-		{
-			currentPath[i]->sc->enableRender = 1;
-		}
-	}
-}*/
 
 std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finish)
 {
@@ -227,15 +157,16 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 	} while (currentNode != goalNode);
 
+	std::vector<glm::vec3> path;
 
 	while (currentNode->previousNode != nullptr)
 	{
 		currentNode->sc->meshRenderer->GetMaterial().SetColor(1, 0, 0);
 		currentNode->sc->enableRender = 1;
-
 		currentNode = currentNode->previousNode;
+
+		path.push_back(currentNode->transform.GetPosition());
 	}
-	std::vector<glm::vec3> path;
 	return path;
 
 }
