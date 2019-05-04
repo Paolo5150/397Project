@@ -353,6 +353,8 @@ public:
 	virtual void Update();
 
 
+	virtual void Start(){};
+
 	/**
 	* @brief		Update the gameobject in the Engine Update loop
 	*

@@ -18,33 +18,48 @@ PhysicsWorld&  PhysicsWorld::Instance()
 
 PhysicsWorld::PhysicsWorld()
 {
-	btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+	//btBroadphaseInterface* broadphase = new btDbvtBroadphase();
 	// Set up the collision configuration and dispatcher
-	btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-	btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+	//btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+	//btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
 
 	// The actual physics solver
-	btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+	//btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
 	// The world.
-	dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	SetGravity(0.0f, -40.0f, 0.0f);
+	//dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+	//SetGravity(0.0f, -40.0f, 0.0f);
 
 }
 
 void PhysicsWorld::InitializeQuadtree(int x, int y, int w, int h)
 {
-	quadtree = new QuadTree<Collider*>(x, y, w, h);
+	nonStaticQuadtree = new QuadTree<Collider*>(x, y, w, h);
+	staticQuadtree = new QuadTree<Collider*>(x, y, w, h);
+
 }
 
-void PhysicsWorld::FillQuadtree()
+void PhysicsWorld::FillQuadtree(bool staticToo)
 {
-	quadtree->ClearNodes();
-	auto it = allColliders.begin();
+	nonStaticQuadtree->ClearNodes();
 
-	for (; it != allColliders.end(); it++)
+
+	for (unsigned i = 0; i < allNonStaticColliders.size(); i++)
 	{
-		if ((*it)->GetActive())
-		quadtree->AddElement((*it), (*it)->transform.GetGlobalPosition().x, (*it)->transform.GetGlobalPosition().z);
+		nonStaticQuadtree->AddElement(allNonStaticColliders[i], allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z,
+			allNonStaticColliders[i]->transform.GetGlobalScale().x, allNonStaticColliders[i]->transform.GetGlobalScale().z);
+	}
+	
+
+	if (staticToo)
+	{
+		staticQuadtree->ClearNodes();
+
+		for (unsigned i = 0; i < allStaticColliders.size(); i++)
+		{
+			staticQuadtree->AddElement(allStaticColliders[i], allStaticColliders[i]->transform.GetGlobalPosition().x, allStaticColliders[i]->transform.GetGlobalPosition().z,
+				allStaticColliders[i]->transform.GetGlobalScale().x, allStaticColliders[i]->transform.GetGlobalScale().z);
+		}
+
 	}
 }
 
@@ -53,10 +68,12 @@ PhysicsWorld::~PhysicsWorld()
 	
 	allRigidBodies.clear();
 	delete dynamicsWorld;
-	quadtree->ClearNodes();
-	delete quadtree;
+	nonStaticQuadtree->ClearNodes();
+	staticQuadtree->ClearNodes();
+	delete nonStaticQuadtree;
+	delete staticQuadtree;
 }
-
+/*
 void PhysicsWorld::AddRigidBody(RigidBody* rb)
 {
 	bool found = 0;
@@ -75,22 +92,15 @@ void PhysicsWorld::AddRigidBody(RigidBody* rb)
 		dynamicsWorld->addRigidBody(rb->btrb);
 	}
 }
-
+*/
 void PhysicsWorld::AddCollider(Collider* rb)
 {
-	bool found = 0;
-
-	auto it = allColliders.begin();
-
-	for (; it != allColliders.end() && !found; it++)
+	if (!rb->GetParent()->GetIsStatic())
+		allNonStaticColliders.push_back(rb);
+	else
 	{
-		if ((*it) == rb)
-			found = 1;
-	}
 
-	if (!found)
-	{
-		allColliders.push_back(rb);
+		allStaticColliders.push_back(rb);
 	}
 }
 
@@ -120,7 +130,9 @@ void PhysicsWorld::SetGravity(float x, float y, float z)
 
 void PhysicsWorld::Update(float deltaS)
 {
-	PerformCollisions();
+	FillQuadtree(0);
+	PerformCollisions(false);
+	allNonStaticColliders.clear();
 	/*auto it = allRigidBodies.begin();
 	for (; it != allRigidBodies.end(); it++)
 		(*it)->PrePhysicsUpdate();*/
@@ -132,13 +144,38 @@ void PhysicsWorld::Update(float deltaS)
 
 bool PhysicsWorld::CollisionCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	Logger::LogInfo("Collision");
 	return false;
 }
 
-void PhysicsWorld::PerformCollisions()
+void PhysicsWorld::PerformCollisions(bool staticToo)
 {
-	PerformCollisions(quadtree->root);
+	PerformCollisions(nonStaticQuadtree->root);
+
+
+	for (unsigned i = 0; i < allNonStaticColliders.size(); i++)
+	{
+		std::set<Collider*>& staticCols = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z);
+		
+		for (auto it = staticCols.begin(); it != staticCols.end(); it++)
+		{
+			if (allNonStaticColliders[i]->GetCollideAgainstLayer() & (*it)->GetCollisionLayer())
+			{
+				if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
+				{
+					allNonStaticColliders[i]->collisionCallback((*it)->GetParent());
+					(*it)->collisionCallback(allNonStaticColliders[i]->GetParent());
+				}
+			}
+		}
+		
+	}
+
+	if (staticToo)
+	PerformCollisions(staticQuadtree->root);
+
+	
+	
+
 }
 
 void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
@@ -152,21 +189,22 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 	}
 	else
 	{
-		auto it = node->gameObjects.begin();
+		auto it = node->elements.begin();
 
-		for (; it != node->gameObjects.end(); it++)
+		for (; it != node->elements.end(); it++)
 		{
-			auto it2 = node->gameObjects.begin();
+			auto it2 = node->elements.begin();
 
-			for (; it2 != node->gameObjects.end(); it2++)
+			for (; it2 != node->elements.end(); it2++)
 			{
 				if (*it == *it2) continue;
-				
-				if (CollisionChecks::Collision((*it), (*it2)))
+				if ((*it)->GetCollideAgainstLayer() & (*it2)->GetCollisionLayer())
 				{
-					(*it)->collisionCallback((*it2)->GetParent());
+					if (CollisionChecks::Collision((*it), (*it2)))
+					{
+						(*it)->collisionCallback((*it2)->GetParent());
+					}
 				}
-
 			}
 		}
 	}

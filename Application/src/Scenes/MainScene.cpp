@@ -22,8 +22,12 @@
 #include "GUI\GUIElements\GUIManager.h"
 #include "Components\BoxCollider.h"
 #include "Components\SphereCollider.h"
+#include "Prefabs\Pumpkin.h"
+#include "Prefabs\Crate.h"
+#include "Prefabs\Barrel.h"
+#include "Prefabs\Cabin.h"
+#include "Utils\PathFinder.h"
 
-#include "Components\RigidBody.h"
 
 #include "Physics\PhysicsWorld.h"
 
@@ -41,7 +45,7 @@ DirectionalLight* dirLight;
 Terrain* terrain;
 btDefaultMotionState* motionstate;
 btRigidBody *rigidBody;
-
+Crate* crate;
 GameObject* spider;
 GameObject* c1;
 GameObject* c2;
@@ -156,10 +160,23 @@ void MainScene::Initialize() {
 
 	//Terrain
 	terrain = new Terrain(256);
-	terrain->ApplyHeightMap("Assets\\Textures\\hm1.jpg");
+	PathFinder::Instance().Generate(terrain);
+	for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
+		AddGameObject(PathFinder::Instance().pathNodes[i]);
 
-	terrain->transform.SetScale(20 ,600, 20);
-	terrain->transform.Translate(0, 0, 0);
+	/*std::vector<PathNode*> pns;
+	for (int x = terrain->GetTerrainMinX()+200; x < terrain->GetTerrainMaxX()-200; x += 180)
+	{
+		for (int z = terrain->GetTerrainMinZ()+200; z < terrain->GetTerrainMaxZ()-200; z += 180)
+		{
+			PathNode* pn = new PathNode();
+			pn->transform.SetPosition(x, terrain->GetHeightAt(x, z), z);
+			AddGameObject(pn);
+			pns.push_back(pn);
+
+		}
+	}*/
+
 
 	//GameObjects
 	cam = (MainCamera*)Lua::GetCreatedAsset(0);
@@ -168,7 +185,6 @@ void MainScene::Initialize() {
 	cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
 	cam->SetMovementSpeed(500);
 	cam->RemoveLayerMask(Layers::GUI);
-
 
 	Water* w = (Water*)Lua::GetCreatedAsset(1);
 	luaAssetOffset++;
@@ -263,11 +279,12 @@ void MainScene::Initialize() {
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 
 	spider = AssetLoader::Instance().GetAsset<Model>("Spider")->CreateGameObject();
-	spider->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
+	spider->transform.SetPosition(cam->transform.GetPosition().x + 180, 240, cam->transform.GetPosition().z + 200);
+	spider->transform.SetScale(0.8, 0.8, 0.8);
 	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(0);
 	spider->ApplyMaterial(spiderMat);
 	spider->PrintHierarchy();
-	
+
 	AddGameObject(spider);
 
 	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
@@ -279,8 +296,11 @@ void MainScene::Initialize() {
 	c1->AddComponent(new BoxCollider());
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
+	c1->GetComponent<BoxCollider>("BoxCollider")->ResetCollisionLayer();
+	c1->GetComponent<BoxCollider>("BoxCollider")->AddCollisionLayer(CollisionLayers::OBSTACLE);
+
 	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go){
-		//Logger::LogInfo("C1 colliding");
+	//	Logger::LogInfo("C1 colliding");
 	};
 
 	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
@@ -290,14 +310,18 @@ void MainScene::Initialize() {
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
 
+	//crate = new Crate();
 
-	w->transform.SetPosition(x, 50, z);
+	Cabin* cabin = new Cabin();
+	cabin->transform.SetPosition(cam->transform.GetPosition().x + 400, terrain->GetHeightAt(cam->transform.GetPosition().x + 400, cam->transform.GetPosition().z + 200), cam->transform.GetPosition().z + 200);
+
+	w->transform.SetPosition(x, 150, z);
 	w->transform.SetScale(3000, 3000, 1);
-	AddGameObject(c2);
-	AddGameObject(c1);
+	//AddGameObject(c2);
+	//AddGameObject(c1);
 	AddGameObject(w);
 
-
+	AddGameObject(cabin);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(pLight);
@@ -305,6 +329,7 @@ void MainScene::Initialize() {
 	AddGameObject(terrain);
 	AddGameObject(cam);
 
+	//Only for debugging
 
 
 	Lua::CloseLua();
@@ -313,45 +338,53 @@ void MainScene::Initialize() {
 	cam->transform.Update();
 
 
+
 }
+
+void MainScene::Start()
+{
+	Scene::Start();
+
+	PathFinder::Instance().Start();
+
+	PhysicsWorld::Instance().FillQuadtree(true);
+	PhysicsWorld::Instance().PerformCollisions(true);
+
+}
+
 void MainScene::LogicUpdate() {
-	PhysicsWorld::Instance().FillQuadtree();
-	//c1->GetComponent<RigidBody>("RigidBody")->btrb->translate(btVector3(0, -1, 0));
-	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, spider->transform.GetPosition().y, cam->transform.GetPosition().z) - spider->transform.GetPosition();
+
+
+/*	glm::vec3 toCam = glm::vec3(cam->transform.GetPosition().x, spider->transform.GetPosition().y, cam->transform.GetPosition().z) - spider->transform.GetPosition();
 	float yAngle = glm::degrees(glm::angle(spider->transform.GetLocalFront(), glm::normalize(toCam)));
 	glm::vec3 cross = glm::normalize(glm::cross(spider->transform.GetLocalFront(), glm::normalize(toCam)));
 	int s = glm::sign(cross.y);	
 	glm::vec3 np = spider->transform.GetPosition();
-	np += spider->transform.GetLocalFront() * 0.5f;
+	np -= spider->transform.GetLocalFront() * 0.8f;
 	float y = terrain->GetHeightAt(np.x, np.z);
 	spider->transform.SetPosition(np.x, y, np.z);
 	spider->transform.RotateBy(yAngle * s, 0, 1, 0);
-	spider->transform.RotateBy(180, 0, 1, 0);
-
+	spider->transform.RotateBy(180, 0, 1, 0);*/
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
-	//Logger::LogInfo("GameObj at camera", PhysicsWorld::Instance().quadtree->GameObjectInQuadrant(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().z));
 
-	//c1->transform.RotateBy(0.5f,0,1,0);
+	PathFinder::Instance().GeneratePath(spider->transform.GetGlobalPosition(), cam->transform.GetPosition());
+
 	c1->transform.Translate(0, 0, -0.2f);
-//	Logger::LogInfo("C1", c1->transform.RotationQuatToString());
-//	Logger::LogInfo("C2", c2->transform.RotationQuatToString());
-
-	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(animIndex);
 
 	if (Input::GetKeyPressed(GLFW_KEY_O))
 	{
-		animIndex++;		
-
+		animIndex++;
+	spider->GetComponent<Animator>("Animator")->SetCurrentAnimation(animIndex);
 	}
-	//c1->transform.SetPosition(c1->transform.GetGlobalPosition() + c1->transform.GetLocalFront() * 0.2f);
+
 
 
 
 	
 	if (!cam->IsTopView())
 	{
-		float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
-		cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
+		//float h = terrain->GetHeightAt(cam->transform.GetPosition().x, cam->transform.GetPosition().z);
+		//cam->transform.SetPosition(cam->transform.GetPosition().x, h + 30, cam->transform.GetPosition().z);
 
 		// Limit camera position within terrain
 		if (cam->transform.GetPosition().x > terrain->GetTerrainMaxX() - 50)

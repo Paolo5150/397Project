@@ -8,6 +8,8 @@
 #include "Bullet\btBulletDynamicsCommon.h"
 #include "Bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.h"
 #include "..\Physics\PhysicsWorld.h"
+#include "..\Components\PathNode.h"
+
 Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 {
 
@@ -43,6 +45,13 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 	meshRenderer->SetIsCullable(false);
 
 	this->AddComponent(meshRenderer);
+
+	ApplyHeightMap("Assets\\Textures\\hm1.jpg");
+
+	transform.SetScale(20, 600, 20);
+	transform.Translate(0, 0, 0);
+
+
 
 }
 

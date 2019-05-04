@@ -39,6 +39,15 @@ void RenderingEngine::Initialize()
 		return 0;
 	});
 
+	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>([this](Event* e){
+
+		WindowResizeEvent* wc = dynamic_cast<WindowResizeEvent*>(e);
+
+		renderTexture->ResizeTexture(wc->width, wc->height);
+		renderTexture->ResizeTexture(wc->width, wc->height);
+		return 0;
+	});
+
 	int w, h;
 	Window::Instance().GetWindowSize(w, h);
 	renderTexture = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);	
@@ -106,7 +115,7 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 	timer += Timer::GetDeltaS();
 	postProcessShader->SetFloat("timer", timer);
 	if (Camera::GetCameraByName("Main Camera") != nullptr)
-	postProcessShader->SetInt("underwater", Camera::GetCameraByName("Main Camera")->transform.GetPosition().y < 50 ? 1 : 0);
+	postProcessShader->SetInt("underwater", Camera::GetCameraByName("Main Camera")->transform.GetPosition().y < 150 ? 1 : 0);
 
 	glActiveTexture(GL_TEXTURE0);
 	renderTexture->GetColorTexture()->Bind();

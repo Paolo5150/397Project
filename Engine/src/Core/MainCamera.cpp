@@ -4,7 +4,7 @@
 namespace {
 
 	const float MIN_SPEED = 0;
-	const float MAX_SPEED = 400;
+	const float MAX_SPEED = 1000;
 	float counter = 0;
 }
 
@@ -20,10 +20,19 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	sphereCollider->transform.SetScale(10, 10, 10);
 	sphereCollider->meshRenderer->SetIsCullable(0);*/
 
-	/*boxCollider = new BoxCollider();
+	boxCollider = new BoxCollider();
 	AddComponent(boxCollider); // Needs to be added first and modified later. I know, messy
 	boxCollider->transform.SetScale(10, 10, 10);
-	boxCollider->meshRenderer->SetIsCullable(0);*/
+	boxCollider->meshRenderer->SetIsCullable(0);
+	boxCollider->ResetCollisionLayer();
+	boxCollider->AddCollisionLayer(CollisionLayers::PLAYER);
+	boxCollider->AddCollideAgainstLayer(CollisionLayers::OBSTACLE);
+	//boxCollider->AddCollideAgainstLayer(CollisionLayers::PATHNODE);
+
+
+	boxCollider->collisionCallback = [](GameObject* go){
+		//Logger::LogInfo("Camera collided");
+	};
 }
 
 

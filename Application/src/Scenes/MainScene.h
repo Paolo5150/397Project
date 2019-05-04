@@ -52,6 +52,7 @@ public:
 	*/
 	virtual void Initialize() override;
 
+	void Start() override;
 	/**
 	* @brief		Update objects in the scene.
 	*/

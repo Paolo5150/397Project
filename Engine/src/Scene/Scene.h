@@ -80,6 +80,12 @@ public:
 
 
 	/**
+	* @brief		Initialize objects in the scene.
+	*/
+	virtual void Start();
+
+
+	/**
 	* @brief		Update objects in the scene in the Logic Update Loop
 	*/
 	virtual void LogicUpdate() = 0;

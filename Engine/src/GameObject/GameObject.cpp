@@ -13,6 +13,7 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 	SetActive(isActive);
 	SetLayer(layer);
 	SetParent(parent);
+	SetIsStatic(0);
 
 }
 
