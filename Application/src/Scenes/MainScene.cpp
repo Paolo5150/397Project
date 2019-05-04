@@ -369,7 +369,7 @@ void MainScene::LogicUpdate() {
 	spider->transform.RotateBy(180, 0, 1, 0);*/
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
-	PathFinder::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
+	PathFinder::Instance().GeneratePath(spider->transform.GetGlobalPosition(), cam->transform.GetPosition());
 
 	c1->transform.Translate(0, 0, -0.2f);
 

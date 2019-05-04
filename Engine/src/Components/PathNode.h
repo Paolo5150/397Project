@@ -13,9 +13,14 @@ public:
 	void OnCollision(GameObject* go) override;
 	void Start() override;
 
-	int cost;
+	
+	PathNode* previousNode;
 	BoxCollider* sc;
 	std::vector<PathNode*> neighbors;
 	float DistanceTo(PathNode* n);
+	double distanceFromPrevious;
+	double distanceFromTarget;
+	double cost;
+
 
 };

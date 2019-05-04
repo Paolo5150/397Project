@@ -6,6 +6,10 @@ PathNode::PathNode() : GameObject("PathNode")
 {
 	
 	SetIsStatic(1);
+	distanceFromPrevious = 0;
+	distanceFromTarget = 0;
+	cost = 0;
+	previousNode = nullptr;
 }
 PathNode::~PathNode()
 {}
@@ -30,8 +34,8 @@ void PathNode::Start()
 void PathNode::OnCollision(GameObject* go)
 {
 	//SetActive(0);
-	GetComponent<BoxCollider>("BoxCollider")->meshRenderer->GetMaterial().SetColor(1, 0, 0);
-	cost = 100000;
+	//GetComponent<BoxCollider>("BoxCollider")->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+	cost = 10000;
 	//Logger::LogInfo("Node collided against",go->GetName());
 }
 

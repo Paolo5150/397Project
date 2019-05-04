@@ -1,6 +1,8 @@
 #include "PathFinder.h"
 #include "..\Prefabs\Terrain.h"
-
+#include <list>
+#include <limits>
+#include <float.h>
 PathFinder& PathFinder::Instance()
 {
 	static PathFinder instance;
@@ -17,7 +19,7 @@ PathFinder::~PathFinder()
 }
 
 
-void PathFinder::ClosestNodeAt(int x, int y,  int z)
+PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)
 {
 	std::set<PathNode*>& nodes = nodesQT->GameObjectsAt(x,z);
 
@@ -37,7 +39,7 @@ void PathFinder::ClosestNodeAt(int x, int y,  int z)
 	
 	}
 
-	//closest->sc->meshRenderer->GetMaterial().SetColor(1, 1, 0);
+	return closest;
 }
 
 
@@ -117,5 +119,123 @@ void PathFinder::Start()
 	}
 
 
+
+}
+
+/*
+void tes1()
+{
+	std::list<PathNode*> uncheckedNodes;
+	std::vector<PathNode*> currentPath;
+	for (unsigned i = 0; i < pathNodes.size(); i++)
+	{
+		if (pathNodes[i] != startNode)
+		{
+			pathNodes[i]->distanceFromSource = 999999999999999;
+			pathNodes[i]->previousNode = nullptr;
+		}
+		uncheckedNodes.push_back(pathNodes[i]);
+	}
+
+	double dist = 999999999999999999;
+	PathNode* nodeMinDistance = nullptr;
+	for (auto it = uncheckedNodes.begin(); it != uncheckedNodes.end(); it++)
+	{
+		double length = glm::length((*it)->sc->transform.GetGlobalPosition() - startNode->sc->transform.GetGlobalPosition());
+
+		if (length < dist)
+		{
+			nodeMinDistance = (*it);
+			nodeMinDistance->distanceFromSource = length;
+			dist = length;
+		}
+
+	}
+
+	for (auto it1 = uncheckedNodes.begin(); it1 != uncheckedNodes.end();)
+	{
+
+		if (nodeMinDistance == goalNode)
+			break;
+
+		it1 = uncheckedNodes.erase(it1);
+
+		for (unsigned i = 0; i < nodeMinDistance->neighbors.size(); i++)
+		{
+			double distance = nodeMinDistance->distanceFromSource + nodeMinDistance->neighbors[i]->DistanceTo(nodeMinDistance) + nodeMinDistance->neighbors[i]->cost;
+
+			if (distance <  nodeMinDistance->neighbors[i]->distanceFromSource) {
+				nodeMinDistance->neighbors[i]->distanceFromSource = distance;
+				nodeMinDistance->neighbors[i]->previousNode = nodeMinDistance;
+
+			}
+
+		}
+	}
+
+	if (goalNode->previousNode == nullptr) {
+		Logger::LogInfo("No path found");
+
+	}
+	else {
+
+		PathNode* current = goalNode;
+		while (current != nullptr) {
+			currentPath.push_back(current);
+			current = current->previousNode;
+		}
+
+		Logger::LogInfo("Path size", currentPath.size());
+		for (unsigned i = 0; i < currentPath.size(); i++)
+		{
+			currentPath[i]->sc->enableRender = 1;
+		}
+	}
+}*/
+
+std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finish)
+{
+	for (int i = 0; i < pathNodes.size(); i++)
+		pathNodes[i]->sc->enableRender = 0;
+
+
+	PathNode* startNode = ClosestNodeAt(start.x, start.y, start.z);
+	PathNode* goalNode = ClosestNodeAt(finish.x, finish.y, finish.z);
+
+	PathNode* currentNode = startNode;
+
+	do
+	{
+
+		PathNode* shortest = nullptr;
+		double minDist = 99999999999999999;
+		for (unsigned i = 0; i < currentNode->neighbors.size(); i++)
+		{
+			currentNode->neighbors[i]->distanceFromPrevious = glm::length(currentNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
+			currentNode->neighbors[i]->distanceFromTarget = glm::length(goalNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
+			double total = currentNode->neighbors[i]->distanceFromPrevious + currentNode->neighbors[i]->distanceFromTarget + currentNode->neighbors[i]->cost;
+
+			if (total < minDist)
+			{
+				shortest = currentNode->neighbors[i];
+				minDist = total;
+			}
+		}
+
+		shortest->previousNode = currentNode;
+		currentNode = shortest;
+
+	} while (currentNode != goalNode);
+
+
+	while (currentNode->previousNode != nullptr)
+	{
+		currentNode->sc->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+		currentNode->sc->enableRender = 1;
+
+		currentNode = currentNode->previousNode;
+	}
+	std::vector<glm::vec3> path;
+	return path;
 
 }
