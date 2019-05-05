@@ -97,9 +97,9 @@ UniformBuffer* API_Opengl::CreateUniformBuffer(unsigned totalSize, unsigned bind
 	return new UniformBufferGL(totalSize, binding);
 }
 
-FrameBuffer* API_Opengl::CreateFrameBuffer(int w, int h, bool hasColorAttachment)
+FrameBuffer* API_Opengl::CreateFrameBuffer(int w, int h, int numAttachments)
 {
-	return new FrameBufferGL(w, h, hasColorAttachment);
+	return new FrameBufferGL(w, h, numAttachments);
 }
 
 void  API_Opengl::SetClipPlaneActive(bool ac)

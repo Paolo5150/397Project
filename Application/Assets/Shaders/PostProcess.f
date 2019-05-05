@@ -1,5 +1,5 @@
 #version 430 core
-#define MAX_LIGHTS 10
+
 
 out vec4 FragColor; 
 in vec2 Textcoords;
@@ -7,6 +7,7 @@ in vec2 Textcoords;
 
 uniform sampler2D diffuse0;
 uniform sampler2D special0;
+uniform sampler2D godrays;
 uniform float timer;
 uniform int underwater;
 
@@ -23,16 +24,14 @@ void main()
 	
 	vec2 totalDistortion = (0.08 * dudvTexture + 0.08* dudvTexture2) * underwater;
 	
-	totalDistortion = clamp(totalDistortion,vec2(0,0),vec2(1,1));
-	
-	
+	totalDistortion = clamp(totalDistortion,vec2(0,0),vec2(1,1));	
 	
 	 vec3 diffuseColor = texture(diffuse0,Textcoords + totalDistortion).rgb;
 	 vec3 diffuseColorBluish = diffuseColor * vec3(0.2,0.2,0.5);
-	 
+	 vec3 godRaysText = texture(godrays,Textcoords).rgb;
 	 vec3 total = mix(diffuseColor,diffuseColorBluish,underwater);
 	
-	gl_FragColor =  vec4(total,1.0);
+	gl_FragColor =  vec4(godRaysText,1.0);
 
 
 } 

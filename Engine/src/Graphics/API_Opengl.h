@@ -185,7 +185,7 @@ public:
 	* @param hasColorAttachment		Whether the frame buffer has a color attachment
 	* @return				The new uniform buffer object
 	*/
-	FrameBuffer* CreateFrameBuffer(int w, int h, bool hasColorAttachment = true) override;
+	FrameBuffer* CreateFrameBuffer(int w, int h, int numAttachments = 1) override;
 
 	/**
 	* @brief				Enable/disable clipping plane

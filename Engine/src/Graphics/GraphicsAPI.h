@@ -220,7 +220,7 @@ public:
 	* @param hasColorAttachment		Whether the frame buffer has a color attachment
 	* @return				The new uniform buffer object
 	*/
-	virtual FrameBuffer* CreateFrameBuffer(int w, int h, bool hasColorAttachment = true) = 0;
+	virtual FrameBuffer* CreateFrameBuffer(int w, int h, int numAttachments = 1) = 0;
 
 	/**
 	* @brief				Enable/disable clipping plane

@@ -86,6 +86,8 @@ void Core::Initialize()
 	Window::Instance().SetWindowTitle(m_runningApplication->name.c_str()); //Window title -> game title
 
 	RenderingEngine::Instance().postProcessShader = AssetLoader::Instance().GetAsset<Shader>("PostProcess");
+	RenderingEngine::Instance().godRayShader = AssetLoader::Instance().GetAsset<Shader>("GodRays");
+
 	RenderingEngine::Instance().distortionTexture = AssetLoader::Instance().GetAsset<Texture2D>("dudv");
 
 
@@ -210,6 +212,8 @@ void Core::LoadBasicAssets()
 	AssetLoader::Instance().LoadShader("DefaultStaticNoLight", "Assets\\Shaders\\DefaultStaticNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
 	AssetLoader::Instance().LoadShader("DefaultAnimatedNoLight", "Assets\\Shaders\\DefaultAnimatedNoLight.v", "Assets\\Shaders\\DefaultStaticNoLight.f", true);
 	AssetLoader::Instance().LoadShader("PostProcess", "Assets\\Shaders\\PostProcess.v", "Assets\\Shaders\\PostProcess.f", true);
+	AssetLoader::Instance().LoadShader("GodRays", "Assets\\Shaders\\PostProcess.v", "Assets\\Shaders\\GodRays.f", true);
+
 
 
 	AssetLoader::Instance().LoadShader("Terrain", "Assets\\Shaders\\Terrain.v", "Assets\\Shaders\\Terrain.f", true);

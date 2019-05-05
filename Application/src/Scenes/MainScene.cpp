@@ -27,6 +27,7 @@
 #include "Prefabs\Barrel.h"
 #include "Prefabs\Cabin.h"
 #include "Utils\PathFinder.h"
+#include "Graphics\RenderingEngine.h"
 
 
 #include "Physics\PhysicsWorld.h"
@@ -349,7 +350,8 @@ void MainScene::Start()
 
 	PhysicsWorld::Instance().FillQuadtree(true);
 	PhysicsWorld::Instance().PerformCollisions(true);
-
+	
+	RenderingEngine::godRays = 1;
 }
 
 void MainScene::LogicUpdate() {

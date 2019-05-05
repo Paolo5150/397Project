@@ -12,7 +12,7 @@
 
 #include <algorithm>
 std::vector<Renderer*> RenderingEngine::allRenderers;
-
+bool RenderingEngine::godRays;
 
 RenderingEngine& RenderingEngine::Instance()
 {
@@ -22,7 +22,7 @@ RenderingEngine& RenderingEngine::Instance()
 
 RenderingEngine::RenderingEngine()
 {
-
+	godRays = false;
 }
 
 
@@ -45,12 +45,17 @@ void RenderingEngine::Initialize()
 
 		renderTexture->ResizeTexture(wc->width, wc->height);
 		renderTexture->ResizeTexture(wc->width, wc->height);
+
+		occludedTexture->ResizeTexture(wc->width, wc->height);
+		occludedTexture->ResizeTexture(wc->width, wc->height);
 		return 0;
 	});
 
 	int w, h;
 	Window::Instance().GetWindowSize(w, h);
 	renderTexture = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);	
+	occludedTexture = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);
+	godRayShader = AssetLoader::Instance().GetAsset<Shader>("GodRays");
 	postProcessShader = AssetLoader::Instance().GetAsset<Shader>("PostProcess");
 
 	Vertex v1(-1.0, -1.0, 0.0);
@@ -88,11 +93,48 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
+
+		int previousDepth = 0;
+	if (godRays)
+	{
+		occludedTexture->Bind();
+
+		godRayShader->Bind();
+		glActiveTexture(GL_TEXTURE0);
+		//occludedTexture->GetColorTexture()->Bind();
+		//godRayShader->SetInt("diffuse0", 0);
+
+		Core::Instance().GetGraphicsAPI().ClearColorBuffer();
+		Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
+		//Render opaque
+		for (int camIndex = 0; camIndex < Camera::GetAllCameras().size(); camIndex++)
+		{
+			Camera& cam = *Camera::GetAllCameras()[camIndex];
+
+			if (!cam.GetActive()) continue;
+
+			if (previousDepth != cam.GetDepth())
+				Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
+
+			RenderBufferOverrideColor(&cam, glm::vec3(0, 0, 0), MaterialType::COLORONLY);
+			previousDepth = cam.GetDepth();
+
+		}
+		Core::Instance().GetGraphicsAPI().ResetTextures();
+
+
+		occludedTexture->Unbind();
+
+
+	}
+
+	
+
 	renderTexture->Bind();
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 
-	int previousDepth = 0;
+	previousDepth = 0;
 	//Render opaque
 	for (int camIndex = 0; camIndex < Camera::GetAllCameras().size(); camIndex++)
 	{
@@ -117,6 +159,7 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 	if (Camera::GetCameraByName("Main Camera") != nullptr)
 	postProcessShader->SetInt("underwater", Camera::GetCameraByName("Main Camera")->transform.GetPosition().y < 150 ? 1 : 0);
 
+
 	glActiveTexture(GL_TEXTURE0);
 	renderTexture->GetColorTexture()->Bind();
 	postProcessShader->SetInt("diffuse0", 0);
@@ -124,9 +167,17 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 	glActiveTexture(GL_TEXTURE1);
 	postProcessShader->SetInt("special0", 1);
 	distortionTexture->Bind();
+
+	if (godRays)
+	{
+	glActiveTexture(GL_TEXTURE2);
+	postProcessShader->SetInt("godrays", 2);
+	occludedTexture->GetColorTexture()->Bind();
+	}
 	quadMesh->Render();
 
 	glActiveTexture(GL_TEXTURE0);
+	Core::Instance().GetGraphicsAPI().ResetTextures();
 
 
 }
