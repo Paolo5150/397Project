@@ -6,6 +6,7 @@
 #include "Bullet\btBulletDynamicsCommon.h"
 #include "..\Physics\CollisionChecks.h"
 #include "..\Core\Timer.h"
+#include "..\Physics\CollisionLayer.h"
 #include <functional>
 
 class SphereCollider;
@@ -24,9 +25,7 @@ public:
 		BOX
 	};
 
-	Collider(std::string name) : Component(name){ 
-		_type = "Collider";
-		enableRender = 1; }
+	Collider(std::string name);
 	virtual ~Collider(){ delete meshRenderer; };
 
 	Transform transform;
@@ -47,6 +46,19 @@ public:
 
 	std::function<void(GameObject*)> collisionCallback;
 	COLLIDER_TYPE colliderType;
+
+	void AddCollisionLayer(unsigned int layer) { collisionLayer |= layer; }
+	void ResetCollisionLayer() { collisionLayer = 0; }
+	void RemoveCollisionLayer(unsigned layer) { collisionLayer = collisionLayer & (~layer); }
+	unsigned GetCollisionLayer() { return collisionLayer; }
+
+	void AddCollideAgainstLayer(unsigned layer) { collideAgainstLayer |= layer; }
+	void ResetCollideAgainstLayer() { collideAgainstLayer = 0; }
+	void RemoveCollideAgainstLayer(unsigned layer) { collideAgainstLayer = collideAgainstLayer & (~layer); }
+	unsigned GetCollideAgainstLayer() { return collideAgainstLayer; }
+
 protected:
 	btCollisionShape* collisionShape;
+	int collisionLayer;
+	int collideAgainstLayer;
 };

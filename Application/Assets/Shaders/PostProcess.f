@@ -25,9 +25,14 @@ void main()
 	
 	totalDistortion = clamp(totalDistortion,vec2(0,0),vec2(1,1));
 	
-	 vec3 diffuseColor = texture(diffuse0,Textcoords + totalDistortion).rgb;
 	
-	gl_FragColor =  vec4(diffuseColor,1.0);
+	
+	 vec3 diffuseColor = texture(diffuse0,Textcoords + totalDistortion).rgb;
+	 vec3 diffuseColorBluish = diffuseColor * vec3(0.2,0.2,0.5);
+	 
+	 vec3 total = mix(diffuseColor,diffuseColorBluish,underwater);
+	
+	gl_FragColor =  vec4(total,1.0);
 
 
 } 

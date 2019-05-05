@@ -58,17 +58,17 @@ void Transform::UpdateVectors()
 {
 	if (parent == nullptr)
 	{
-		localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
-		localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
-		localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
+		localFront = glm::normalize(glm::mat3(rotationMatrix) * glm::vec3(0, 0, 1));
+		localRight = glm::normalize(glm::cross(localFront,glm::vec3(0,1,0)));
+		localUp = glm::normalize(glm::cross(localRight,localFront));
 
 	}
 	else
 	{
-		rotationQuat = glm::quat(parent->GetRotationMatrix() * rotationMatrix);
-		localFront = glm::normalize(rotationQuat * glm::vec3(0, 0, 1));
-		localRight = glm::normalize(rotationQuat * glm::vec3(-1, 0, 0));
-		localUp = glm::normalize(rotationQuat * glm::vec3(0, 1, 0));
+		glm::mat4 r = parent->GetRotationMatrix() * rotationMatrix;
+		localFront = glm::normalize(glm::mat3(r) * glm::vec3(0, 0, 1));
+		localRight = glm::normalize(glm::cross(localFront, glm::vec3(0, 1, 0)));
+		localUp = glm::normalize(glm::cross(localRight, localFront));
 	}
 }
 

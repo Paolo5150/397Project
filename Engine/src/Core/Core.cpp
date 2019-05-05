@@ -53,7 +53,7 @@ void Core::Initialize()
 
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
-	Window::Instance().SetWindowSize(1300, 1000);
+	Window::Instance().SetWindowSize(800, 600);
 
 	//Managers initialization
 	Input::Init(false, true);

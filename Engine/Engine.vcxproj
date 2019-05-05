@@ -193,6 +193,7 @@
     <ClInclude Include="src\Components\AIBase.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />
     <ClInclude Include="src\Components\Collider.h" />
+    <ClInclude Include="src\Components\PathNode.h" />
     <ClInclude Include="src\Components\RigidBody.h" />
     <ClInclude Include="src\Components\SphereCollider.h" />
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -267,9 +268,14 @@
     <ClInclude Include="src\Lighting\PointLight.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Physics\CollisionChecks.h" />
+    <ClInclude Include="src\Physics\CollisionLayer.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Axis.h" />
+    <ClInclude Include="src\Prefabs\Barrel.h" />
+    <ClInclude Include="src\Prefabs\Cabin.h" />
+    <ClInclude Include="src\Prefabs\Crate.h" />
     <ClInclude Include="src\Prefabs\GridMesh.h" />
+    <ClInclude Include="src\Prefabs\Pumpkin.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
     <ClInclude Include="src\Prefabs\Water.h" />
     <ClInclude Include="src\Scene\Scene.h" />
@@ -281,6 +287,7 @@
     <ClInclude Include="src\Utils\FileUtils.h" />
     <ClInclude Include="src\Utils\GameAssetFactory.h" />
     <ClInclude Include="src\Utils\Maths.h" />
+    <ClInclude Include="src\Utils\PathFinder.h" />
     <ClInclude Include="src\Utils\Quadtree.h" />
     <ClInclude Include="src\Utils\RandUtils.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
@@ -291,6 +298,7 @@
     <ClCompile Include="src\Components\AIBase.cpp" />
     <ClCompile Include="src\Components\BoxCollider.cpp" />
     <ClCompile Include="src\Components\Collider.cpp" />
+    <ClCompile Include="src\Components\PathNode.cpp" />
     <ClCompile Include="src\Components\RigidBody.cpp" />
     <ClCompile Include="src\Components\SphereCollider.cpp" />
     <ClCompile Include="src\Core\LuaRegistry.cpp" />
@@ -329,6 +337,9 @@
     <ClCompile Include="src\GUI\imgui_widgets.cpp" />
     <ClCompile Include="src\Physics\CollisionChecks.cpp" />
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
+    <ClCompile Include="src\Prefabs\Barrel.cpp" />
+    <ClCompile Include="src\Prefabs\Cabin.cpp" />
+    <ClCompile Include="src\Prefabs\Crate.cpp" />
     <ClCompile Include="src\Prefabs\GridMesh.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
@@ -349,6 +360,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Prefabs\Axis.cpp" />
+    <ClCompile Include="src\Prefabs\Pumpkin.cpp" />
     <ClCompile Include="src\Prefabs\Terrain.cpp" />
     <ClCompile Include="src\Prefabs\Water.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
@@ -361,6 +373,7 @@
     <ClCompile Include="src\Utils\Maths.cpp" />
     <ClCompile Include="src\Utils\Quadtree.cpp" />
     <ClCompile Include="src\Utils\RandUtils.cpp" />
+    <ClCompile Include="src\Utils\PathFinder.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
