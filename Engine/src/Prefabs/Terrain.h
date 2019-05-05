@@ -18,15 +18,10 @@
 class Terrain : public GameObject
 {
 public:
-	/**
-	* @brief		Create a new terrain of specified size
-	*
-	* @post			The terrain object is created with the specified parameters
-	*
-	* @param		size		The size (width and depth) of the terrain
-	*/
-	Terrain(int size);
 
+	static Terrain& Instance();
+
+	void Initialize(int size);
 	/**
 	* @brief		Destroy the terrain object
 	* @pre			The terrain object must exist
@@ -96,6 +91,15 @@ public:
 	
 
 private:
+
+	/**
+	* @brief		Create a new terrain of specified size
+	*
+	* @post			The terrain object is created with the specified parameters
+	*
+	* @param		size		The size (width and depth) of the terrain
+	*/
+	Terrain();
 	/**
 	* @brief		Normaliz the terrain height
 	*/

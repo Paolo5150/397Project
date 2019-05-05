@@ -89,8 +89,8 @@ void Scene::QuitScene()
 
 	for (; it != m_allGameObjects.end(); it++)
 	{
-
-		delete (*it);
+		if (!(*it)->GetIsSelfManaged())
+			delete (*it);
 	}
 
 	m_allGameObjects.clear();
