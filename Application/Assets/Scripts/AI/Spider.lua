@@ -95,6 +95,12 @@ end
 function Wander()
     animation = 7;  
 
+    if(_wanderPosX == -1 and _wanderPosY == -1 and _wanderPosZ == -1) then
+        _wanderPosX = math.random() + math.random(200, 4900);
+        _wanderPosY = math.random() + math.random(200, 4900);
+        _wanderPosZ = math.random() + math.random(200, 4900);
+    end
+
     rotation = _nodeRotationReverse * rotationSpeed * _timerDeltaS;
     fowardMovement = -(movementSpeed * _timerDeltaS);
     rightMovement = 0;
