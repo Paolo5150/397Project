@@ -2,6 +2,10 @@
 #include "..\Prefabs\Water.h"
 #include "..\Prefabs\Terrain.h"
 #include "..\Core\MainCamera.h"
+#include "..\Prefabs\Barrel.h"
+#include "..\Prefabs\Cabin.h"
+#include "..\Prefabs\Crate.h"
+#include "..\Prefabs\Pumpkin.h"
 #include "..\Prefabs\Spider.h"
 
 
@@ -45,6 +49,14 @@ InternalAsset* GameAssetFactory::Create(std::string type, std::string name)
 	}
 	else if (type == "Model")
 		return AssetLoader::Instance().GetAsset<Model>(name)->CreateGameObject();
+	else if (type == "Barrel")
+		return new Barrel();
+	else if (type == "Cabin")
+		return new Cabin();
+	else if (type == "Crate")
+		return new Crate();
+	else if (type == "Pumpkin")
+		return new Pumpkin();
 	else if (type == "Spider")
 		return new Spider();
 }

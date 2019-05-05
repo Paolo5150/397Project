@@ -15,17 +15,28 @@ _state = "";
 _targetDistance = 0;
 _targetRotation = 0;
 _targetRotationReverse = 0;
-_wanderDirection = 0;
+_nodeDistance = 0;
+_nodeRotation = 0;
+_nodeRotationReverse = 0;
+_wanderPosX = -1;
+_wanderPosY = -1;
+_wanderPosZ = -1;
 _timerCurrentTime = 0;
 _timerDeltaS = 0;
 _lastStateChange = 0;
 _randomTimer = 0;
 
-function PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
+function PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
     _state = state;
     _targetDistance = targetDistance;
     _targetRotation = targetRotation;
     _targetRotationReverse = targetRotationReverse;
+    _nodeDistance = nodeDistance;
+    _nodeRotation = nodeRotation;
+    _nodeRotationReverse = nodeRotationReverse;
+    _wanderPosX = wanderPosX;
+    _wanderPosY = wanderPosY;
+    _wanderPosZ = wanderPosZ;
     _timerCurrentTime = timerCurrentTime;
     _timerDeltaS = timerDeltaS;
     _lastStateChange = lastStateChange;
@@ -34,8 +45,8 @@ end
 
 --Entry function
 --Returns: state, animation, fowardMovement, rightMovement, rotation(left/right), wanderDirection
-function Think(state, targetDistance, targetRotation, targetRotationReverse, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
-    PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer);
+function Think(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
+    PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer);
     
     if(_state == "Idle") then
         Idle();
@@ -52,11 +63,14 @@ function Think(state, targetDistance, targetRotation, targetRotationReverse, tim
         Idle();
     end
 
-    return _state, animation, fowardMovement, rightMovement, rotation, _wanderDirection;
+    return _state, animation, fowardMovement, rightMovement, rotation, _wanderPosX, _wanderPosY, _wanderPosZ;
 end
 
 function Idle()
     animation = 14;
+    _wanderPosX = -1
+    _wanderPosY = -1
+    _wanderPosZ = -1
 
     rotation = 0;
     fowardMovement = 0;
@@ -65,10 +79,11 @@ function Idle()
     if(_timerCurrentTime - _randomTimer > 0.5 and _timerCurrentTime - _lastStateChange > 5.0) then
         _randomTimer = _timerCurrentTime;
 
-        print(math.random(1, 100))
-
         if(math.random(1, 100) < 10) then
             _state = "Wander";
+            _wanderPosX = math.random() + math.random(200, 4900);
+            _wanderPosY = math.random() + math.random(200, 4900);
+            _wanderPosZ = math.random() + math.random(200, 4900);
         end
     end
 
@@ -78,27 +93,22 @@ function Idle()
 end
 
 function Wander()
-    animation = 7;
+    animation = 7;  
 
-    if(_wanderDirection > -2 and _wanderDirection < 2) then
-        if(math.random(1,100) <= 10) then
-            _wanderDirection = _wanderDirection + math.random() + math.random(-90, 0);
-        elseif(math.random(1,100) >= 90) then
-            _wanderDirection = _wanderDirection + math.random() + math.random(0, 90);
-        end
-    end
-
-    rotation = -(_wanderDirection * rotationSpeed * _timerDeltaS);
+    rotation = _nodeRotationReverse * rotationSpeed * _timerDeltaS;
     fowardMovement = -(movementSpeed * _timerDeltaS);
     rightMovement = 0;
-    _wanderDirection = _wanderDirection - _wanderDirection * rotationSpeed * _timerDeltaS;
 
     if(_timerCurrentTime - _randomTimer > 0.5 and _timerCurrentTime - _lastStateChange > 5.0) then
         _randomTimer = _timerCurrentTime;
 
         if(math.random(1, 100) < 10) then
-            _state = "Idle";
+            --_state = "Idle"; --Enable this to make spider randomly stop
         end
+    end
+
+    if(_nodeDistance < 100) then
+        _state = "Idle";
     end
 
     if(_targetDistance <= agroDistance) then
@@ -108,9 +118,11 @@ end
 
 function Seek()
     animation = 7;
+    _wanderPosX = -1;
+    _wanderPosY = -1;
+    _wanderPosZ = -1;
 
-    rotation = _targetRotationReverse * rotationSpeed * _timerDeltaS;
-    _wanderDirection = rotation;
+    rotation = _nodeRotationReverse * rotationSpeed * _timerDeltaS;
     fowardMovement = -(movementSpeed * _timerDeltaS);
     rightMovement = 0;
 
@@ -125,6 +137,9 @@ end
 
 function Fight()
     animation = 0;
+    _wanderPosX = -1;
+    _wanderPosY = -1;
+    _wanderPosZ = -1;
 
     rotation = _targetRotationReverse * rotationSpeed * _timerDeltaS;
     fowardMovement = 0;

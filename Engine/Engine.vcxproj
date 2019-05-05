@@ -289,7 +289,6 @@
     <ClInclude Include="src\Utils\Maths.h" />
     <ClInclude Include="src\Utils\PathFinder.h" />
     <ClInclude Include="src\Utils\Quadtree.h" />
-    <ClInclude Include="src\Utils\RandUtils.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
@@ -371,8 +370,6 @@
     <ClCompile Include="src\Utils\FileUtils.cpp" />
     <ClCompile Include="src\Utils\GameAssetFactory.cpp" />
     <ClCompile Include="src\Utils\Maths.cpp" />
-    <ClCompile Include="src\Utils\Quadtree.cpp" />
-    <ClCompile Include="src\Utils\RandUtils.cpp" />
     <ClCompile Include="src\Utils\PathFinder.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -4,9 +4,9 @@
 #include "..\GameObject\Component.h"
 #include "Animator.h"
 #include "AIState.h"
-#include "..\Utils\RandUtils.h"
 #include "..\Core\Timer.h"
 #include "..\Core\Lua.h"
+#include "..\Utils\PathFinder.h"
 
 class AIBase : public Component
 {
@@ -24,6 +24,12 @@ public:
 	float GetRotationToTarget() const;
 
 	float GetReverseRotationToTarget() const; //Same as above but reversed by 180 degrees
+
+	float GetDistanceToNode() const;
+
+	float GetRotationToNode() const;
+
+	float GetReverseRotationToNode() const; //Same as above but reversed by 180 degrees
 
 	Transform* GetTarget() const;
 
@@ -46,10 +52,11 @@ private:
 	Transform* _parentTransform;
 	Transform* _targetTransform;
 	lua_State* _luaState;
+	glm::vec3 _otherTarget; //Postition that can be used for wandering/patrolling or any other location based logic
+	glm::vec3 _nextNode;
 
 	std::string _scriptPath;
 
-	float _wanderDirection;
 	float _lastStateChange; //Time since the last succesful state change
 	float _randomTimer; //Timer for managing random state changes
 

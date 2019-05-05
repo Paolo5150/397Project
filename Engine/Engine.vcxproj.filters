@@ -67,7 +67,6 @@
     <ClCompile Include="src\Components\SphereCollider.cpp" />
     <ClCompile Include="src\Physics\CollisionChecks.cpp" />
     <ClCompile Include="src\Components\AIState.h" />
-    <ClCompile Include="src\Utils\RandUtils.cpp" />
     <ClCompile Include="src\Components\AIBase.cpp" />
     <ClCompile Include="src\Prefabs\Spider.cpp" />
     <ClCompile Include="src\Prefabs\Pumpkin.cpp" />
@@ -170,7 +169,6 @@
     <ClInclude Include="src\Utils\Quadtree.h" />
     <ClInclude Include="src\Physics\CollisionChecks.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIButton.h" />
-    <ClInclude Include="src\Utils\RandUtils.h" />
     <ClInclude Include="src\Components\AIBase.h" />
     <ClInclude Include="src\Prefabs\Spider.h" />
     <ClInclude Include="src\Physics\CollisionLayer.h" />

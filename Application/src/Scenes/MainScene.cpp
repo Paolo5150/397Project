@@ -31,7 +31,6 @@
 
 #include "Physics\PhysicsWorld.h"
 
-#include "Utils\RandUtils.h"
 #include "Components\AIBase.h"
 
 MainCamera* cam;
@@ -98,7 +97,6 @@ void MainScene::QuitScene() {
 void MainScene::Initialize() {
 
 	Lua::RunLua("Assets\\Scripts\\Level1.lua");
-	RandUtils::SeedRand();
 	gContactAddedCallback = PhysicsWorld::CollisionCallback;
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
@@ -194,16 +192,6 @@ void MainScene::Initialize() {
 	Water* w = (Water*)Lua::GetCreatedAsset(luaAssetOffset);
 	luaAssetOffset++;
 	w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
-	nanosuits = new GameObject*[Lua::GetIntFromStack("npc_nanosuits")];
-	for (int i = 0; i < Lua::GetIntFromStack("npc_nanosuits"); i++)
-	{
-		nanosuits[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		nanosuits[i]->transform.SetPosition(nanosuits[i]->transform.GetPosition().x, terrain->GetHeightAt(nanosuits[i]->transform.GetPosition().x, nanosuits[i]->transform.GetPosition().z), nanosuits[i]->transform.GetPosition().z);
-		AddGameObject(nanosuits[i]);
-	}
-	luaAssetOffset += Lua::GetIntFromStack("npc_nanosuits");
-
-
 
 	pumpkins = new GameObject*[Lua::GetIntFromStack("npc_pumpkins")];
 	for (int i = 0; i < Lua::GetIntFromStack("npc_pumpkins"); i++)
@@ -313,8 +301,6 @@ void MainScene::Initialize() {
 
 	cam->transform.SetRotation(0, 0, 0);		
 	cam->transform.Update();
-
-
 
 }
 
