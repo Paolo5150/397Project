@@ -66,11 +66,11 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Gun\\gun.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");	
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
 	//AssetLoader::Instance().LoadModel("Assets\\Models\\Wolf\\wolf.fbx");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Spider\\spider_3.fbx",0);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Spider\\spider_3.fbx", 0);
 
 	AssetLoader::Instance().LoadTexture("Assets\\Models\\Spider\\textures\\Spinnen_Bein_tex_COLOR_.jpg");
 
@@ -80,7 +80,7 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_specular.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\shipTexture.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");	
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");
 }
 void MainScene::UnloadAssets() {
 	AssetLoader::Instance().Unload<Model>();
@@ -95,19 +95,22 @@ void MainScene::QuitScene() {
 }
 void MainScene::Initialize() {
 
+	//Terrain
+	Terrain::Instance().Initialize(256);
+
 	Lua::RunLua("Assets\\Scripts\\Level1.lua");
 	gContactAddedCallback = PhysicsWorld::CollisionCallback;
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
 	Timer::SetDisplayFPS(true);
-	
+
 	//nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
 	//GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
-	manual = new GUIImage("manualImage",AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
+	manual = new GUIImage("manualImage", AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
 	manual->isActive = 0;
 	GUIManager::Instance().AddGUIObject(manual);
 
-	
+
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.5f, 0.5f, 0.2f);
@@ -128,40 +131,6 @@ void MainScene::Initialize() {
 	pLight->transform.Translate(-15, 10, -15);
 	pLight->SetIntensity(50.0f);
 
-
-	// Uncomment this to force a wood material!
-	Material mat_wood;
-	mat_wood.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
-
-	mat_wood.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("wood"));
-	mat_wood.LoadCubemap(&skybox->GetCubeMap());
-
-	mat_wood.LoadFloat("shininess", 1000.0f);
-	mat_wood.LoadFloat("reflectivness", 1.0);
-
-	Material mat_crate;
-	mat_crate.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
-	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_diffuse"));
-	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_normal"), TextureUniform::NORMAL0);
-
-
-	Material mat_ship;
-	mat_ship.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
-	mat_ship.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("shipTexture"));
-	mat_ship.LoadCubemap(&skybox->GetCubeMap());
-
-	mat_ship.LoadFloat("shininess", 1000.0f);
-	mat_ship.LoadFloat("reflectivness", 0.5f);
-
-	Material mat_cabin;
-	mat_cabin.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
-	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_diffuse"));
-	mat_cabin.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("cabin_normal"),TextureUniform::NORMAL0);
-
-
-	//Terrain
-
-	Terrain::Instance().Initialize(256);
 	PathFinder::Instance().Generate(&Terrain::Instance());
 	for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
 		AddGameObject(PathFinder::Instance().pathNodes[i]);
@@ -170,80 +139,35 @@ void MainScene::Initialize() {
 	//GameObjects
 	cam = (MainCamera*)Lua::GetCreatedAsset(luaAssetOffset);
 	luaAssetOffset++;
-	//cam->transform.SetPosition(Lua::GetFloatFromStack("camX"), Lua::GetFloatFromStack("camY"), Lua::GetFloatFromStack("camZ"));
-	//cam->transform.SetRotation(Lua::GetFloatFromStack("camRotX"), Lua::GetFloatFromStack("camRotY"), Lua::GetFloatFromStack("camRotZ"));
 	cam->SetMovementSpeed(500);
 	cam->RemoveLayerMask(Layers::GUI);
+	AddGameObject(cam);
 
 
 	Water* w = (Water*)Lua::GetCreatedAsset(luaAssetOffset);
 	luaAssetOffset++;
 	w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
 
-	pumpkins = new GameObject*[Lua::GetIntFromStack("npc_pumpkins")];
-	for (int i = 0; i < Lua::GetIntFromStack("npc_pumpkins"); i++)
+	for (int i = 2; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the camera or water, and add them to the scene
 	{
-		pumpkins[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		pumpkins[i]->transform.SetPosition(pumpkins[i]->transform.GetPosition().x, Terrain::Instance().GetHeightAt(pumpkins[i]->transform.GetPosition().x, pumpkins[i]->transform.GetPosition().z), pumpkins[i]->transform.GetPosition().z);
-		AddGameObject(pumpkins[i]);
+		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
+		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
+		{
+			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(cam->transform);
+		}
+		AddGameObject(obj);
 	}
-	luaAssetOffset += Lua::GetIntFromStack("npc_pumpkins");
-
-	barrels = new GameObject*[Lua::GetIntFromStack("prop_barrels")];
-	for (int i = 0; i < Lua::GetIntFromStack("prop_barrels"); i++)
-	{
-		barrels[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		barrels[i]->transform.SetPosition(barrels[i]->transform.GetPosition().x, Terrain::Instance().GetHeightAt(barrels[i]->transform.GetPosition().x, barrels[i]->transform.GetPosition().z), barrels[i]->transform.GetPosition().z);
-		AddGameObject(barrels[i]);
-	}
-	luaAssetOffset += Lua::GetIntFromStack("prop_barrels");
-
-	crates = new GameObject*[Lua::GetIntFromStack("prop_crates")];
-	for (int i = 0; i < Lua::GetIntFromStack("prop_crates"); i++)
-	{
-		crates[i] = (GameObject*)Lua::GetCreatedAsset(i + luaAssetOffset);
-		crates[i]->transform.SetPosition(crates[i]->transform.GetPosition().x, Terrain::Instance().GetHeightAt(crates[i]->transform.GetPosition().x, crates[i]->transform.GetPosition().z), crates[i]->transform.GetPosition().z);
-		crates[i]->ApplyMaterial(mat_crate);
-		AddGameObject(crates[i]);
-	}
-	luaAssetOffset += Lua::GetIntFromStack("prop_crates");
-
-	spider = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
-	((AIBase*)spider->GetComponent<AIBase>("AIBase"))->SetTarget(cam->transform);
-	AddGameObject(spider);
-	luaAssetOffset++;
-
-	gun = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
-	gun->transform.SetPosition(gun->transform.GetPosition().x, Terrain::Instance().GetHeightAt(gun->transform.GetPosition().x, gun->transform.GetPosition().z), gun->transform.GetPosition().z);
-	AddGameObject(gun);
-	luaAssetOffset++;
-
-	ship = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
-	ship->transform.SetPosition(ship->transform.GetPosition().x, Terrain::Instance().GetHeightAt(ship->transform.GetPosition().x, ship->transform.GetPosition().z), ship->transform.GetPosition().z);
-	ship->ApplyMaterial(mat_ship);
-	AddGameObject(ship);
-	luaAssetOffset++;
-
-	cabin = (GameObject*)Lua::GetCreatedAsset(luaAssetOffset);
-	cabin->transform.SetPosition(cabin->transform.GetPosition().x, Terrain::Instance().GetHeightAt(cabin->transform.GetPosition().x, cabin->transform.GetPosition().z), cabin->transform.GetPosition().z);
-	cabin->ApplyMaterial(mat_cabin);
-	AddGameObject(cabin);
-	luaAssetOffset++;
 
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
-	cam->transform.SetPosition(x, y, z);
+	//cam->transform.SetPosition(x, y, z);
 	PhysicsWorld::Instance().InitializeQuadtree(x, z, Terrain::Instance().GetTerrainMaxX() - Terrain::Instance().GetTerrainMinX(), Terrain::Instance().GetTerrainMaxZ() - Terrain::Instance().GetTerrainMinZ());
-	
-	/*GameObject* woof = AssetLoader::Instance().GetAsset<Model>("Wolf")->CreateGameObject();
-	woof->transform.SetPosition(cam->transform.GetPosition().x + 80, 240, cam->transform.GetPosition().z + 200);
-	AddGameObject(woof);*/
 
-	c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c1->transform.SetPosition(cam->transform.GetPosition().x+20,400, cam->transform.GetPosition().z + 400);
+	/*c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
+	c1->transform.SetPosition(cam->transform.GetPosition().x + 20, 400, cam->transform.GetPosition().z + 400);
 
 	c1->transform.SetScale(3, 3, 3);
-	c1->transform.RotateBy(-45.0f,0,1,0);
+	c1->transform.RotateBy(-45.0f, 0, 1, 0);
 
 	c1->AddComponent(new BoxCollider());
 	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
@@ -251,42 +175,35 @@ void MainScene::Initialize() {
 	c1->GetComponent<BoxCollider>("BoxCollider")->ResetCollisionLayer();
 	c1->GetComponent<BoxCollider>("BoxCollider")->AddCollisionLayer(CollisionLayers::OBSTACLE);
 
-	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go){
-	//	Logger::LogInfo("C1 colliding");
-	};
+	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go) {
+		//	Logger::LogInfo("C1 colliding");
+	};*/
 
-	c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c2->transform.SetPosition(cam->transform.GetPosition().x+20 , 400, cam->transform.GetPosition().z + 200);
-	c2->transform.SetScale(3,3,3);
+	/*c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
+	c2->transform.SetPosition(cam->transform.GetPosition().x + 20, 400, cam->transform.GetPosition().z + 200);
+	c2->transform.SetScale(3, 3, 3);
 	c2->AddComponent(new BoxCollider());
 	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
+	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);*/
 
 	//crate = new Crate();
 
-	Cabin* cabin = new Cabin();
-	cabin->transform.SetPosition(cam->transform.GetPosition().x + 400, Terrain::Instance().GetHeightAt(cam->transform.GetPosition().x + 400, cam->transform.GetPosition().z + 200), cam->transform.GetPosition().z + 200);
+	//Cabin* cabin = new Cabin();
+	//cabin->transform.SetPosition(cam->transform.GetPosition().x + 400, Terrain::Instance().GetHeightAt(cam->transform.GetPosition().x + 400, cam->transform.GetPosition().z + 200), cam->transform.GetPosition().z + 200);
 
-	w->transform.SetPosition(x, 150, z);
-	w->transform.SetScale(3000, 3000, 1);
+	//w->transform.SetPosition(x, 150, z);
+	//w->transform.SetScale(3000, 3000, 1);
 	//AddGameObject(c2);
 	//AddGameObject(c1);
-	AddGameObject(w);
+	//AddGameObject(w);
 
-	AddGameObject(cabin);
+	//AddGameObject(cabin);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(pLight);
 	AddGameObject(&Terrain::Instance());
-	AddGameObject(cam);
-
-	//Only for debugging
-
 
 	Lua::CloseLua();
-
-	cam->transform.SetRotation(0, 0, 0);		
-	cam->transform.Update();
 
 }
 
@@ -301,47 +218,9 @@ void MainScene::Start()
 
 }
 
-void MainScene::LogicUpdate() {
-
-
-
+void MainScene::LogicUpdate()
+{
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
-
-	PathFinder::Instance().GeneratePath(spider->transform.GetGlobalPosition(), cam->transform.GetPosition());
-
-
-
-	
-	
-	
-	//for (int i = 0; i < 10; i++) //TEMPORARY !-----!-----!-----!
-	//{
-		float h = Terrain::Instance().GetHeightAt(spider->transform.GetPosition().x, spider->transform.GetPosition().z);
-		spider->transform.SetPosition(spider->transform.GetPosition().x, h, spider->transform.GetPosition().z);
-
-		if (spider->transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 50)
-		{
-			spider->transform.SetPosition(Terrain::Instance().GetTerrainMaxX() - 50, spider->transform.GetPosition().y, spider->transform.GetPosition().z);
-			spider->transform.RotateBy(180, glm::vec3(0, 1, 0));
-		}
-		else if (spider->transform.GetPosition().x < Terrain::Instance().GetTerrainMinX() + 50)
-		{
-			spider->transform.SetPosition(Terrain::Instance().GetTerrainMinX() + 50, spider->transform.GetPosition().y, spider->transform.GetPosition().z);
-			spider->transform.RotateBy(180, glm::vec3(0, 1, 0));
-		}
-
-		if (spider->transform.GetPosition().z > Terrain::Instance().GetTerrainMaxZ() - 50)
-		{
-			spider->transform.SetPosition(spider->transform.GetPosition().x, spider->transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 50);
-			spider->transform.RotateBy(180, glm::vec3(0, 1, 0));
-		}
-		else if (spider->transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 50)
-		{
-			spider->transform.SetPosition(spider->transform.GetPosition().x, spider->transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 50);
-			spider->transform.RotateBy(180, glm::vec3(0, 1, 0));
-		}
-	//}
-	
 
 	if (Input::GetKeyPressed(GLFW_KEY_M))
 		manual->isActive = !manual->isActive;
@@ -351,5 +230,6 @@ void MainScene::LogicUpdate() {
 		SceneManager::Instance().LoadNewScene("ExitScene");
 
 	Scene::LogicUpdate(); //Must be last statement!
+
 }
 

@@ -1,9 +1,9 @@
 --Script variables
 movementSpeed = 200;
 rotationSpeed = 5;
-fleeDistance = 1000; --Distance the ai will try and get to before stopping fleeing
+fleeDistance = 6000; --Distance the ai will try and get to before stopping fleeing
 agroDistance = 5000; --Distance the ai will notice and start following the target
-maxFollowDistance = 1000; --Distance the ai will stop following the target
+maxFollowDistance = 6000; --Distance the ai will stop following the target
 attackDistance = 150; --Distance the ai will switch to fighting
 fowardMovement = 0;
 rightMovement = 0;
@@ -21,12 +21,14 @@ _nodeRotationReverse = 0;
 _wanderPosX = -1;
 _wanderPosY = -1;
 _wanderPosZ = -1;
+_terrainMaxX = 0;
+_terrainMaxZ = 0;
 _timerCurrentTime = 0;
 _timerDeltaS = 0;
 _lastStateChange = 0;
 _randomTimer = 0;
 
-function PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
+function PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, terrainMaxX, terrainMaxZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
     _state = state;
     _targetDistance = targetDistance;
     _targetRotation = targetRotation;
@@ -37,6 +39,8 @@ function PopulateVariables(state, targetDistance, targetRotation, targetRotation
     _wanderPosX = wanderPosX;
     _wanderPosY = wanderPosY;
     _wanderPosZ = wanderPosZ;
+    _terrainMaxX = terrainMaxX;
+    _terrainMaxZ = terrainMaxZ;
     _timerCurrentTime = timerCurrentTime;
     _timerDeltaS = timerDeltaS;
     _lastStateChange = lastStateChange;
@@ -45,8 +49,8 @@ end
 
 --Entry function
 --Returns: state, animation, fowardMovement, rightMovement, rotation(left/right), wanderDirection
-function Think(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
-    PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer);
+function Think(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, terrainMaxX, terrainMaxZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
+    PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, terrainMaxX, terrainMaxZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer);
     
     if(_state == "Idle") then
         Idle();
@@ -81,9 +85,9 @@ function Idle()
 
         if(math.random(1, 100) < 10) then
             _state = "Wander";
-            _wanderPosX = math.random() + math.random(200, 4900);
-            _wanderPosY = math.random() + math.random(200, 4900);
-            _wanderPosZ = math.random() + math.random(200, 4900);
+            _wanderPosX = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
+            _wanderPosY = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
+            _wanderPosZ = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
         end
     end
 
@@ -96,9 +100,9 @@ function Wander()
     animation = 7;  
 
     if(_wanderPosX == -1 and _wanderPosY == -1 and _wanderPosZ == -1) then
-        _wanderPosX = math.random() + math.random(200, 4900);
-        _wanderPosY = math.random() + math.random(200, 4900);
-        _wanderPosZ = math.random() + math.random(200, 4900);
+        _wanderPosX = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
+        _wanderPosY = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
+        _wanderPosZ = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
     end
 
     rotation = _nodeRotationReverse * rotationSpeed * _timerDeltaS;

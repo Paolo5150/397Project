@@ -5,8 +5,10 @@
 #include "..\Prefabs\Barrel.h"
 #include "..\Prefabs\Cabin.h"
 #include "..\Prefabs\Crate.h"
+#include "..\Prefabs\Gun.h"
 #include "..\Prefabs\Pumpkin.h"
 #include "..\Prefabs\Spider.h"
+#include "..\Prefabs\Ship.h"
 
 
 GameAssetFactory GameAssetFactory::Instance()
@@ -55,8 +57,12 @@ InternalAsset* GameAssetFactory::Create(std::string type, std::string name)
 		return new Cabin();
 	else if (type == "Crate")
 		return new Crate();
+	else if (type == "Gun")
+		return new Gun();
 	else if (type == "Pumpkin")
 		return new Pumpkin();
+	else if (type == "Ship")
+		return new Ship();
 	else if (type == "Spider")
 		return new Spider();
 }

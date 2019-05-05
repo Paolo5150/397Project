@@ -3,17 +3,17 @@
 
 #include "..\GameObject\Component.h"
 #include "Animator.h"
-#include "AIState.h"
 #include "..\Core\Timer.h"
 #include "..\Core\Lua.h"
 #include "..\Utils\PathFinder.h"
+#include "..\Prefabs\Terrain.h"
 
 class AIBase : public Component
 {
 public:
-	AIBase(std::string scriptPath, AIState state = AIState::Idle); //Note: do not call a seeking function without setting a target first!
+	AIBase(std::string scriptPath); //Note: do not call a seeking function without setting a target first!
 
-	AIBase(Transform& targetTransform, std::string scriptPath, AIState state = AIState::Idle);
+	AIBase(Transform& targetTransform, std::string scriptPath);
 
 	~AIBase();
 

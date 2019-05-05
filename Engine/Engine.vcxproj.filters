@@ -66,7 +66,6 @@
     <ClCompile Include="src\Components\RigidBody.cpp" />
     <ClCompile Include="src\Components\SphereCollider.cpp" />
     <ClCompile Include="src\Physics\CollisionChecks.cpp" />
-    <ClCompile Include="src\Components\AIState.h" />
     <ClCompile Include="src\Components\AIBase.cpp" />
     <ClCompile Include="src\Prefabs\Spider.cpp" />
     <ClCompile Include="src\Prefabs\Pumpkin.cpp" />
@@ -75,6 +74,8 @@
     <ClCompile Include="src\Prefabs\Cabin.cpp" />
     <ClCompile Include="src\Components\PathNode.cpp" />
     <ClCompile Include="src\Utils\PathFinder.cpp" />
+    <ClCompile Include="src\Prefabs\Ship.cpp" />
+    <ClCompile Include="src\Prefabs\Gun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -178,5 +179,7 @@
     <ClInclude Include="src\Prefabs\Cabin.h" />
     <ClInclude Include="src\Components\PathNode.h" />
     <ClInclude Include="src\Utils\PathFinder.h" />
+    <ClInclude Include="src\Prefabs\Ship.h" />
+    <ClInclude Include="src\Prefabs\Gun.h" />
   </ItemGroup>
 </Project>

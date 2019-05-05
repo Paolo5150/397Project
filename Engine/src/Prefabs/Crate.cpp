@@ -4,17 +4,15 @@
 
 Crate::Crate() : GameObject("Crate")
 {
-
 	AssetLoader::Instance().GetAsset<Model>("Crate")->PopulateGameObject(this);
-	transform.SetScale(8,8,8);
+	transform.SetScale(2,2,2);
 
 	Material mat_crate;
 	mat_crate.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_diffuse"));
 	mat_crate.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("crate_normal"), TextureUniform::NORMAL0);
-
-	SetIsStatic(1);
 	
+	SetIsStatic(1);
 
 	ApplyMaterial(mat_crate);
 }

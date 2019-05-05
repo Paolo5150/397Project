@@ -2,9 +2,7 @@
 #include <string>
 
 #include "../GameObject/GameObject.h"
-#include "../Graphics/AnimatedModel.h"
-#include "../Components/AIBase.h"
-#include "../Components/BoxCollider.h"
+#include "..\Utils\AssetLoader.h"
 
 class Spider : public GameObject
 {
@@ -22,6 +20,10 @@ public:
 	void SetTarget(Transform& transform);
 
 	Transform* GetTarget() const;
+
+	void Start() override;
+
+	void Update() override;
 
 private:
 

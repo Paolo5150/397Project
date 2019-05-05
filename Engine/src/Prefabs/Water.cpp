@@ -75,6 +75,7 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	SetLayer(0);
 	SetLayer(Layers::WATER);
 	meshRenderer->SetMaterial(*material);
+	//meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
 }
 
 

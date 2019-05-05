@@ -72,6 +72,16 @@ public:
 	void GetCenter(int& x, int& y,int& z);
 
 	/**
+	* @brief		Get the center of the terrain in world space
+	*
+	* @pre			The terrain object must exist
+	* @post			The center of the terrain is returned
+	*
+	* @return vec3	A vec3 of the center position
+	*/
+	glm::vec3 GetCenter();
+
+	/**
 	* @brief		Returns the height of a point on a terrain in world space
 	*
 	* @pre			The terrain object must exist, the x and y provided are within the terrain boundaries

@@ -20,8 +20,8 @@ void Lua::InitLua(lua_State*& L)
 
 void Lua::RegisterCppFunctions(lua_State*& L)
 {
-	lua_register(L, "CreateAsset", LuaRegistry::Lua_Create);
-	lua_register(L, "CreateObject", LuaRegistry::Lua_CreateObject);
+	//lua_register(L, "CreateAsset", LuaRegistry::Lua_Create);
+	lua_register(L, "Create", LuaRegistry::Lua_Create);
 }
 
 void Lua::CloseLua(lua_State*& L, bool clearAssets)

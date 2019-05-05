@@ -1,6 +1,6 @@
 #include "AIBase.h"
 
-AIBase::AIBase(std::string scriptPath, AIState state) : Component("AIBase")
+AIBase::AIBase(std::string scriptPath) : Component("AIBase")
 {
 	_type = "AI";
 	SetState("");
@@ -18,7 +18,7 @@ AIBase::AIBase(std::string scriptPath, AIState state) : Component("AIBase")
 	_randomTimer = 0.0f;
 }
 
-AIBase::AIBase(Transform& targetTransform, std::string scriptPath, AIState state) : Component("AIBase")
+AIBase::AIBase(Transform& targetTransform, std::string scriptPath) : Component("AIBase")
 {
 	_type = "AI";
 	SetState("");
@@ -159,14 +159,16 @@ void AIBase::Think()
 	lua_pushnumber(_luaState, _otherTarget.x);
 	lua_pushnumber(_luaState, _otherTarget.y);
 	lua_pushnumber(_luaState, _otherTarget.z);
+	lua_pushnumber(_luaState, Terrain::Instance().GetTerrainMaxX());
+	lua_pushnumber(_luaState, Terrain::Instance().GetTerrainMaxZ());
 	lua_pushnumber(_luaState, Timer::GetTimeS());
 	lua_pushnumber(_luaState, Timer::GetDeltaS());
 	lua_pushnumber(_luaState, _lastStateChange);
 	lua_pushnumber(_luaState, _randomTimer);
 
-	lua_call(_luaState, 14, 8); //call the function with 11 arguments and return 10 results
+	lua_call(_luaState, 16, 8); //call the function with 16 arguments and return 8 results
 
-	if (Lua::GetStringFromStack("_state", _luaState) != GetState())
+	if (Lua::GetStringFromStack("_state", _luaState) != GetState()) //These should probably be retreived from the functon to increase reusablilty
 	{
 		SetState(Lua::GetStringFromStack("_state", _luaState));
 	}

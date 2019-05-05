@@ -143,6 +143,19 @@ void Terrain::GetCenter(int& x, int& y,int& z)
 }
 
 
+glm::vec3 Terrain::GetCenter()
+{
+	transform.Update();
+
+	int xr = this->terrainSize / 2;
+	int xz = terrainSize / 2;
+	glm::vec3 v = (meshRenderer->GetMesh().vertices[((xz)*terrainSize) + xr].position);
+	v = transform.GetMatrix() * glm::vec4(v.x, v.y, v.z, 1.0);
+
+	return v;
+}
+
+
 /*bool Terrain::GenerateFaultFormation(int iterations, int minHeight, float weight, bool random)
 {
 	int x1, x2, z1, z2;

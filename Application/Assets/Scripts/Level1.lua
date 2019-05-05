@@ -1,94 +1,82 @@
 --Objects can be added with the formats:
---CreateObject("assetType", posX, posY, posZ, scaleX, scaleY, scaleZ)
---CreateObject("assetType", posX, posY, posZ, scaleX, scaleY, scaleZ, rotX, rotY, rotZ);
+--Create("assetType", posX, posY, posZ)
+--Create("assetType", posX, posY, posZ, scaleX, scaleY, scaleZ)
+--Create("assetType", posX, posY, posZ, scaleX, scaleY, scaleZ, rotX, rotY, rotZ);
+--Using -9999 in the posY position will set posY to Terrain::GetHeightat(posX, posZ)
 
+Create("MainCamera", -9999, -9999, -9999, 30, 180, 0);
 
-prop_crates = 20; --These will be removed once all prefabs are in, they are currently still needed
-prop_barrels = 20;
-npc_pumpkins = 20;
-
-camScale = 1;
-CreateObject("MainCamera", 0, 35, 0, camScale, camScale, camScale, 30, 180, 0);
-camRotX, camRotY, camRotZ = 30, 180, 0;
-
-waterScaleX, waterScaleY, waterScaleZ = 2000, 2000, 1;
-CreateAsset("Water", "Water", 0, 100, 0, waterScaleX, waterScaleY, waterScaleZ);
+waterScaleX, waterScaleY, waterScaleZ = 3000, 3000, 1;
+Create("Water", 9999, 100, 9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
 
 --Create all npcs and props
-pumpkinScale = 20;
-CreateObject("Pumpkin", 2234, 0, 1833, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 255, 0, 1007, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 1043, 0, 2660, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 1558, 0, 2772, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 1628, 0, 1189, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 580, 0, 2778, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 277, 0, 2515, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 1330, 0, 2158, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 276, 0, 1642, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 270, 0, 359, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 2125, 0, 1724, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 2320, 0, 2302, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 277, 0, 1477, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 118, 0, 427, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 1589, 0, 2115, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 360, 0, 2176, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 2617, 0, 1129, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 242, 0, 2715, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 209, 0, 774, pumpkinScale, pumpkinScale, pumpkinScale);
-CreateObject("Pumpkin", 219, 0, 874, pumpkinScale, pumpkinScale, pumpkinScale);
+Create("Pumpkin", 2234, -9999, 1833);
+Create("Pumpkin", 255, -9999, 1007);
+Create("Pumpkin", 1043, -9999, 2660);
+Create("Pumpkin", 1558, -9999, 2772);
+Create("Pumpkin", 1628, -9999, 1189);
+Create("Pumpkin", 580, -9999, 2778);
+Create("Pumpkin", 277, -9999, 2515);
+Create("Pumpkin", 1330, -9999, 2158);
+Create("Pumpkin", 276, -9999, 1642);
+Create("Pumpkin", 270, -9999, 359);
+Create("Pumpkin", 2125, -9999, 1724);
+Create("Pumpkin", 2320, -9999, 2302);
+Create("Pumpkin", 277, -9999, 1477);
+Create("Pumpkin", 118, -9999, 427);
+Create("Pumpkin", 1589, -9999, 2115);
+Create("Pumpkin", 360, -9999, 2176);
+Create("Pumpkin", 2617, -9999, 1129);
+Create("Pumpkin", 242, -9999, 2715);
+Create("Pumpkin", 209, -9999, 774);
+Create("Pumpkin", 219, -9999, 874);
 
-barrelScale = 20;
-CreateObject("Barrel", 1116, 0, 1327, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 1289, 0, 1066, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 1325, 0, 1826, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 253, 0, 237, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 649, 0, 1589, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 731, 0, 2747, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 1194, 0, 1025, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 43, 0, 672, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 1363, 0, 1678, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 955, 0, 2148, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 608, 0, 2287, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 101, 0, 803, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 110, 0, 792, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 717, 0, 1703, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 231, 0, 928, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 1590, 0, 1331, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 199, 0, 501, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 79, 0, 919, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 1202, 0, 1652, barrelScale, barrelScale, barrelScale);
-CreateObject("Barrel", 1431, 0, 1566, barrelScale, barrelScale, barrelScale);
+Create("Barrel", 1116, -9999, 1327);
+Create("Barrel", 1289, -9999, 1066);
+Create("Barrel", 1325, -9999, 1826);
+Create("Barrel", 253, -9999, 237);
+Create("Barrel", 649, -9999, 1589);
+Create("Barrel", 731, -9999, 2747);
+Create("Barrel", 1194, -9999, 1025);
+Create("Barrel", 43, -9999, 672);
+Create("Barrel", 1363, -9999, 1678);
+Create("Barrel", 955, -9999, 2148);
+Create("Barrel", 608, -9999, 2287);
+Create("Barrel", 101, -9999, 803);
+Create("Barrel", 110, -9999, 792);
+Create("Barrel", 717, -9999, 1703);
+Create("Barrel", 231, -9999, 928);
+Create("Barrel", 1590, -9999, 1431);
+Create("Barrel", 199, -9999, 501);
+Create("Barrel", 79, -9999, 919);
+Create("Barrel", 1202, -9999, 1652);
+Create("Barrel", 1431, -9999, 1566);
 
-crateScale = 1;
-CreateObject("Crate", 1633, 0, 1555, crateScale, crateScale, crateScale);
-CreateObject("Crate", 220, 0, 1613, crateScale, crateScale, crateScale);
-CreateObject("Crate", 220, 0, 2470, crateScale, crateScale, crateScale);
-CreateObject("Crate", 2290, 0, 622, crateScale, crateScale, crateScale);
-CreateObject("Crate", 681, 0, 2505, crateScale, crateScale, crateScale);
-CreateObject("Crate", 1626, 0, 1778, crateScale, crateScale, crateScale);
-CreateObject("Crate", 831, 0, 2193, crateScale, crateScale, crateScale);
-CreateObject("Crate", 1240, 0, 1871, crateScale, crateScale, crateScale);
-CreateObject("Crate", 1359, 0, 962, crateScale, crateScale, crateScale);
-CreateObject("Crate", 1085, 0, 1347, crateScale, crateScale, crateScale);
-CreateObject("Crate", 2401, 0, 217, crateScale, crateScale, crateScale);
-CreateObject("Crate", 771, 0, 1333, crateScale, crateScale, crateScale);
-CreateObject("Crate", 1411, 0, 1539, crateScale, crateScale, crateScale);
-CreateObject("Crate", 1818, 0, 2552, crateScale, crateScale, crateScale);
-CreateObject("Crate", 2794, 0, 524, crateScale, crateScale, crateScale);
-CreateObject("Crate", 1706, 0, 1023, crateScale, crateScale, crateScale);
-CreateObject("Crate", 1217, 0, 2102, crateScale, crateScale, crateScale);
-CreateObject("Crate", 804, 0, 1014, crateScale, crateScale, crateScale);
-CreateObject("Crate", 1135, 0, 275, crateScale, crateScale, crateScale);
-CreateObject("Crate", 1708, 0, 1886, crateScale, crateScale, crateScale);
+Create("Crate", 1633, -9999, 1555);
+Create("Crate", 220, -9999, 1613);
+Create("Crate", 220, -9999, 2470);
+Create("Crate", 2290, -9999, 622);
+Create("Crate", 681, -9999, 2505);
+Create("Crate", 1626, -9999, 1778);
+Create("Crate", 831, -9999, 2193);
+Create("Crate", 1240, -9999, 1871);
+Create("Crate", 1359, -9999, 962);
+Create("Crate", 1085, -9999, 1347);
+Create("Crate", 2401, -9999, 217);
+Create("Crate", 771, -9999, 1333);
+Create("Crate", 1411, -9999, 1539);
+Create("Crate", 1818, -9999, 2552);
+Create("Crate", 2794, -9999, 524);
+Create("Crate", 1706, -9999, 1023);
+Create("Crate", 1217, -9999, 2102);
+Create("Crate", 804, -9999, 1014);
+Create("Crate", 1135, -9999, 275);
+Create("Crate", 1708, -9999, 1886);
 
-spiderScale = 1;
-CreateObject("Spider", 4000, 0, 4000, spiderScale, spiderScale, spiderScale);
+Create("Spider", 4000, -9999, 4000);
 
-gunScale = 0.8;
-CreateAsset("Model", "Gun", 1637, 16, 1555, gunScale, gunScale, gunScale, 0, 90, 0); --Same x and z location as crate 1, y = 16 is to lay the gun on a crate
+Create("Gun", 1637, 16, 1555, 0, 0, 0); --Same x and z location as crate 1, y = 16 is to lay the gun on a crate
 
-shipScale = 20;
-CreateAsset("Model", "Ship", 1545, 0, 1414, shipScale, shipScale, shipScale);
+Create("Ship", 1545, -9999, 1414);
 
-cabinScale = 100;
-CreateObject("Cabin", 300, 50, 1200, cabinScale, cabinScale, cabinScale, -90, 0, 0);
+Create("Cabin", 300, -9999, 1200);
