@@ -146,41 +146,7 @@ void MainScene::Initialize() {
 	Terrain::Instance().GetCenter(x, y, z);
 	PhysicsWorld::Instance().InitializeQuadtree(x, z, Terrain::Instance().GetTerrainMaxX() - Terrain::Instance().GetTerrainMinX(), Terrain::Instance().GetTerrainMaxZ() - Terrain::Instance().GetTerrainMinZ());
 
-	/*c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c1->transform.SetPosition(cam->transform.GetPosition().x + 20, 400, cam->transform.GetPosition().z + 400);
 
-	c1->transform.SetScale(3, 3, 3);
-	c1->transform.RotateBy(-45.0f, 0, 1, 0);
-
-	c1->AddComponent(new BoxCollider());
-	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
-	c1->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);
-	c1->GetComponent<BoxCollider>("BoxCollider")->ResetCollisionLayer();
-	c1->GetComponent<BoxCollider>("BoxCollider")->AddCollisionLayer(CollisionLayers::OBSTACLE);
-
-	c1->GetComponent<BoxCollider>("BoxCollider")->collisionCallback = [](GameObject* go) {
-		//	Logger::LogInfo("C1 colliding");
-	};*/
-
-	/*c2 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();
-	c2->transform.SetPosition(cam->transform.GetPosition().x + 20, 400, cam->transform.GetPosition().z + 200);
-	c2->transform.SetScale(3, 3, 3);
-	c2->AddComponent(new BoxCollider());
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetScale(12, 12, 12);
-	c2->GetComponent<BoxCollider>("BoxCollider")->transform.SetPosition(0, 7, 0);*/
-
-	//crate = new Crate();
-
-	//Cabin* cabin = new Cabin();
-	//cabin->transform.SetPosition(cam->transform.GetPosition().x + 400, Terrain::Instance().GetHeightAt(cam->transform.GetPosition().x + 400, cam->transform.GetPosition().z + 200), cam->transform.GetPosition().z + 200);
-
-	//w->transform.SetPosition(x, 150, z);
-	//w->transform.SetScale(3000, 3000, 1);
-	//AddGameObject(c2);
-	//AddGameObject(c1);
-	//AddGameObject(w);
-
-	//AddGameObject(cabin);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(pLight);
