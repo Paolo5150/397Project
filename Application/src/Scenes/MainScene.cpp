@@ -34,24 +34,13 @@
 #include "Components\AIBase.h"
 
 MainCamera* cam;
-int luaAssetOffset = 0;
-GameObject** nanosuits;
-GameObject** pumpkins;
-GameObject** barrels;
-GameObject** crates;
-GameObject* gun;
-GameObject* ship;
-GameObject* cabin;
 PointLight* pLight;
 DirectionalLight* dirLight;
 btDefaultMotionState* motionstate;
 btRigidBody *rigidBody;
 Crate* crate;
-GameObject* spider;
 GameObject* c1;
 GameObject* c2;
-
-int animIndex = 0;
 
 MainScene::MainScene() : Scene("MainScene")
 {
@@ -98,14 +87,13 @@ void MainScene::Initialize() {
 	//Terrain
 	Terrain::Instance().Initialize(256);
 
+	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
+
 	Lua::RunLua("Assets\\Scripts\\Level1.lua");
 	gContactAddedCallback = PhysicsWorld::CollisionCallback;
-	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
 	Timer::SetDisplayFPS(true);
 
-	//nanosuit = (GameObject*)GameAssetFactory::Instance().Create("Model", "Nanosuit");
-	//GameObject* n2 = (GameObject*)GameAssetFactory::Instance().Create("Model", "Cabin");
 	manual = new GUIImage("manualImage", AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
 	manual->isActive = 0;
 	GUIManager::Instance().AddGUIObject(manual);
@@ -137,18 +125,12 @@ void MainScene::Initialize() {
 
 
 	//GameObjects
-	cam = (MainCamera*)Lua::GetCreatedAsset(luaAssetOffset);
-	luaAssetOffset++;
+	cam = (MainCamera*)Lua::GetCreatedAsset(0);
 	cam->SetMovementSpeed(500);
 	cam->RemoveLayerMask(Layers::GUI);
 	AddGameObject(cam);
 
-
-	Water* w = (Water*)Lua::GetCreatedAsset(luaAssetOffset);
-	luaAssetOffset++;
-	w->meshRenderer->GetMaterial().LoadCubemap(&skybox->GetCubeMap());
-
-	for (int i = 2; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the camera or water, and add them to the scene
+	for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the camera or water, and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
@@ -160,7 +142,6 @@ void MainScene::Initialize() {
 
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
-	//cam->transform.SetPosition(x, y, z);
 	PhysicsWorld::Instance().InitializeQuadtree(x, z, Terrain::Instance().GetTerrainMaxX() - Terrain::Instance().GetTerrainMinX(), Terrain::Instance().GetTerrainMaxZ() - Terrain::Instance().GetTerrainMinZ());
 
 	/*c1 = AssetLoader::Instance().GetAsset<Model>("Crate")->CreateGameObject();

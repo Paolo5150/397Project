@@ -1,13 +1,14 @@
 --Objects can be added with the formats:
 --Create("assetType", posX, posY, posZ)
---Create("assetType", posX, posY, posZ, scaleX, scaleY, scaleZ)
---Create("assetType", posX, posY, posZ, scaleX, scaleY, scaleZ, rotX, rotY, rotZ);
+--Create("assetType", posX, posY, posZ, rotX, rotY, rotZ)
+--Create("assetType", posX, posY, posZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
+--Using -9999 in the posX or posZ position will set posX or posZ to the center of the terrain
 --Using -9999 in the posY position will set posY to Terrain::GetHeightat(posX, posZ)
 
 Create("MainCamera", -9999, -9999, -9999, 30, 180, 0);
 
 waterScaleX, waterScaleY, waterScaleZ = 3000, 3000, 1;
-Create("Water", 9999, 100, 9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
+Create("Water", -9999, 150, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
 
 --Create all npcs and props
 Create("Pumpkin", 2234, -9999, 1833);
@@ -75,7 +76,7 @@ Create("Crate", 1708, -9999, 1886);
 
 Create("Spider", 4000, -9999, 4000);
 
-Create("Gun", 1637, 16, 1555, 0, 0, 0); --Same x and z location as crate 1, y = 16 is to lay the gun on a crate
+Create("Gun", 1637, -9999, 1605, 0, 0, 0); --Similar x and z location as crate 1
 
 Create("Ship", 1545, -9999, 1414);
 

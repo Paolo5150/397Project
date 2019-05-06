@@ -12,10 +12,9 @@ Ship::Ship() : GameObject("Ship")
 	Material mat_ship;
 	mat_ship.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
 	mat_ship.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("shipTexture"));
-	//mat_ship.LoadCubemap(&skybox->GetCubeMap());
+	mat_ship.LoadCubemap(&SceneManager::Instance().GetCurrentScene().GetSkyBox()->GetCubeMap());
 	mat_ship.LoadFloat("shininess", 1000.0f);
 	mat_ship.LoadFloat("reflectivness", 0.5f);
-
 	ApplyMaterial(mat_ship);
 }
 
