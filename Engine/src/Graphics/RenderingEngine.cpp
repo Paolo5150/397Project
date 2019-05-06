@@ -183,7 +183,7 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 	Camera* cam = Camera::GetCameraByName("Main Camera");
 	float dot = 0;;
 	if (cam != nullptr)
-		dot = glm::dot(-cam->transform.GetLocalFront(), glm::vec3(0.630037, -0.707107, -0.32102));
+		dot =  max(0, glm::dot(-cam->transform.GetLocalFront(), glm::vec3(0.630037, -0.707107, -0.32102)));
 
 	postProcessShader->SetFloat("camLightDot", dot);
 
