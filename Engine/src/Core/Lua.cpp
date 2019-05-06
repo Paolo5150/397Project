@@ -4,7 +4,7 @@ lua_State* Lua::lState = NULL;
 int Lua::createdAssetsLength = 0;
 InternalAsset** Lua::createdAssets = NULL;
 
-//Opens the lua state and lua libraries, exits with code 1 if init fails
+//Opens the lua state and lua libraries
 void Lua::InitLua(lua_State*& L)
 {
 	L = lua_open(); //Open lua_State
@@ -20,7 +20,8 @@ void Lua::InitLua(lua_State*& L)
 
 void Lua::RegisterCppFunctions(lua_State*& L)
 {
-	lua_register(L, "CreateAsset", LuaRegistry::Lua_Create);
+	//lua_register(L, "CreateAsset", LuaRegistry::Lua_Create);
+	lua_register(L, "Create", LuaRegistry::Lua_Create);
 }
 
 void Lua::CloseLua(lua_State*& L, bool clearAssets)
@@ -52,7 +53,7 @@ void Lua::RunLua(std::string fileName, bool closeState, bool clearAssets)
 	}
 }
 
-//Executes the script in a lua file, exits with code 2 if opening script fails
+//Executes the script in a lua file
 void Lua::ExecuteLuaScript(std::string fileName)
 {
 	if (luaL_dofile(lState, fileName.c_str())) //Attempt to open and execute file, if it returns 1 then log an error
@@ -63,7 +64,7 @@ void Lua::ExecuteLuaScript(std::string fileName)
 	}
 }
 
-//Executes the script in a lua file, exits with code 2 if opening script fails
+//Executes the script in a lua file
 void Lua::ExecuteLuaScript(lua_State*& L, std::string fileName)
 {
 	if (luaL_dofile(L, fileName.c_str())) //Attempt to open and execute file, if it returns 1 then log an error
@@ -143,6 +144,11 @@ void Lua::AddCreatedAsset(InternalAsset* asset)
 	createdAssetsLength++; //Increase the length count by one
 }
 
+int Lua::GetCreatedAssetLength()
+{
+	return createdAssetsLength;
+}
+
 InternalAsset* Lua::GetCreatedAsset(unsigned int index)
 {
 	if (index < createdAssetsLength)
@@ -167,8 +173,8 @@ void Lua::ClearCreatedAssets()
 
 std::string Lua::GetStringFromStack(std::string variable, lua_State*& L)
 {
-	lua_settop(lState, 0);
-	lua_getglobal(lState, variable.c_str());
+	lua_settop(L, 0);
+	lua_getglobal(L, variable.c_str());
 
 	if (LuaType(L, 1, "string"))
 	{
@@ -185,8 +191,8 @@ std::string Lua::GetStringFromStack(std::string variable, lua_State*& L)
 
 int Lua::GetIntFromStack(std::string variable, lua_State*& L)
 {
-	lua_settop(lState, 0);
-	lua_getglobal(lState, variable.c_str());
+	lua_settop(L, 0);
+	lua_getglobal(L, variable.c_str());
 
 	if (LuaType(L, 1, "number"))
 	{
@@ -203,8 +209,8 @@ int Lua::GetIntFromStack(std::string variable, lua_State*& L)
 
 float Lua::GetFloatFromStack(std::string variable, lua_State*& L)
 {
-	lua_settop(lState, 0);
-	lua_getglobal(lState, variable.c_str());
+	lua_settop(L, 0);
+	lua_getglobal(L, variable.c_str());
 
 	if (LuaType(L, 1, "number"))
 	{

@@ -10,17 +10,23 @@
 #include "..\Physics\PhysicsWorld.h"
 #include "..\Components\PathNode.h"
 
-Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
+Terrain& Terrain::Instance()
 {
+	static Terrain instance;
+	return instance;
+}
 
-
+void Terrain::Initialize(int size)
+{
+	this->terrainSize = size;
+	this->SetIsSelfManaged(true, false);
 	Material material;
 	material.SetShader(AssetLoader::Instance().GetAsset<Shader>("Terrain"));
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("ground"));
-	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("grass"),TextureUniform::DIFFUSE1);
-	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rock"),TextureUniform::DIFFUSE2);
+	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("grass"), TextureUniform::DIFFUSE1);
+	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rock"), TextureUniform::DIFFUSE2);
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hm1"), TextureUniform::SPECIAL0);
-	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rockNormal"), TextureUniform::NORMAL0);	
+	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rockNormal"), TextureUniform::NORMAL0);
 
 	material.LoadFloat("UVScale", 50.0f);
 	material.LoadFloat("shininess", 18.0f);
@@ -53,9 +59,10 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 
 	transform.SetScale(20, 600, 20);
 	transform.Translate(0, 0, 0);
+}
 
-
-
+Terrain::Terrain() : GameObject("Terrain")
+{
 }
 
 void Terrain::OnPreRender(Camera& cam, Shader* s)
@@ -136,6 +143,19 @@ void Terrain::GetCenter(int& x, int& y,int& z)
 	x = v.x;
 	y = v.y;
 	z = v.z;
+}
+
+
+glm::vec3 Terrain::GetCenter()
+{
+	transform.Update();
+
+	int xr = this->terrainSize / 2;
+	int xz = terrainSize / 2;
+	glm::vec3 v = (meshRenderer->GetMesh().vertices[((xz)*terrainSize) + xr].position);
+	v = transform.GetMatrix() * glm::vec4(v.x, v.y, v.z, 1.0);
+
+	return v;
 }
 
 

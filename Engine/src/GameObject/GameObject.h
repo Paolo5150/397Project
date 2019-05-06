@@ -427,6 +427,9 @@ public:
 
 	bool GetIsStatic() { return _isStatic; }
 
+	void SetIsSelfManaged(bool sm, bool includeChildren = false);
+
+	bool GetIsSelfManaged() { return _isSelfManaged; }
 
 	virtual void OnCollision(GameObject* go){};
 
@@ -454,6 +457,8 @@ protected:
 	unsigned int _layer;
 
 	bool _isStatic;
+
+	bool _isSelfManaged;
 
 	/**
 	* @param The parent object.

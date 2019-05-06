@@ -5,6 +5,7 @@
 #include "Lua.h"
 #include "..\Utils\Asset.h"
 #include "..\Utils\GameAssetFactory.h"
+#include "..\PreFabs\Terrain.h"
 
 /**
 * @class Lua
@@ -30,6 +31,7 @@ public:
 	*
 	* @see			GameAssetFactory#Create
 	*/
-	static int LuaRegistry::Lua_Create(lua_State* L);
-};
+	static int Lua_CreateOld(lua_State* L);
 
+	static int Lua_Create(lua_State* L);
+};

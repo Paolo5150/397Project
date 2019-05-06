@@ -71,3 +71,24 @@ GameObject* AnimatedModel::CreateGameObject()
 	return e;
 }
 
+void AnimatedModel::PopulateGameObject(GameObject* go)
+{
+	go->AddComponent(new Animator(this));
+	Animator* anim = (Animator*)go->GetComponent<Animator>("Animator");
+
+	for (int i = 0; i < allMeshes.size(); i++)
+	{
+
+		GameObject* c = new GameObject(meshesNames[i]);
+
+		MeshRenderer* mr = new MeshRenderer(&allMeshes[i], allMaterials[i]); //Default material
+
+		mr->AddPreRenderCallback(std::bind(&Animator::OnPreRender, anim, std::placeholders::_1, std::placeholders::_2));
+
+		c->AddComponent(mr);
+		go->AddChild(c);
+
+
+	}
+
+}
