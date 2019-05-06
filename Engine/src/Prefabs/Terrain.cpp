@@ -39,6 +39,9 @@ Terrain::Terrain(int size) : GameObject("Terrain"), terrainSize(size)
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).SetShader(AssetLoader::Instance().GetAsset<Shader>("TerrainNoLight"));
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).LoadVec3("color", 0.7, 0.7, 0.7);
 
+	meshRenderer->GetMaterial(MaterialType::COLORONLY).SetShader(AssetLoader::Instance().GetAsset<Shader>("ColorOnlyStatic"));
+	meshRenderer->GetMaterial(MaterialType::COLORONLY).LoadVec3("color", 0.7, 0.7, 0.7);
+
 	meshRenderer->AddPreRenderCallback(std::bind(&Terrain::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
 	meshRenderer->AddPostRenderCallback(std::bind(&Terrain::OnPostRender, this, std::placeholders::_1, std::placeholders::_2));
 

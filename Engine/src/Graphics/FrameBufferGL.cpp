@@ -11,15 +11,16 @@ FrameBufferGL::FrameBufferGL(int w, int h, int numColorAttachmen) : FrameBuffer(
 
 	if (numColorAttachmen != 0)
 	{
-		unsigned int* attachments = new unsigned[numColorAttachments];
+		attachments = new unsigned[numColorAttachments];
 		for (int i = 0; i < numColorAttachmen; i++)
 		{
-			colorAttachments[i] = Core::Instance().GetGraphicsAPI().CreateTexture2D("",w, h);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, colorAttachments[i]->GetID(), 0);
-			attachments[i] = colorAttachments[i]->GetID();
+			Texture2D* t = Core::Instance().GetGraphicsAPI().CreateTexture2D("", w, h);	
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, t->GetID(), 0);
+			attachments[i] = t->GetID();
+			colorAttachments.push_back(t);
 		}		
 
-		glDrawBuffers(2, attachments);
+		glDrawBuffers(numColorAttachments, attachments);
 	}
 	else
 	{
@@ -72,6 +73,7 @@ void FrameBufferGL::ResizeTexture(int w, int h)
 void FrameBufferGL::Bind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, bufferID);
+	glDrawBuffers(numColorAttachments, attachments);
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, width, height);
 }

@@ -55,6 +55,8 @@ void RenderingEngine::Initialize()
 	Window::Instance().GetWindowSize(w, h);
 	renderTexture = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);	
 	occludedTexture = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);
+	godraysTexture = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);
+
 	godRayShader = AssetLoader::Instance().GetAsset<Shader>("GodRays");
 	postProcessShader = AssetLoader::Instance().GetAsset<Shader>("PostProcess");
 
@@ -94,18 +96,15 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
 
-		int previousDepth = 0;
+	int previousDepth = 0;
 	if (godRays)
 	{
-		occludedTexture->Bind();
 
-		godRayShader->Bind();
-		glActiveTexture(GL_TEXTURE0);
-		//occludedTexture->GetColorTexture()->Bind();
-		//godRayShader->SetInt("diffuse0", 0);
+		occludedTexture->Bind();
 
 		Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 		Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
+
 		//Render opaque
 		for (int camIndex = 0; camIndex < Camera::GetAllCameras().size(); camIndex++)
 		{
@@ -121,10 +120,18 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 
 		}
 		Core::Instance().GetGraphicsAPI().ResetTextures();
-
-
+		
 		occludedTexture->Unbind();
 
+		godraysTexture->Bind();		
+		Core::Instance().GetGraphicsAPI().ClearColorBuffer();
+		Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
+		glActiveTexture(GL_TEXTURE0);
+		occludedTexture->GetColorTexture()->Bind();
+
+		godRayShader->Bind();
+		quadMesh->Render();
+		godraysTexture->Unbind();
 
 	}
 
@@ -172,7 +179,15 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 	{
 	glActiveTexture(GL_TEXTURE2);
 	postProcessShader->SetInt("godrays", 2);
-	occludedTexture->GetColorTexture()->Bind();
+
+	Camera* cam = Camera::GetCameraByName("Main Camera");
+	float dot = 0;;
+	if (cam != nullptr)
+		dot = glm::dot(-cam->transform.GetLocalFront(), glm::vec3(0.630037, -0.707107, -0.32102));
+
+	postProcessShader->SetFloat("camLightDot", dot);
+
+	godraysTexture->GetColorTexture()->Bind();
 	}
 	quadMesh->Render();
 

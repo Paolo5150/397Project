@@ -62,7 +62,7 @@ public:
 
 	*/
 	void ResizeTexture(int w, int h) override;
-
+	unsigned int* attachments;
 
 
 

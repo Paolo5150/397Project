@@ -1,6 +1,6 @@
 #version 430 core
-layout (location = 0) out vec4 color;
-layout (binding=0)  uniform sampler2D diffuse0;
+out vec4 color;
+uniform sampler2D diffuse0;
 
 
 const int NUM_SAMPLES = 100 ;

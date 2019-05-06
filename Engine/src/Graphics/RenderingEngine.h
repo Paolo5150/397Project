@@ -101,6 +101,8 @@ public:
 
 	FrameBuffer* renderTexture;
 	FrameBuffer* occludedTexture;
+	FrameBuffer* godraysTexture;
+
 
 	Shader* postProcessShader;
 	Shader* godRayShader;

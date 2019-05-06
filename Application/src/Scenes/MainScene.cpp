@@ -117,6 +117,7 @@ void MainScene::Initialize() {
 	dirLight->transform.SetRotation(45, 117, 0);
 	dirLight->SetIntensity(0.9f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
+	Logger::LogInfo("Dir light front", Maths::Vec3ToString(dirLight->transform.GetLocalFront()));
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
