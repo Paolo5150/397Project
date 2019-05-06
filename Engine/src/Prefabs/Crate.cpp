@@ -28,7 +28,7 @@ void Crate::Start()
 	sc->transform.SetPosition(0, 8, 0);
 	sc->enableRender = 1;
 	AddComponent(sc);
-	Logger::LogError("Crate start");
+
 }
 
 

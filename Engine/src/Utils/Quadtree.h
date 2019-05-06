@@ -1,6 +1,7 @@
 #pragma once
 #include "..\GameObject\GameObject.h"
 #include <list>
+#include <unordered_set>
 #include <set>
 
 template <class T>
@@ -10,12 +11,22 @@ public:
 	NodeElement(T& telement, int x, int z, int sx, int sz) : element(telement), posX(x), posZ(z), sizeX(sx), sizeZ(sz){}
 	NodeElement(T& telement, int x, int z) : element(telement), posX(x), posZ(z){}
 
-	T& element;
+	T element;
 	int posX;
 	int posZ;
 	int sizeX;
 	int sizeZ;
 	int maxElementInNode;
+};
+
+struct NodeElementInfo
+{
+	NodeElementInfo(){}
+	NodeElementInfo(int x, int z, int sx, int sz) : posX(x), posZ(z), sizeX(sx), sizeZ(sz){}
+	int posX;
+	int posZ;
+	int sizeX;
+	int sizeZ;
 };
 
 template <class T>
@@ -37,7 +48,9 @@ public:
 	QuadNode<T> *topRight;
 	QuadNode<T> *bottomRight;
 
-	std::set<T> elements;
+	std::unordered_set<T> elements;
+
+
 
 	void Split();
 
@@ -56,27 +69,28 @@ public:
 	void AddElement(T go, float posX, float posZ, float sizeX, float sizeZ);
 	int GameObjectInQuadrant(int x, int y);
 	void ClearNodes();
-	std::set<T>& GameObjectsAt(int x, int y);
+	std::unordered_set<T>& GameObjectsAt(int x, int y);
 
 private:
-	void AddElement(NodeElement<T> go, float posX, float posZ, QuadNode<T>* &node);
-	void AddElement(NodeElement<T> go, float posX, float posZ, float sizeX, float sizeZ, QuadNode<T>* &node);
+	void AddElement(T go, float posX, float posZ, QuadNode<T>* &node);
+	void AddElement(T go, float posX, float posZ, float sizeX, float sizeZ, QuadNode<T>* &node);
 	void ClearNode(QuadNode<T>* &node);
 	int GameObjectInQuadrant(int x, int y, QuadNode<T>* node);
-	std::set<T>& GameObjectsAt(int x, int y, QuadNode<T>* node);
-
+	std::unordered_set<T>& GameObjectsAt(int x, int y, QuadNode<T>* node);
+	std::map<T,NodeElementInfo> elementsInfo;
 	void DeleteNode(QuadNode<T>*& n);
 
 };
 
 template <class T>
-QuadNode<T>::QuadNode(int centerX, int centerY, int sizeX, int sizeY, int maxElements) : centerX(centerX), centerY(centerY), width(sizeX), height(sizeY)
+QuadNode<T>::QuadNode(int centerX, int centerY, int sizeX, int sizeY, int maxElements) : centerX(centerX), centerY(centerY), width(sizeX), height(sizeY), maxElements(maxElements)
 {
 	bottomRight = nullptr;
 	bottomLeft = nullptr;
 	topLeft = nullptr;
 	topRight = nullptr;
 	isSplit = 0;
+
 	
 }
 
@@ -137,9 +151,8 @@ void QuadTree<T>::AddElement(T go, float posX, float posZ)
 template <class T>
 void QuadTree<T>::AddElement(T go, float posX, float posZ, float sizeX, float sizeZ)
 {
-	NodeElement<T> element(go, posX, posZ,sizeX, sizeZ);
 
-	AddElement(element, posX, posZ, sizeX, sizeZ, root);
+	AddElement(go, posX, posZ, sizeX, sizeZ, root);
 }
 
 template <class T>
@@ -149,13 +162,13 @@ int QuadTree<T>::GameObjectInQuadrant(int x, int y)
 }
 
 template <class T>
-std::set<T>& QuadTree<T>::GameObjectsAt(int x, int y)
+std::unordered_set<T>& QuadTree<T>::GameObjectsAt(int x, int y)
 {
 	return GameObjectsAt(x, y, root);
 }
 
 template <class T>
-std::set<T>& QuadTree<T>::GameObjectsAt(int x, int z, QuadNode<T>* node)
+std::unordered_set<T>& QuadTree<T>::GameObjectsAt(int x, int z, QuadNode<T>* node)
 {
 	if (node->isSplit)
 	{
@@ -197,7 +210,7 @@ int QuadTree<T>::GameObjectInQuadrant(int x, int z, QuadNode<T>* node)
 }
 
 template <class T>
-void QuadTree<T>::AddElement(NodeElement<T> go, float posX, float posZ, QuadNode<T>* &node)
+void QuadTree<T>::AddElement(T go, float posX, float posZ, QuadNode<T>* &node)
 {
 	if (node->isSplit)
 	{
@@ -233,13 +246,14 @@ void QuadTree<T>::AddElement(NodeElement<T> go, float posX, float posZ, QuadNode
 	}
 	else
 	{
-		node->elements.insert(go.element);
+
+		node->elements.insert(go);
 	}
 }
 
 
 template <class T>
-void QuadTree<T>::AddElement(NodeElement<T> go, float posX, float posZ, float sizeX, float sizeZ, QuadNode<T>* &node)
+void QuadTree<T>::AddElement(T go, float posX, float posZ, float sizeX, float sizeZ, QuadNode<T>* &node)
 {
 	if (node->isSplit)
 	{
@@ -300,7 +314,30 @@ void QuadTree<T>::AddElement(NodeElement<T> go, float posX, float posZ, float si
 
 	}
 	else
-		node->elements.insert(go.element);
+	{
+		if (node->elements.size() >= node->maxElements - 1)
+		{
+			node->Split();
+			Logger::LogWarning("Had to split it further");
+			for (auto it = node->elements.begin(); it != node->elements.end(); it++)
+			{
+				NodeElementInfo* info = &elementsInfo[(*it)];
+				AddElement((*it), info->posX, info->posZ, info->sizeX, info->sizeZ,node);
+			}
+
+			AddElement(go, posX, posZ, sizeX, sizeZ,node);
+
+			node->elements.clear();
+
+
+		}
+		else
+		{
+
+			elementsInfo[go] = NodeElementInfo(posX, posZ, sizeX, sizeZ);
+			node->elements.insert(go);
+		}
+	}
 }
 
 

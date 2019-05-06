@@ -154,7 +154,7 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 
 	for (unsigned i = 0; i < allNonStaticColliders.size(); i++)
 	{
-		std::set<Collider*>& staticCols = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z);
+		std::unordered_set<Collider*>& staticCols = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z);
 		
 		for (auto it = staticCols.begin(); it != staticCols.end(); it++)
 		{

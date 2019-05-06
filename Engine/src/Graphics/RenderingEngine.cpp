@@ -29,6 +29,8 @@ RenderingEngine::RenderingEngine()
 RenderingEngine::~RenderingEngine()
 {
 	delete renderTexture;
+	delete godraysTexture;
+	delete occludedTexture;
 }
 
 void RenderingEngine::Initialize()

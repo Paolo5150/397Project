@@ -21,14 +21,14 @@ PathFinder::~PathFinder()
 
 PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)
 {
-	std::set<PathNode*>& nodes = nodesQT->GameObjectsAt(x,z);
+	std::unordered_set<PathNode*>& nodes = nodesQT->GameObjectsAt(x, z);
 
 	double dist = 99999999999999999;
 	PathNode* closest = nullptr;
 	for (auto it = nodes.begin(); it != nodes.end(); it++)
 	{
 		double length = glm::length((*it)->sc->transform.GetGlobalPosition() - glm::vec3(x, y, z));
-		
+		//(*it)->sc->meshRenderer->GetMaterial().SetColor(0, 0, 1);
 		if (length < dist && (*it)->cost == 0)
 		{
 			dist = length;
@@ -68,7 +68,7 @@ void PathFinder::Generate(Terrain* terrain)
 
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
-	nodesQT = new QuadTree<PathNode*>(x, z, terrain->GetTerrainMaxX() - terrain->GetTerrainMinX(), terrain->GetTerrainMaxZ() - terrain->GetTerrainMinZ());
+	nodesQT = new QuadTree<PathNode*>(x, z, terrain->GetTerrainMaxX() - terrain->GetTerrainMinX(), terrain->GetTerrainMaxZ() - terrain->GetTerrainMinZ(),100);
 
 }
 
@@ -128,11 +128,11 @@ void PathFinder::Start()
 
 std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finish)
 {
-	for (int i = 0; i < pathNodes.size(); i++)
+	/*for (int i = 0; i < pathNodes.size(); i++)
 	{
-		pathNodes[i]->sc->enableRender = 0;	
-
-	}
+		pathNodes[i]->sc->enableRender = 1;	
+		pathNodes[i]->sc->meshRenderer->GetMaterial().SetColor(0, 1, 0);
+	}*/
 
 
 	PathNode* startNode = ClosestNodeAt(start.x, start.y, start.z);

@@ -175,7 +175,6 @@ void MainScene::LogicUpdate()
 	if (Input::GetKeyPressed(GLFW_KEY_M))
 		manual->isActive = !manual->isActive;
 
-
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		SceneManager::Instance().LoadNewScene("ExitScene");
 
