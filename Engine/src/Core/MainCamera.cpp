@@ -1,5 +1,6 @@
 #include "MainCamera.h"
 #include "Timer.h"
+#include "..\Prefabs\Terrain.h"
 
 namespace {
 
@@ -41,6 +42,32 @@ void MainCamera::Update()
 {
 	UpdateControls();
 	CameraPerspective::Update();
+
+	if (!IsTopView())
+	{
+		float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
+		transform.SetPosition(transform.GetPosition().x, h + 30, transform.GetPosition().z);
+
+		// Limit camera position within terrain
+		if (transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 50)
+			transform.SetPosition(Terrain::Instance().GetTerrainMaxX() - 50, transform.GetPosition().y, transform.GetPosition().z);
+		else if (transform.GetPosition().x < Terrain::Instance().GetTerrainMinX() + 50)
+			transform.SetPosition(Terrain::Instance().GetTerrainMinX() + 50, transform.GetPosition().y, transform.GetPosition().z);
+
+		if (transform.GetPosition().z > Terrain::Instance().GetTerrainMaxZ() - 50)
+			transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 50);
+		if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 50)
+			transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 50);
+	}
+
+	else
+	{
+		int x, y, z;
+		Terrain::Instance().GetCenter(x, y, z);
+		transform.LookAt(x, y, z);
+	}
+
+
 }
 
 void MainCamera::UpdateControls()

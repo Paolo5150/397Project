@@ -25,7 +25,7 @@ public:
 	* @param h				The height of the buffer texture
 	* @param hasColorAttachment		Whether the frame buffer has a color attachment
 	*/
-	FrameBufferGL(int w, int h, bool hasColorAttachment = true);
+	FrameBufferGL(int w, int h, int numColorAttachment);
 
 	/**
 	* @brief				Destroy the frame buffer
@@ -62,7 +62,7 @@ public:
 
 	*/
 	void ResizeTexture(int w, int h) override;
-
+	unsigned int* attachments;
 
 
 

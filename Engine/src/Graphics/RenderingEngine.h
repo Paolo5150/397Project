@@ -23,6 +23,7 @@ class FrameBuffer;
 class RenderingEngine 
 {
 public:
+	static bool godRays;
 	/**
 	* @brief		Return the rendering engine instance
 	* @pre			The instance is created
@@ -99,7 +100,13 @@ public:
 	static std::vector<Renderer*> allRenderers;
 
 	FrameBuffer* renderTexture;
+	FrameBuffer* occludedTexture;
+	FrameBuffer* godraysTexture;
+
+
 	Shader* postProcessShader;
+	Shader* godRayShader;
+
 	Texture2D* distortionTexture;
 private:
 	/**

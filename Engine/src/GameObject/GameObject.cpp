@@ -13,6 +13,7 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 	SetActive(isActive);
 	SetLayer(layer);
 	SetParent(parent);
+	SetIsSelfManaged(false, true);
 	SetIsStatic(0);
 
 }
@@ -64,6 +65,20 @@ void GameObject::OnAddToScene()
 		(*it)->OnAddToScene();
 		}
 	
+}
+
+void GameObject::SetIsSelfManaged(bool sm, bool includeChildren)
+{
+
+	_isSelfManaged = sm;
+
+	if (includeChildren == true)
+	{
+		for (auto it = std::begin(_children); it != std::end(_children); it++)
+		{
+			(*it)->SetIsSelfManaged(sm, includeChildren);
+		}
+	}
 }
 
 void GameObject::SetActive(bool active, bool includeChildren)

@@ -7,7 +7,7 @@ Pumpkin::Pumpkin() : GameObject("Pumpkin")
 {
 	
 	AssetLoader::Instance().GetAsset<Model>("Pumpkin")->PopulateGameObject(this);
-	transform.SetScale(100, 100, 100);
+	transform.SetScale(40, 40, 40);
 
 }
 

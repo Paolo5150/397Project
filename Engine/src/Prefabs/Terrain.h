@@ -18,15 +18,10 @@
 class Terrain : public GameObject
 {
 public:
-	/**
-	* @brief		Create a new terrain of specified size
-	*
-	* @post			The terrain object is created with the specified parameters
-	*
-	* @param		size		The size (width and depth) of the terrain
-	*/
-	Terrain(int size);
 
+	static Terrain& Instance();
+
+	void Initialize(int size);
 	/**
 	* @brief		Destroy the terrain object
 	* @pre			The terrain object must exist
@@ -77,6 +72,16 @@ public:
 	void GetCenter(int& x, int& y,int& z);
 
 	/**
+	* @brief		Get the center of the terrain in world space
+	*
+	* @pre			The terrain object must exist
+	* @post			The center of the terrain is returned
+	*
+	* @return vec3	A vec3 of the center position
+	*/
+	glm::vec3 GetCenter();
+
+	/**
 	* @brief		Returns the height of a point on a terrain in world space
 	*
 	* @pre			The terrain object must exist, the x and y provided are within the terrain boundaries
@@ -96,6 +101,15 @@ public:
 	
 
 private:
+
+	/**
+	* @brief		Create a new terrain of specified size
+	*
+	* @post			The terrain object is created with the specified parameters
+	*
+	* @param		size		The size (width and depth) of the terrain
+	*/
+	Terrain();
 	/**
 	* @brief		Normaliz the terrain height
 	*/

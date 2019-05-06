@@ -24,6 +24,7 @@ public:
 	void GetTransformations(float animationTime, ModelAnimation* animation, std::vector<glm::mat4>& returnedTransform);
 	unsigned GetTotalBones() { return totalBones; }
 	GameObject* CreateGameObject() override;
+	void PopulateGameObject(GameObject* go) override;
 	std::vector<ModelAnimation> allAnimations;
 private:
 

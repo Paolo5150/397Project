@@ -58,7 +58,7 @@ public:
 	* @post					The color texture is returned
 	* @return				The color texture
 	*/
-	Texture2D* GetColorTexture(){ return colortexture; };
+	Texture2D* GetColorTexture(int index = 0){ return colorAttachments[index]; };
 
 	/**
 	* @brief				Get the depth texture
@@ -93,12 +93,9 @@ protected:
 	/**
 	* @brief Whether the frame buffer should create a color attachement
 	*/
-	bool hasColorAttachment;
+	int numColorAttachments;
 
-	/**
-	* @brief The color texture
-	*/
-	Texture2D* colortexture;
+	std::vector<Texture2D*> colorAttachments;
 
 	/**
 	* @brief The depth texture

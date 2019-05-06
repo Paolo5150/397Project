@@ -94,6 +94,13 @@ public:
 	static void AddCreatedAsset(InternalAsset* asset);
 
 	/**
+	* @brief		Gets the length of the array of created assets
+	*
+	* @return		Length of the array of created assets
+	*/
+	static int GetCreatedAssetLength();
+
+	/**
 	* @brief		Gets an asset from the array of created assets, returns nullptr if the index is not valid
 	*
 	* @param		index	the index of the asset to retreive
