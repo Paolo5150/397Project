@@ -46,7 +46,7 @@ void MainCamera::Update()
 	if (!IsTopView())
 	{
 		float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
-		transform.SetPosition(transform.GetPosition().x, h + 30, transform.GetPosition().z);
+		transform.SetPosition(transform.GetPosition().x, h + 60, transform.GetPosition().z);
 
 		// Limit camera position within terrain
 		if (transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 50)

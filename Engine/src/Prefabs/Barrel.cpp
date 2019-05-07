@@ -20,7 +20,6 @@ void Barrel::Start()
 	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
 	sc->transform.SetScale(0.5, 0.7, 0.5);
 	sc->transform.SetPosition(0, 0.7, 0);
-	sc->enableRender = 1;
 	AddComponent(sc);
 }
 

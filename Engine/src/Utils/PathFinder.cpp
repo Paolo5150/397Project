@@ -28,7 +28,7 @@ PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)
 	for (auto it = nodes.begin(); it != nodes.end(); it++)
 	{
 		double length = glm::length((*it)->sc->transform.GetGlobalPosition() - glm::vec3(x, y, z));
-		//(*it)->sc->meshRenderer->GetMaterial().SetColor(0, 0, 1);
+		
 		if (length < dist && (*it)->cost == 0)
 		{
 			dist = length;
@@ -41,6 +41,7 @@ PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)
 	if (closest == nullptr)
 		Logger::LogError("Cannot find closest");
 
+	///closest->sc->enableRender = 1;
 	return closest;
 }
 
@@ -128,11 +129,11 @@ void PathFinder::Start()
 
 std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finish)
 {
-	/*for (int i = 0; i < pathNodes.size(); i++)
+	for (int i = 0; i < pathNodes.size(); i++)
 	{
-		pathNodes[i]->sc->enableRender = 1;	
-		pathNodes[i]->sc->meshRenderer->GetMaterial().SetColor(0, 1, 0);
-	}*/
+		pathNodes[i]->sc->enableRender = 0;	
+		//pathNodes[i]->sc->meshRenderer->GetMaterial().SetColor(0, 1, 0);
+	}
 
 
 	PathNode* startNode = ClosestNodeAt(start.x, start.y, start.z);

@@ -26,7 +26,6 @@ void Crate::Start()
 	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
 	sc->transform.SetScale(8, 8, 8);
 	sc->transform.SetPosition(0, 8, 0);
-	sc->enableRender = 1;
 	AddComponent(sc);
 
 }

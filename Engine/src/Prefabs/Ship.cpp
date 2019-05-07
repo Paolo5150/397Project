@@ -28,7 +28,6 @@ void Ship::Start()
 	sc->transform.SetScale(4, 4, 9);
 
 	sc->transform.SetPosition(0, 5, 0);
-	sc->enableRender = 1;
 	AddComponent(sc);
 }
 

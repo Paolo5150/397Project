@@ -77,7 +77,6 @@ void Spider::Start()
 	sc->transform.SetScale(80, 40, 80);
 
 	sc->transform.SetPosition(0, 35, 0);
-	sc->enableRender = 1;
 	AddComponent(sc);
 }
 

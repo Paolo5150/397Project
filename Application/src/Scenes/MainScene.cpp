@@ -37,11 +37,7 @@
 MainCamera* cam;
 PointLight* pLight;
 DirectionalLight* dirLight;
-btDefaultMotionState* motionstate;
-btRigidBody *rigidBody;
-Crate* crate;
-GameObject* c1;
-GameObject* c2;
+
 
 MainScene::MainScene() : Scene("MainScene")
 {

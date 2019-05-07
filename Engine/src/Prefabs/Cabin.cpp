@@ -28,9 +28,7 @@ void Cabin::Start()
 	sc->ResetCollideAgainstLayer();
 	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
 	sc->transform.SetScale(1, 1, 2.2);
-
 	sc->transform.SetPosition(0, 0.0, 1);
-	sc->enableRender = 1;
 	AddComponent(sc);
 }
 

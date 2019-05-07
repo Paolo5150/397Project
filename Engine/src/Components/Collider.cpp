@@ -4,7 +4,7 @@
 
 Collider::Collider(std::string name) : Component(name){
 	_type = "Collider";
-	enableRender = 1;
+	enableRender = 0;
 	collisionLayer = CollisionLayers::DEFAULT;
 	collideAgainstLayer = CollisionLayers::DEFAULT;
 
