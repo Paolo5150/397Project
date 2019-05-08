@@ -306,6 +306,19 @@ void GameObject::EngineUpdate()
 		(*itc)->EngineUpdate();
 }
 
+void GameObject::LateUpdate()
+{
+
+
+	auto it = _children.begin();
+	for (; it != _children.end(); it++)
+		(*it)->LateUpdate();
+
+	/*auto itc = _components.begin();
+	for (; itc != _components.end(); itc++)
+		(*itc)->LateUpdate();*/
+}
+
 
 
 void GameObject::PrintHierarchy()

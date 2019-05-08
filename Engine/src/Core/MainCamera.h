@@ -49,6 +49,8 @@ public:
 	*/
 	void Update() override;
 
+	void LateUpdate() override;
+
 	/**
 	* @brief		Set the camera speed
 	*
@@ -120,6 +122,6 @@ private:
 	*/
 	glm::vec3 _lastPos;
 
-
+	glm::vec3 _intendedDir;
 };
 

@@ -365,6 +365,16 @@ public:
 	*/
 	virtual void EngineUpdate();
 
+	/**
+	* @brief		Update the gameobject in the Engine Update loop
+	*
+	* @pre			The GameObject must exist.
+	* @post
+	*
+	* @return		none
+	*/
+	virtual void LateUpdate();
+
 
 	/**
 	* @brief		Print the game object hierarchy (children) to the console
