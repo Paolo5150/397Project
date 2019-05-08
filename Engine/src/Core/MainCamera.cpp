@@ -29,6 +29,8 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	boxCollider->ResetCollisionLayer();
 	boxCollider->AddCollisionLayer(CollisionLayers::PLAYER);
 	boxCollider->AddCollideAgainstLayer(CollisionLayers::OBSTACLE);
+	boxCollider->AddCollideAgainstLayer(CollisionLayers::ENEMY);
+
 	//boxCollider->enableRender = 1;
 	boxCollider->transform.parent = nullptr;
 	//boxCollider->AddCollideAgainstLayer(CollisionLayers::PATHNODE);
