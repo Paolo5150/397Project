@@ -15,7 +15,6 @@ void Pumpkin::Start()
 {
 	SphereCollider* sc = new SphereCollider();
 	sc->ResetCollisionLayer();
-	sc->AddCollisionLayer(CollisionLayers::OBSTACLE);
 	sc->ResetCollideAgainstLayer();
 	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
 	sc->transform.SetScale(0.7, 0.7, 0.7);

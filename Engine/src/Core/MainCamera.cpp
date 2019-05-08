@@ -38,7 +38,6 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 
 	boxCollider->collisionCallback = [this](GameObject* go){
 		_movementSpeed = 0;
-		Logger::LogInfo("Camera collided");
 	};
 }
 
