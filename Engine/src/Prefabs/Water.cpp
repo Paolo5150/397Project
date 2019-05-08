@@ -45,8 +45,8 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 
 	int w, h;
 	Window::Instance().GetWindowSize(w, h);
-	refractionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);
-	reflectionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w, h);
+	refractionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w/4, h/4);
+	reflectionBuffer = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(w/4, h/4);
 
 	material = new Material();
 	material->SetShader(AssetLoader::Instance().GetAsset<Shader>("Water"));
@@ -179,8 +179,8 @@ bool Water::ResizeFrameBuffers(Event* e)
 {
 	WindowResizeEvent* wc = dynamic_cast<WindowResizeEvent*>(e);
 
-	refractionBuffer->ResizeTexture(wc->width, wc->height);
-	reflectionBuffer->ResizeTexture(wc->width, wc->height);
+	refractionBuffer->ResizeTexture(wc->width/4, wc->height/4);
+	reflectionBuffer->ResizeTexture(wc->width/4, wc->height/4);
 	return 0;
 }
 

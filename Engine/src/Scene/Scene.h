@@ -118,7 +118,7 @@ public:
 	*/
 	std::string name;
 
-
+	std::vector<GameObject*> GetGameobjectsByName(std::string name);
 
 protected:
 	/**

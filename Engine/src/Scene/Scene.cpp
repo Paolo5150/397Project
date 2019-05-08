@@ -97,3 +97,16 @@ void Scene::QuitScene()
 	GameAssetFactory::Instance().CleanUp();
 	Input::Update();
 }
+
+std::vector<GameObject*> Scene::GetGameobjectsByName(std::string name)
+{
+	std::vector<GameObject*> r;
+
+	for (auto it = m_allGameObjects.begin(); it != m_allGameObjects.end(); it++)
+	{
+		if ((*it)->GetName() == name)
+			r.push_back(*it);
+	}
+
+	return r;
+}
