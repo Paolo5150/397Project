@@ -8,6 +8,7 @@ struct Layers
 		WATER = 1 << 1,
 		GUI = 1 << 2,
 		TERRAIN = 1 << 3,
-		SKYBOX = 1 << 4
+		SKYBOX = 1 << 4,
+		GUN = 1 << 5
 	};
 };

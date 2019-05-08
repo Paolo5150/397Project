@@ -189,7 +189,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Prefabs\GranadeLauncher.h" />
     <ClInclude Include="src\Prefabs\Gun.h" />
+    <ClInclude Include="src\Prefabs\PlayerStats.h" />
     <ClInclude Include="src\Prefabs\Ship.h" />
     <ClInclude Include="src\Prefabs\Spider.h" />
     <ClInclude Include="src\Components\AIBase.h" />
@@ -294,6 +296,7 @@
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Prefabs\GranadeLauncher.cpp" />
     <ClCompile Include="src\Prefabs\Gun.cpp" />
     <ClCompile Include="src\Prefabs\Ship.cpp" />
     <ClCompile Include="src\Prefabs\Spider.cpp" />

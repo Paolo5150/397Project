@@ -26,18 +26,15 @@
 #include "Prefabs\Crate.h"
 #include "Prefabs\Barrel.h"
 #include "Prefabs\Cabin.h"
+#include "Prefabs\GranadeLauncher.h"
 #include "Utils\PathFinder.h"
 #include "Graphics\RenderingEngine.h"
-
-
 #include "Physics\PhysicsWorld.h"
-
 #include "Components\AIBase.h"
 
 MainCamera* cam;
 PointLight* pLight;
 DirectionalLight* dirLight;
-Cabin* cabin;
 
 MainScene::MainScene() : Scene("MainScene")
 {
@@ -53,12 +50,15 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Gun\\gun.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx",false);
+
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
 	//AssetLoader::Instance().LoadModel("Assets\\Models\\Wolf\\wolf.fbx");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Spider\\spider_3.fbx", 0);
 
 	AssetLoader::Instance().LoadTexture("Assets\\Models\\Spider\\textures\\Spinnen_Bein_tex_COLOR_.jpg");
+	AssetLoader::Instance().LoadTexture("Assets\\Models\\GranadeLauncher\\launcher.jpg");
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
@@ -141,10 +141,6 @@ void MainScene::Initialize() {
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
 	PhysicsWorld::Instance().InitializeQuadtree(x, z, Terrain::Instance().GetTerrainMaxX() - Terrain::Instance().GetTerrainMinX(), Terrain::Instance().GetTerrainMaxZ() - Terrain::Instance().GetTerrainMinZ());
-	
-	/*cabin = new Cabin();
-	cabin->transform.SetPosition(x+800, y, z);
-	AddGameObject(cabin);*/
 
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);

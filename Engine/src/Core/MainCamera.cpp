@@ -8,6 +8,7 @@ namespace {
 	const float MAX_SPEED = 1000;
 	float ORIGINAL_SPEED = 500;
 	float counter = 0;
+	GranadeLauncher* gn;
 }
 
 MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f)
@@ -35,6 +36,21 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	boxCollider->transform.parent = nullptr;
 	//boxCollider->AddCollideAgainstLayer(CollisionLayers::PATHNODE);
 
+	gn = new GranadeLauncher();
+	gn->transform.SetScale(0.01, 0.01, 0.01);
+	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
+
+	CameraPerspective* gunCam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
+	gunCam->RemoveAllMaskLayers();
+	gunCam->AddLayerMask(Layers::GUN);
+	gunCam->SetDepth(10);
+	gunCam->SetIsStatic(0);
+	gunCam->AddChild(gn);
+	AddChild(gunCam);
+
+	
+
+
 
 	boxCollider->collisionCallback = [this](GameObject* go){
 		_movementSpeed = 0;
@@ -48,6 +64,8 @@ void MainCamera::Update()
 	_intendedDir.x = 0;
 	_intendedDir.y = 0;
 	_intendedDir.z = 0;
+
+	//Logger::LogInfo(gn->transform.ToString());
 
 
 	UpdateControls();
@@ -162,10 +180,10 @@ void MainCamera::UpdateControls()
 	else if (Input::GetKeyDown(GLFW_KEY_Y) == true)
 		Input::SetCursorMode("disabled");
 
-	if (Input::GetKeyDown(GLFW_KEY_KP_ADD))
+	/*if (Input::GetKeyDown(GLFW_KEY_KP_ADD))
 		_movementSpeed+=10;
 	else if (Input::GetKeyDown(GLFW_KEY_KP_SUBTRACT))
-		_movementSpeed-=10;
+		_movementSpeed-=10;*/
 
 	_movementSpeed = glm::clamp(_movementSpeed, MIN_SPEED, MAX_SPEED);
 
