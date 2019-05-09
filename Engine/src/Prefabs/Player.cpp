@@ -61,7 +61,14 @@ Player::Player() : GameObject("Player")
 Player::~Player() {}
 
 void Player::Start()
-{}
+{
+	int x, y, z;
+	Terrain::Instance().GetCenter(x, y, z);
+	transform.SetPosition(x, y, z);
+}
+
+
+
 
 void Player::OnAddToScene(Scene& scene)
 {

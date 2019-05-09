@@ -13,6 +13,7 @@ public:
 	void OnAddToScene(Scene& scene) override;
 	void Update() override;
 	void UpdateControls();
+
 	Camera* mainCamera;
 	void LateUpdate();
 
