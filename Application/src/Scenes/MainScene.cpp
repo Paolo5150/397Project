@@ -30,6 +30,7 @@
 #include "Utils\PathFinder.h"
 #include "Graphics\RenderingEngine.h"
 #include "Physics\PhysicsWorld.h"
+#include "Prefabs\Player.h"
 #include "Components\AIBase.h"
 
 MainCamera* cam;
@@ -122,22 +123,27 @@ void MainScene::Initialize() {
 		AddGameObject(PathFinder::Instance().pathNodes[i]);
 
 
+
 	//GameObjects
-	cam = (MainCamera*)Lua::GetCreatedAsset(0);
+	/*cam = new MainCamera();
 	cam->SetMovementSpeed(500);
 	cam->RemoveLayerMask(Layers::GUI);
-	AddGameObject(cam);
+	AddGameObject(cam);*/
+
+	Player* p = new Player();
+	AddGameObject(p);
 
 	for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the camera or water, and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
 		{
-			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(cam->transform);
+			continue;
+			//((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(cam->transform);
 		}
 		AddGameObject(obj);
 	}
-
+	
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
 	PhysicsWorld::Instance().InitializeQuadtree(x, z, Terrain::Instance().GetTerrainMaxX() - Terrain::Instance().GetTerrainMinX(), Terrain::Instance().GetTerrainMaxZ() - Terrain::Instance().GetTerrainMinZ());

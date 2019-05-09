@@ -10,7 +10,7 @@
 class Component;
 class Shader;
 class Camera;
-
+class Scene;
 
 
 /**
@@ -443,7 +443,7 @@ public:
 
 	virtual void OnCollision(GameObject* go){};
 
-	void OnAddToScene();
+	virtual void OnAddToScene(Scene& theScene);
 
 protected:
 	/**

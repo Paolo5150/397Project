@@ -52,7 +52,7 @@ void GameObject::FlagToBeDestroyed()
 	
 }
 
-void GameObject::OnAddToScene()
+void GameObject::OnAddToScene(Scene& scene)
 {
 	for (auto it = std::begin(_components); it != std::end(_components); it++)
 	{
@@ -62,7 +62,7 @@ void GameObject::OnAddToScene()
 
 	for (auto it = std::begin(_children); it != std::end(_children); it++)
 		{
-		(*it)->OnAddToScene();
+		(*it)->OnAddToScene(scene);
 		}
 	
 }
