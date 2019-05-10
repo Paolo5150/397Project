@@ -2,6 +2,12 @@
 #include "..\Components\AIBase.h"
 #include "..\Components\SphereCollider.h"
 #include "..\Components\BoxCollider.h"
+#include "..\Components\HealthComponent.h"
+
+namespace
+{
+	const float attackRate = 0.8;
+}
 
 Spider::Spider() : GameObject("Spider")
 {
@@ -12,7 +18,9 @@ Spider::Spider() : GameObject("Spider")
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 	this->ApplyMaterial(spiderMat);
 
-	AddComponent(new AIBase("Assets\\Scripts\\AI\\Spider.lua"));
+	aiBase = new AIBase("Assets\\Scripts\\AI\\Spider.lua");
+
+	AddComponent(aiBase);
 }
 
 Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
@@ -24,12 +32,15 @@ Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 	this->ApplyMaterial(spiderMat);
 
-	AddComponent(new AIBase("Assets\\Scripts\\AI\\Spider.lua"));
+	aiBase = new AIBase("Assets\\Scripts\\AI\\Spider.lua");
+
+	AddComponent(aiBase);
 	transform.SetPosition(posX, posY, posZ);
 }
 
-Spider::Spider(Transform& targetTransform) : GameObject("Spider")
+Spider::Spider(Transform& g) : GameObject("Spider")
 {
+
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
 	Material spiderMat;
@@ -37,11 +48,14 @@ Spider::Spider(Transform& targetTransform) : GameObject("Spider")
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 	this->ApplyMaterial(spiderMat);
 
-	AddComponent(new AIBase(targetTransform, "Assets\\Scripts\\AI\\Spider.lua"));
+	aiBase = new AIBase("Assets\\Scripts\\AI\\Spider.lua");
+
+	AddComponent(aiBase);
 }
 
-Spider::Spider(Transform& targetTransform, float posX, float posY, float posZ) : GameObject("Spider")
+Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("Spider")
 {
+
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
 	Material spiderMat;
@@ -49,7 +63,9 @@ Spider::Spider(Transform& targetTransform, float posX, float posY, float posZ) :
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 	this->ApplyMaterial(spiderMat);
 
-	AddComponent(new AIBase(targetTransform, "Assets\\Scripts\\AI\\Spider.lua"));
+	aiBase = new AIBase("Assets\\Scripts\\AI\\Spider.lua");
+
+	AddComponent(aiBase);
 	transform.SetPosition(posX, posY, posZ);
 }
 
@@ -57,14 +73,16 @@ Spider::~Spider()
 {
 }
 
+
 void Spider::SetTarget(Transform& transform)
 {
-	GetComponent<AIBase>("AIBase")->SetTarget(transform);
+	aiBase->SetTarget(transform);
 }
+
 
 Transform* Spider::GetTarget() const
 {
-	return GetComponent<AIBase>("AIBase")->GetTarget();
+	return aiBase->GetTarget();
 }
 
 void Spider::Start()
@@ -85,4 +103,24 @@ void Spider::Update()
 
 	float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
 	transform.SetPosition(transform.GetPosition().x, h, transform.GetPosition().z);
+
+	//Logger::LogInfo("State", GetComponent<AIBase>("AIBase")->GetState());
+	if (aiBase->GetState() == "Fight")
+	{
+		attackTimer += Timer::GetDeltaS();
+
+		if (attackTimer >= attackRate)
+		{
+			attackTimer = 0;
+			if (aiBase->GetTarget()->gameObject != nullptr)
+			{
+				HealthComponent* h = aiBase->GetTarget()->gameObject->GetComponent<HealthComponent>("HealthComponent");
+
+				if (h != nullptr)
+				{
+					h->AddToHealth(-5);
+				}
+			}
+		}
+	}
 }

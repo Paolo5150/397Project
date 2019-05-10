@@ -2,6 +2,7 @@
 #include "..\GameObject\GameObject.h"
 #include "..\Utils\AssetLoader.h"
 #include "..\Core\MainCamera.h"
+#include "..\Components\HealthComponent.h"
 
 
 class Player : public GameObject
@@ -57,6 +58,7 @@ public:
 
 
 	BoxCollider* boxCollider;
+	HealthComponent* healhComponent;
 
 
 private:

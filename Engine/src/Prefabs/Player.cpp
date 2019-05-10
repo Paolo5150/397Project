@@ -18,22 +18,7 @@ Player::Player() : GameObject("Player")
 	_movementSpeed = 20;
 	_rotationSpeed = 20;
 	_isTopView = false;
-	_intendedDir = glm::vec3(0, 0, 0);
-
-
-
-	boxCollider = new BoxCollider();
-	AddComponent(boxCollider); // Needs to be added first and modified later. I know, messy
-	boxCollider->transform.SetScale(10, 60, 10);
-	boxCollider->meshRenderer->SetIsCullable(0);
-	boxCollider->ResetCollisionLayer();
-	boxCollider->AddCollisionLayer(CollisionLayers::PLAYER);
-	boxCollider->AddCollideAgainstLayer(CollisionLayers::OBSTACLE);
-	boxCollider->AddCollideAgainstLayer(CollisionLayers::ENEMY);
-
-	//boxCollider->enableRender = 1;
-	boxCollider->transform.parent = nullptr;
-	//boxCollider->AddCollideAgainstLayer(CollisionLayers::PATHNODE);
+	_intendedDir = glm::vec3(0, 0, 0);	
 
 	gn = new GranadeLauncher();
 	gn->transform.SetScale(0.01, 0.01, 0.01);
@@ -51,9 +36,6 @@ Player::Player() : GameObject("Player")
 
 
 
-	boxCollider->collisionCallback = [this](GameObject* go){
-		_movementSpeed = 0;
-	};
 
 
 }
@@ -65,6 +47,25 @@ void Player::Start()
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
 	transform.SetPosition(x, y, z);
+
+	boxCollider = new BoxCollider();
+	AddComponent(boxCollider); // Needs to be added first and modified later. I know, messy
+	boxCollider->transform.SetScale(10, 60, 10);
+	boxCollider->meshRenderer->SetIsCullable(0);
+	boxCollider->ResetCollisionLayer();
+	boxCollider->AddCollisionLayer(CollisionLayers::PLAYER);
+	boxCollider->AddCollideAgainstLayer(CollisionLayers::OBSTACLE);
+	boxCollider->AddCollideAgainstLayer(CollisionLayers::ENEMY);
+
+	//boxCollider->enableRender = 1;
+	boxCollider->transform.parent = nullptr;
+	boxCollider->collisionCallback = [this](GameObject* go){
+		_movementSpeed = 0;
+	};
+
+	healhComponent = new HealthComponent(100,100);
+	AddComponent(healhComponent);
+
 }
 
 
@@ -85,6 +86,8 @@ void Player::Update()
 
 
 	UpdateControls();
+
+	Logger::LogInfo("Health", healhComponent->GetCurrentHealth());
 
 
 	float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);

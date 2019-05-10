@@ -2,7 +2,7 @@
 #include "..\Physics\PhysicsWorld.h"
 
 
-Collider::Collider(std::string name) : Component(name){
+Collider::Collider(std::string name) : transform(Transform(GetParent())), Component(name){
 	_type = "Collider";
 	enableRender = 0;
 	collisionLayer = CollisionLayers::DEFAULT;

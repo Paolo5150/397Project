@@ -18,6 +18,11 @@ class GUIImage;
 class MainScene : public Scene
 {
 public:
+	enum SCENE_STATES
+	{
+		PLAYING,
+		GAMEOVER
+	};
 	/**
 	* @brief		Creates the MainScene object
 	*

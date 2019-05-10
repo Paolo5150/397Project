@@ -1,9 +1,10 @@
 #include "Transform.h"
 #include "Logger.h"
 #include "..\pch.h"
+#include "..\GameObject\GameObject.h"
 #include <glm/gtx/rotate_vector.hpp>
 
-Transform::Transform()
+Transform::Transform(GameObject* go) : gameObject(go)
 {
 	scale = glm::vec3(1, 1, 1);
 	SetPosition(0,0,0);

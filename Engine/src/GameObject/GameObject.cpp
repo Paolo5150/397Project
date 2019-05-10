@@ -7,7 +7,7 @@
 #include "..\Core\Timer.h"
 
 
-GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent)
+GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent) : transform(Transform(this))
 {
 	SetName(name);
 	SetActive(isActive);

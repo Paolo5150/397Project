@@ -189,6 +189,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Components\HealthComponent.h" />
     <ClInclude Include="src\Prefabs\GranadeLauncher.h" />
     <ClInclude Include="src\Prefabs\Gun.h" />
     <ClInclude Include="src\Prefabs\Player.h" />

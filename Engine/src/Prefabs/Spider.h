@@ -4,6 +4,8 @@
 #include "../GameObject/GameObject.h"
 #include "..\Utils\AssetLoader.h"
 
+class AIBase;
+
 class Spider : public GameObject
 {
 public:
@@ -19,6 +21,7 @@ public:
 
 	void SetTarget(Transform& transform);
 
+
 	Transform* GetTarget() const;
 
 	void Start() override;
@@ -26,6 +29,9 @@ public:
 	void Update() override;
 
 private:
+
+	AIBase* aiBase;
+	float attackTimer;
 
 };
 

@@ -186,5 +186,6 @@
     <ClInclude Include="src\Prefabs\PlayerStats.h" />
     <ClInclude Include="src\Prefabs\GranadeLauncher.h" />
     <ClInclude Include="src\Prefabs\Player.h" />
+    <ClInclude Include="src\Components\HealthComponent.h" />
   </ItemGroup>
 </Project>
