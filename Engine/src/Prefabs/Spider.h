@@ -5,6 +5,7 @@
 #include "..\Utils\AssetLoader.h"
 
 class AIBase;
+class HealthComponent;
 
 class Spider : public GameObject
 {
@@ -33,6 +34,7 @@ private:
 
 	AIBase* aiBase;
 	float attackTimer;
+	HealthComponent* healthComponent;
 
 };
 

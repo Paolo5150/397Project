@@ -82,7 +82,7 @@ void Player::Start()
 			Pumpkin* p = (Pumpkin*)go;
 			if (p->state == Pumpkin::GROUND)
 			{
-				Logger::LogInfo("Ammo pick up");
+				
 				ammoCounter++;
 				go->FlagToBeDestroyed();
 			}

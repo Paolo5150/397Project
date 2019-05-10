@@ -20,8 +20,11 @@ Spider::Spider() : GameObject("Spider")
 	this->ApplyMaterial(spiderMat);
 
 	aiBase = new AIBase("Assets\\Scripts\\AI\\Spider.lua");
+	healthComponent = new HealthComponent(100, 100);
+	AddComponent(healthComponent);
 
 	AddComponent(aiBase);
+
 }
 
 Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
@@ -37,6 +40,8 @@ Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
 
 	AddComponent(aiBase);
 	transform.SetPosition(posX, posY, posZ);
+	healthComponent = new HealthComponent(100, 100);
+	AddComponent(healthComponent);
 }
 
 Spider::Spider(Transform& g) : GameObject("Spider")
@@ -50,7 +55,8 @@ Spider::Spider(Transform& g) : GameObject("Spider")
 	this->ApplyMaterial(spiderMat);
 
 	aiBase = new AIBase("Assets\\Scripts\\AI\\Spider.lua");
-
+	healthComponent = new HealthComponent(100, 100);
+	AddComponent(healthComponent);
 	AddComponent(aiBase);
 }
 
@@ -65,7 +71,8 @@ Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("S
 	this->ApplyMaterial(spiderMat);
 
 	aiBase = new AIBase("Assets\\Scripts\\AI\\Spider.lua");
-
+	healthComponent = new HealthComponent(100, 100);
+	AddComponent(healthComponent);
 	AddComponent(aiBase);
 	transform.SetPosition(posX, posY, posZ);
 }
@@ -105,7 +112,13 @@ void Spider::Start()
 			Pumpkin* p = (Pumpkin*)go;
 			if (p->state == Pumpkin::SHOT)
 			{
-				Logger::LogInfo("Spirder shot");
+				healthComponent->AddToHealth(-10);
+
+				if (healthComponent->IsDead())
+				{
+					//Set dead animation
+					FlagToBeDestroyed();
+				}
 				
 				go->FlagToBeDestroyed();
 			}
