@@ -61,11 +61,36 @@ void Player::Start()
 	boxCollider->AddCollideAgainstLayer(CollisionLayers::OBSTACLE);
 	boxCollider->AddCollideAgainstLayer(CollisionLayers::ENEMY);
 
+
 	//boxCollider->enableRender = 1;
 	boxCollider->transform.parent = nullptr;
 	boxCollider->collisionCallback = [this](GameObject* go){
 		_movementSpeed = 0;
 	};
+
+	pickupCollider = new BoxCollider();
+	AddComponent(pickupCollider); // Needs to be added first and modified later. I know, messy
+	pickupCollider->transform.SetScale(10, 60, 10);
+	pickupCollider->meshRenderer->SetIsCullable(0);
+	pickupCollider->ResetCollisionLayer();
+	pickupCollider->enableRender = 1;
+	pickupCollider->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
+	pickupCollider->collisionCallback = [this](GameObject* go){
+
+		if (go->GetName() == "Pumpkin")
+		{
+			Pumpkin* p = (Pumpkin*)go;
+			if (p->state == Pumpkin::GROUND)
+			{
+				Logger::LogInfo("Ammo pick up");
+				ammoCounter++;
+				go->FlagToBeDestroyed();
+			}
+		}
+
+	};
+
+
 
 	healhComponent = new HealthComponent(100,100);
 	AddComponent(healhComponent);
@@ -94,7 +119,8 @@ void Player::Update()
 		{
 			shootTimer = 0;
 			Pumpkin* pump = new Pumpkin();
-			pump->transform.SetPosition(transform.GetPosition() + transform.GetLocalFront() * 10.0f);
+			pump->transform.SetPosition(transform.GetPosition() + transform.GetLocalFront() * 80.0f - transform.GetLocalUp() * 10.0f);
+			pump->Start();
 			pump->state = Pumpkin::SHOT;
 			pump->shootDirection = transform.GetLocalFront();
 			SceneManager::Instance().GetCurrentScene().AddGameObject(pump);
@@ -220,6 +246,8 @@ void Player::LateUpdate()
 {
 	_movementSpeed = ORIGINAL_SPEED;
 }
+
+
 
 
 void Player::SetMovementSpeed(float speed)

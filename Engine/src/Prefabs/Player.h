@@ -58,11 +58,12 @@ public:
 
 
 	BoxCollider* boxCollider;
+	BoxCollider* pickupCollider;
+
 	HealthComponent* healhComponent;
 
 	int ammoCounter;
 	float shootTimer;
-
 
 
 private:

@@ -44,7 +44,7 @@ MainScene::MainScene() : Scene("MainScene")
 
 void MainScene::LoadAssets() {
 
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
+
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Pumpkin\\pumpkin.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Barrel\\barrel.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
@@ -55,7 +55,7 @@ void MainScene::LoadAssets() {
 
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
-	//AssetLoader::Instance().LoadModel("Assets\\Models\\Wolf\\wolf.fbx");
+
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Spider\\spider_3.fbx", 0);
 
 	AssetLoader::Instance().LoadTexture("Assets\\Models\\Spider\\textures\\Spinnen_Bein_tex_COLOR_.jpg");
@@ -88,7 +88,7 @@ void MainScene::Initialize() {
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
 	Lua::RunLua("Assets\\Scripts\\Level1.lua");
-	gContactAddedCallback = PhysicsWorld::CollisionCallback;
+
 
 	Timer::SetDisplayFPS(true);
 
@@ -125,15 +125,12 @@ void MainScene::Initialize() {
 
 
 	//GameObjects
-	/*cam = new MainCamera();
-	cam->SetMovementSpeed(500);
-	cam->RemoveLayerMask(Layers::GUI);
-	AddGameObject(cam);*/
+
 
 	Player* p = new Player();
 	AddGameObject(p);
 
-	/*for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the camera or water, and add them to the scene
+	for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the camera or water, and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
@@ -141,7 +138,7 @@ void MainScene::Initialize() {
 			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(p->transform);
 		}
 		AddGameObject(obj);
-	}*/
+	}
 	
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);

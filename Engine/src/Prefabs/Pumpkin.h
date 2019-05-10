@@ -22,4 +22,5 @@ public:
 	glm::vec3 shootDirection;
 private:
 	float speed;
+	float lifeTimer;
 };
