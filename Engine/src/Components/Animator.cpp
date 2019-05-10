@@ -97,7 +97,6 @@ void Animator::OnPreRender(Camera& cam, Shader* currentShader)
 
 void Animator::SetCurrentAnimation(int animation)
 {
-
 	if (currentAnimationIndex == animation) return;
 
 	if (animation >= animations.size())

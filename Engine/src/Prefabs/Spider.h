@@ -34,6 +34,7 @@ private:
 
 	AIBase* aiBase;
 	float attackTimer;
+	float deathTimer;
 	HealthComponent* healthComponent;
 
 };

@@ -89,7 +89,7 @@ void MainScene::Initialize() {
 
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
-	Lua::RunLua("Assets\\Scripts\\Level1.lua");
+	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
 
 
 	Timer::SetDisplayFPS(true);
@@ -127,12 +127,10 @@ void MainScene::Initialize() {
 
 
 	//GameObjects
-
-
-	Player* p = new Player();
+	Player* p = (Player*)Lua::GetCreatedAsset(0);
 	AddGameObject(p);
 
-	/*for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the camera or water, and add them to the scene
+	for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the player, and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
@@ -140,7 +138,7 @@ void MainScene::Initialize() {
 			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(p->transform);
 		}
 		AddGameObject(obj);
-	}*/
+	}
 	
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
@@ -151,7 +149,7 @@ void MainScene::Initialize() {
 	AddGameObject(pLight);
 	AddGameObject(&Terrain::Instance());
 
-	//Lua::CloseLua();
+	Lua::CloseLua();
 
 }
 

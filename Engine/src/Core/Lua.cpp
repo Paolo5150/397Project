@@ -45,7 +45,7 @@ void Lua::RunLua(std::string fileName, bool closeState, bool clearAssets)
 	{
 		ClearCreatedAssets();
 	}
-	ExecuteLuaScript(lState, fileName);
+	ExecuteLuaScript(fileName);
 
 	if (closeState)
 	{

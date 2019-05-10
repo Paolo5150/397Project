@@ -13,7 +13,9 @@ namespace
 Spider::Spider() : GameObject("Spider")
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
-	
+
+	deathTimer = 0.0f;
+
 	Material spiderMat;
 	spiderMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("Spinnen_Bein_tex_COLOR_"));
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
@@ -30,7 +32,9 @@ Spider::Spider() : GameObject("Spider")
 Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
-	
+
+	deathTimer = 0.0f;
+
 	Material spiderMat;
 	spiderMat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("Spinnen_Bein_tex_COLOR_"));
 	spiderMat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
@@ -105,8 +109,8 @@ void Spider::Start()
 	sc->transform.SetPosition(0, 35, 0);
 	AddComponent(sc);
 
-	sc->collisionCallback = [this](GameObject* go){
-		
+	sc->collisionCallback = [this](GameObject* go) {
+
 
 		if (go->GetName() == "Pumpkin")
 		{
@@ -121,9 +125,12 @@ void Spider::Start()
 					// Maybe disable AI..?
 					// After a few seconds, call FlagToBeDestroyed()
 					// Now I'm calling it straight away to see if the spider get shot
-					FlagToBeDestroyed();
+					GetComponent<Animator>("Animator")->SetCurrentAnimation(1);
+					aiBase->SetActive(false);
+					aiBase->SetState("Dead");
+					deathTimer = Timer::GetTimeS();
 				}
-				
+
 				go->FlagToBeDestroyed();
 			}
 		}
@@ -155,6 +162,13 @@ void Spider::Update()
 					h->AddToHealth(-5);
 				}
 			}
+		}
+	}
+	else if (aiBase->GetState() == "Dead")
+	{
+		if (Timer::GetTimeS() >= deathTimer + 2.8f)
+		{
+			FlagToBeDestroyed();
 		}
 	}
 }

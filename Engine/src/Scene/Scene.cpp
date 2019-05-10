@@ -90,7 +90,8 @@ void Scene::LogicUpdate()
 
 	for (; it != m_allGameObjects.end(); it++)
 	{
-		(*it)->Update();
+		if((*it)->GetActive() == true)
+			(*it)->Update();
 	}
 }
 

@@ -286,11 +286,13 @@ void GameObject::Update()
 
 	auto it = _children.begin();
 	for (; it != _children.end(); it++)
-		(*it)->Update();
+		if ((*it)->GetActive() == true)
+			(*it)->Update();
 
 	auto itc = _components.begin();
 	for (; itc != _components.end(); itc++)
-		(*itc)->Update();
+		if ((*itc)->GetActive() == true)
+			(*itc)->Update();
 }
 
 void GameObject::EngineUpdate()

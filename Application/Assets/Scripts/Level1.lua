@@ -5,7 +5,7 @@
 --Using -9999 in the posX or posZ position will set posX or posZ to the center of the terrain
 --Using -9999 in the posY position will set posY to Terrain::GetHeightat(posX, posZ)
 
-Create("GameObject", -9999, -9999, -9999, 30, 180, 0);
+Create("Player", -9999, -9999, -9999)--, 30, 180, 0);
 
 waterScaleX, waterScaleY, waterScaleZ = 3000, 3000, 1;
 Create("Water", -9999, 150, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
