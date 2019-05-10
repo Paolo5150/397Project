@@ -121,11 +121,7 @@ void Spider::Start()
 
 				if (healthComponent->IsDead())
 				{
-					//Set dead animation
-					// Maybe disable AI..?
-					// After a few seconds, call FlagToBeDestroyed()
-					// Now I'm calling it straight away to see if the spider get shot
-					GetComponent<Animator>("Animator")->SetCurrentAnimation(1);
+					GetComponent<Animator>("Animator")->SetCurrentAnimation(1, false);
 					aiBase->SetActive(false);
 					aiBase->SetState("Dead");
 					deathTimer = Timer::GetTimeS();
@@ -166,7 +162,7 @@ void Spider::Update()
 	}
 	else if (aiBase->GetState() == "Dead")
 	{
-		if (Timer::GetTimeS() >= deathTimer + 2.8f)
+		if (Timer::GetTimeS() >= deathTimer + 1.8f)
 		{
 			FlagToBeDestroyed();
 		}

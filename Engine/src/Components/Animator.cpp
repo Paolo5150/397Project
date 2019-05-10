@@ -95,7 +95,7 @@ void Animator::OnPreRender(Camera& cam, Shader* currentShader)
 
 
 
-void Animator::SetCurrentAnimation(int animation)
+void Animator::SetCurrentAnimation(int animation, bool loop)
 {
 	if (currentAnimationIndex == animation) return;
 
@@ -104,6 +104,10 @@ void Animator::SetCurrentAnimation(int animation)
 
 	currentAnimation = &animations[animation];
 	currentAnimationIndex = animation;
+	if (loop == false)
+	{
+		currentAnimation->loop = false;
+	}
 
 	playedOnce = false;
 	Reset();
