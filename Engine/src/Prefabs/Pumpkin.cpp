@@ -24,12 +24,11 @@ void Pumpkin::Start()
 	sc->ResetCollisionLayer();
 	sc->AddCollisionLayer(CollisionLayers::PUPMKIN);
 	sc->ResetCollideAgainstLayer();
-	sc->AddCollideAgainstLayer(CollisionLayers::ENEMY);
 	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
 
 	sc->transform.SetScale(0.2,0.2,0.2);
 	sc->transform.SetPosition(0, 0.2, 0);
-	sc->enableRender = 1;
+	//sc->enableRender = 1;
 
 	AddComponent(sc);
 }

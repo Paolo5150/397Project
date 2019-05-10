@@ -73,7 +73,7 @@ void Player::Start()
 	pickupCollider->transform.SetScale(10, 60, 10);
 	pickupCollider->meshRenderer->SetIsCullable(0);
 	pickupCollider->ResetCollisionLayer();
-	pickupCollider->enableRender = 1;
+	//pickupCollider->enableRender = 1;
 	pickupCollider->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
 	pickupCollider->collisionCallback = [this](GameObject* go){
 

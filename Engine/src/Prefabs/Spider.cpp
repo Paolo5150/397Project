@@ -3,6 +3,7 @@
 #include "..\Components\SphereCollider.h"
 #include "..\Components\BoxCollider.h"
 #include "..\Components\HealthComponent.h"
+#include "Pumpkin.h"
 
 namespace
 {
@@ -96,6 +97,21 @@ void Spider::Start()
 
 	sc->transform.SetPosition(0, 35, 0);
 	AddComponent(sc);
+
+	sc->collisionCallback = [this](GameObject* go){
+
+		if (go->GetName() == "Pumpkin")
+		{
+			Pumpkin* p = (Pumpkin*)go;
+			if (p->state == Pumpkin::SHOT)
+			{
+				Logger::LogInfo("Spirder shot");
+				
+				go->FlagToBeDestroyed();
+			}
+		}
+
+	};
 }
 
 void Spider::Update()
