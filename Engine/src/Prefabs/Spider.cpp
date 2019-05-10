@@ -106,6 +106,7 @@ void Spider::Start()
 	AddComponent(sc);
 
 	sc->collisionCallback = [this](GameObject* go){
+		
 
 		if (go->GetName() == "Pumpkin")
 		{
@@ -117,6 +118,9 @@ void Spider::Start()
 				if (healthComponent->IsDead())
 				{
 					//Set dead animation
+					// Maybe disable AI..?
+					// After a few seconds, call FlagToBeDestroyed()
+					// Now I'm calling it straight away to see if the spider get shot
 					FlagToBeDestroyed();
 				}
 				
