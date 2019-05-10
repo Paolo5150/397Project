@@ -65,4 +65,6 @@ public:
 
 	GUIImage* manual;
 
+	void Restart();
+
 };

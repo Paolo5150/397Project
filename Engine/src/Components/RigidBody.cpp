@@ -24,7 +24,7 @@ void RigidBody::OnAttach(GameObject* go)
 
 RigidBody::~RigidBody()
 {
-	PhysicsWorld::Instance().RemoveRigidBody(this);
+
 
 }
 

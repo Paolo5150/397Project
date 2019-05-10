@@ -10,16 +10,20 @@
 #include "..\Physics\PhysicsWorld.h"
 #include "..\Components\PathNode.h"
 
+Terrain* Terrain::instance;
+
 Terrain& Terrain::Instance()
 {
-	static Terrain instance;
-	return instance;
+	if (instance == nullptr)
+		instance = new Terrain();
+
+	return *instance;
 }
 
 void Terrain::Initialize(int size)
 {
 	this->terrainSize = size;
-	this->SetIsSelfManaged(true, false);
+	//this->SetIsSelfManaged(true, false);
 	Material material;
 	material.SetShader(AssetLoader::Instance().GetAsset<Shader>("Terrain"));
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("ground"));

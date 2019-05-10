@@ -38,6 +38,33 @@ void SceneManager::AddScene(Scene* s)
 		m_allScenes[s->name] = s;
 	}
 }
+
+void SceneManager::ReloadCurrent()
+{
+	//Check if scene is already loaded
+	if (m_currentScene != nullptr)
+	{
+
+
+	if (m_currentScene != nullptr)
+	{
+		m_currentScene->QuitScene();
+
+		m_currentScene->m_isReady = false;
+	}
+
+	EventDispatcher::Instance().DispatchEvent(new SceneChangedEvent(m_currentScene));
+
+
+
+	m_currentScene->Initialize();
+	m_currentScene->m_isReady = true;
+	m_currentScene->Start();
+	Input::SetIsEnabled(1);
+	Timer::ResetTickCount();
+	}
+}
+
 void SceneManager::LoadNewScene(std::string sceneName)
 {
 	//Check if scene is already loaded
