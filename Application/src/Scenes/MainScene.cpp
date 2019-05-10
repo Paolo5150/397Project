@@ -133,7 +133,7 @@ void MainScene::Initialize() {
 	Player* p = new Player();
 	AddGameObject(p);
 
-	for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the camera or water, and add them to the scene
+	/*for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the camera or water, and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
@@ -141,7 +141,7 @@ void MainScene::Initialize() {
 			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(p->transform);
 		}
 		AddGameObject(obj);
-	}
+	}*/
 	
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
@@ -160,9 +160,6 @@ void MainScene::Start()
 {
 	Scene::Start();
 
-	std::vector<GameObject*> spiders = GetGameobjectsByName("Spider");
-
-	Logger::LogInfo("Spiders", spiders.size());
 
 	PathFinder::Instance().Start();
 

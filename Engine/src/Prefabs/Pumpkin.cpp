@@ -8,6 +8,9 @@ Pumpkin::Pumpkin() : GameObject("Pumpkin")
 	
 	AssetLoader::Instance().GetAsset<Model>("Pumpkin")->PopulateGameObject(this);
 	transform.SetScale(40, 40, 40);
+	state = GROUND;
+	speed = 222;
+	SetIsStatic(0);
 
 }
 
@@ -20,6 +23,7 @@ void Pumpkin::Start()
 	sc->AddCollideAgainstLayer(CollisionLayers::ENEMY);
 	sc->transform.SetScale(0.7, 0.7, 0.7);
 	sc->transform.SetPosition(0, 0.2, 0);
+	sc->enableRender = 1;
 
 	AddComponent(sc);
 }
@@ -28,4 +32,15 @@ void Pumpkin::Start()
 Pumpkin::~Pumpkin()
 {
 
+}
+
+void Pumpkin::Update()
+{
+	GameObject::Update();
+	if (state == SHOT)
+	{
+		glm::vec3 vel = shootDirection * speed * Timer::GetDeltaS();
+		//Logger::LogInfo("Updating pumpking, pos", Maths::Vec3ToString(transform.GetPosition()));
+		transform.SetPosition(transform.GetPosition() + vel);
+	}
 }

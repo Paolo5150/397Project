@@ -95,6 +95,8 @@ void Player::Update()
 			shootTimer = 0;
 			Pumpkin* pump = new Pumpkin();
 			pump->transform.SetPosition(transform.GetPosition() + transform.GetLocalFront() * 10.0f);
+			pump->state = Pumpkin::SHOT;
+			pump->shootDirection = transform.GetLocalFront();
 			SceneManager::Instance().GetCurrentScene().AddGameObject(pump);
 			
 		}
