@@ -88,7 +88,6 @@ void MainScene::Initialize() {
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
 	Lua::RunLua("Assets\\Scripts\\Level1.lua");
-	gContactAddedCallback = PhysicsWorld::CollisionCallback;
 
 	Timer::SetDisplayFPS(true);
 
@@ -125,10 +124,7 @@ void MainScene::Initialize() {
 
 
 	//GameObjects
-	/*cam = new MainCamera();
-	cam->SetMovementSpeed(500);
-	cam->RemoveLayerMask(Layers::GUI);
-	AddGameObject(cam);*/
+
 
 	Player* p = new Player();
 	AddGameObject(p);
@@ -138,8 +134,8 @@ void MainScene::Initialize() {
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
 		{
-			continue;
-			//((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(cam->transform);
+
+			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(p->transform);
 		}
 		AddGameObject(obj);
 	}
