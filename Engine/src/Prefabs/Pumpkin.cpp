@@ -13,10 +13,11 @@ Pumpkin::Pumpkin() : GameObject("Pumpkin")
 
 void Pumpkin::Start()
 {
-	SphereCollider* sc = new SphereCollider();
+	BoxCollider* sc = new BoxCollider();
 	sc->ResetCollisionLayer();
+	sc->AddCollisionLayer(CollisionLayers::PUPMKIN);
 	sc->ResetCollideAgainstLayer();
-	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
+	sc->AddCollideAgainstLayer(CollisionLayers::ENEMY);
 	sc->transform.SetScale(0.7, 0.7, 0.7);
 	sc->transform.SetPosition(0, 0.2, 0);
 

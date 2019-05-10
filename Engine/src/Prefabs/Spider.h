@@ -28,6 +28,7 @@ public:
 
 	void Update() override;
 
+	void OnCollision(GameObject* g) override;
 private:
 
 	AIBase* aiBase;

@@ -91,6 +91,7 @@ void Spider::Start()
 	sc->ResetCollisionLayer();
 	sc->AddCollisionLayer(CollisionLayers::ENEMY);
 	sc->ResetCollideAgainstLayer();
+	sc->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
 	sc->transform.SetScale(80, 40, 80);
 
 	sc->transform.SetPosition(0, 35, 0);
@@ -123,4 +124,9 @@ void Spider::Update()
 			}
 		}
 	}
+}
+
+void Spider::OnCollision(GameObject* g)
+{
+	Logger::LogInfo("Spider hit by", g->GetName());
 }

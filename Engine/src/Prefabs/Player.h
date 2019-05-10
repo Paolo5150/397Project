@@ -60,6 +60,10 @@ public:
 	BoxCollider* boxCollider;
 	HealthComponent* healhComponent;
 
+	int ammoCounter;
+	float shootTimer;
+
+
 
 private:
 	/**

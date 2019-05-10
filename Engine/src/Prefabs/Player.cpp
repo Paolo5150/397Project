@@ -1,6 +1,9 @@
 #include "Player.h"
 #include "..\Scene\Scene.h"
+#include "..\Scene\SceneManager.h"
+
 #include "Terrain.h"
+#include "Pumpkin.h"
 
 namespace {
 
@@ -8,6 +11,7 @@ namespace {
 	const float MAX_SPEED = 1000;
 	float ORIGINAL_SPEED = 500;
 	float counter = 0;
+	float SHOOT_RATE = 0.3;
 	GranadeLauncher* gn;
 }
 
@@ -83,11 +87,28 @@ void Player::Update()
 	_intendedDir.z = 0;
 
 	//Logger::LogInfo(gn->transform.ToString());
+	if (Input::GetMouseDown(0))
+	{
+		shootTimer += Timer::GetDeltaS();
+		if (shootTimer >= SHOOT_RATE)
+		{
+			shootTimer = 0;
+			Pumpkin* pump = new Pumpkin();
+			pump->transform.SetPosition(transform.GetPosition() + transform.GetLocalFront() * 10.0f);
+			SceneManager::Instance().GetCurrentScene().AddGameObject(pump);
+			
+		}
+	}
+	else
+		shootTimer = SHOOT_RATE;
 
 
 	UpdateControls();
 
-	Logger::LogInfo("Health", healhComponent->GetCurrentHealth());
+	//Logger::LogInfo("Health", healhComponent->GetCurrentHealth());
+
+	//Shooting
+
 
 
 	float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
