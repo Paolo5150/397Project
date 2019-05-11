@@ -36,9 +36,8 @@ Player::Player() : GameObject("Player")
 	gunCam->SetDepth(10);
 	gunCam->SetIsStatic(0);
 	
-	AddChild(mainCamera);
-	AddChild(gunCam);
-	AddChild(gn);
+
+	gunCam->AddChild(gn);
 
 
 	ammoCounter = 5;
@@ -46,6 +45,16 @@ Player::Player() : GameObject("Player")
 
 
 }
+
+void Player::OnAddToScene(Scene& theScene)
+{
+	GameObject::OnAddToScene(theScene);
+	theScene.AddGameObject(mainCamera);
+	theScene.AddGameObject(gunCam);
+
+}
+
+
 
 Player::~Player() {}
 
@@ -150,7 +159,8 @@ void Player::Update()
 	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 50)
 		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 50);
 	
-
+	mainCamera->transform.SetPosition(transform.GetPosition());
+	gunCam->transform.SetPosition(transform.GetPosition());
 
 }
 
@@ -159,6 +169,8 @@ void Player::UpdateControls()
 
 	Transform t = transform;
 	transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
+	mainCamera->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
+	gunCam->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
 
 
 	t.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
@@ -168,7 +180,12 @@ void Player::UpdateControls()
 	float dot = glm::dot(t.GetLocalFront(), glm::vec3(0, 1, 0));
 
 	if (dot  < 0.8 && dot  > -0.8)
+	{
 		this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
+		mainCamera->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
+		gunCam->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
+
+	}
 
 
 	//Handle forward and backward movement

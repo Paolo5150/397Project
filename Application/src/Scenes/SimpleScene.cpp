@@ -122,6 +122,7 @@ void SimpleScene::Initialize() {
 
 	nanosuit->transform.SetPosition(x+400, y, z);
 	nanosuit->transform.SetScale(5, 5, 5);
+	nanosuit->transform.SetRotation(0, 45, 0);
 
 	crate->transform.SetPosition(0, 0, 5);
 	nanosuit->AddChild(crate);
@@ -153,13 +154,15 @@ void SimpleScene::LogicUpdate()
 
 	if (timer > 0.2)
 	{
-	//	Logger::LogInfo("p", player->transform.VectorsToString());
+		Logger::LogInfo("p", player->transform.VectorsToString());
+		Logger::LogError("c", player->mainCamera-> transform.VectorsToString());
+
 
 		timer = 0;
 	}
 
 	if (Input::GetKeyDown(GLFW_KEY_SPACE))
-		player->transform.RotateBy(5, player->transform.GetLocalRight());
+		nanosuit->transform.RotateBy(5, nanosuit->transform.GetLocalUp());
 
 	
 

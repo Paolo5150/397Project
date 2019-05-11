@@ -41,7 +41,7 @@ void Camera::Update()
 void Camera::UpdateViewMatrix()
 {
 	viewMatrix = glm::mat4();
-	viewMatrix = glm::lookAt(transform.GetGlobalPosition(), transform.GetGlobalPosition() + transform.GetLocalFront(), transform.GetLocalUp());
+	viewMatrix = glm::lookAt(transform.GetPosition(), transform.GetPosition() + transform.GetLocalFront(), transform.GetLocalUp());
 	
 }
 

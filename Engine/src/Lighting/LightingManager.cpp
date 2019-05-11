@@ -107,8 +107,8 @@ void LightManager::UpdateUBOs()
 			//Create shadow map
 			(*it)->shadowMap->Bind();
 			glClear(GL_DEPTH_BUFFER_BIT);
-			shadowCamera->transform.SetPosition(sceneMainCamera->transform.GetPosition() - (*it)->transform.GetLocalFront() * 1000.0f);
-			shadowCamera->transform.LookAt(shadowCamera->transform.GetPosition() + (*it)->transform.GetLocalFront());
+			shadowCamera->transform.SetPosition(sceneMainCamera->transform.GetGlobalPosition() - (*it)->transform.GetLocalFront() * 1000.0f);
+			shadowCamera->transform.LookAt(shadowCamera->transform.GetGlobalPosition() + (*it)->transform.GetLocalFront());
 			shadowCamera->UpdateViewMatrix();
 			RenderingEngine::Instance().RenderBuffer(shadowCamera, MaterialType::COLORONLY);
 			(*it)->shadowMap->Unbind();

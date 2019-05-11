@@ -221,7 +221,11 @@ void Input::Cursor_Pos_Callback(GLFWwindow* window, double xpos, double ypos)
 
 	deltaMouseX = mouseX - xpos;
 	deltaMouseY = mouseY - ypos;
-	//Logger::LogWarning("Delta",deltaMouseX,deltaMouseY);
+	
+	deltaMouseX = abs(deltaMouseX) < 15 ? deltaMouseX : 15 * glm::sign(deltaMouseX);
+	deltaMouseY = abs(deltaMouseY) < 15 ? deltaMouseY : 15 * glm::sign(deltaMouseY);
+
+
 	mouseX = xpos;
 	mouseY = ypos;
 	if (!cursorInWindow)

@@ -11,6 +11,7 @@ public:
 	Player();
 	~Player();
 	void Start() override;
+	virtual void OnAddToScene(Scene& theScene) override;
 
 	void Update() override;
 	void UpdateControls();

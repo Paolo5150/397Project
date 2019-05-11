@@ -104,7 +104,7 @@ void Water::Update()
 
 	waterCamera->SetActive(1);
 	glm::vec3 color = glm::vec3(0.3,0.3,0.3);
-	if (mainCamera->transform.GetGlobalPosition().y > transform.GetPosition().y)
+	if (mainCamera->transform.GetPosition().y > transform.GetPosition().y)
 	{
 	LightManager::Instance().SetClippingPlane(glm::vec4(0, -1, 0, transform.GetPosition().y));
 	}
@@ -164,7 +164,7 @@ void Water::OnPreRender(Camera& camera, Shader* currentShader)
 
 	//Logger::LogInfo("Water pre render");
 	currentShader->SetFloat("timer", timer);
-	currentShader->SetInt("underwater", mainCamera->transform.GetPosition().y <  transform.GetPosition().y ? 1 : 0);
+	currentShader->SetInt("underwater", mainCamera->transform.GetGlobalPosition().y <  transform.GetPosition().y ? 1 : 0);
 
 
 	if (SceneManager::Instance().GetCurrentScene().GetSkyBox() != nullptr && !cubemapLoaded)
