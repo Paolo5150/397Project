@@ -155,15 +155,15 @@ int LuaRegistry::Lua_Create(lua_State* L)
 			posX = Terrain::Instance().GetCenter().x;
 		}
 
-		if (posY == -9999)
-		{
-			posY = Terrain::Instance().GetHeightAt(posX, posZ);
-		}
-
 		if (posZ == -9999)
 		{
 			posZ = Terrain::Instance().GetCenter().z;
 		}
+
+		if (posY == -9999)
+		{
+			posY = Terrain::Instance().GetHeightAt(posX, posZ);
+		}	
 
 		((GameObject*)asset)->transform.SetPosition(posX, posY, posZ);
 
@@ -197,14 +197,14 @@ int LuaRegistry::Lua_Create(lua_State* L)
 			posX = Terrain::Instance().GetCenter().x;
 		}
 
-		if (posY == -9999)
-		{
-			posY = Terrain::Instance().GetHeightAt(posX, posZ);
-		}
-
 		if (posZ == -9999)
 		{
 			posZ = Terrain::Instance().GetCenter().z;
+		}
+
+		if (posY == -9999)
+		{
+			posY = Terrain::Instance().GetHeightAt(posX, posZ);
 		}
 
 		((GameObject*)asset)->transform.SetPosition(posX, posY, posZ);
@@ -231,14 +231,14 @@ int LuaRegistry::Lua_Create(lua_State* L)
 			posX = Terrain::Instance().GetCenter().x;
 		}
 
-		if (posY == -9999)
-		{
-			posY = Terrain::Instance().GetHeightAt(posX, posZ);
-		}
-
 		if (posZ == -9999)
 		{
 			posZ = Terrain::Instance().GetCenter().z;
+		}
+
+		if (posY == -9999)
+		{
+			posY = Terrain::Instance().GetHeightAt(posX, posZ);
 		}
 
 		((GameObject*)asset)->transform.SetPosition(posX, posY, posZ);

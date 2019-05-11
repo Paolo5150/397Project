@@ -22,7 +22,6 @@ public:
 
 	void SetTarget(Transform& transform);
 
-
 	Transform* GetTarget() const;
 
 	void Start() override;

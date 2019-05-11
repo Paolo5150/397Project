@@ -11,7 +11,7 @@ Animator::Animator(AnimatedModel* m) : Component("Animator")
 	for (unsigned int i = 0; i < m->allAnimations.size(); i++)
 		animations.push_back(m->allAnimations[i]);
 
-	currentAnimationIndex = 2;
+	currentAnimationIndex = 0;
 	currentAnimation = &animations[currentAnimationIndex];
 	allBonesTransforms.resize(model->GetTotalBones());
 

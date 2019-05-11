@@ -62,7 +62,9 @@ function Think(state, targetDistance, targetRotation, targetRotationReverse, nod
         Fight();
     elseif(_state == "Flee") then
         Flee();
-    elseif(_state == "") then
+    elseif(_state == "Slow") then
+        Slow();
+    else
         _state = "Idle";
         Idle();
     end
@@ -162,4 +164,15 @@ end
 
 function Flee()
     animation = 7;
+end
+
+function Slow()
+    animation = 14;
+    _wanderPosX = -1;
+    _wanderPosY = -1;
+    _wanderPosZ = -1;
+
+    rotation = _targetRotationReverse * rotationSpeed * _timerDeltaS;
+    fowardMovement = 0;
+    rightMovement = 0;
 end

@@ -26,6 +26,7 @@
 #include "Prefabs\Crate.h"
 #include "Prefabs\Barrel.h"
 #include "Prefabs\Cabin.h"
+#include "Prefabs\Hive.h"
 #include "Prefabs\GranadeLauncher.h"
 #include "Utils\PathFinder.h"
 #include "Graphics\RenderingEngine.h"
@@ -50,6 +51,7 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Barrel\\barrel.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Gun\\gun.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Hive\\hive.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Mountains\\mountains.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
@@ -70,6 +72,8 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\shipTexture.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hive_diffuse.jpg");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hive_normal.jpg");
 }
 void MainScene::UnloadAssets() {
 	AssetLoader::Instance().Unload<Model>();
@@ -91,7 +95,6 @@ void MainScene::Initialize() {
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
 	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
-
 
 	Timer::SetDisplayFPS(true);
 
@@ -128,15 +131,12 @@ void MainScene::Initialize() {
 
 
 	//GameObjects
-	Player* p = (Player*)Lua::GetCreatedAsset(0);
-	AddGameObject(p);
-
-	for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the player, and add them to the scene
+	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the player, and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
 		{			
-			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(p->transform);
+			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").at(0))->transform);
 		}
 		AddGameObject(obj);
 	}
@@ -181,8 +181,44 @@ void MainScene::LogicUpdate()
 
 	if (Input::GetKeyPressed(GLFW_KEY_R))
 		Restart();
-	
 
+
+	
+	
+	
+	if (Input::GetKeyPressed(GLFW_KEY_1))
+	{
+		for (int i = 0; i < Lua::GetCreatedAssetLength(); i++)
+		{
+			if (((GameObject*)Lua::GetCreatedAsset(i))->GetName() == "Hive")
+			{
+				Logger::LogInfo("Set state to 0");
+				((Hive*)Lua::GetCreatedAsset(i))->SetState(0);
+			}
+		}
+	}
+	else if (Input::GetKeyPressed(GLFW_KEY_2))
+	{
+		for (int i = 0; i < Lua::GetCreatedAssetLength(); i++)
+		{
+			if (((GameObject*)Lua::GetCreatedAsset(i))->GetName() == "Hive")
+			{
+				Logger::LogInfo("Set state to 1");
+				((Hive*)Lua::GetCreatedAsset(i))->SetState(1);
+			}
+		}
+	}
+	else if (Input::GetKeyPressed(GLFW_KEY_3))
+	{
+		for (int i = 0; i < Lua::GetCreatedAssetLength(); i++)
+		{
+			if (((GameObject*)Lua::GetCreatedAsset(i))->GetName() == "Hive")
+			{
+				Logger::LogInfo("Set state to 2");
+				((Hive*)Lua::GetCreatedAsset(i))->SetState(2);
+			}
+		}
+	}
 }
 
 void MainScene::Restart()
