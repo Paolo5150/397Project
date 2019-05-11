@@ -13,6 +13,7 @@ namespace {
 	float counter = 0;
 	float SHOOT_RATE = 0.3;
 	GranadeLauncher* gn;
+	CameraPerspective* gunCam;
 }
 
 
@@ -28,13 +29,13 @@ Player::Player() : GameObject("Player")
 	gn->transform.SetScale(0.01, 0.01, 0.01);
 	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
 
-	CameraPerspective* gunCam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
+	gunCam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
 	gunCam->RemoveAllMaskLayers();
 	gunCam->AddLayerMask(Layers::GUN);
 	gunCam->SetDepth(10);
 	gunCam->SetIsStatic(0);
 	
-	AddChild(gunCam);
+	
 	AddChild(gn);
 
 
@@ -133,12 +134,6 @@ void Player::Update()
 
 	UpdateControls();
 
-	//Logger::LogInfo("Health", healhComponent->GetCurrentHealth());
-
-	//Shooting
-
-
-
 	float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
 	transform.SetPosition(transform.GetPosition().x, h + 60, transform.GetPosition().z);
 
@@ -153,7 +148,7 @@ void Player::Update()
 	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 50)
 		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 50);
 	
-
+	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
 
 }
 
@@ -173,15 +168,16 @@ void Player::UpdateControls()
 			mainCamera->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
 			mainCamera->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
 
+			gunCam->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
+			gunCam->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
+
 			if (glm::dot(transform.GetLocalFront(), glm::vec3(0, -1, 0)) > 0.8 || glm::dot(transform.GetLocalFront(), glm::vec3(0, 1, 0)) > 0.8)
 			{
 				this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), -transform.GetLocalRight());
 				mainCamera->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), -transform.GetLocalRight());
+				gunCam->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), -transform.GetLocalRight());
+
 			}
-
-
-
-
 		}
 
 	}
@@ -239,7 +235,12 @@ void Player::UpdateControls()
 
 	counter = 1;
 
+	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
+	gn->transform.SetRotation(0,0,0);
+
 	mainCamera->transform.SetPosition(transform.GetGlobalPosition());
+	gunCam->transform.SetPosition(transform.GetGlobalPosition());
+
 
 
 
