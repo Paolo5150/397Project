@@ -105,8 +105,8 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(manual);
 
 	// HUD elements
-	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont",1, 90, 3, 1, 1, 1, 1);
-	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"),80, 3, 8,8, 1);
+	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont",1, 90, 5, 1, 1, 1, 1);
+	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"),80, 3, 7,7, 1);
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoText);
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoImage);
 

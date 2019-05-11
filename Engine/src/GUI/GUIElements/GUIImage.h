@@ -59,13 +59,9 @@ public:
 
 	void RenderImGuiElement() override
 	{
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		ImGui::SetCursorPosX(pixelPosition.x);
 		ImGui::SetCursorPosY(pixelPosition.y);
 		ImGui::Image(GetTextureID(), ImVec2(pixelSize.x, pixelSize.y));
-		glDisable(GL_BLEND);
-
 	}
 
 private:
