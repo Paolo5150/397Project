@@ -31,18 +31,12 @@ public:
 	*/
 	GUIProgressBar(std::string uniqueName,std::string message,float posX , float posY , float sizeX, float sizeY, bool isPercentage = false) : GUIObject(uniqueName){
 		this->message = message;
-		percentage = 1;
-		int winX, winY;
-
-
-		Window::Instance().GetWindowSize(winX, winY);
-		if (!isPercentage)
-		{
-			winX = winY = 100;
-		}
-		size.x = sizeX * winX / 100;
-		size.y = sizeY * winY / 100;
-		position = glm::vec2(posX * winX / 100, posY * winY / 100);
+		position.x = posX;
+		position.y = posY;
+		size.x = sizeX;
+		size.y = sizeY;
+		resizable = isPercentage;
+		CalculateSizePosition();
 
 	}
 
@@ -62,10 +56,10 @@ public:
 	void RenderImGuiElement() override
 	{
 
-		ImGui::SetCursorPosX(position.x);
-		ImGui::SetCursorPosY(position.y);
+		ImGui::SetCursorPosX(pixelPosition.x);
+		ImGui::SetCursorPosY(pixelPosition.y);
 
-		ImGui::ProgressBar(percentage, ImVec2(size.x, size.y),message.c_str());
+		ImGui::ProgressBar(percentage, ImVec2(pixelSize.x, pixelSize.y), message.c_str());
 	}
 
 };

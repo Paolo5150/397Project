@@ -4,6 +4,8 @@
 #include "..\imgui_impl_glfw.h"
 #include "..\imgui_impl_opengl3.h"
 #include "..\..\Core\Window.h"
+#include "..\..\Event\EventDispatcher.h"
+#include "..\..\Event\WindowEvents.h"
 #include <functional>
 /**
 * @class GUIObject
@@ -26,6 +28,14 @@ public:
 	*/
 	GUIObject(std::string uniqueName) : name(uniqueName){
 		isActive = 1;
+
+		EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>([this](Event* e){
+
+			CalculateSizePosition();
+
+			return 0;
+		});
+
 	};
 
 	/**
@@ -42,18 +52,46 @@ public:
 	glm::vec2 position;
 
 	/**
+	* @brief		The position on the screen
+	*/
+	glm::vec2 pixelPosition;
+
+	/**
 	* @brief		The size of the element
 	*/
 	glm::vec2 size;
+
+	/**
+	* @brief		The size of the element
+	*/
+	glm::vec2 pixelSize;
 
 	/**
 	* @brief		Whether the GUIObject is active or not
 	*/
 	bool isActive;
 
+	bool resizable;
+
 	std::string name;
 
 	virtual void RenderImGuiElement() = 0;
+
+	void CalculateSizePosition()
+	{
+		int winX, winY;
+		Window::Instance().GetWindowSize(winX, winY);
+		if (!resizable)
+		{
+			winX = winY = 100;
+		}
+
+		pixelPosition = glm::vec2(position.x * winX / 100, position.y * winY / 100);
+		pixelSize.x = size.x * winX / 100;
+		pixelSize.y = size.y * winY / 100;
+	}
+
+
 
 };
 

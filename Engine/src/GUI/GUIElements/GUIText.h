@@ -33,14 +33,10 @@ public:
 		
 		_color = glm::vec4(r, g, b, 1);
 		fontScale = fontSize;
-		int winX, winY;
-		Window::Instance().GetWindowSize(winX, winY);
-		if (!isPercentage)
-		{
-			winX = winY = 100;
-		}
-
-		position = glm::vec2(posX * winX / 100, posY * winY / 100);
+		position.x = posX;
+		position.y = posY;
+		resizable = isPercentage;
+		CalculateSizePosition();
 
 		this->fontName = fontName;
 	
@@ -70,8 +66,8 @@ public:
 
 	void RenderImGuiElement() override
 	{
-		ImGui::SetCursorPosX(position.x);
-		ImGui::SetCursorPosY(position.y);	
+		ImGui::SetCursorPosX(pixelPosition.x);
+		ImGui::SetCursorPosY(pixelPosition.y);
 
 		GUIManager::Instance().SelectFont(fontName);
 		ImGui::SetWindowFontScale(fontScale);
