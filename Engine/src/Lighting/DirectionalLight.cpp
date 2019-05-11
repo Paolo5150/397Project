@@ -1,5 +1,6 @@
 #include "DirectionalLight.h"
 #include "..\Core\Core.h"
+#include "LightingManager.h"
 
 DirectionalLight::DirectionalLight(bool castShadows) : Light("DirectionalLight",DIRECTIONAL)
 {
@@ -27,4 +28,6 @@ DirectionalLight::~DirectionalLight()
 {
 	if (shadowMap != NULL)
 		delete shadowMap;
+
+	LightManager::Instance().RemoveLight(this);
 }

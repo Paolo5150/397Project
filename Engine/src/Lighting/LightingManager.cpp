@@ -6,6 +6,8 @@
 #include "..\Utils\Maths.h"
 #include "..\Core\CameraOrthogonal.h"
 #include "..\Core\Core.h"
+#include "..\Event\EventDispatcher.h"
+#include "..\Event\ApplicationEvents.h"
 
 
 static int POINT_LIGHT_SIZE = 64; //Size in bytes + offsets
@@ -50,7 +52,19 @@ void LightManager::Initialize()
 	int point_total_size = (MAX_LIGHTS * POINT_LIGHT_SIZE) + 4;
 	pointLightsBuffer = Core::Instance().GetGraphicsAPI().CreateUniformBuffer(point_total_size, UBOLibrary::POINT_LIGHTS);
 
+	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this, point_total_size, directional_total_size](Event* e){
 
+		delete pointLightsBuffer;
+		delete direcionalLightsBuffer;
+		allPointLights.clear();
+		alldirectionalLights.clear();
+
+		pointLightsBuffer = Core::Instance().GetGraphicsAPI().CreateUniformBuffer(point_total_size, UBOLibrary::POINT_LIGHTS);
+		direcionalLightsBuffer = Core::Instance().GetGraphicsAPI().CreateUniformBuffer(directional_total_size, UBOLibrary::DIRECTIONAL_LIGHTS);
+		sceneMainCamera = nullptr;
+		shadowMaps.clear();
+		return 0;
+	});
 
 
 }
