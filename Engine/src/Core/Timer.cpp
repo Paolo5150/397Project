@@ -97,10 +97,7 @@ void Timer::Update()
 		EventDispatcher::Instance().DispatchEvent(new LogicUpdateEvent());
 		EventDispatcher::Instance().DispatchEvent(new RenderEvent());
 		EventDispatcher::Instance().DispatchEvent(new LateUpdateEvent());
-		tickCount++;
-
-
-	
+		tickCount++;	
 	}
 
 	m_FPSCounter++;

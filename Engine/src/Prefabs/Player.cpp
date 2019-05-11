@@ -162,23 +162,21 @@ void Player::UpdateControls()
 		if (counter != 0) // Super hack to fix the camera going weird
 		{
 
+
+
 			this->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
-			this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
-
-
 			mainCamera->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
-			mainCamera->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
-
 			gunCam->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
-			gunCam->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
 
-			if (glm::dot(transform.GetLocalFront(), glm::vec3(0, -1, 0)) > 0.8 || glm::dot(transform.GetLocalFront(), glm::vec3(0, 1, 0)) > 0.8)
+
+			if (transform.GetRotation().x - Input::GetDeltaMousePosY() > -50 && transform.GetRotation().x - Input::GetDeltaMousePosY() < 50)
 			{
-				this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed() * 2, -transform.GetLocalRight());
-				mainCamera->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed() * 2, -transform.GetLocalRight());
-				gunCam->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed() * 2, -transform.GetLocalRight());
-
+				this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
+				mainCamera->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
+				gunCam->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
 			}
+
+	
 		}
 
 	}
@@ -241,10 +239,6 @@ void Player::UpdateControls()
 
 	mainCamera->transform.SetPosition(transform.GetGlobalPosition());
 	gunCam->transform.SetPosition(transform.GetGlobalPosition());
-
-
-
-
 }
 
 
