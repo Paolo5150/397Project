@@ -2,7 +2,8 @@
 #include "Scene/Scene.h"
 
 class GUIImage;
-
+class Player;
+class GUIProgressBar;
 /**
 * @class MainScene
 * @brief The application main scene
@@ -65,6 +66,12 @@ public:
 
 	GUIImage* manual;
 
+	GUIImage* pumpkinAmmoImage;
+	GUIText* pumpkinAmmoText;
+	GUIProgressBar* healthBar;
+	Player* player;
+
 	void Restart();
+	void UpdateUI();
 
 };

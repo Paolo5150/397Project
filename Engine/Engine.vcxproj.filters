@@ -187,5 +187,6 @@
     <ClInclude Include="src\Prefabs\GranadeLauncher.h" />
     <ClInclude Include="src\Prefabs\Player.h" />
     <ClInclude Include="src\Components\HealthComponent.h" />
+    <ClInclude Include="src\GUI\GUIElements\GUIProgressBar.h" />
   </ItemGroup>
 </Project>

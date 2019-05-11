@@ -8,6 +8,8 @@
 #include "Utils\AssetLoader.h"
 #include "GUI\GUIElements\GUIManager.h"
 #include "GUI\GUIElements\GUIButton.h"
+#include "GUI\GUIElements\GUIProgressBar.h"
+
 
 #include "Core\Input.h"
 #include "Event\EventDispatcher.h"
@@ -37,9 +39,7 @@ void MainMenuScene::Initialize() {
 
 	int wx, wy;
 	Window::Instance().GetWindowSize(wx, wy);
-	loadingImage = new GUIImage("Logo", AssetLoader::Instance().GetAsset<Texture2D>("logo"),
-		0 + 50, 0 + 50,
-		wx - 100, wy - 50);
+	loadingImage = new GUIImage("Logo", AssetLoader::Instance().GetAsset<Texture2D>("logo"),5,5,90,90,1);
 
 	loadingImage->isActive = 0;
 
@@ -59,10 +59,11 @@ void MainMenuScene::Initialize() {
 
 
 
-	}, "", 10, 10, 45, 45, 1, 1, 1, 1));
+	}, "", 1.5,10, 10, 45, 45, 1, 1, 1, 1));
 
-	loadingText = new GUIText("LoadingText", "Loading scene...", "invasionFont", 20, wy - 50, 0.2f, 0.2f, 0.2f);
+	loadingText = new GUIText("LoadingText", "Loading scene...", "invasionFont", 1.5, 5, 90, 0.2, 0.2, 0.2, 1);
 	loadingText->isActive = 0;
+
 	GUIManager::Instance().AddGUIObject(startButton);
 	GUIManager::Instance().AddGUIObject(loadingImage);
 	GUIManager::Instance().AddGUIObject(loadingText);

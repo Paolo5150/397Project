@@ -29,7 +29,7 @@ void main()
 	 vec3 diffuseColor = texture(diffuse0,Textcoords + totalDistortion).rgb;
 	 
 	 diffuseColor = mix(diffuseColor,godRaysText,0.25 * camLightDot);
-	 vec3 diffuseColorBluish = diffuseColor * vec3(0.2,0.2,0.5);
+	 vec3 diffuseColorBluish = diffuseColor * vec3(0.4,0.4,0.8);
 	
 	 vec3 total = mix(diffuseColor,diffuseColorBluish,underwater);
 	

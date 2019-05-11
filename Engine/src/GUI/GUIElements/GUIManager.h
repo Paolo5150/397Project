@@ -94,7 +94,7 @@ public:
 	void SetBackgroundColor(float r, float g, float b, float a);
 
 	void SelectFont(std::string fontName);
-	void ResetFont(){ ImGui::PopFont(); }
+	void ResetFont(){ ImGui::PopFont(); ImGui::SetWindowFontScale(1); }
 
 	void DeleteGUIObjects(bool preservedToo);
 	std::list<std::function<void()>> buttonCallbacks;
