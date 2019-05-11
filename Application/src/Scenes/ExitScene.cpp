@@ -43,10 +43,9 @@ void ExitScene::Initialize() {
 	 GUIManager::Instance().AddGUIObject(new GUIImage("dylanImage", AssetLoader::Instance().GetAsset<Texture2D>("dylan"), 40, 20, 25, 35, true));
 	 GUIManager::Instance().AddGUIObject(new GUIImage("mitchImage", AssetLoader::Instance().GetAsset<Texture2D>("mitch"), 70, 20, 25, 35, true));
 
-	 GUIManager::Instance().AddGUIObject(new GUIText("paoloText", "Paolo Ferri", "invasionFont",1.2,10, 60, 0.1f, 0.1f, 0.1f, true));
-	 GUIManager::Instance().AddGUIObject(new GUIText("dylanText", "Dylan Green","invasionFont",1.2, 40, 60, 0.1f, 0.1f, 0.1f, true));
-	 GUIManager::Instance().AddGUIObject(new GUIText("mitchText", "Mitchell Hollings", "invasionFont",1.2,70, 60, 0.1f, 0.1f, 0.1f, true));
-
+	 GUIManager::Instance().AddGUIObject(new GUIText("paoloText", "Paolo Ferri", "invasionFont",1,10, 60, 0.1f, 0.1f, 0.1f, true));
+	 GUIManager::Instance().AddGUIObject(new GUIText("dylanText", "Dylan Green","invasionFont",1, 40, 60, 0.1f, 0.1f, 0.1f, true));
+	 GUIManager::Instance().AddGUIObject(new GUIText("mitchText", "Mitchell Hollings", "invasionFont",1,70, 60, 0.1f, 0.1f, 0.1f, true));
 
 
 }

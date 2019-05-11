@@ -76,8 +76,6 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
 
-	ImGui::SetWindowFontScale(1.5);
-
 	for (auto it = allGUI.begin(); it != allGUI.end();)
 	{
 		if (it->second->isActive)
@@ -138,8 +136,6 @@ void GUIManager::RenderNoButtonCallbacks()
 	ImGui::Begin("Hello, world!", 0, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
-
-	ResetFont();
 
 	for (auto it = allGUI.begin(); it != allGUI.end();)
 	{

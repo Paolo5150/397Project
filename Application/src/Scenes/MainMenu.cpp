@@ -63,7 +63,7 @@ void MainMenuScene::Initialize() {
 
 	}, "", 10, 10, 45, 45, 1, 1, 1, 1));
 
-	loadingText = new GUIText("LoadingText", "Loading scene...", "invasionFont", 20, wy - 50, 0.2f, 0.2f, 0.2f);
+	loadingText = new GUIText("LoadingText", "Loading scene...", "invasionFont", 1.5,20, wy - 50, 0.2f, 0.2f, 0.2f);
 	loadingText->isActive = 0;
 
 	GUIManager::Instance().AddGUIObject(startButton);

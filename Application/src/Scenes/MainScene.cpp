@@ -110,7 +110,7 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoText);
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoImage);
 
-	healthBar = new GUIProgressBar("", "", 5, 15, 40,5, 1);
+	healthBar = new GUIProgressBar("", "", 1, 1, 40,5, 1);
 	GUIManager::Instance().AddGUIObject(healthBar);
 
 
