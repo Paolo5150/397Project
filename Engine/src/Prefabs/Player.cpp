@@ -12,7 +12,7 @@ namespace {
 	float ORIGINAL_SPEED = 500;
 	float counter = 0;
 	float SHOOT_RATE = 0.3;
-	GranadeLauncher* gn;
+
 	CameraPerspective* gunCam;
 }
 
@@ -29,13 +29,15 @@ Player::Player() : GameObject("Player")
 	gn->transform.SetScale(0.01, 0.01, 0.01);
 	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
 
+
 	gunCam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
 	gunCam->RemoveAllMaskLayers();
 	gunCam->AddLayerMask(Layers::GUN);
 	gunCam->SetDepth(10);
 	gunCam->SetIsStatic(0);
 	
-	
+	AddChild(mainCamera);
+	AddChild(gunCam);
 	AddChild(gn);
 
 
@@ -49,6 +51,7 @@ Player::~Player() {}
 
 void Player::Start()
 {
+	GameObject::Start();
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
 	transform.SetPosition(x, y, z);
@@ -101,13 +104,11 @@ void Player::Start()
 
 
 
-void Player::OnAddToScene(Scene& scene)
-{
-	scene.AddGameObject(mainCamera);
-}
+
 
 void Player::Update()
 {
+	GameObject::Update();
 	_intendedDir.x = 0;
 	_intendedDir.y = 0;
 	_intendedDir.z = 0;
@@ -149,41 +150,26 @@ void Player::Update()
 	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 50)
 		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 50);
 	
-	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
+
 
 }
 
 void Player::UpdateControls()
 {
 
-	//Handle rotation
-	if (!_isTopView)
-	{
-		if (counter != 0) // Super hack to fix the camera going weird
-		{
+	Transform t = transform;
+	transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
 
 
+	t.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
 
-			this->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
-			mainCamera->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
-			gunCam->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
+	t.UpdateVectors();
 
+	float dot = glm::dot(t.GetLocalFront(), glm::vec3(0, 1, 0));
 
-			if (transform.GetRotation().x - Input::GetDeltaMousePosY() > -50 && transform.GetRotation().x - Input::GetDeltaMousePosY() < 50)
-			{
-				this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
-				mainCamera->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
-				gunCam->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
-			}
+	if (dot  < 0.8 && dot  > -0.8)
+		this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
 
-	
-		}
-
-	}
-	else
-	{
-		//transform.Translate(0, GetMovementSpeed() * Input::GetDeltaMousePosY() * Timer::GetDeltaS(),0);
-	}
 
 	//Handle forward and backward movement
 	if (Input::GetKeyDown(GLFW_KEY_W) == true && Input::GetKeyDown(GLFW_KEY_S) == false)
@@ -234,11 +220,7 @@ void Player::UpdateControls()
 
 	counter = 1;
 
-	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
-	gn->transform.SetRotation(0,0,0);
 
-	mainCamera->transform.SetPosition(transform.GetGlobalPosition());
-	gunCam->transform.SetPosition(transform.GetGlobalPosition());
 }
 
 

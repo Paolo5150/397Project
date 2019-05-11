@@ -166,7 +166,7 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 	timer += Timer::GetDeltaS();
 	postProcessShader->SetFloat("timer", timer);
 	if (Camera::GetCameraByName("Main Camera") != nullptr)
-	postProcessShader->SetInt("underwater", Camera::GetCameraByName("Main Camera")->transform.GetPosition().y < 150 ? 1 : 0);
+	postProcessShader->SetInt("underwater", Camera::GetCameraByName("Main Camera")->transform.GetGlobalPosition().y < 150 ? 1 : 0);
 
 
 	glActiveTexture(GL_TEXTURE0);
