@@ -1,5 +1,7 @@
 #include "PathFinder.h"
 #include "..\Prefabs\Terrain.h"
+#include "..\Event\EventDispatcher.h"
+#include "..\Event\ApplicationEvents.h"
 #include <list>
 #include <limits>
 #include <float.h>
@@ -11,7 +13,18 @@ PathFinder& PathFinder::Instance()
 }
 
 PathFinder::PathFinder()
-{}
+{
+	nodesQT = nullptr;
+
+	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
+
+		nodesQT->ClearNodes();
+		nodeMap.clear();
+		pathNodes.clear();
+
+		return 0;
+	});
+}
 
 PathFinder::~PathFinder()
 {
@@ -69,6 +82,8 @@ void PathFinder::Generate(Terrain* terrain)
 
 	int x, y, z;
 	terrain->GetCenter(x, y, z);
+
+	if (nodesQT == nullptr)
 	nodesQT = new QuadTree<PathNode*>(x, z, terrain->GetTerrainMaxX() - terrain->GetTerrainMinX(), terrain->GetTerrainMaxZ() - terrain->GetTerrainMinZ(),100);
 
 }

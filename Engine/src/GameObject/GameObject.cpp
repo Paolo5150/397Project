@@ -7,7 +7,7 @@
 #include "..\Core\Timer.h"
 
 
-GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent)
+GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent) : transform(Transform(this))
 {
 	SetName(name);
 	SetActive(isActive);
@@ -52,7 +52,7 @@ void GameObject::FlagToBeDestroyed()
 	
 }
 
-void GameObject::OnAddToScene()
+void GameObject::OnAddToScene(Scene& scene)
 {
 	for (auto it = std::begin(_components); it != std::end(_components); it++)
 	{
@@ -62,7 +62,7 @@ void GameObject::OnAddToScene()
 
 	for (auto it = std::begin(_children); it != std::end(_children); it++)
 		{
-		(*it)->OnAddToScene();
+		(*it)->OnAddToScene(scene);
 		}
 	
 }
@@ -286,11 +286,13 @@ void GameObject::Update()
 
 	auto it = _children.begin();
 	for (; it != _children.end(); it++)
-		(*it)->Update();
+		if ((*it)->GetActive() == true)
+			(*it)->Update();
 
 	auto itc = _components.begin();
 	for (; itc != _components.end(); itc++)
-		(*itc)->Update();
+		if ((*itc)->GetActive() == true)
+			(*itc)->Update();
 }
 
 void GameObject::EngineUpdate()

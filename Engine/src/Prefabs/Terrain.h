@@ -21,13 +21,15 @@ public:
 
 	static Terrain& Instance();
 
+
+
 	void Initialize(int size);
 	/**
 	* @brief		Destroy the terrain object
 	* @pre			The terrain object must exist
 	* @post			The terrain object is destroyed
 	*/
-	~Terrain(){ delete gridMesh; };
+	~Terrain(){ delete gridMesh; instance = nullptr; };
 
 	/**
 	* @brief				Applies a heightmap to the terrain
@@ -98,6 +100,7 @@ public:
 
 	float GetTerrainMaxZ();
 	float GetTerrainMinZ();
+
 	
 
 private:
@@ -147,7 +150,7 @@ private:
 
 	Mesh* gridMesh;
 
-	
+	static Terrain* instance;
 
 	
 };

@@ -2,6 +2,8 @@
 #include "..\Utils\Maths.h"
 #include <sstream>
 
+class GameObject;
+
 /**
 * @class Transform
 * @brief Manages movement, rotation and scaling of game objects in 3D space
@@ -22,6 +24,8 @@ public:
 	*/
 	Transform* parent;
 
+	GameObject* gameObject;
+
 	/**
 	* @brief		Create the transform object
 	*
@@ -29,7 +33,7 @@ public:
 	* @post			The transform object is created
 	*
 	*/
-	Transform();
+	Transform(GameObject* go);
 
 	/**
 	* @brief		Return the position relative to parent

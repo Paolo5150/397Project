@@ -17,7 +17,7 @@ public:
 	~Animator();
 
 	void SetAnimationSpeed(float speed) { animationSpeed = speed; }
-	void SetCurrentAnimation(int animation);
+	void SetCurrentAnimation(int animation, bool loop = true);
 	void Reset();
 	void OnPreRender(Camera& cam, Shader* currentShader = nullptr);
 

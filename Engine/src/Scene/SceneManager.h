@@ -54,6 +54,13 @@ public:
 	void LoadNewScene(std::string sceneName);
 
 	/**
+	* @brief Load a new scene to be updated
+	* @pre The scene is no null, The scene manager instance exists
+	* @post The scene is loaded
+	*/
+	void ReloadCurrent();
+
+	/**
 	* @brief Destroys all scenes from memory
 	* @pre The scene manager instance exists
 	* @post The scenes are destroyed

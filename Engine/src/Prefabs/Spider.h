@@ -4,6 +4,9 @@
 #include "../GameObject/GameObject.h"
 #include "..\Utils\AssetLoader.h"
 
+class AIBase;
+class HealthComponent;
+
 class Spider : public GameObject
 {
 public:
@@ -19,13 +22,20 @@ public:
 
 	void SetTarget(Transform& transform);
 
+
 	Transform* GetTarget() const;
 
 	void Start() override;
 
 	void Update() override;
 
+	void OnCollision(GameObject* g) override;
 private:
+
+	AIBase* aiBase;
+	float attackTimer;
+	float deathTimer;
+	HealthComponent* healthComponent;
 
 };
 

@@ -18,7 +18,7 @@ void Scene::AddGameObject(GameObject* go)
 		}
 
 	m_allGameObjects.push_back(go);
-	go->OnAddToScene();
+	go->OnAddToScene(*this);
 
 	auto child = go->GetChildList().begin();
 
@@ -90,7 +90,8 @@ void Scene::LogicUpdate()
 
 	for (; it != m_allGameObjects.end(); it++)
 	{
-		(*it)->Update();
+		if((*it)->GetActive() == true)
+			(*it)->Update();
 	}
 }
 

@@ -1,9 +1,10 @@
 #include "Transform.h"
 #include "Logger.h"
 #include "..\pch.h"
+#include "..\GameObject\GameObject.h"
 #include <glm/gtx/rotate_vector.hpp>
 
-Transform::Transform()
+Transform::Transform(GameObject* go) : gameObject(go)
 {
 	scale = glm::vec3(1, 1, 1);
 	SetPosition(0,0,0);
@@ -78,7 +79,7 @@ void Transform::SetRotation(float x, float y, float z, float w)
 
 	rotationQuat = glm::quat(x,y,z,w);
 	rotationMatrix = glm::toMat4(rotationQuat);
-	UpdateVectors();
+	//UpdateVectors();
 	
 }
 
@@ -88,7 +89,7 @@ void Transform::RotateBy(float angle, glm::vec3 axis)
 	glm::quat q(axis * glm::radians(angle));
 	rotationQuat = q * rotationQuat;
 	rotationMatrix = glm::toMat4(rotationQuat);
-	UpdateVectors();
+	//UpdateVectors();
 
 	
 }
@@ -126,6 +127,8 @@ void Transform::Update()
 			modelMatrix = (parent->GetTranslateMatrix() * parent->GetScaleMatrix()) * GetTranslateMatrix()* GetRotationMatrix() * GetScaleMatrix();
 
 	}
+
+	UpdateVectors();
 
 }
 

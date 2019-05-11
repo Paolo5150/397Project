@@ -30,11 +30,13 @@
 #include "Utils\PathFinder.h"
 #include "Graphics\RenderingEngine.h"
 #include "Physics\PhysicsWorld.h"
+#include "Prefabs\Player.h"
 #include "Components\AIBase.h"
 
 MainCamera* cam;
 PointLight* pLight;
 DirectionalLight* dirLight;
+bool reinit = false;
 
 MainScene::MainScene() : Scene("MainScene")
 {
@@ -43,7 +45,7 @@ MainScene::MainScene() : Scene("MainScene")
 
 void MainScene::LoadAssets() {
 
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
+
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Pumpkin\\pumpkin.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Barrel\\barrel.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
@@ -54,7 +56,7 @@ void MainScene::LoadAssets() {
 
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
-	//AssetLoader::Instance().LoadModel("Assets\\Models\\Wolf\\wolf.fbx");
+
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Spider\\spider_3.fbx", 0);
 
 	AssetLoader::Instance().LoadTexture("Assets\\Models\\Spider\\textures\\Spinnen_Bein_tex_COLOR_.jpg");
@@ -82,12 +84,13 @@ void MainScene::QuitScene() {
 void MainScene::Initialize() {
 
 	//Terrain
+
 	Terrain::Instance().Initialize(256);
 
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
-	Lua::RunLua("Assets\\Scripts\\Level1.lua");
-	gContactAddedCallback = PhysicsWorld::CollisionCallback;
+	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
+
 
 	Timer::SetDisplayFPS(true);
 
@@ -105,7 +108,7 @@ void MainScene::Initialize() {
 	dirLight->transform.SetRotation(45, 117, 0);
 	dirLight->SetIntensity(0.9f);
 	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
-	Logger::LogInfo("Dir light front", Maths::Vec3ToString(dirLight->transform.GetLocalFront()));
+
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
@@ -122,22 +125,21 @@ void MainScene::Initialize() {
 		AddGameObject(PathFinder::Instance().pathNodes[i]);
 
 
-	//GameObjects
-	cam = (MainCamera*)Lua::GetCreatedAsset(0);
-	cam->SetMovementSpeed(500);
-	cam->RemoveLayerMask(Layers::GUI);
-	AddGameObject(cam);
 
-	for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the camera or water, and add them to the scene
+	//GameObjects
+	Player* p = (Player*)Lua::GetCreatedAsset(0);
+	AddGameObject(p);
+
+	for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the player, and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
-		{
-			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(cam->transform);
+		{			
+			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(p->transform);
 		}
 		AddGameObject(obj);
 	}
-
+	
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
 	PhysicsWorld::Instance().InitializeQuadtree(x, z, Terrain::Instance().GetTerrainMaxX() - Terrain::Instance().GetTerrainMinX(), Terrain::Instance().GetTerrainMaxZ() - Terrain::Instance().GetTerrainMinZ());
@@ -154,6 +156,7 @@ void MainScene::Initialize() {
 void MainScene::Start()
 {
 	Scene::Start();
+
 
 	PathFinder::Instance().Start();
 
@@ -175,5 +178,31 @@ void MainScene::LogicUpdate()
 
 	Scene::LogicUpdate(); //Must be last statement!
 
+	if (Input::GetKeyPressed(GLFW_KEY_R))
+		Restart();
+	
+
+}
+
+void MainScene::Restart()
+{
+	SceneManager::Instance().ReloadCurrent();
+	/*RenderingEngine::allRenderers.clear();
+	PhysicsWorld::Instance().allNonStaticColliders.clear();
+	PhysicsWorld::Instance().allNonStaticColliders.clear();
+
+	//Delete all except terrain
+	for (auto it = m_allGameObjects.begin(); it != m_allGameObjects.end();)
+	{
+		if ((*it)->GetName() != "Terrain")
+		{
+			delete *it;
+			it = m_allGameObjects.erase(it);
+		}
+		else it++;
+	}
+	reinit = true;
+	Initialize();
+	Start();*/
 }
 

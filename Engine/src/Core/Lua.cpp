@@ -27,6 +27,7 @@ void Lua::RegisterCppFunctions(lua_State*& L)
 void Lua::CloseLua(lua_State*& L, bool clearAssets)
 {
 	lua_close(L); //Close lua_State
+	L = NULL;
 
 	if (clearAssets == true)
 	{
@@ -45,7 +46,7 @@ void Lua::RunLua(std::string fileName, bool closeState, bool clearAssets)
 	{
 		ClearCreatedAssets();
 	}
-	ExecuteLuaScript(lState, fileName);
+	ExecuteLuaScript(fileName);
 
 	if (closeState)
 	{
@@ -167,6 +168,7 @@ void Lua::ClearCreatedAssets()
 	if (createdAssets != NULL)
 	{
 		delete[] createdAssets;
+		createdAssets = NULL;
 		createdAssetsLength = 0;
 	}
 }

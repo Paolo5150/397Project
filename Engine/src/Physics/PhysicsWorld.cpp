@@ -1,7 +1,8 @@
 #include "PhysicsWorld.h"
 #include "..\Components\BoxCollider.h"
 #include "..\Components\SphereCollider.h"
-
+#include "..\Event\EventDispatcher.h"
+#include "..\Event\ApplicationEvents.h"
 
 
 namespace
@@ -29,11 +30,26 @@ PhysicsWorld::PhysicsWorld()
 	//dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 	//SetGravity(0.0f, -40.0f, 0.0f);
 
+	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
+
+		nonStaticQuadtree->ClearNodes();
+		staticQuadtree->ClearNodes();
+		allNonStaticColliders.clear();
+		allStaticColliders.clear();
+		return 0;
+	});
+
+	nonStaticQuadtree = nullptr;
+	staticQuadtree = nullptr;
+
 }
 
 void PhysicsWorld::InitializeQuadtree(int x, int y, int w, int h)
 {
+	if (nonStaticQuadtree == nullptr)
 	nonStaticQuadtree = new QuadTree<Collider*>(x, y, w, h);
+	if (staticQuadtree == nullptr)
+
 	staticQuadtree = new QuadTree<Collider*>(x, y, w, h);
 
 }
@@ -65,9 +81,7 @@ void PhysicsWorld::FillQuadtree(bool staticToo)
 
 PhysicsWorld::~PhysicsWorld()
 {
-	
-	allRigidBodies.clear();
-	delete dynamicsWorld;
+
 	nonStaticQuadtree->ClearNodes();
 	staticQuadtree->ClearNodes();
 	delete nonStaticQuadtree;
@@ -104,29 +118,10 @@ void PhysicsWorld::AddCollider(Collider* rb)
 	}
 }
 
-void PhysicsWorld::RemoveRigidBody(RigidBody* rb)
-{
-	auto it = allRigidBodies.begin();
-
-	for (; it != allRigidBodies.end();)
-	{
-		if ((*it) == rb)
-		{
-			it = allRigidBodies.erase(it);
-			dynamicsWorld->removeRigidBody((*it)->btrb);
-		}
-		else
-			it++;
-	}
-}
 
 
 
-void PhysicsWorld::SetGravity(float x, float y, float z)
-{
-	dynamicsWorld->setGravity(btVector3(x,y,z));
 
-}
 
 void PhysicsWorld::Update(float deltaS)
 {
