@@ -8,6 +8,8 @@
 #include "Utils\AssetLoader.h"
 #include "GUI\GUIElements\GUIManager.h"
 #include "GUI\GUIElements\GUIButton.h"
+#include "GUI\GUIElements\GUIProgressBar.h"
+
 
 #include "Core\Input.h"
 #include "Event\EventDispatcher.h"
@@ -63,6 +65,7 @@ void MainMenuScene::Initialize() {
 
 	loadingText = new GUIText("LoadingText", "Loading scene...", "invasionFont", 20, wy - 50, 0.2f, 0.2f, 0.2f);
 	loadingText->isActive = 0;
+
 	GUIManager::Instance().AddGUIObject(startButton);
 	GUIManager::Instance().AddGUIObject(loadingImage);
 	GUIManager::Instance().AddGUIObject(loadingText);

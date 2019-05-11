@@ -63,6 +63,7 @@ public:
 
 	void RenderImGuiElement() override
 	{
+
 		ImGui::SetCursorPosX(position.x);
 		ImGui::SetCursorPosY(position.y);
 		ImGui::Image(GetTextureID(), ImVec2(size.x, size.y));

@@ -17,6 +17,8 @@
 #include "Core\Lua.h"
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIImage.h"
+#include "GUI\GUIElements\GUIProgressBar.h"
+
 #include "Components\Animator.h"
 
 #include "GUI\GUIElements\GUIManager.h"
@@ -107,6 +109,10 @@ void MainScene::Initialize() {
 	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 1, 5, 10,10, 1);
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoText);
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoImage);
+
+	healthBar = new GUIProgressBar("", "", 5, 15, 40,5, 1);
+	GUIManager::Instance().AddGUIObject(healthBar);
+
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.5f, 0.5f, 0.2f);
@@ -202,12 +208,14 @@ void MainScene::Restart()
 
 void MainScene::UpdateUI()
 {
-	if (player != nullptr && pumpkinAmmoText != nullptr)
+	if (player != nullptr)
 	{
 		std::stringstream ss;
 		ss << "x ";
 		ss << player->ammoCounter;
 		pumpkinAmmoText->_message = ss.str();
+
+		healthBar->percentage = player->healhComponent->GetHealthMaxRatio();
 
 	}
 }
