@@ -29,8 +29,10 @@ public:
 	* @param b				The blue channel of the color
 	* @param isPercentage	Wether the details provided are percentage of the current window
 	*/
-	GUIText(std::string uniqueName, std::string message, std::string fontName = "defaultFont", float posX = 0, float posY = 0, float r = 1, float g = 1, float b = 1, bool isPercentage = false) : GUIObject(uniqueName), _message(message){
+	GUIText(std::string uniqueName, std::string message, std::string fontName = "defaultFont", float fontSize = 1,float posX = 0, float posY = 0, float r = 1, float g = 1, float b = 1, bool isPercentage = false) : GUIObject(uniqueName), _message(message){
+		
 		_color = glm::vec4(r, g, b, 1);
+		fontScale = fontSize;
 		int winX, winY;
 		Window::Instance().GetWindowSize(winX, winY);
 		if (!isPercentage)
@@ -63,7 +65,7 @@ public:
 	* @brief		The mtext color
 	*/
 	glm::vec4 _color;
-
+	float fontScale;
 	std::string fontName;
 
 	void RenderImGuiElement() override
@@ -72,6 +74,7 @@ public:
 		ImGui::SetCursorPosY(position.y);	
 
 		GUIManager::Instance().SelectFont(fontName);
+		ImGui::SetWindowFontScale(fontScale);
 
 		ImGui::TextColored(ImVec4(_color.x,_color.y,_color.z,_color.w),_message.c_str());
 		GUIManager::Instance().ResetFont();

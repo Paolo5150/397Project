@@ -139,7 +139,7 @@ void GUIManager::RenderNoButtonCallbacks()
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
 
-	ImGui::SetWindowFontScale(1.5);
+	ResetFont();
 
 	for (auto it = allGUI.begin(); it != allGUI.end();)
 	{
