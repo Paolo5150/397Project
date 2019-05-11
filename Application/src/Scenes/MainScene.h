@@ -2,7 +2,7 @@
 #include "Scene/Scene.h"
 
 class GUIImage;
-
+class Player;
 /**
 * @class MainScene
 * @brief The application main scene
@@ -65,6 +65,11 @@ public:
 
 	GUIImage* manual;
 
+	GUIImage* pumpkinAmmoImage;
+	GUIText* pumpkinAmmoText;
+	Player* player;
+
 	void Restart();
+	void UpdateUI();
 
 };

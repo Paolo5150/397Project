@@ -26,6 +26,8 @@
 #include "Prefabs\Crate.h"
 #include "Prefabs\Barrel.h"
 #include "Prefabs\Cabin.h"
+#include "Prefabs\Player.h"
+
 #include "Prefabs\GranadeLauncher.h"
 #include "Utils\PathFinder.h"
 #include "Graphics\RenderingEngine.h"
@@ -65,6 +67,8 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_normal.tga");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\pumpkinIcon.png");
+
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_specular.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\shipTexture.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
@@ -98,7 +102,11 @@ void MainScene::Initialize() {
 	manual->isActive = 0;
 	GUIManager::Instance().AddGUIObject(manual);
 
-
+	// HUD elements
+	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont", 15, 5, 1, 1, 1, 1);
+	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 1, 5, 10,10, 1);
+	GUIManager::Instance().AddGUIObject(pumpkinAmmoText);
+	GUIManager::Instance().AddGUIObject(pumpkinAmmoImage);
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.5f, 0.5f, 0.2f);
@@ -127,15 +135,15 @@ void MainScene::Initialize() {
 
 
 	//GameObjects
-	Player* p = (Player*)Lua::GetCreatedAsset(0);
-	AddGameObject(p);
+	player = (Player*)Lua::GetCreatedAsset(0);
+	AddGameObject(player);
 
 	for (int i = 1; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects that aren't the player, and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
 		{			
-			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(p->transform);
+			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(player->transform);
 		}
 		AddGameObject(obj);
 	}
@@ -180,6 +188,8 @@ void MainScene::LogicUpdate()
 
 	if (Input::GetKeyPressed(GLFW_KEY_R))
 		Restart();
+
+	UpdateUI();
 	
 
 }
@@ -187,22 +197,19 @@ void MainScene::LogicUpdate()
 void MainScene::Restart()
 {
 	SceneManager::Instance().ReloadCurrent();
-	/*RenderingEngine::allRenderers.clear();
-	PhysicsWorld::Instance().allNonStaticColliders.clear();
-	PhysicsWorld::Instance().allNonStaticColliders.clear();
 
-	//Delete all except terrain
-	for (auto it = m_allGameObjects.begin(); it != m_allGameObjects.end();)
-	{
-		if ((*it)->GetName() != "Terrain")
-		{
-			delete *it;
-			it = m_allGameObjects.erase(it);
-		}
-		else it++;
-	}
-	reinit = true;
-	Initialize();
-	Start();*/
 }
+
+void MainScene::UpdateUI()
+{
+	if (player != nullptr && pumpkinAmmoText != nullptr)
+	{
+		std::stringstream ss;
+		ss << "x ";
+		ss << player->ammoCounter;
+		pumpkinAmmoText->_message = ss.str();
+
+	}
+}
+
 

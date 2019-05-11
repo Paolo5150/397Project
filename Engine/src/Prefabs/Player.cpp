@@ -39,7 +39,7 @@ Player::Player() : GameObject("Player")
 	AddChild(gn);
 
 
-
+	ammoCounter = 5;
 
 
 
@@ -113,7 +113,7 @@ void Player::Update()
 	_intendedDir.z = 0;
 
 	//Logger::LogInfo(gn->transform.ToString());
-	if (Input::GetMouseDown(0))
+	if (Input::GetMouseDown(0) && ammoCounter > 0)
 	{
 		shootTimer += Timer::GetDeltaS();
 		if (shootTimer >= SHOOT_RATE)
@@ -125,6 +125,7 @@ void Player::Update()
 			pump->state = Pumpkin::SHOT;
 			pump->shootDirection = transform.GetLocalFront();
 			SceneManager::Instance().GetCurrentScene().AddGameObject(pump);
+			ammoCounter--;
 			
 		}
 	}
@@ -173,9 +174,9 @@ void Player::UpdateControls()
 
 			if (glm::dot(transform.GetLocalFront(), glm::vec3(0, -1, 0)) > 0.8 || glm::dot(transform.GetLocalFront(), glm::vec3(0, 1, 0)) > 0.8)
 			{
-				this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), -transform.GetLocalRight());
-				mainCamera->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), -transform.GetLocalRight());
-				gunCam->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), -transform.GetLocalRight());
+				this->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed() * 2, -transform.GetLocalRight());
+				mainCamera->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed() * 2, -transform.GetLocalRight());
+				gunCam->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed() * 2, -transform.GetLocalRight());
 
 			}
 		}

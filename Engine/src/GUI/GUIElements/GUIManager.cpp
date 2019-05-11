@@ -198,6 +198,7 @@ void GUIManager::DeleteGUIObjects(bool preservedToo)
 		for (; it != allGUI.end(); it++)
 		{
 			delete (it->second);
+			it->second = nullptr;
 		}
 
 		allGUI.clear();
