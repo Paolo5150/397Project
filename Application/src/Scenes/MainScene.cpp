@@ -176,6 +176,7 @@ void MainScene::Start()
 
 void MainScene::LogicUpdate()
 {
+	UpdateUI();
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
 	if (Input::GetKeyPressed(GLFW_KEY_M))
@@ -189,7 +190,6 @@ void MainScene::LogicUpdate()
 	if (Input::GetKeyPressed(GLFW_KEY_R))
 		Restart();
 
-	UpdateUI();
 	
 
 }
