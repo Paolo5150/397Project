@@ -98,7 +98,7 @@ void MainScene::Initialize() {
 	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
 
 
-	Timer::SetDisplayFPS(true);
+	//Timer::SetDisplayFPS(true);
 
 	manual = new GUIImage("manualImage", AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
 	manual->isActive = 0;
@@ -178,6 +178,7 @@ void MainScene::Start()
 	PhysicsWorld::Instance().PerformCollisions(true);
 	
 	RenderingEngine::godRays = 1;
+	Input::SetIsEnabled(1);
 }
 
 void MainScene::LogicUpdate()
@@ -202,6 +203,8 @@ void MainScene::LogicUpdate()
 
 void MainScene::Restart()
 {
+	Input::SetIsEnabled(0);
+
 	SceneManager::Instance().ReloadCurrent();
 
 }

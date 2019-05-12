@@ -24,10 +24,10 @@ Player::Player() : GameObject("Player")
 	_rotationSpeed = 20;
 	_isTopView = false;
 	_intendedDir = glm::vec3(0, 0, 0);	
+	ammoCounter = 5;
 
 	gn = new GranadeLauncher();
-	gn->transform.SetScale(0.01, 0.01, 0.01);
-	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
+
 
 
 	gunCam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
@@ -35,12 +35,6 @@ Player::Player() : GameObject("Player")
 	gunCam->AddLayerMask(Layers::GUN);
 	gunCam->SetDepth(10);
 	gunCam->SetIsStatic(0);
-	
-
-	gunCam->AddChild(gn);
-
-
-	ammoCounter = 5;
 
 
 
@@ -64,6 +58,7 @@ void Player::Start()
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
 	transform.SetPosition(x, y, z);
+	transform.SetRotation(0, 0, 0);
 
 	boxCollider = new BoxCollider();
 	AddComponent(boxCollider); // Needs to be added first and modified later. I know, messy
@@ -104,6 +99,9 @@ void Player::Start()
 	};
 
 
+	gn->transform.SetScale(0.01, 0.01, 0.01);
+	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
+	gunCam->AddChild(gn);
 
 	healhComponent = new HealthComponent(100,100);
 	AddComponent(healhComponent);
@@ -161,6 +159,7 @@ void Player::Update()
 	
 	mainCamera->transform.SetPosition(transform.GetPosition());
 	gunCam->transform.SetPosition(transform.GetPosition());
+	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
 
 }
 
@@ -168,6 +167,25 @@ void Player::UpdateControls()
 {
 
 	Transform t = transform;
+
+	/*static float timer = 0;
+
+	timer += Timer::GetDeltaS();
+
+	if (timer > 0.2)
+	{
+		Logger::LogInfo("Delta", Input::GetDeltaMousePosX(), Input::GetDeltaMousePosY());
+		timer = 0;
+	}*/
+	
+	if (Timer::GetTickCount() == 1)
+	{
+		Input::Update();
+		transform.SetRotation(0, 0, 0);
+		return;
+	}
+
+
 	transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
 	mainCamera->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));
 	gunCam->transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * GetRotationSpeed(), glm::vec3(0, 1, 0));

@@ -217,7 +217,12 @@ void Input::Key_Callback(GLFWwindow* window, int key, int scancode, int action, 
 
 void Input::Cursor_Pos_Callback(GLFWwindow* window, double xpos, double ypos)
 {
-	if (!isEnabled) return;
+	if (!isEnabled)
+	{
+		deltaMouseX = 0;
+		deltaMouseY = 0;
+		return;
+	}
 
 	deltaMouseX = mouseX - xpos;
 	deltaMouseY = mouseY - ypos;
