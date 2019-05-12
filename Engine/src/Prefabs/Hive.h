@@ -1,7 +1,7 @@
 #pragma once
 #include "..\GameObject\GameObject.h"
 #include "..\Utils\AssetLoader.h"
-#
+#include "..\Components\HealthComponent.h"
 
 class Hive : public GameObject
 {
@@ -30,4 +30,5 @@ private:
 	int _lastSpawnedSpider;
 	unsigned int _currentState;
 	unsigned int _maxSpiders;
+	HealthComponent* healtthComponent;
 };
