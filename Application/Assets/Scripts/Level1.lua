@@ -5,10 +5,15 @@
 --Using -9999 in the posX or posZ position will set posX or posZ to the center of the terrain
 --Using -9999 in the posY position will set posY to Terrain::GetHeightat(posX, posZ)
 
+
+--Player must always be created before any objects with AI
 Create("Player", -9999, -9999, -9999)--, 30, 180, 0);
 
 waterScaleX, waterScaleY, waterScaleZ = 3000, 3000, 1;
 Create("Water", -9999, 150, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
+
+mountainScaleX, mountainScaleY, mountainScaleZ = 25, 5, 25;
+Create("Mountains", -9999, 300, -9999, 0, 0, 0, mountainScaleX, mountainScaleY, mountainScaleZ);
 
 --Create all npcs and props
 Create("Pumpkin", 2234, -9999, 1833);
@@ -74,10 +79,14 @@ Create("Crate", 804, -9999, 1014);
 Create("Crate", 1135, -9999, 275);
 Create("Crate", 1708, -9999, 1886);
 
-Create("Spider", 4000, -9999, 4000);
+--Create("Spider", 4000, -9999, 4000);
 
 Create("Gun", 1637, -9999, 1605, 0, 0, 0); --Similar x and z location as crate 1
 
 Create("Ship", 1545, -9999, 1414);
 
 Create("Cabin", 300, -9999, 1200);
+
+Create("Hive", -9999, -9999, 3000, 0, 0, 0, 100, 100, 100);
+Create("Hive", -9999, -9999, 2000, 0, 0, 0, 100, 100, 100);
+Create("Hive", 1000, -9999, -9999, 0, 0, 0, 100, 100, 100);

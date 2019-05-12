@@ -11,7 +11,7 @@ namespace {
 	const float MAX_SPEED = 1000;
 	float ORIGINAL_SPEED = 500;
 	float counter = 0;
-	float SHOOT_RATE = 0.3;
+	float SHOOT_RATE = 0.1;
 
 	CameraPerspective* gunCam;
 }
@@ -24,7 +24,7 @@ Player::Player() : GameObject("Player")
 	_rotationSpeed = 20;
 	_isTopView = false;
 	_intendedDir = glm::vec3(0, 0, 0);	
-	ammoCounter = 5;
+	ammoCounter = 5000000;
 
 	gn = new GranadeLauncher();
 
@@ -168,15 +168,15 @@ void Player::UpdateControls()
 
 	Transform t = transform;
 
-	/*static float timer = 0;
+	static float timer = 0;
 
 	timer += Timer::GetDeltaS();
 
 	if (timer > 0.2)
 	{
-		Logger::LogInfo("Delta", Input::GetDeltaMousePosX(), Input::GetDeltaMousePosY());
+		//Logger::LogInfo("Delta", Input::GetDeltaMousePosX(), Input::GetDeltaMousePosY());
 		timer = 0;
-	}*/
+	}
 	
 	if (Timer::GetTickCount() == 1)
 	{
@@ -204,6 +204,13 @@ void Player::UpdateControls()
 		gunCam->transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * GetRotationSpeed(), transform.GetLocalRight());
 
 	}
+	else
+	{
+		transform.SetRotation(0, 0, 0);
+		mainCamera->transform.SetRotation(0, 0, 0);
+		gunCam->transform.SetRotation(0, 0, 0);
+	}
+
 
 
 	//Handle forward and backward movement
