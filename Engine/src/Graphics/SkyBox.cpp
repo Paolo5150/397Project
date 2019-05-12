@@ -28,6 +28,11 @@ Skybox::Skybox(CubeMap* cubemap)
 
 Skybox::~Skybox()
 {
+	for (auto it = g->GetChildList().begin(); it != g->GetChildList().end(); it++)
+	{
+		delete (*it);
+	}
+
 	delete g;
 }
 

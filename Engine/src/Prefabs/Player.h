@@ -11,7 +11,8 @@ public:
 	Player();
 	~Player();
 	void Start() override;
-	void OnAddToScene(Scene& scene) override;
+	virtual void OnAddToScene(Scene& theScene) override;
+
 	void Update() override;
 	void UpdateControls();
 
@@ -64,7 +65,7 @@ public:
 
 	int ammoCounter;
 	float shootTimer;
-
+	GranadeLauncher* gn;
 
 private:
 	/**

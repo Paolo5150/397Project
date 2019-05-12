@@ -180,6 +180,7 @@
     <ClInclude Include="src\Scenes\MainScene.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Scenes\SimpleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Scenes\ExitScene.cpp" />
@@ -193,6 +194,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Scenes\SimpleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">

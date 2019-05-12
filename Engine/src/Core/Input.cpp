@@ -217,11 +217,20 @@ void Input::Key_Callback(GLFWwindow* window, int key, int scancode, int action, 
 
 void Input::Cursor_Pos_Callback(GLFWwindow* window, double xpos, double ypos)
 {
-	if (!isEnabled) return;
+	if (!isEnabled)
+	{
+		deltaMouseX = 0;
+		deltaMouseY = 0;
+		return;
+	}
 
 	deltaMouseX = mouseX - xpos;
 	deltaMouseY = mouseY - ypos;
-	//Logger::LogWarning("Delta",deltaMouseX,deltaMouseY);
+	
+	deltaMouseX = abs(deltaMouseX) < 15 ? deltaMouseX : 15 * glm::sign(deltaMouseX);
+	deltaMouseY = abs(deltaMouseY) < 15 ? deltaMouseY : 15 * glm::sign(deltaMouseY);
+
+
 	mouseX = xpos;
 	mouseY = ypos;
 	if (!cursorInWindow)
