@@ -20,6 +20,7 @@ public:
 	double distanceFromPrevious;
 	double distanceFromTarget;
 	double cost;
+	bool checked;
 
 
 };

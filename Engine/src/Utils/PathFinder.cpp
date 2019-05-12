@@ -101,7 +101,7 @@ void PathFinder::Start()
 	for (int x = 0; x < nodeMap.size(); x++) {
 		for (int y = 0; y < nodeMap[0].size(); y++) {
 
-			if (nodeMap[x][y]->transform.GetPosition().y < 600)
+			if (nodeMap[x][y]->transform.GetPosition().y < 750)
 				nodeMap[x][y]->cost = 5000;
 
 			if (x > 0) {
@@ -186,10 +186,13 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 	
 		previousAbsoluteDistance = absoluteDistance;
+		for (unsigned i = 0; i < currentNode->neighbors.size(); i++)
+			currentNode->neighbors[i]->checked = false;
 		
 		for (unsigned i = 0; i < currentNode->neighbors.size(); i++)
 		{
-
+			if (currentNode->neighbors[i]->checked)
+				continue;
 		/*	if (currentNode->neighbors[i]->cost == 0)
 				currentNode->neighbors[i]->sc->meshRenderer->GetMaterial().SetColor(0, 1, 1);
 			else
@@ -198,7 +201,7 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 			currentNode->neighbors[i]->distanceFromPrevious = glm::length(currentNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
 			currentNode->neighbors[i]->distanceFromTarget = glm::length(goalNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
 			double total = currentNode->neighbors[i]->distanceFromPrevious + currentNode->neighbors[i]->distanceFromTarget + currentNode->neighbors[i]->cost;
-			
+			currentNode->neighbors[i]->checked = 1;
 			if (total < minDist)
 			{
 				shortest = currentNode->neighbors[i];
@@ -219,7 +222,7 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 		currentNode = shortest;
 
-	} while (shortest != goalNode);
+	} while (shortest != goalNode && path.size() < 10);
 
 
 
