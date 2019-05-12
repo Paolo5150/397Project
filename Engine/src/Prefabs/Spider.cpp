@@ -109,17 +109,51 @@ void Spider::Start()
 {
 	Hive::totalSpiders++;
 
-	BoxCollider* sc = new BoxCollider();
-	sc->ResetCollisionLayer();
-	sc->AddCollisionLayer(CollisionLayers::ENEMY);
-	sc->ResetCollideAgainstLayer();
-	sc->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
-	sc->transform.SetScale(80, 40, 80);
+	BoxCollider* spiderCollider = new BoxCollider(); //Used for colliding with other spiders
+	spiderCollider->ResetCollisionLayer();
+	spiderCollider->AddCollisionLayer(CollisionLayers::ENEMY);
+	spiderCollider->ResetCollideAgainstLayer();
+	spiderCollider->AddCollideAgainstLayer(CollisionLayers::ENEMY);
+	spiderCollider->transform.SetScale(80, 40, 80);
 
-	sc->transform.SetPosition(0, 35, 0);
-	AddComponent(sc);
+	spiderCollider->transform.SetPosition(0, 35, 0);
+	AddComponent(spiderCollider);
 
-	sc->collisionCallback = [this](GameObject* go) {
+	spiderCollider->collisionCallback = [this](GameObject* go) {
+
+
+		if (go->GetName() == "Spider")
+		{
+			Pumpkin* p = (Pumpkin*)go;
+			if (p->state == Pumpkin::SHOT)
+			{
+				healthComponent->AddToHealth(-10);
+
+				if (healthComponent->IsDead())
+				{
+					GetComponent<Animator>("Animator")->SetCurrentAnimation(1, false);
+					aiBase->SetActive(false);
+					aiBase->SetState("Dead");
+					deathTimer = Timer::GetTimeS();
+				}
+
+				go->FlagToBeDestroyed();
+			}
+		}
+
+	};
+
+	BoxCollider* pumpkinCollider = new BoxCollider(); //Used for when a pumpkin bullet hits the spider
+	pumpkinCollider->ResetCollisionLayer();
+	pumpkinCollider->AddCollisionLayer(CollisionLayers::ENEMY);
+	pumpkinCollider->ResetCollideAgainstLayer();
+	pumpkinCollider->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
+	pumpkinCollider->transform.SetScale(80, 40, 80);
+
+	pumpkinCollider->transform.SetPosition(0, 35, 0);
+	AddComponent(pumpkinCollider);
+
+	pumpkinCollider->collisionCallback = [this](GameObject* go) {
 
 
 		if (go->GetName() == "Pumpkin")
@@ -143,21 +177,21 @@ void Spider::Start()
 
 	};
 
-	BoxCollider* hitSpider = new BoxCollider();
-	hitSpider->ResetCollisionLayer();
-	hitSpider->AddCollisionLayer(CollisionLayers::SPIDER);
-	hitSpider->ResetCollideAgainstLayer();
-	hitSpider->AddCollideAgainstLayer(CollisionLayers::SPIDER);
-	hitSpider->transform.SetScale(80, 40, 80);
+	BoxCollider* slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
+	slowCollider->ResetCollisionLayer();
+	slowCollider->AddCollisionLayer(CollisionLayers::SPIDER);
+	slowCollider->ResetCollideAgainstLayer();
+	slowCollider->AddCollideAgainstLayer(CollisionLayers::SPIDER);
+	slowCollider->transform.SetScale(80, 40, 80);
 
-	hitSpider->transform.SetPosition(0, 35, 0);
-	AddComponent(hitSpider);
+	slowCollider->transform.SetPosition(0, 35, 0);
+	AddComponent(slowCollider);
 
-	hitSpider->collisionCallback = [this](GameObject* go) {
+	slowCollider->collisionCallback = [this](GameObject* go) {
 
 		if (go->GetName() == "Spider")
 		{
-			if(((AIBase*)go->GetComponent<AIBase>("AIBase"))->GetState() == "Fight" && ((AIBase*)GetComponent<AIBase>("AIBase"))->GetState() != "Dead") //If the spider is colliding with a spider that is currently fighting, and this spider is not dead
+			if((((AIBase*)go->GetComponent<AIBase>("AIBase"))->GetState() == "Fight" || ((AIBase*)go->GetComponent<AIBase>("AIBase"))->GetState() == "Seek") && ((AIBase*)GetComponent<AIBase>("AIBase"))->GetState() != "Dead") //If the spider is colliding with a spider that is currently fighting, and this spider is not dead
 				((AIBase*)GetComponent<AIBase>("AIBase"))->SetState("Slow"); //Tells the ai to slow down
 		}
 	};
