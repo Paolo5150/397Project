@@ -58,7 +58,7 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Mountains\\mountains.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx",false);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx", false);
 
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
@@ -109,12 +109,12 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(manual);
 
 	// HUD elements
-	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont",1, 90, 5, 1, 1, 1, 1);
-	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"),80, 3, 7,7, 1);
+	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont", 1, 90, 5, 1, 1, 1, 1);
+	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 80, 3, 7, 7, 1);
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoText);
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoImage);
 
-	healthBar = new GUIProgressBar("", "", 3, 3, 40,3, 1);
+	healthBar = new GUIProgressBar("", "", 3, 3, 40, 3, 1);
 	GUIManager::Instance().AddGUIObject(healthBar);
 
 
@@ -149,12 +149,12 @@ void MainScene::Initialize() {
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player
-		{			
+		{
 			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").at(0))->transform);
 		}
 		AddGameObject(obj);
 	}
-	
+
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
 	PhysicsWorld::Instance().InitializeQuadtree(x, z, Terrain::Instance().GetTerrainMaxX() - Terrain::Instance().GetTerrainMinX(), Terrain::Instance().GetTerrainMaxZ() - Terrain::Instance().GetTerrainMinZ());
@@ -177,7 +177,7 @@ void MainScene::Start()
 
 	PhysicsWorld::Instance().FillQuadtree(true);
 	PhysicsWorld::Instance().PerformCollisions(true);
-	
+
 	RenderingEngine::godRays = 1;
 	Input::SetIsEnabled(1);
 }
@@ -198,43 +198,34 @@ void MainScene::LogicUpdate()
 	if (Input::GetKeyPressed(GLFW_KEY_R))
 		Restart();
 
-	
 
 
-	
-	
-	
+
+
+
+
 	if (Input::GetKeyPressed(GLFW_KEY_1))
 	{
-		for (int i = 0; i < Lua::GetCreatedAssetLength(); i++)
+		for (auto const& i : GetGameobjectsByName("Hive"))
 		{
-			if (((GameObject*)Lua::GetCreatedAsset(i))->GetName() == "Hive")
-			{
-				Logger::LogInfo("Set state to 0");
-				((Hive*)Lua::GetCreatedAsset(i))->SetState(0);
-			}
+			Logger::LogInfo("Set state to 0");
+			((Hive*)i)->SetState(0);
 		}
 	}
 	else if (Input::GetKeyPressed(GLFW_KEY_2))
 	{
-		for (int i = 0; i < Lua::GetCreatedAssetLength(); i++)
+		for (auto const& i : GetGameobjectsByName("Hive"))
 		{
-			if (((GameObject*)Lua::GetCreatedAsset(i))->GetName() == "Hive")
-			{
-				Logger::LogInfo("Set state to 1");
-				((Hive*)Lua::GetCreatedAsset(i))->SetState(1);
-			}
+			Logger::LogInfo("Set state to 1");
+			((Hive*)i)->SetState(1);
 		}
 	}
 	else if (Input::GetKeyPressed(GLFW_KEY_3))
 	{
-		for (int i = 0; i < Lua::GetCreatedAssetLength(); i++)
+		for (auto const& i : GetGameobjectsByName("Hive"))
 		{
-			if (((GameObject*)Lua::GetCreatedAsset(i))->GetName() == "Hive")
-			{
-				Logger::LogInfo("Set state to 2");
-				((Hive*)Lua::GetCreatedAsset(i))->SetState(2);
-			}
+			Logger::LogInfo("Set state to 2");
+			((Hive*)i)->SetState(2);
 		}
 	}
 }
