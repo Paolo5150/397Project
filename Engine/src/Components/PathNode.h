@@ -13,7 +13,7 @@ public:
 	void OnCollision(GameObject* go) override;
 	void Start() override;
 
-	
+	void Update() override;
 	PathNode* previousNode;
 	BoxCollider* sc;
 	std::vector<PathNode*> neighbors;

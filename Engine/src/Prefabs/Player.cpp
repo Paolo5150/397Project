@@ -143,6 +143,7 @@ void Player::Update()
 
 	UpdateControls();
 
+	
 	float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
 	transform.SetPosition(transform.GetPosition().x, h + 60, transform.GetPosition().z);
 

@@ -63,7 +63,7 @@ void Terrain::Initialize(int size)
 	ApplyHeightMap("Assets\\Textures\\hm4.png");
 
 	//transform.SetScale(20, 600, 20);
-	transform.SetScale(80, 3600, 80);
+	transform.SetScale(60, 3200, 60);
 	transform.Translate(0, 0, 0);
 }
 

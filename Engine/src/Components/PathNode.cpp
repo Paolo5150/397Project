@@ -26,9 +26,14 @@ void PathNode::Start()
 
 	sc->AddCollisionLayer(CollisionLayers::PATHNODE);
 
-	sc->transform.SetScale(100, 100, 100);
+	sc->transform.SetScale(200, 200, 200);
 	cost = 0;
 	AddComponent(sc);
+}
+
+void PathNode::Update()
+{
+
 }
 
 void PathNode::OnCollision(GameObject* go)
