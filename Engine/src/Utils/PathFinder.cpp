@@ -18,7 +18,8 @@ PathFinder::PathFinder()
 
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
 
-		nodesQT->ClearNodes();
+		if (nodesQT != nullptr)
+			nodesQT->ClearNodes();
 		nodeMap.clear();
 		pathNodes.clear();
 
@@ -28,6 +29,7 @@ PathFinder::PathFinder()
 
 PathFinder::~PathFinder()
 {
+	if (nodesQT != nullptr)
 	delete nodesQT;
 }
 

@@ -16,6 +16,7 @@ public:
 	float GetCurrentHealth() { return currentHealth; }
 	void SetMaxHealth(float amount) { maxHealth = amount; }
 	float GetHealthMaxRatio() { return currentHealth / maxHealth; }
+	float GetMaxHealth() { return maxHealth; }
 
 private:
 	float currentHealth;

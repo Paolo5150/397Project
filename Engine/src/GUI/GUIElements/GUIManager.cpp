@@ -76,8 +76,6 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
 
-	ImGui::SetWindowFontScale(1.5);
-
 	for (auto it = allGUI.begin(); it != allGUI.end();)
 	{
 		if (it->second->isActive)
@@ -139,8 +137,6 @@ void GUIManager::RenderNoButtonCallbacks()
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration |
 		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
 
-	ImGui::SetWindowFontScale(1.5);
-
 	for (auto it = allGUI.begin(); it != allGUI.end();)
 	{
 		if (it->second->isActive)
@@ -166,7 +162,7 @@ void GUIManager::RenderNoButtonCallbacks()
 			it++;
 	}
 
-
+	
 	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -198,6 +194,7 @@ void GUIManager::DeleteGUIObjects(bool preservedToo)
 		for (; it != allGUI.end(); it++)
 		{
 			delete (it->second);
+			it->second = nullptr;
 		}
 
 		allGUI.clear();

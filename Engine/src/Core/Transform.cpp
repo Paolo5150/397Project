@@ -79,17 +79,17 @@ void Transform::SetRotation(float x, float y, float z, float w)
 
 	rotationQuat = glm::quat(x,y,z,w);
 	rotationMatrix = glm::toMat4(rotationQuat);
-	//UpdateVectors();
+	UpdateVectors();
 	
 }
 
 void Transform::RotateBy(float angle, glm::vec3 axis)
 {	
-
+	rotation += angle * axis;
 	glm::quat q(axis * glm::radians(angle));
 	rotationQuat = q * rotationQuat;
 	rotationMatrix = glm::toMat4(rotationQuat);
-	//UpdateVectors();
+	UpdateVectors();
 
 	
 }

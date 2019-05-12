@@ -17,6 +17,8 @@
 #include "Core\Lua.h"
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIImage.h"
+#include "GUI\GUIElements\GUIProgressBar.h"
+
 #include "Components\Animator.h"
 
 #include "GUI\GUIElements\GUIManager.h"
@@ -27,6 +29,7 @@
 #include "Prefabs\Barrel.h"
 #include "Prefabs\Cabin.h"
 #include "Prefabs\Hive.h"
+#include "Prefabs\Player.h"
 #include "Prefabs\GranadeLauncher.h"
 #include "Utils\PathFinder.h"
 #include "Graphics\RenderingEngine.h"
@@ -68,6 +71,8 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_normal.tga");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\pumpkinIcon.png");
+
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_specular.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\shipTexture.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
@@ -96,12 +101,21 @@ void MainScene::Initialize() {
 
 	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
 
-	Timer::SetDisplayFPS(true);
+
+	//Timer::SetDisplayFPS(true);
 
 	manual = new GUIImage("manualImage", AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
 	manual->isActive = 0;
 	GUIManager::Instance().AddGUIObject(manual);
 
+	// HUD elements
+	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont",1, 90, 5, 1, 1, 1, 1);
+	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"),80, 3, 7,7, 1);
+	GUIManager::Instance().AddGUIObject(pumpkinAmmoText);
+	GUIManager::Instance().AddGUIObject(pumpkinAmmoImage);
+
+	healthBar = new GUIProgressBar("", "", 3, 3, 40,3, 1);
+	GUIManager::Instance().AddGUIObject(healthBar);
 
 
 	//Lights
@@ -165,10 +179,12 @@ void MainScene::Start()
 	PhysicsWorld::Instance().PerformCollisions(true);
 	
 	RenderingEngine::godRays = 1;
+	Input::SetIsEnabled(1);
 }
 
 void MainScene::LogicUpdate()
 {
+	UpdateUI();
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
 	if (Input::GetKeyPressed(GLFW_KEY_M))
@@ -181,6 +197,8 @@ void MainScene::LogicUpdate()
 
 	if (Input::GetKeyPressed(GLFW_KEY_R))
 		Restart();
+
+	
 
 
 	
@@ -223,23 +241,24 @@ void MainScene::LogicUpdate()
 
 void MainScene::Restart()
 {
-	SceneManager::Instance().ReloadCurrent();
-	/*RenderingEngine::allRenderers.clear();
-	PhysicsWorld::Instance().allNonStaticColliders.clear();
-	PhysicsWorld::Instance().allNonStaticColliders.clear();
+	Input::SetIsEnabled(0);
 
-	//Delete all except terrain
-	for (auto it = m_allGameObjects.begin(); it != m_allGameObjects.end();)
-	{
-		if ((*it)->GetName() != "Terrain")
-		{
-			delete *it;
-			it = m_allGameObjects.erase(it);
-		}
-		else it++;
-	}
-	reinit = true;
-	Initialize();
-	Start();*/
+	SceneManager::Instance().ReloadCurrent();
+
 }
+
+void MainScene::UpdateUI()
+{
+	if (player != nullptr)
+	{
+		std::stringstream ss;
+		ss << "x ";
+		ss << player->ammoCounter;
+		pumpkinAmmoText->_message = ss.str();
+
+		healthBar->percentage = player->healhComponent->GetHealthMaxRatio();
+
+	}
+}
+
 

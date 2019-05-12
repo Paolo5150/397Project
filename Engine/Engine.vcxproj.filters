@@ -191,5 +191,6 @@
     <ClInclude Include="src\Components\HealthComponent.h" />
     <ClInclude Include="src\Prefabs\Mountains.h" />
     <ClInclude Include="src\Prefabs\Hive.h" />
+    <ClInclude Include="src\GUI\GUIElements\GUIProgressBar.h" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,8 @@
 #include "Scenes/MainScene.h"
 #include "Scenes/ExitScene.h"
 #include "Scenes/MainMenu.h"
+#include "Scenes/SimpleScene.h"
+
 
 
 
@@ -33,6 +35,8 @@ void Game::AppInitialize()
 	SceneManager::Instance().AddScene(new MainScene());
 	SceneManager::Instance().AddScene(new ExitScene());
 	SceneManager::Instance().AddScene(new MainMenuScene());
+	SceneManager::Instance().AddScene(new SimpleScene());
+
 
 
 

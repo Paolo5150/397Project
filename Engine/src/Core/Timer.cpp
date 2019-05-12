@@ -33,7 +33,7 @@ void Timer::Initialize()
 	m_displayFPS = 0;
 	tickCount = 0;
 
-	FPSText = new GUIText("FPS text","","", 10, 10);
+	FPSText = new GUIText("FPS text","","",1, 10, 10);
 	GUIManager::Instance().AddGUIObject(FPSText,1);
 }
 
@@ -97,10 +97,7 @@ void Timer::Update()
 		EventDispatcher::Instance().DispatchEvent(new LogicUpdateEvent());
 		EventDispatcher::Instance().DispatchEvent(new RenderEvent());
 		EventDispatcher::Instance().DispatchEvent(new LateUpdateEvent());
-		tickCount++;
-
-
-	
+		tickCount++;	
 	}
 
 	m_FPSCounter++;

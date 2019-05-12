@@ -53,7 +53,7 @@ void Core::Initialize()
 
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
-	Window::Instance().SetWindowSize(800, 600);
+	Window::Instance().SetWindowSize(1280,800);
 
 	//Managers initialization
 	Input::Init(false, true);
@@ -72,7 +72,7 @@ void Core::Initialize()
 	int wx, wy;
 	Window::Instance().GetWindowSize(wx, wy);
 
-	loading = new GUIText("LoadingText","Loading...","invasionFont", 20, wy - 50, 0.2f, 0.2f, 0.2f);
+	loading = new GUIText("LoadingText","Loading...","invasionFont",1.5, 20, wy - 50, 0.2f, 0.2f, 0.2f);
 	GUIManager::Instance().AddGUIObject(loading);
 	GUIManager::Instance().AddGUIObject(new GUIImage("Logo",AssetLoader::Instance().GetAsset<Texture2D>("logo"),
 		0 + 50, 0 + 50,

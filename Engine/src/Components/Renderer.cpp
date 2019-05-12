@@ -72,7 +72,7 @@ void Renderer::EngineUpdate()
 	{
 		if (isCullable)
 		{
-			glm::vec3 camToHere = glm::normalize(transform->GetGlobalPosition() - Camera::GetCameraByName("Main Camera")->transform.GetPosition());
+			glm::vec3 camToHere = glm::normalize(transform->GetGlobalPosition() - Camera::GetCameraByName("Main Camera")->transform.GetGlobalPosition());
 			float d = glm::dot(camToHere, Camera::GetCameraByName("Main Camera")->transform.GetLocalFront());
 			if (d >= 0.1)
 			{

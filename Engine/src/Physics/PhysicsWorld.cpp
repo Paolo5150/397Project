@@ -29,18 +29,22 @@ PhysicsWorld::PhysicsWorld()
 	// The world.
 	//dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 	//SetGravity(0.0f, -40.0f, 0.0f);
+	
+	nonStaticQuadtree = nullptr;
+	staticQuadtree = nullptr;
 
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
 
-		nonStaticQuadtree->ClearNodes();
-		staticQuadtree->ClearNodes();
+		if (nonStaticQuadtree != nullptr)
+			nonStaticQuadtree->ClearNodes();
+
+		if (staticQuadtree != nullptr)
+			staticQuadtree->ClearNodes();
+
 		allNonStaticColliders.clear();
 		allStaticColliders.clear();
 		return 0;
 	});
-
-	nonStaticQuadtree = nullptr;
-	staticQuadtree = nullptr;
 
 }
 
@@ -81,11 +85,19 @@ void PhysicsWorld::FillQuadtree(bool staticToo)
 
 PhysicsWorld::~PhysicsWorld()
 {
-
-	nonStaticQuadtree->ClearNodes();
-	staticQuadtree->ClearNodes();
+	if (nonStaticQuadtree != nullptr)
+	{
+		nonStaticQuadtree->ClearNodes();
 	delete nonStaticQuadtree;
-	delete staticQuadtree;
+
+	}
+
+	if (nonStaticQuadtree != nullptr)
+	{
+		staticQuadtree->ClearNodes();
+			delete staticQuadtree;
+
+	}
 }
 /*
 void PhysicsWorld::AddRigidBody(RigidBody* rb)

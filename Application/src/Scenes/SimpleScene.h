@@ -16,7 +16,7 @@ class GUIProgressBar;
 *
 * @bug No known bugs.
 */
-class MainScene : public Scene
+class SimpleScene : public Scene
 {
 public:
 	enum SCENE_STATES
@@ -30,7 +30,7 @@ public:
 	* @pre			The MainScene object does not exist
 	* @post			The MainScene object is created.
 	*/
-	MainScene();
+	SimpleScene();
 
 	/**
 	* @brief		Loads the assets needed for this scene.
@@ -64,11 +64,7 @@ public:
 	*/
 	virtual void LogicUpdate() override;
 
-	GUIImage* manual;
 
-	GUIImage* pumpkinAmmoImage;
-	GUIText* pumpkinAmmoText;
-	GUIProgressBar* healthBar;
 	Player* player;
 
 	void Restart();

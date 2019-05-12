@@ -4,17 +4,17 @@
 #include "GUIManager.h"
 
 /**
-* @class GUIText
-* @brief Defines a GUI element for displaying text
+* @class GUIProgressBar
+* @brief Defines a GUI element for displaying a progress bar
 
 * @author Paolo Ferri
 * @version 01
-* @date 15/03/2018
+* @date 11/05/2018
 *
 *
 * @bug No known bugs.
 */
-class GUIText : public GUIObject
+class GUIProgressBar : public GUIObject
 {
 public:
 	/**
@@ -29,17 +29,15 @@ public:
 	* @param b				The blue channel of the color
 	* @param isPercentage	Wether the details provided are percentage of the current window
 	*/
-	GUIText(std::string uniqueName, std::string message, std::string fontName = "defaultFont", float fontSize = 1,float posX = 0, float posY = 0, float r = 1, float g = 1, float b = 1, bool isPercentage = false) : GUIObject(uniqueName), _message(message){
-		
-		_color = glm::vec4(r, g, b, 1);
-		fontScale = fontSize;
+	GUIProgressBar(std::string uniqueName,std::string message,float posX , float posY , float sizeX, float sizeY, bool isPercentage = false) : GUIObject(uniqueName){
+		this->message = message;
 		position.x = posX;
 		position.y = posY;
+		size.x = sizeX;
+		size.y = sizeY;
 		resizable = isPercentage;
 		CalculateSizePosition();
 
-		this->fontName = fontName;
-	
 	}
 
 	/**
@@ -48,34 +46,20 @@ public:
 	* @pre			The GUIText object must exist
 	* @post			The GUIText object is destroyed
 	*/
-	~GUIText(){
+	~GUIProgressBar(){
 
 	};
-	
-	/**
-	* @brief		The message to be displayed
-	*/
-	std::string _message;
 
-	/**
-	* @brief		The mtext color
-	*/
-	glm::vec4 _color;
-	float fontScale;
-	std::string fontName;
+	std::string message;
+	float percentage;
 
 	void RenderImGuiElement() override
 	{
+
 		ImGui::SetCursorPosX(pixelPosition.x);
 		ImGui::SetCursorPosY(pixelPosition.y);
 
-		GUIManager::Instance().SelectFont(fontName);
-		ImGui::SetWindowFontScale(fontScale);
-
-		ImGui::TextColored(ImVec4(_color.x,_color.y,_color.z,_color.w),_message.c_str());
-		GUIManager::Instance().ResetFont();
-
-
+		ImGui::ProgressBar(percentage, ImVec2(pixelSize.x, pixelSize.y), message.c_str());
 	}
 
 };
