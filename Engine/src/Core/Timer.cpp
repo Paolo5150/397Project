@@ -76,7 +76,7 @@ void Timer::Update()
 	m_prev = m_now;
 
 	accumulator += m_delta;
-
+	Logger::LogInfo("Delta", m_delta);
 	if (accumulator >= m_limitFPS)
 	{
 		if (Input::GetKeyPressed(GLFW_KEY_Q))

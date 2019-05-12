@@ -12,7 +12,7 @@ Create("Player", -9999, -9999, -9999)--, 30, 180, 0);
 waterScaleX, waterScaleY, waterScaleZ = 3000, 3000, 1;
 Create("Water", -9999, 150, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
 
-mountainScaleX, mountainScaleY, mountainScaleZ = 25, 25, 25;
+mountainScaleX, mountainScaleY, mountainScaleZ = 25, 5, 25;
 Create("Mountains", -9999, 300, -9999, 0, 0, 0, mountainScaleX, mountainScaleY, mountainScaleZ);
 
 --Create all npcs and props
