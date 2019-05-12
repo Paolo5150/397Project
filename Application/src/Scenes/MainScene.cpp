@@ -155,6 +155,8 @@ void MainScene::Initialize() {
 		AddGameObject(obj);
 	}
 
+	player = ((Player*)GetGameobjectsByName("Player").at(0));
+
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
 	PhysicsWorld::Instance().InitializeQuadtree(x, z, Terrain::Instance().GetTerrainMaxX() - Terrain::Instance().GetTerrainMinX(), Terrain::Instance().GetTerrainMaxZ() - Terrain::Instance().GetTerrainMinZ());
