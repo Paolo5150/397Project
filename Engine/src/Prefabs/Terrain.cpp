@@ -29,7 +29,8 @@ void Terrain::Initialize(int size)
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("ground"));
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("grass"), TextureUniform::DIFFUSE1);
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rock"), TextureUniform::DIFFUSE2);
-	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hm1"), TextureUniform::SPECIAL0);
+	//material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hm1"), TextureUniform::SPECIAL0);
+	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hm4"), TextureUniform::SPECIAL0);
 	material.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("rockNormal"), TextureUniform::NORMAL0);
 
 	material.LoadFloat("UVScale", 50.0f);
@@ -59,9 +60,10 @@ void Terrain::Initialize(int size)
 
 	this->AddComponent(meshRenderer);
 
-	ApplyHeightMap("Assets\\Textures\\hm1.jpg");
+	ApplyHeightMap("Assets\\Textures\\hm4.png");
 
-	transform.SetScale(20, 600, 20);
+	//transform.SetScale(20, 600, 20);
+	transform.SetScale(80, 3600, 80);
 	transform.Translate(0, 0, 0);
 }
 

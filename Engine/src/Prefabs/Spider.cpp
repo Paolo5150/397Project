@@ -109,40 +109,6 @@ void Spider::Start()
 {
 	Hive::totalSpiders++;
 
-	BoxCollider* spiderCollider = new BoxCollider(); //Used for colliding with other spiders
-	spiderCollider->ResetCollisionLayer();
-	spiderCollider->AddCollisionLayer(CollisionLayers::ENEMY);
-	spiderCollider->ResetCollideAgainstLayer();
-	spiderCollider->AddCollideAgainstLayer(CollisionLayers::ENEMY);
-	spiderCollider->transform.SetScale(80, 40, 80);
-
-	spiderCollider->transform.SetPosition(0, 35, 0);
-	AddComponent(spiderCollider);
-
-	spiderCollider->collisionCallback = [this](GameObject* go) {
-
-
-		if (go->GetName() == "Spider")
-		{
-			Pumpkin* p = (Pumpkin*)go;
-			if (p->state == Pumpkin::SHOT)
-			{
-				healthComponent->AddToHealth(-10);
-
-				if (healthComponent->IsDead())
-				{
-					GetComponent<Animator>("Animator")->SetCurrentAnimation(1, false);
-					aiBase->SetActive(false);
-					aiBase->SetState("Dead");
-					deathTimer = Timer::GetTimeS();
-				}
-
-				go->FlagToBeDestroyed();
-			}
-		}
-
-	};
-
 	BoxCollider* pumpkinCollider = new BoxCollider(); //Used for when a pumpkin bullet hits the spider
 	pumpkinCollider->ResetCollisionLayer();
 	pumpkinCollider->AddCollisionLayer(CollisionLayers::ENEMY);

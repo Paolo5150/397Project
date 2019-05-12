@@ -35,6 +35,7 @@
 #include "Graphics\RenderingEngine.h"
 #include "Physics\PhysicsWorld.h"
 #include "Prefabs\Player.h"
+#include "Prefabs\Spider.h"
 #include "Components\AIBase.h"
 
 MainCamera* cam;
@@ -96,6 +97,7 @@ void MainScene::Initialize() {
 	//Terrain
 
 	Terrain::Instance().Initialize(256);
+	//Terrain::Instance().Initialize(512);
 
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
@@ -228,6 +230,20 @@ void MainScene::LogicUpdate()
 		{
 			Logger::LogInfo("Set state to 2");
 			((Hive*)i)->SetState(2);
+		}
+	}
+
+	if (Input::GetKeyPressed(GLFW_KEY_P))
+	{
+		Logger::LogInfo(player->transform.ToString());
+	}
+
+	if (Input::GetKeyPressed(GLFW_KEY_O))
+	{
+		for (auto const& i : GetGameobjectsByName("Spider"))
+		{
+			Logger::LogInfo("Killing all spiders");
+			((Spider*)i)->FlagToBeDestroyed();
 		}
 	}
 }

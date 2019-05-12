@@ -195,7 +195,8 @@ void Core::LoadBasicAssets()
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\grass.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\ground.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rock.jpg", true);
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm1.png", true);
+	//AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm1.png", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm4.png", true);
 	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\ClearSky", true);
 	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet", true);
 

@@ -9,11 +9,11 @@
 --Player must always be created before any objects with AI
 Create("Player", -9999, -9999, -9999)--, 30, 180, 0);
 
-waterScaleX, waterScaleY, waterScaleZ = 3000, 3000, 1;
-Create("Water", -9999, 150, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
+waterScaleX, waterScaleY, waterScaleZ = 30000, 30000, 1;
+Create("Water", -9999, 600, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
 
 mountainScaleX, mountainScaleY, mountainScaleZ = 25, 25, 25;
-Create("Mountains", -9999, 300, -9999, 0, 0, 0, mountainScaleX, mountainScaleY, mountainScaleZ);
+--Create("Mountains", -9999, 300, -9999, 0, 0, 0, mountainScaleX, mountainScaleY, mountainScaleZ);
 
 --Create all npcs and props
 Create("Pumpkin", 2234, -9999, 1833);
@@ -83,10 +83,10 @@ Create("Crate", 1708, -9999, 1886);
 
 Create("Gun", 1637, -9999, 1605, 0, 0, 0); --Similar x and z location as crate 1
 
-Create("Ship", 1545, -9999, 1414);
+Create("Ship", 7000, -9999, 4250);
 
-Create("Cabin", 300, -9999, 1200);
+Create("Cabin", 6100, -9999, 6000, -90, 180, 0);
 
-Create("Hive", -9999, -9999, 3000, 0, 0, 0, 100, 100, 100);
-Create("Hive", -9999, -9999, 2000, 0, 0, 0, 100, 100, 100);
-Create("Hive", 1000, -9999, -9999, 0, 0, 0, 100, 100, 100);
+Create("Hive", 4800, -9999, 7600, 0, 0, 0, 100, 100, 100);
+Create("Hive", 6600, -9999, 3100, 0, 0, 0, 100, 100, 100);
+Create("Hive", 8200, -9999, 6500, 0, 0, 0, 100, 100, 100);
