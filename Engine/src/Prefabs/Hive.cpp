@@ -102,7 +102,7 @@ void Hive::Start()
 
 void Hive::Update()
 {
-	if ((GetState() == 0 || GetState() == 1) && totalSpiders < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 15.0f)
+	if ((GetState() == 0 || GetState() == 1) && totalSpiders < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 30.0f)
 	{
 		Spider* spider = new Spider();
 

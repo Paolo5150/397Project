@@ -9,8 +9,8 @@
 --Player must always be created before any objects with AI
 Create("Player", 3428, -9999, 3341, 0, 50, 0);
 
-waterScaleX, waterScaleY, waterScaleZ = 30000, 30000, 1;
-Create("Water", -9999, 600, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
+waterScaleX, waterScaleY, waterScaleZ = 10000, 10000, 1;
+Create("Water", -9999, 750, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
 
 --Create all npcs and props
 Create("Pumpkin", 7680, -9999, 8263.64)
@@ -105,3 +105,12 @@ Create("Tree", 8975, -9999, 9100);
 Create("Tree", 9334.88, -9999, 5430.89);
 Create("Tree", 8631.7, -9999, 5523.17);
 Create("Tree", 8482.53, -9999, 4968.06);
+
+--Trees around cabins
+--Create("Tree", 4805, -9999, 3032);
+--Create("Tree", 4426, -9999, 4362);
+--Create("Tree", 3947, -9999, 4795);
+--Create("Tree", 3320, -9999, 4782);
+--Create("Tree", 2187, -9999, 3924);
+--Create("Tree", 2170, -9999, 3340);
+--Create("Tree", 2268, -9999, 2652);
