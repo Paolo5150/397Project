@@ -58,6 +58,7 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Hive\\hive.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Mountains\\mountains.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Tree\\tree.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx", false);
 

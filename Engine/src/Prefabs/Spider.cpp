@@ -203,6 +203,17 @@ void Spider::Update()
 			FlagToBeDestroyed();
 		}
 	}
+
+	// Limit spider's position within terrain
+	if (transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 1500)
+		transform.SetPosition(Terrain::Instance().GetTerrainMaxX() - 1500, transform.GetPosition().y, transform.GetPosition().z);
+	else if (transform.GetPosition().x < Terrain::Instance().GetTerrainMinX() + 1500)
+		transform.SetPosition(Terrain::Instance().GetTerrainMinX() + 1500, transform.GetPosition().y, transform.GetPosition().z);
+
+	if (transform.GetPosition().z > Terrain::Instance().GetTerrainMaxZ() - 1500)
+		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 1500);
+	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 1500)
+		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 1500);
 }
 
 void Spider::OnCollision(GameObject* g)

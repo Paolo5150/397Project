@@ -55,9 +55,9 @@ Player::~Player() {}
 void Player::Start()
 {
 	GameObject::Start();
-	int x, y, z;
-	Terrain::Instance().GetCenter(x, y, z);
-	transform.SetPosition(x, y, z);
+	//int x, y, z;
+	//Terrain::Instance().GetCenter(x, y, z);
+	//transform.SetPosition(x, y, z);
 	transform.SetRotation(0, 0, 0);
 
 	boxCollider = new BoxCollider();

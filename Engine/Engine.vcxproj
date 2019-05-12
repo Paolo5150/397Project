@@ -286,6 +286,7 @@
     <ClInclude Include="src\Prefabs\GridMesh.h" />
     <ClInclude Include="src\Prefabs\Pumpkin.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
+    <ClInclude Include="src\Prefabs\Tree.h" />
     <ClInclude Include="src\Prefabs\Water.h" />
     <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Scene\SceneManager.h" />
@@ -375,6 +376,7 @@
     <ClCompile Include="src\Prefabs\Axis.cpp" />
     <ClCompile Include="src\Prefabs\Pumpkin.cpp" />
     <ClCompile Include="src\Prefabs\Terrain.cpp" />
+    <ClCompile Include="src\Prefabs\Tree.cpp" />
     <ClCompile Include="src\Prefabs\Water.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneManager.cpp" />
