@@ -107,76 +107,6 @@ Transform* Spider::GetTarget() const
 
 void Spider::Start()
 {
-	Hive::totalSpiders++;
-
-	BoxCollider* spiderCollider = new BoxCollider(); //Used for colliding with other spiders
-	spiderCollider->ResetCollisionLayer();
-	spiderCollider->AddCollisionLayer(CollisionLayers::ENEMY);
-	spiderCollider->ResetCollideAgainstLayer();
-	spiderCollider->AddCollideAgainstLayer(CollisionLayers::ENEMY);
-	spiderCollider->transform.SetScale(80, 40, 80);
-
-	spiderCollider->transform.SetPosition(0, 35, 0);
-	AddComponent(spiderCollider);
-
-	spiderCollider->collisionCallback = [this](GameObject* go) {
-
-
-		if (go->GetName() == "Spider")
-		{
-			Pumpkin* p = (Pumpkin*)go;
-			if (p->state == Pumpkin::SHOT)
-			{
-				healthComponent->AddToHealth(-10);
-
-				if (healthComponent->IsDead())
-				{
-					GetComponent<Animator>("Animator")->SetCurrentAnimation(1, false);
-					aiBase->SetActive(false);
-					aiBase->SetState("Dead");
-					deathTimer = Timer::GetTimeS();
-				}
-
-				go->FlagToBeDestroyed();
-			}
-		}
-
-	};
-
-	BoxCollider* pumpkinCollider = new BoxCollider(); //Used for when a pumpkin bullet hits the spider
-	pumpkinCollider->ResetCollisionLayer();
-	pumpkinCollider->AddCollisionLayer(CollisionLayers::ENEMY);
-	pumpkinCollider->ResetCollideAgainstLayer();
-	pumpkinCollider->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
-	pumpkinCollider->transform.SetScale(80, 40, 80);
-
-	pumpkinCollider->transform.SetPosition(0, 35, 0);
-	AddComponent(pumpkinCollider);
-
-	pumpkinCollider->collisionCallback = [this](GameObject* go) {
-
-
-		if (go->GetName() == "Pumpkin")
-		{
-			Pumpkin* p = (Pumpkin*)go;
-			if (p->state == Pumpkin::SHOT)
-			{
-				healthComponent->AddToHealth(-10);
-
-				if (healthComponent->IsDead())
-				{
-					GetComponent<Animator>("Animator")->SetCurrentAnimation(1, false);
-					aiBase->SetActive(false);
-					aiBase->SetState("Dead");
-					deathTimer = Timer::GetTimeS();
-				}
-
-				go->FlagToBeDestroyed();
-			}
-		}
-
-	};
-
 	BoxCollider* slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
 	slowCollider->ResetCollisionLayer();
 	slowCollider->AddCollisionLayer(CollisionLayers::SPIDER);
@@ -191,10 +121,49 @@ void Spider::Start()
 
 		if (go->GetName() == "Spider")
 		{
-			if((((AIBase*)go->GetComponent<AIBase>("AIBase"))->GetState() == "Fight" || ((AIBase*)go->GetComponent<AIBase>("AIBase"))->GetState() == "Seek") && ((AIBase*)GetComponent<AIBase>("AIBase"))->GetState() != "Dead") //If the spider is colliding with a spider that is currently fighting, and this spider is not dead
+			if ((((AIBase*)go->GetComponent<AIBase>("AIBase"))->GetState() == "Fight" || ((AIBase*)go->GetComponent<AIBase>("AIBase"))->GetState() == "Seek") && ((AIBase*)GetComponent<AIBase>("AIBase"))->GetState() != "Dead") //If the spider is colliding with a spider that is currently fighting, and this spider is not dead
 				((AIBase*)GetComponent<AIBase>("AIBase"))->SetState("Slow"); //Tells the ai to slow down
 		}
 	};
+
+	BoxCollider* pumpkinCollider = new BoxCollider(); //Used for when a pumpkin bullet hits the spider
+	pumpkinCollider->ResetCollisionLayer();
+	pumpkinCollider->AddCollisionLayer(CollisionLayers::ENEMY);
+	pumpkinCollider->ResetCollideAgainstLayer();
+	pumpkinCollider->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
+	pumpkinCollider->transform.SetScale(80, 40, 80);
+
+	pumpkinCollider->transform.SetPosition(0, 35, 0);
+	AddComponent(pumpkinCollider);
+
+	pumpkinCollider->collisionCallback = [this,pumpkinCollider,slowCollider](GameObject* go) {
+
+
+		if (go->GetName() == "Pumpkin")
+		{
+			Pumpkin* p = (Pumpkin*)go;
+			if (p->state == Pumpkin::SHOT)
+			{
+				healthComponent->AddToHealth(-10);
+
+				if (healthComponent->IsDead())
+				{
+					pumpkinCollider->SetActive(0);
+					slowCollider->SetActive(0);
+
+					GetComponent<Animator>("Animator")->SetCurrentAnimation(1, false);
+					aiBase->SetActive(false);
+					aiBase->SetState("Dead");
+					deathTimer = Timer::GetTimeS();
+				}
+
+				go->FlagToBeDestroyed();
+			}
+		}
+
+	};
+
+
 }
 
 void Spider::Update()
@@ -228,6 +197,7 @@ void Spider::Update()
 	}
 	else if (aiBase->GetState() == "Dead")
 	{
+		
 		if (Timer::GetTimeS() >= deathTimer + 1.8f)
 		{
 			for (auto const& i : GetChildList()) //Hide all of the spider until it's cleaned up (doesn't seem to be working?)
