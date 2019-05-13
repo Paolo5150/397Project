@@ -36,6 +36,16 @@ void PathNode::Update()
 
 }
 
+void PathNode::EngineUpdate()
+{
+
+}
+
+void PathNode::LateUpdate()
+{
+
+}
+
 void PathNode::OnCollision(GameObject* go)
 {
 	//SetActive(0);

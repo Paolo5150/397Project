@@ -93,7 +93,10 @@ void PathFinder::Start()
 {
 
 	for (unsigned i = 0; i < pathNodes.size(); i++)
+	{
+		pathNodes[i]->Start();
 		nodesQT->AddElement(pathNodes[i], pathNodes[i]->sc->transform.GetGlobalPosition().x, pathNodes[i]->sc->transform.GetGlobalPosition().z, pathNodes[i]->sc->transform.GetGlobalScale().x, pathNodes[i]->sc->transform.GetGlobalScale().z);
+	}
 
 	int mapWidth = nodeMap.size();
 	int mapHeight = nodeMap[0].size();

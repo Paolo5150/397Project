@@ -141,8 +141,8 @@ void MainScene::Initialize() {
 	pLight->SetIntensity(50.0f);
 
 	PathFinder::Instance().Generate(&Terrain::Instance());
-	for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
-		AddGameObject(PathFinder::Instance().pathNodes[i]);
+	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
+		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
 
 

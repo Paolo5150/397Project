@@ -14,6 +14,9 @@ public:
 	void Start() override;
 
 	void Update() override;
+	void EngineUpdate() override;
+	void LateUpdate() override;
+
 	PathNode* previousNode;
 	BoxCollider* sc;
 	std::vector<PathNode*> neighbors;
