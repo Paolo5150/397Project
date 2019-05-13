@@ -45,25 +45,6 @@ Create("Pumpkin", 9046.55, -9999, 5428.93)
 Create("Pumpkin", 8938.7, -9999, 5393.95)
 Create("Pumpkin", 8881.66, -9999, 5375.46)
 
-Create("Barrel", 1325, -9999, 1826);
-Create("Barrel", 253, -9999, 237);
-Create("Barrel", 649, -9999, 1589);
-Create("Barrel", 731, -9999, 2747);
-Create("Barrel", 1194, -9999, 1025);
-Create("Barrel", 43, -9999, 672);
-Create("Barrel", 1363, -9999, 1678);
-Create("Barrel", 955, -9999, 2148);
-Create("Barrel", 608, -9999, 2287);
-Create("Barrel", 101, -9999, 803);
-Create("Barrel", 110, -9999, 792);
-Create("Barrel", 717, -9999, 1703);
-Create("Barrel", 231, -9999, 928);
-Create("Barrel", 1590, -9999, 1431);
-Create("Barrel", 199, -9999, 501);
-Create("Barrel", 79, -9999, 919);
-Create("Barrel", 1202, -9999, 1652);
-Create("Barrel", 1431, -9999, 1566);
-
 --Crates next to ship
 --right row
 Create("Crate", 2800, -9999, 6060);
@@ -88,7 +69,7 @@ Create("Barrel", 4540, -9999, 3851);
 Create("Barrel", 4505, -9999, 3900);
 
 Create("Cabin", 2771, -9999, 2272, -90, 300, 0);
-Create("Cabin", 2895, -9999, 3954, -90, 300, 0); --Rotation issue, should be 264
+Create("Cabin", 2895, -9999, 3954, -90, 350, 0); --Rotation issue, should be 264
 
 Create("Hive", 4800, -9999, 7600);
 Create("Hive", 8200, -9999, 6500);
