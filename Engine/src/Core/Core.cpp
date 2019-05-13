@@ -225,7 +225,10 @@ void Core::LoadBasicAssets()
 	loading->_message = "Loading rudimentary shapes...";
 	GUIManager::Instance().Render(1, 1);
 	//Load basic shapes
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj", true);
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", true);
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj",false,true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", false,true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", false,true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Tree\\tree.obj",true,true);
+
+
 }

@@ -138,9 +138,6 @@ void PathFinder::Start()
 		}
 	}
 
-
-
-
 }
 
 
