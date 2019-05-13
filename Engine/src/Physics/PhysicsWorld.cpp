@@ -19,16 +19,6 @@ PhysicsWorld&  PhysicsWorld::Instance()
 
 PhysicsWorld::PhysicsWorld()
 {
-	//btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-	// Set up the collision configuration and dispatcher
-	//btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-	//btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-
-	// The actual physics solver
-	//btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-	// The world.
-	//dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-	//SetGravity(0.0f, -40.0f, 0.0f);
 	
 	nonStaticQuadtree = nullptr;
 	staticQuadtree = nullptr;
@@ -140,6 +130,7 @@ void PhysicsWorld::Update(float deltaS)
 	FillQuadtree(0);
 	PerformCollisions(false);
 	allNonStaticColliders.clear();
+
 	/*auto it = allRigidBodies.begin();
 	for (; it != allRigidBodies.end(); it++)
 		(*it)->PrePhysicsUpdate();*/

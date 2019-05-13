@@ -115,7 +115,7 @@ void Hive::Update()
 		spider->transform.SetPosition(spiderX, Terrain::Instance().GetHeightAt(spiderX, spiderZ), spiderZ);
 		spider->Start();
 		SceneManager::Instance().GetCurrentScene().AddGameObject(spider);
-
+		Hive::totalSpiders++;
 		_lastSpawnedSpider = Timer::GetTimeS();
 	}
 }

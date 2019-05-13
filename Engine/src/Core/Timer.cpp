@@ -76,6 +76,17 @@ void Timer::Update()
 	m_prev = m_now;
 
 	accumulator += m_delta;
+	
+
+/*	if (accumulator >= 0.1)
+	{
+		Logger::LogInfo("Major hang");
+
+	
+	}*/
+
+
+
 
 	if (accumulator >= m_limitFPS)
 	{
