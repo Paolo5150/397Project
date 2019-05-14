@@ -64,11 +64,11 @@ PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)
 void PathFinder::Generate(Terrain* terrain)
 {
 	int counterx = 0;
-	for (int x = terrain->GetTerrainMinX() + 200; x < terrain->GetTerrainMaxX() - 200; x += 380)
+	for (int x = terrain->GetTerrainMinX() + 200; x < terrain->GetTerrainMaxX() - 200; x += 200)
 	{
 		std::vector<PathNode*> v;
 		nodeMap.push_back(v);
-		for (int z = terrain->GetTerrainMinZ() + 200; z < terrain->GetTerrainMaxZ() - 200; z += 380)
+		for (int z = terrain->GetTerrainMinZ() + 200; z < terrain->GetTerrainMaxZ() - 200; z += 200)
 		{
 			PathNode* pn = new PathNode();
 			pn->transform.SetPosition(x, terrain->GetHeightAt(x, z), z);
@@ -94,7 +94,9 @@ void PathFinder::Start()
 
 	for (unsigned i = 0; i < pathNodes.size(); i++)
 	{
+
 		pathNodes[i]->Start();
+		//pathNodes[i]->sc->enableRender = 1;
 		nodesQT->AddElement(pathNodes[i], pathNodes[i]->sc->transform.GetGlobalPosition().x, pathNodes[i]->sc->transform.GetGlobalPosition().z, pathNodes[i]->sc->transform.GetGlobalScale().x, pathNodes[i]->sc->transform.GetGlobalScale().z);
 	}
 

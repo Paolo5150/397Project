@@ -149,19 +149,25 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 {
 	PerformCollisions(nonStaticQuadtree->root);
 
-
+	
 	for (unsigned i = 0; i < allNonStaticColliders.size(); i++)
 	{
 		std::unordered_set<Collider*>& staticCols = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z);
 		
 		for (auto it = staticCols.begin(); it != staticCols.end(); it++)
 		{
-			if (allNonStaticColliders[i]->GetCollideAgainstLayer() & (*it)->GetCollisionLayer())
+
+			if (allNonStaticColliders[i]->GetCollideAgainstLayer() & (*it)->GetCollisionLayer() ||
+				(*it)->GetCollideAgainstLayer() & allNonStaticColliders[i]->GetCollisionLayer())
 			{
-				if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
+				if ((*it)->GetActive() && allNonStaticColliders[i]->GetActive())
 				{
-					allNonStaticColliders[i]->collisionCallback((*it)->GetParent());
-					(*it)->collisionCallback(allNonStaticColliders[i]->GetParent());
+
+					if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
+					{
+						allNonStaticColliders[i]->collisionCallback((*it)->GetParent());				
+						(*it)->collisionCallback(allNonStaticColliders[i]->GetParent());
+					}
 				}
 			}
 		}

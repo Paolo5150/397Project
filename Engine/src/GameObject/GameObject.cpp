@@ -23,7 +23,10 @@ GameObject::~GameObject()
 {
 	//Destroy components
 	for (auto it = _components.begin(); it != _components.end(); it++)
+	{
 		delete (*it);
+		(*it) = nullptr;
+	}
 
 	_components.clear();
 	//Logger::LogWarning("Gameobject", GetName(), "deleted");

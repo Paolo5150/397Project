@@ -19,7 +19,7 @@ Hive::Hive() : GameObject("Hive")
 	mat_hive.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hive_diffuse"));
 	mat_hive.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hive_normal"), TextureUniform::NORMAL0);
 	
-	SetIsStatic(1);
+
 
 	ApplyMaterial(mat_hive);
 
@@ -35,8 +35,6 @@ Hive::Hive(int maxSpiders) : GameObject("Hive")
 	mat_hive.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
 	mat_hive.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hive_diffuse"));
 	mat_hive.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hive_normal"), TextureUniform::NORMAL0);
-
-	SetIsStatic(1);
 
 	ApplyMaterial(mat_hive);
 
@@ -88,21 +86,42 @@ unsigned int Hive::GetState() const
 
 void Hive::Start()
 {
+	healtthComponent = new HealthComponent(1000, 1000);
+	AddComponent(healtthComponent);
+
 	BoxCollider* sc = new BoxCollider();
 	sc->ResetCollisionLayer();
 	sc->AddCollisionLayer(CollisionLayers::OBSTACLE);
 	sc->ResetCollideAgainstLayer();
 	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
-	sc->transform.SetScale(0.8, 0.8, 0.8);
-	sc->transform.SetPosition(0, 1, 0);
+	sc->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
+	//sc->enableRender = 1;
+	sc->transform.SetScale(0.6, 0.6, 0.6);
+	sc->transform.SetPosition(0, 0.6, 0);
 	AddComponent(sc);
 
+	sc->collisionCallback = [this](GameObject* go)
+	{
+		if (go->GetName() == "Pumpkin")
+		{
+			go->FlagToBeDestroyed();
+			healtthComponent->AddToHealth(-10);
+
+			if (healtthComponent->GetHealthMaxRatio() < 0.7 && healtthComponent->GetHealthMaxRatio() > 0.4)
+				SetState(1);
+			else if (healtthComponent->GetHealthMaxRatio() <= 0.4)
+				SetState(2);
+
+			if (healtthComponent->IsDead())
+				FlagToBeDestroyed();
+		}
+	};
 	SetState(0);
 }
 
 void Hive::Update()
 {
-	if ((GetState() == 0 || GetState() == 1) && totalSpiders < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 30.0f)
+	if (totalSpiders < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 15.0f)
 	{
 		Spider* spider = new Spider();
 
