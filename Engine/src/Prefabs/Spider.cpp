@@ -146,7 +146,7 @@ void Spider::Start()
 			Pumpkin* p = (Pumpkin*)go;
 			if (p->state == Pumpkin::SHOT)
 			{
-				healthComponent->AddToHealth(-10);
+				healthComponent->AddToHealth(-25);
 
 				if (healthComponent->IsDead())
 				{
