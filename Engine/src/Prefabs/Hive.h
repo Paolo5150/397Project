@@ -27,6 +27,7 @@ public:
 	static unsigned int totalSpiders;
 
 private:
+	bool canSpawnSpiders;
 	int _lastSpawnedSpider;
 	unsigned int _currentState;
 	unsigned int _maxSpiders;

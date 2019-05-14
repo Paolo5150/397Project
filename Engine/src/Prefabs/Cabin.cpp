@@ -7,10 +7,8 @@ Cabin::Cabin() : GameObject("Cabin")
 	SetIsStatic(1);
 
 	AssetLoader::Instance().GetAsset<Model>("Cabin")->PopulateGameObject(this);
-	transform.SetScale(200, 200, 200);
+	transform.SetScale(200, 200, 70);
 
-	transform.SetRotation(-90, 0, 0);
-	
 
 	Material mat_cabin;
 	mat_cabin.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
@@ -28,7 +26,8 @@ void Cabin::Start()
 	sc->ResetCollideAgainstLayer();
 	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
 	sc->transform.SetScale(1, 1, 2.2);
-	sc->transform.SetPosition(0, 0.0, 1);
+	sc->transform.SetPosition(0, 0.0, 0);
+	//sc->enableRender = 1;
 	AddComponent(sc);
 }
 

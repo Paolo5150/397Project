@@ -24,6 +24,7 @@ Hive::Hive() : GameObject("Hive")
 	ApplyMaterial(mat_hive);
 
 	_maxSpiders = 10;
+	canSpawnSpiders = true;
 }
 
 Hive::Hive(int maxSpiders) : GameObject("Hive")
@@ -39,6 +40,7 @@ Hive::Hive(int maxSpiders) : GameObject("Hive")
 	ApplyMaterial(mat_hive);
 
 	_maxSpiders = maxSpiders;
+	canSpawnSpiders = true;
 }
 
 void Hive::SetMaxSpiders(unsigned int maxSpiders)
@@ -60,18 +62,21 @@ void Hive::SetState(unsigned int index)
 			GetChild("Hive_Normal")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(true);
 			GetChild("Hive_Damaged")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(false);
 			GetChild("Hive_Destroyed")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(false);
+			canSpawnSpiders = true;
 			break;
 		case 1:
 			_currentState = 1;
 			GetChild("Hive_Normal")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(false);
 			GetChild("Hive_Damaged")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(true);
 			GetChild("Hive_Destroyed")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(false);
+			canSpawnSpiders = true;
 			break;
 		case 2:
 			_currentState = 2;
 			GetChild("Hive_Normal")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(false);
 			GetChild("Hive_Damaged")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(false);
 			GetChild("Hive_Destroyed")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(true);
+			canSpawnSpiders = false;
 			break;
 		default:
 			Logger::LogWarning("Attempted to set invalid Hive State!");
@@ -121,21 +126,24 @@ void Hive::Start()
 
 void Hive::Update()
 {
-	if (totalSpiders < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 15.0f)
+	if (canSpawnSpiders)
 	{
-		Spider* spider = new Spider();
+		if (totalSpiders < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 15.0f) //Spawns spider only if the maximum spiders has not been reached and if a set amount of time has elapsed
+		{
+			Spider* spider = new Spider();
 
-		float angle = rand()*3.14159265359*2;
-		float r = 50;
-		float spiderX = transform.GetPosition().x + r * cos(angle);
-		float spiderZ = transform.GetPosition().z + r * sin(angle);
+			//Spawn spiders in a circle around hive (not sure if this is working)
+			float angle = rand()*3.14159265359 * 2;
+			float r = 50;
+			float spiderX = transform.GetPosition().x + r * cos(angle);
+			float spiderZ = transform.GetPosition().z + r * sin(angle);
 
-		spider->SetTarget(((Player*)SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").at(0))->transform);
-		spider->transform.SetPosition(spiderX, Terrain::Instance().GetHeightAt(spiderX, spiderZ), spiderZ);
-		spider->Start();
-		SceneManager::Instance().GetCurrentScene().AddGameObject(spider);
-		Hive::totalSpiders++;
-		_lastSpawnedSpider = Timer::GetTimeS();
+			spider->SetTarget(((Player*)SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").at(0))->transform);
+			spider->transform.SetPosition(spiderX, Terrain::Instance().GetHeightAt(spiderX, spiderZ), spiderZ);
+			spider->Start();
+			SceneManager::Instance().GetCurrentScene().AddGameObject(spider);
+			_lastSpawnedSpider = Timer::GetTimeS();
+		}
 	}
 }
 

@@ -52,6 +52,7 @@ void MainScene::LoadAssets() {
 
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Pumpkin\\pumpkin.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\PumpkinBunch\\pumpkinbunch.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Barrel\\barrel.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Gun\\gun.obj");

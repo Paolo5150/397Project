@@ -10,6 +10,7 @@
 #include "..\Prefabs\Mountains.h"
 #include "..\Prefabs\Player.h"
 #include "..\Prefabs\Pumpkin.h"
+#include "..\Prefabs\PumpkinBunch.h"
 #include "..\Prefabs\Spider.h"
 #include "..\Prefabs\Ship.h"
 #include "..\Prefabs\Tree.h"
@@ -71,6 +72,8 @@ InternalAsset* GameAssetFactory::Create(std::string type, std::string name)
 		return new Player();
 	else if (type == "Pumpkin")
 		return new Pumpkin();
+	else if (type == "PumpkinBunch")
+		return new PumpkinBunch();
 	else if (type == "Ship")
 		return new Ship();
 	else if (type == "Spider")

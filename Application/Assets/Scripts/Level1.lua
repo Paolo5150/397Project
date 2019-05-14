@@ -38,12 +38,20 @@ Create("Pumpkin", 1808.27, -9999, 7694.72)
 Create("Pumpkin", 1862.67, -9999, 7471.78)
 Create("Pumpkin", 1915.36, -9999, 7284.34)
 Create("Pumpkin", 1966.37, -9999, 7045.32)
-Create("Pumpkin", 8802.5, -9999, 5209.56)
-Create("Pumpkin", 8948.95, -9999, 5257.05)
-Create("Pumpkin", 9087.69, -9999, 5302.04)
-Create("Pumpkin", 9046.55, -9999, 5428.93)
-Create("Pumpkin", 8938.7, -9999, 5393.95)
-Create("Pumpkin", 8881.66, -9999, 5375.46)
+
+--Farm-ish area
+Create("PumpkinBunch", 9000, -9999, 5200)
+Create("PumpkinBunch", 8800, -9999, 5200)
+Create("PumpkinBunch", 8600, -9999, 5200)
+Create("PumpkinBunch", 9000, -9999, 5400)
+Create("PumpkinBunch", 8800, -9999, 5400)
+Create("PumpkinBunch", 8600, -9999, 5400)
+--Create("Pumpkin", 8802.5, -9999, 5209.56)
+--Create("Pumpkin", 8948.95, -9999, 5257.05)
+--Create("Pumpkin", 9087.69, -9999, 5302.04)
+--Create("Pumpkin", 9046.55, -9999, 5428.93)
+--Create("Pumpkin", 8938.7, -9999, 5393.95)
+--Create("Pumpkin", 8881.66, -9999, 5375.46)
 
 --Crates next to ship
 --right row
@@ -63,13 +71,15 @@ Create("Crate", 2860, -9999, 5760);
 
 Create("Ship", 2470, -9999, 5971);
 
-Create("Cabin", 4690, -9999, 3600, -90, 180, 0);
-Create("Barrel", 4480, -9999, 3851);
-Create("Barrel", 4540, -9999, 3851);
-Create("Barrel", 4505, -9999, 3900);
+Create("Cabin", 4690, -9999, 3600, 0, 180, 0);
+Create("Barrel", 4480, -9999, 3782);
+Create("Barrel", 4540, -9999, 3782);
+Create("Barrel", 4505, -9999, 3831);
+Create("PumpkinBunch", 4470, -9999, 3370);
+Create("PumpkinBunch", 4730, -9999, 3370);
 
-Create("Cabin", 2771, -9999, 2272, -90, 300, 0);
-Create("Cabin", 2895, -9999, 3954, -90, 350, 0); --Rotation issue, should be 264
+Create("Cabin", 2771, -9999, 2272, 0, 300, 0);
+Create("Cabin", 2895, -9999, 3954, 0, 20, 0);
 
 Create("Hive", 4800, -9999, 7600);
 Create("Hive", 8200, -9999, 6500);
@@ -83,6 +93,8 @@ Create("Tree", 10500, -9999, 5500);
 Create("Tree", 8760, -9999, 4600);
 Create("Tree", 8000, -9999, 4350);
 Create("Tree", 8975, -9999, 9100);
+
+--Farm-ish area
 Create("Tree", 9334.88, -9999, 5430.89);
 Create("Tree", 8631.7, -9999, 5523.17);
 Create("Tree", 8482.53, -9999, 4968.06);
