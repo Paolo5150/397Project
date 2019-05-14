@@ -16,6 +16,7 @@ AIBase::AIBase(std::string scriptPath) : Component("AIBase")
 	_scriptPath = scriptPath;
 	_lastStateChange = 0.0f;
 	_randomTimer = 0.0f;
+	_updateTimer = 0.0f;
 }
 
 AIBase::AIBase(Transform& targetTransform, std::string scriptPath) : Component("AIBase")
@@ -34,6 +35,7 @@ AIBase::AIBase(Transform& targetTransform, std::string scriptPath) : Component("
 	_scriptPath = scriptPath;
 	_lastStateChange = 0.0f;
 	_randomTimer = 0.0f;
+	_updateTimer = 0.0f;
 }
 
 AIBase::~AIBase()
@@ -125,13 +127,17 @@ void AIBase::SetAnimation(int index)
 
 void AIBase::Update()
 {
-	if (_otherTarget.x != -1 && _otherTarget.y != -1 && _otherTarget.z != -1)
+	if (Timer::GetTimeS() >= _updateTimer + 0.3f)
 	{
-		_nextNode = PathFinder::Instance().GeneratePath(_parentTransform->GetPosition(), _otherTarget).at(0);
-	}
-	else if (_targetTransform != nullptr)
-	{
-		_nextNode = PathFinder::Instance().GeneratePath(_parentTransform->GetPosition(), _targetTransform->GetPosition()).at(0);
+		_updateTimer = Timer::GetTimeS();
+		if (_otherTarget.x != -1 && _otherTarget.y != -1 && _otherTarget.z != -1)
+		{
+			_nextNode = PathFinder::Instance().GeneratePath(_parentTransform->GetPosition(), _otherTarget).at(0);
+		}
+		else if (_targetTransform != nullptr)
+		{
+			_nextNode = PathFinder::Instance().GeneratePath(_parentTransform->GetPosition(), _targetTransform->GetPosition()).at(0);
+		}
 	}
 
 	Think();

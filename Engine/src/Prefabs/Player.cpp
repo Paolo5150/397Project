@@ -55,9 +55,9 @@ Player::~Player() {}
 void Player::Start()
 {
 	GameObject::Start();
-	int x, y, z;
-	Terrain::Instance().GetCenter(x, y, z);
-	transform.SetPosition(x, y, z);
+	//int x, y, z;
+	//Terrain::Instance().GetCenter(x, y, z);
+	//transform.SetPosition(x, y, z);
 	transform.SetRotation(0, 0, 0);
 
 	boxCollider = new BoxCollider();
@@ -143,19 +143,20 @@ void Player::Update()
 
 	UpdateControls();
 
+	
 	float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
 	transform.SetPosition(transform.GetPosition().x, h + 60, transform.GetPosition().z);
 
 	// Limit camera position within terrain
-	if (transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 50)
-		transform.SetPosition(Terrain::Instance().GetTerrainMaxX() - 50, transform.GetPosition().y, transform.GetPosition().z);
-	else if (transform.GetPosition().x < Terrain::Instance().GetTerrainMinX() + 50)
-		transform.SetPosition(Terrain::Instance().GetTerrainMinX() + 50, transform.GetPosition().y, transform.GetPosition().z);
+	if (transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 1500)
+		transform.SetPosition(Terrain::Instance().GetTerrainMaxX() - 1500, transform.GetPosition().y, transform.GetPosition().z);
+	else if (transform.GetPosition().x < Terrain::Instance().GetTerrainMinX() + 1500)
+		transform.SetPosition(Terrain::Instance().GetTerrainMinX() + 1500, transform.GetPosition().y, transform.GetPosition().z);
 
-	if (transform.GetPosition().z > Terrain::Instance().GetTerrainMaxZ() - 50)
-		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 50);
-	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 50)
-		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 50);
+	if (transform.GetPosition().z > Terrain::Instance().GetTerrainMaxZ() - 1500)
+		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 1500);
+	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 1500)
+		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 1500);
 	
 	mainCamera->transform.SetPosition(transform.GetPosition());
 	gunCam->transform.SetPosition(transform.GetPosition());

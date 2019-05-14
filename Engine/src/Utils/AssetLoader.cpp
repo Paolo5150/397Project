@@ -29,7 +29,7 @@ void AssetLoader::Initialize(GraphicsAPI* gAPI)
 
 Model* AssetLoader::LoadModel(std::string path, bool loadTextures,bool preserve)
 {
-	Model* m = assimpWrapper.LoadModel(path, loadTextures);
+	Model* m = assimpWrapper.LoadModel(path, loadTextures,preserve);
 	containers[typeid(Model).name()].Load(m->name, m);	
 	//Logger::LogError("Loaded model", m->name);
 	m->preserve = preserve;	

@@ -99,10 +99,10 @@ void QuadNode<T>::Split()
 {
 	isSplit = 1;
 
-	Logger::LogError("Split, top left", centerX - width / 4, centerY + height / 4, width / 2, height / 2);
+	/*Logger::LogError("Split, top left", centerX - width / 4, centerY + height / 4, width / 2, height / 2);
 	Logger::LogError("Split, top right", centerX + width / 4, centerY + height / 4, width / 2, height / 2);
 	Logger::LogError("Split, bottom left", centerX - width / 4, centerY - height / 4, width / 2, height / 2);
-	Logger::LogError("Split, bottom right", centerX + width / 4, centerY - height / 4, width / 2, height / 2);
+	Logger::LogError("Split, bottom right", centerX + width / 4, centerY - height / 4, width / 2, height / 2);*/
 
 	topLeft = new QuadNode<T>(centerX - width / 4, centerY + height / 4, width / 2, height / 2,maxElements);
 	topRight = new QuadNode<T>(centerX + width / 4, centerY + height / 4, width / 2, height / 2, maxElements);
@@ -318,7 +318,7 @@ void QuadTree<T>::AddElement(T go, float posX, float posZ, float sizeX, float si
 		if (node->elements.size() >= node->maxElements - 1)
 		{
 			node->Split();
-			Logger::LogWarning("Had to split it further");
+		//	Logger::LogWarning("Had to split it further");
 			for (auto it = node->elements.begin(); it != node->elements.end(); it++)
 			{
 				NodeElementInfo* info = &elementsInfo[(*it)];

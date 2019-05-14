@@ -59,6 +59,7 @@ private:
 
 	float _lastStateChange; //Time since the last succesful state change
 	float _randomTimer; //Timer for managing random state changes
+	float _updateTimer;
 
 	//AI Functions
 	void Think();

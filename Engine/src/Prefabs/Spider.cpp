@@ -114,18 +114,6 @@ void Spider::Start()
 	slowCollider->AddCollideAgainstLayer(CollisionLayers::SPIDER);
 	slowCollider->transform.SetScale(80, 40, 80);
 
-	slowCollider->transform.SetPosition(0, 35, 0);
-	AddComponent(slowCollider);
-
-	slowCollider->collisionCallback = [this](GameObject* go) {
-
-		if (go->GetName() == "Spider")
-		{
-			if ((((AIBase*)go->GetComponent<AIBase>("AIBase"))->GetState() == "Fight" || ((AIBase*)go->GetComponent<AIBase>("AIBase"))->GetState() == "Seek") && ((AIBase*)GetComponent<AIBase>("AIBase"))->GetState() != "Dead") //If the spider is colliding with a spider that is currently fighting, and this spider is not dead
-				((AIBase*)GetComponent<AIBase>("AIBase"))->SetState("Slow"); //Tells the ai to slow down
-		}
-	};
-
 	BoxCollider* pumpkinCollider = new BoxCollider(); //Used for when a pumpkin bullet hits the spider
 	pumpkinCollider->ResetCollisionLayer();
 	pumpkinCollider->AddCollisionLayer(CollisionLayers::ENEMY);
@@ -207,6 +195,17 @@ void Spider::Update()
 			FlagToBeDestroyed();
 		}
 	}
+
+	// Limit spider's position within terrain
+	if (transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 1500)
+		transform.SetPosition(Terrain::Instance().GetTerrainMaxX() - 1500, transform.GetPosition().y, transform.GetPosition().z);
+	else if (transform.GetPosition().x < Terrain::Instance().GetTerrainMinX() + 1500)
+		transform.SetPosition(Terrain::Instance().GetTerrainMinX() + 1500, transform.GetPosition().y, transform.GetPosition().z);
+
+	if (transform.GetPosition().z > Terrain::Instance().GetTerrainMaxZ() - 1500)
+		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 1500);
+	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 1500)
+		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 1500);
 }
 
 void Spider::OnCollision(GameObject* g)

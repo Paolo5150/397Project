@@ -5,7 +5,7 @@
 Crate::Crate() : GameObject("Crate")
 {
 	AssetLoader::Instance().GetAsset<Model>("Crate")->PopulateGameObject(this);
-	transform.SetScale(2,2,2);
+	transform.SetScale(4, 4, 4);
 
 	Material mat_crate;
 	mat_crate.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));

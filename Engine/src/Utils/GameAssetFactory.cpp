@@ -12,6 +12,7 @@
 #include "..\Prefabs\Pumpkin.h"
 #include "..\Prefabs\Spider.h"
 #include "..\Prefabs\Ship.h"
+#include "..\Prefabs\Tree.h"
 
 
 GameAssetFactory GameAssetFactory::Instance()
@@ -74,4 +75,6 @@ InternalAsset* GameAssetFactory::Create(std::string type, std::string name)
 		return new Ship();
 	else if (type == "Spider")
 		return new Spider();
+	else if (type == "Tree")
+		return new Tree();
 }

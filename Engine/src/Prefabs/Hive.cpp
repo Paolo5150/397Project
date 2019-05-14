@@ -12,7 +12,7 @@ unsigned int Hive::totalSpiders = 0;
 Hive::Hive() : GameObject("Hive")
 {
 	AssetLoader::Instance().GetAsset<Model>("Hive")->PopulateGameObject(this);
-	transform.SetScale(200, 200, 200);
+	transform.SetScale(100, 100, 100);
 
 	Material mat_hive;
 	mat_hive.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));

@@ -195,7 +195,8 @@ void Core::LoadBasicAssets()
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\grass.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\ground.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rock.jpg", true);
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm1.png", true);
+	//AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm1.png", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm4.png", true);
 	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\ClearSky", true);
 	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet", true);
 
@@ -224,7 +225,10 @@ void Core::LoadBasicAssets()
 	loading->_message = "Loading rudimentary shapes...";
 	GUIManager::Instance().Render(1, 1);
 	//Load basic shapes
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj", true);
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", true);
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj",false,true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", false,true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", false,true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Tree\\tree.obj",true,true);
+
+
 }

@@ -64,17 +64,16 @@ PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)
 void PathFinder::Generate(Terrain* terrain)
 {
 	int counterx = 0;
-	for (int x = terrain->GetTerrainMinX() + 200; x < terrain->GetTerrainMaxX() - 200; x += 180)
+	for (int x = terrain->GetTerrainMinX() + 200; x < terrain->GetTerrainMaxX() - 200; x += 200)
 	{
 		std::vector<PathNode*> v;
 		nodeMap.push_back(v);
-		for (int z = terrain->GetTerrainMinZ() + 200; z < terrain->GetTerrainMaxZ() - 200; z += 180)
+		for (int z = terrain->GetTerrainMinZ() + 200; z < terrain->GetTerrainMaxZ() - 200; z += 200)
 		{
 			PathNode* pn = new PathNode();
 			pn->transform.SetPosition(x, terrain->GetHeightAt(x, z), z);
 			pn->transform.Update();
 			pathNodes.push_back(pn);
-
 			nodeMap[counterx].push_back(pn);
 
 		}
@@ -94,7 +93,12 @@ void PathFinder::Start()
 {
 
 	for (unsigned i = 0; i < pathNodes.size(); i++)
+	{
+
+		pathNodes[i]->Start();
+		//pathNodes[i]->sc->enableRender = 1;
 		nodesQT->AddElement(pathNodes[i], pathNodes[i]->sc->transform.GetGlobalPosition().x, pathNodes[i]->sc->transform.GetGlobalPosition().z, pathNodes[i]->sc->transform.GetGlobalScale().x, pathNodes[i]->sc->transform.GetGlobalScale().z);
+	}
 
 	int mapWidth = nodeMap.size();
 	int mapHeight = nodeMap[0].size();
@@ -102,7 +106,7 @@ void PathFinder::Start()
 	for (int x = 0; x < nodeMap.size(); x++) {
 		for (int y = 0; y < nodeMap[0].size(); y++) {
 
-			if (nodeMap[x][y]->transform.GetPosition().y < 150)
+			if (nodeMap[x][y]->transform.GetPosition().y < 750)
 				nodeMap[x][y]->cost = 5000;
 
 			if (x > 0) {
@@ -139,18 +143,16 @@ void PathFinder::Start()
 		}
 	}
 
-
-
 }
 
 
 std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finish)
 {
-	for (int i = 0; i < pathNodes.size(); i++)
+/*	for (int i = 0; i < pathNodes.size(); i++)
 	{
-		pathNodes[i]->sc->enableRender = 0;	
+		pathNodes[i]->sc->enableRender = 1;	
 		//pathNodes[i]->sc->meshRenderer->GetMaterial().SetColor(0, 1, 0);
-	}
+	}*/
 
 
 	PathNode* startNode = ClosestNodeAt(start.x, start.y, start.z);
@@ -186,10 +188,13 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 	
 		previousAbsoluteDistance = absoluteDistance;
+		for (unsigned i = 0; i < currentNode->neighbors.size(); i++)
+			currentNode->neighbors[i]->checked = false;
 		
 		for (unsigned i = 0; i < currentNode->neighbors.size(); i++)
 		{
-
+			if (currentNode->neighbors[i]->checked)
+				continue;
 		/*	if (currentNode->neighbors[i]->cost == 0)
 				currentNode->neighbors[i]->sc->meshRenderer->GetMaterial().SetColor(0, 1, 1);
 			else
@@ -198,7 +203,7 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 			currentNode->neighbors[i]->distanceFromPrevious = glm::length(currentNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
 			currentNode->neighbors[i]->distanceFromTarget = glm::length(goalNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
 			double total = currentNode->neighbors[i]->distanceFromPrevious + currentNode->neighbors[i]->distanceFromTarget + currentNode->neighbors[i]->cost;
-			
+			currentNode->neighbors[i]->checked = 1;
 			if (total < minDist)
 			{
 				shortest = currentNode->neighbors[i];
@@ -219,7 +224,7 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 		currentNode = shortest;
 
-	} while (shortest != goalNode);
+	} while (shortest != goalNode && path.size() < 10);
 
 
 

@@ -6,7 +6,7 @@ Barrel::Barrel() : GameObject("Barrel")
 {
 
 	AssetLoader::Instance().GetAsset<Model>("Barrel")->PopulateGameObject(this);
-	transform.SetScale(30, 30, 30);
+	transform.SetScale(60, 60, 60);
 	SetIsStatic(1);
 
 }

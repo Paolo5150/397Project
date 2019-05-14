@@ -7,7 +7,7 @@ Ship::Ship() : GameObject("Ship")
 	SetIsStatic(1);
 
 	AssetLoader::Instance().GetAsset<Model>("Ship")->PopulateGameObject(this);
-	transform.SetScale(20, 20, 20);
+	transform.SetScale(60, 60, 60);
 
 	Material mat_ship;
 	mat_ship.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
