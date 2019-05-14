@@ -44,7 +44,7 @@ PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)
 	{
 		double length = glm::length((*it)->sc->transform.GetGlobalPosition() - glm::vec3(x, y, z));
 		
-		if (length < dist && (*it)->cost == 0)
+		if (length < dist)
 		{
 			dist = length;
 			closest = (*it);
