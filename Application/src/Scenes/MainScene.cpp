@@ -109,7 +109,7 @@ void MainScene::Initialize() {
 	// HUD elements
 	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont", 1, 90, 5, 1, 1, 1, 1);
 	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 80, 3, 7, 7, 1);
-	endGameText = new GUIText("ammoText", "", "invasionFont", 2, 40, 10, 1, 1, 1, 1);
+	endGameText = new GUIText("EndGameText", "", "invasionFont", 2, 40, 10, 1, 1, 1, 1);
 	endGameText->isActive = 0;
 
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoText);
@@ -186,49 +186,61 @@ void MainScene::LogicUpdate()
 	if (currentSceneState == PLAYING)
 	{
 
-
 		if (player->healhComponent->IsDead())
 		{
 			currentSceneState = GAMEOVER;
 		}
 
 		UpdateUI();
-		PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
 		if (Input::GetKeyPressed(GLFW_KEY_M))
 			manual->isActive = !manual->isActive;
+
 		Scene::LogicUpdate(); //Must be last statement!
 
 		if (Input::GetKeyPressed(GLFW_KEY_R))
 			Restart();
+
+
+		if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
+			currentSceneState = PAUSE;
+	}
+	else if (currentSceneState == PAUSE)
+	{
+		
+
+		if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
+		{
+			Logger::LogInfo("Resume");
+			currentSceneState = PLAYING;
+		}
+			
 	}
 	else if (currentSceneState == WIN)
 	{
-		pumpkinAmmoImage->isActive = false;
-		healthBar->isActive = false;
-		endGameText->isActive = 1;
 		endGameText->_message = "YOU WIN!";
 		DisplayMenu();
 	}
 	else if (currentSceneState == GAMEOVER)
 	{
-		pumpkinAmmoImage->isActive = false;
-		healthBar->isActive = false;
-		endGameText->isActive = 1;
+	
 		endGameText->_message = "YOU'RE DEAD!";
 		DisplayMenu();
 
 	}
 
 
-	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
-		SceneManager::Instance().LoadNewScene("ExitScene");
+	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 
 
 }
 
 void MainScene::DisplayMenu()
 {
+	pumpkinAmmoImage->isActive = false;
+	healthBar->isActive = false;
+	pumpkinAmmoText->isActive = 0;
+	endGameText->isActive = 1;
 	GUIManager::Instance().SetBackgroundColor(0, 0, 0, 1);
 	Input::SetCursorMode("normal");
 	GUIButton* restartButton = (new GUIButton("RestartButton", "Restart", [&]{
@@ -240,7 +252,27 @@ void MainScene::DisplayMenu()
 
 	}, "", 1.5, 10, 10, 45, 45, 1, 1, 1, 1));
 
+	GUIButton* quitToMenu = (new GUIButton("QuitToMenuButton", "Menu", [&]{
+			
+		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+		GUIManager::Instance().RenderNoButtonCallbacks();
+		SceneManager::Instance().LoadNewScene("MainMenuScene");
+
+	}, "", 1.5, 10, 10, 45, 60, 1, 1, 1, 1));
+
+	GUIButton* quit = (new GUIButton("QuitButton", "Quit", [&]{
+
+		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+		GUIManager::Instance().RenderNoButtonCallbacks();
+		SceneManager::Instance().LoadNewScene("ExitScene");
+
+	}, "", 1.5, 10, 10, 45, 75, 1, 1, 1, 1));
+
 	GUIManager::Instance().AddGUIObject(restartButton);
+	GUIManager::Instance().AddGUIObject(quitToMenu);
+	GUIManager::Instance().AddGUIObject(quit);
+
+
 
 }
 

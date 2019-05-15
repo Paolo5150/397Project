@@ -23,7 +23,8 @@ public:
 	{
 		PLAYING,
 		GAMEOVER, 
-		WIN
+		WIN,
+		PAUSE
 	};
 	/**
 	* @brief		Creates the MainScene object
