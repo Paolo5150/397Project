@@ -109,12 +109,59 @@ void MainScene::Initialize() {
 	// HUD elements
 	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont", 1, 90, 5, 1, 1, 1, 1);
 	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 80, 3, 7, 7, 1);
-	endGameText = new GUIText("EndGameText", "", "invasionFont", 2, 40, 10, 1, 1, 1, 1);
+		endGameText = new GUIText("EndGameText", "", "invasionFont", 2, 40, 10, 1, 1, 1, 1);
 	endGameText->isActive = 0;
+
+	resumeButton = (new GUIButton("ResumeButton", "Resume", [&]{
+
+		Resume();
+
+	}, "", 1.5, 10, 10, 45, 15, 1, 1, 1, 1));
+
+	saveButton = (new GUIButton("SaveButton", "Save", [&]{		
+
+		//Call save method here!
+
+	}, "", 1.5, 10, 10, 45, 30, 1, 1, 1, 1));
+
+	restartButton = (new GUIButton("RestartButton", "Restart", [&]{
+
+		Input::SetCursorMode("disabled");
+		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+		Restart();
+
+	}, "", 1.5, 10, 10, 45, 45, 1, 1, 1, 1));
+
+	quitToMenuButton = (new GUIButton("QuitToMenuButton", "Menu", [&]{
+
+		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+		SceneManager::Instance().LoadNewScene("MainMenuScene");
+
+	}, "", 1.5, 10, 10, 45, 60, 1, 1, 1, 1));
+
+	quitToDesktopButton = (new GUIButton("QuitButton", "Quit", [&]{
+
+		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+		SceneManager::Instance().LoadNewScene("ExitScene");
+
+	}, "", 1.5, 10, 10, 45, 75, 1, 1, 1, 1));
+
+	restartButton->isActive = 0;
+	saveButton->isActive = 0;
+	quitToDesktopButton->isActive = 0;
+	quitToMenuButton->isActive = 0;
+	resumeButton->isActive = 0;
 
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoText);
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoImage);
 	GUIManager::Instance().AddGUIObject(endGameText);
+
+	GUIManager::Instance().AddGUIObject(restartButton);
+	GUIManager::Instance().AddGUIObject(saveButton);
+	GUIManager::Instance().AddGUIObject(quitToDesktopButton);
+	GUIManager::Instance().AddGUIObject(quitToMenuButton);
+	GUIManager::Instance().AddGUIObject(resumeButton);
+
 
 
 	healthBar = new GUIProgressBar("", "", 3, 3, 40, 3, 1);
@@ -205,16 +252,20 @@ void MainScene::LogicUpdate()
 
 
 		if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
+		{
 			currentSceneState = PAUSE;
+			Input::SetCursorMode("normal");
+			GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0.5);
+			DisplayPauseMenu();
+
+		}
 	}
 	else if (currentSceneState == PAUSE)
-	{
-		
+	{		
 
 		if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		{
-			Logger::LogInfo("Resume");
-			currentSceneState = PLAYING;
+			Resume();
 		}
 			
 	}
@@ -230,12 +281,34 @@ void MainScene::LogicUpdate()
 		DisplayMenu();
 
 	}
+}
 
+void MainScene::DisplayPauseMenu()
+{
 
-
+	Input::SetCursorMode("normal");
+	restartButton->isActive = 1;
+	saveButton->isActive = 1;
+	quitToDesktopButton->isActive =1;
+	quitToMenuButton->isActive = 1;
+	resumeButton->isActive = 1;
 
 
 }
+
+void MainScene::Resume()
+{
+	GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+	Input::SetCursorMode("disabled");
+	restartButton->isActive = 0;
+	saveButton->isActive = 0;
+	quitToDesktopButton->isActive = 0;
+	quitToMenuButton->isActive = 0;
+	resumeButton->isActive = 0;
+	currentSceneState = PLAYING;
+}
+
+
 
 void MainScene::DisplayMenu()
 {
@@ -245,35 +318,6 @@ void MainScene::DisplayMenu()
 	endGameText->isActive = 1;
 	GUIManager::Instance().SetBackgroundColor(0, 0, 0, 1);
 	Input::SetCursorMode("normal");
-	GUIButton* restartButton = (new GUIButton("RestartButton", "Restart", [&]{
-
-		Input::SetCursorMode("disabled");
-		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
-		GUIManager::Instance().RenderNoButtonCallbacks();
-		Restart();
-
-	}, "", 1.5, 10, 10, 45, 45, 1, 1, 1, 1));
-
-	GUIButton* quitToMenu = (new GUIButton("QuitToMenuButton", "Menu", [&]{
-			
-		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
-		GUIManager::Instance().RenderNoButtonCallbacks();
-		SceneManager::Instance().LoadNewScene("MainMenuScene");
-
-	}, "", 1.5, 10, 10, 45, 60, 1, 1, 1, 1));
-
-	GUIButton* quit = (new GUIButton("QuitButton", "Quit", [&]{
-
-		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
-		GUIManager::Instance().RenderNoButtonCallbacks();
-		SceneManager::Instance().LoadNewScene("ExitScene");
-
-	}, "", 1.5, 10, 10, 45, 75, 1, 1, 1, 1));
-
-	GUIManager::Instance().AddGUIObject(restartButton);
-	GUIManager::Instance().AddGUIObject(quitToMenu);
-	GUIManager::Instance().AddGUIObject(quit);
-
 
 
 }

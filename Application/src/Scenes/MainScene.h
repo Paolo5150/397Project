@@ -4,6 +4,8 @@
 class GUIImage;
 class Player;
 class GUIProgressBar;
+class GUIButton;
+
 /**
 * @class MainScene
 * @brief The application main scene
@@ -67,17 +69,25 @@ public:
 	virtual void LogicUpdate() override;
 
 	void DisplayMenu();
+	void DisplayPauseMenu();
+
 	GUIImage* manual;
 
 	GUIImage* pumpkinAmmoImage;
+
 	GUIText* pumpkinAmmoText;
 	GUIText* endGameText;
-
+	GUIButton* resumeButton;
+	GUIButton* saveButton;
+	GUIButton* restartButton;
+	GUIButton* quitToMenuButton;
+	GUIButton* quitToDesktopButton;
 	GUIProgressBar* healthBar;
 	
 	Player* player;
 
 	void Restart();
+	void Resume();
 	void UpdateUI();
 
 	SCENE_STATES currentSceneState;
