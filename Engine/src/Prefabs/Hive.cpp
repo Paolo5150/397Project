@@ -76,7 +76,7 @@ void Hive::SetState(unsigned int index)
 			GetChild("Hive_Normal")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(false);
 			GetChild("Hive_Damaged")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(false);
 			GetChild("Hive_Destroyed")->GetComponentByType<MeshRenderer>("Renderer")->SetActive(true);
-			canSpawnSpiders = false;
+			canSpawnSpiders = true;
 			break;
 		default:
 			Logger::LogWarning("Attempted to set invalid Hive State!");
