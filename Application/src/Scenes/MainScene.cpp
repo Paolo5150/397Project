@@ -18,6 +18,8 @@
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIImage.h"
 #include "GUI\GUIElements\GUIProgressBar.h"
+#include "GUI\GUIElements\GUIButton.h"
+
 
 #include "Components\Animator.h"
 
@@ -107,8 +109,13 @@ void MainScene::Initialize() {
 	// HUD elements
 	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont", 1, 90, 5, 1, 1, 1, 1);
 	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 80, 3, 7, 7, 1);
+	endGameText = new GUIText("ammoText", "", "invasionFont", 2, 40, 10, 1, 1, 1, 1);
+	endGameText->isActive = 0;
+
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoText);
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoImage);
+	GUIManager::Instance().AddGUIObject(endGameText);
+
 
 	healthBar = new GUIProgressBar("", "", 3, 3, 40, 3, 1);
 	GUIManager::Instance().AddGUIObject(healthBar);
@@ -133,8 +140,6 @@ void MainScene::Initialize() {
 	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
 		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
-
-
 	//GameObjects
 	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
 	{
@@ -158,6 +163,8 @@ void MainScene::Initialize() {
 
 	Lua::CloseLua();
 
+	currentSceneState = PLAYING;
+
 }
 
 void MainScene::Start()
@@ -176,63 +183,67 @@ void MainScene::Start()
 
 void MainScene::LogicUpdate()
 {
-	UpdateUI();
-	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
+	if (currentSceneState == PLAYING)
+	{
 
-	if (Input::GetKeyPressed(GLFW_KEY_M))
-		manual->isActive = !manual->isActive;
+
+		if (player->healhComponent->IsDead())
+		{
+			currentSceneState = GAMEOVER;
+		}
+
+		UpdateUI();
+		PhysicsWorld::Instance().Update(Timer::GetDeltaS());
+
+		if (Input::GetKeyPressed(GLFW_KEY_M))
+			manual->isActive = !manual->isActive;
+		Scene::LogicUpdate(); //Must be last statement!
+
+		if (Input::GetKeyPressed(GLFW_KEY_R))
+			Restart();
+	}
+	else if (currentSceneState == WIN)
+	{
+		pumpkinAmmoImage->isActive = false;
+		healthBar->isActive = false;
+		endGameText->isActive = 1;
+		endGameText->_message = "YOU WIN!";
+		DisplayMenu();
+	}
+	else if (currentSceneState == GAMEOVER)
+	{
+		pumpkinAmmoImage->isActive = false;
+		healthBar->isActive = false;
+		endGameText->isActive = 1;
+		endGameText->_message = "YOU'RE DEAD!";
+		DisplayMenu();
+
+	}
+
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		SceneManager::Instance().LoadNewScene("ExitScene");
 
-	Scene::LogicUpdate(); //Must be last statement!
 
-	if (Input::GetKeyPressed(GLFW_KEY_R))
+}
+
+void MainScene::DisplayMenu()
+{
+	GUIManager::Instance().SetBackgroundColor(0, 0, 0, 1);
+	Input::SetCursorMode("normal");
+	GUIButton* restartButton = (new GUIButton("RestartButton", "Restart", [&]{
+
+		Input::SetCursorMode("disabled");
+		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+		GUIManager::Instance().RenderNoButtonCallbacks();
 		Restart();
 
-	Logger::LogInfo("Total spiders", Hive::totalSpiders);
-	Logger::LogInfo("Total hives", Hive::totalHives);
+	}, "", 1.5, 10, 10, 45, 45, 1, 1, 1, 1));
 
+	GUIManager::Instance().AddGUIObject(restartButton);
 
-	if (Input::GetKeyPressed(GLFW_KEY_1))
-	{
-		for (auto const& i : GetGameobjectsByName("Hive"))
-		{
-			Logger::LogInfo("Set state to 0");
-			((Hive*)i)->SetState(0);
-		}
-	}
-	else if (Input::GetKeyPressed(GLFW_KEY_2))
-	{
-		for (auto const& i : GetGameobjectsByName("Hive"))
-		{
-			Logger::LogInfo("Set state to 1");
-			((Hive*)i)->SetState(1);
-		}
-	}
-	else if (Input::GetKeyPressed(GLFW_KEY_3))
-	{
-		for (auto const& i : GetGameobjectsByName("Hive"))
-		{
-			Logger::LogInfo("Set state to 2");
-			((Hive*)i)->SetState(2);
-		}
-	}
-
-	if (Input::GetKeyPressed(GLFW_KEY_P))
-	{
-		Logger::LogInfo(player->transform.ToString());
-	}
-
-	if (Input::GetKeyPressed(GLFW_KEY_O))
-	{
-		for (auto const& i : GetGameobjectsByName("Spider"))
-		{
-			Logger::LogInfo("Killing all spiders");
-			((Spider*)i)->FlagToBeDestroyed();
-		}
-	}
 }
+
 
 void MainScene::Restart()
 {

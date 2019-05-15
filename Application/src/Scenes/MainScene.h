@@ -22,7 +22,8 @@ public:
 	enum SCENE_STATES
 	{
 		PLAYING,
-		GAMEOVER
+		GAMEOVER, 
+		WIN
 	};
 	/**
 	* @brief		Creates the MainScene object
@@ -64,14 +65,20 @@ public:
 	*/
 	virtual void LogicUpdate() override;
 
+	void DisplayMenu();
 	GUIImage* manual;
 
 	GUIImage* pumpkinAmmoImage;
 	GUIText* pumpkinAmmoText;
+	GUIText* endGameText;
+
 	GUIProgressBar* healthBar;
+	
 	Player* player;
 
 	void Restart();
 	void UpdateUI();
+
+	SCENE_STATES currentSceneState;
 
 };
