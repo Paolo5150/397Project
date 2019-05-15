@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include <list>
+#include <unordered_set>
 #include <algorithm>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -24,6 +25,9 @@
 
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include "assimp\Importer.hpp"
+#include "assimp\scene.h"
+#include "assimp\postprocess.h"
 
 
 #endif //PCH_H

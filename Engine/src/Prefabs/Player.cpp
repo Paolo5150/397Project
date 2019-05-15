@@ -24,7 +24,7 @@ Player::Player() : GameObject("Player")
 	_rotationSpeed = 20;
 	_isTopView = false;
 	_intendedDir = glm::vec3(0, 0, 0);
-	ammoCounter = 10;
+	ammoCounter = 1000000;
 
 	gn = new GranadeLauncher();
 

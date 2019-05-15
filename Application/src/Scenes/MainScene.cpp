@@ -39,8 +39,6 @@
 #include "Components\AIBase.h"
 
 MainCamera* cam;
-PointLight* pLight;
-DirectionalLight* dirLight;
 bool reinit = false;
 
 MainScene::MainScene() : Scene("MainScene")
@@ -60,7 +58,6 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx", false);
 
-
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Spider\\spider_3.fbx", 0);
@@ -68,12 +65,10 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadTexture("Assets\\Models\\Spider\\textures\\Spinnen_Bein_tex_COLOR_.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Models\\GranadeLauncher\\launcher.jpg");
 
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\wood.jpg");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_normal.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\pumpkinIcon.png");
 
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_specular.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\shipTexture.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_diffuse.png");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\cabin_normal.png");
@@ -122,7 +117,7 @@ void MainScene::Initialize() {
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.5f, 0.5f, 0.2f);
 
-	dirLight = new DirectionalLight();
+	DirectionalLight* dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
 	dirLight->transform.SetRotation(45, 117, 0);
 	dirLight->SetIntensity(0.9f);
@@ -133,11 +128,6 @@ void MainScene::Initialize() {
 	dirLight2->SetDiffuseColor(1, 1, 1);
 	dirLight2->transform.SetRotation(90, -120, 0);
 	dirLight2->SetIntensity(0.5f);
-
-	pLight = new PointLight();
-	pLight->SetDiffuseColor(1, 1, 1);
-	pLight->transform.Translate(-15, 10, -15);
-	pLight->SetIntensity(50.0f);
 
 	PathFinder::Instance().Generate(&Terrain::Instance());
 	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
@@ -164,7 +154,6 @@ void MainScene::Initialize() {
 
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
-	AddGameObject(pLight);
 	AddGameObject(&Terrain::Instance());
 
 	Lua::CloseLua();
@@ -201,10 +190,8 @@ void MainScene::LogicUpdate()
 	if (Input::GetKeyPressed(GLFW_KEY_R))
 		Restart();
 
-
-
-
-
+	Logger::LogInfo("Total spiders", Hive::totalSpiders);
+	Logger::LogInfo("Total hives", Hive::totalHives);
 
 
 	if (Input::GetKeyPressed(GLFW_KEY_1))
