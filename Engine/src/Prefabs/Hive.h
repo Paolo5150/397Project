@@ -25,7 +25,7 @@ public:
 	void Update() override;
 
 	static unsigned int totalSpiders;
-
+	static unsigned int totalHives;
 private:
 	bool canSpawnSpiders;
 	int _lastSpawnedSpider;

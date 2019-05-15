@@ -4,6 +4,8 @@
 class GUIImage;
 class Player;
 class GUIProgressBar;
+class GUIButton;
+
 /**
 * @class MainScene
 * @brief The application main scene
@@ -22,7 +24,9 @@ public:
 	enum SCENE_STATES
 	{
 		PLAYING,
-		GAMEOVER
+		GAMEOVER, 
+		WIN,
+		PAUSE
 	};
 	/**
 	* @brief		Creates the MainScene object
@@ -64,14 +68,28 @@ public:
 	*/
 	virtual void LogicUpdate() override;
 
+	void DisplayEndGameMenu();
+	void DisplayPauseMenu();
+
 	GUIImage* manual;
 
 	GUIImage* pumpkinAmmoImage;
+
 	GUIText* pumpkinAmmoText;
+	GUIText* endGameText;
+	GUIButton* resumeButton;
+	GUIButton* saveButton;
+	GUIButton* restartButton;
+	GUIButton* quitToMenuButton;
+	GUIButton* quitToDesktopButton;
 	GUIProgressBar* healthBar;
+	
 	Player* player;
 
 	void Restart();
+	void Resume();
 	void UpdateUI();
+
+	SCENE_STATES currentSceneState;
 
 };

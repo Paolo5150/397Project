@@ -16,7 +16,7 @@ void DirectionalLight::SetCastShadowEnable(bool enable)
 	isCastingShadows = enable;
 
 	if (shadowMap == NULL)
-		shadowMap = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(1024 * 8, 1024 * 8, 0);
+		shadowMap = Core::Instance().GetGraphicsAPI().CreateFrameBuffer(1024 * 2, 1024 * 2, 0);
 }
 
 bool DirectionalLight::GetIsCastingShadow()

@@ -49,9 +49,17 @@ void GUIManager::Refresh()
 void GUIManager::AddGUIObject(GUIObject* gobj, bool preserve )
 {
 	if (preserve)
-		allGUIPreserved[gobj->name] = gobj;
+	{
+		auto it = allGUIPreserved.find(gobj->name);
+		if (it == allGUIPreserved.end())
+			allGUIPreserved[gobj->name] = gobj;
+	}
 	else
-		allGUI[gobj->name] = gobj;
+	{
+		auto it = allGUI.find(gobj->name);
+		if (it == allGUI.end())
+			allGUI[gobj->name] = gobj;
+	}
 
 }
 
