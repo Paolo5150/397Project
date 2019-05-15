@@ -68,7 +68,7 @@ public:
 	*/
 	virtual void LogicUpdate() override;
 
-	void DisplayMenu();
+	void DisplayEndGameMenu();
 	void DisplayPauseMenu();
 
 	GUIImage* manual;

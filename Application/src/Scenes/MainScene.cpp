@@ -162,11 +162,8 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(quitToMenuButton);
 	GUIManager::Instance().AddGUIObject(resumeButton);
 
-
-
 	healthBar = new GUIProgressBar("", "", 3, 3, 40, 3, 1);
 	GUIManager::Instance().AddGUIObject(healthBar);
-
 
 	//Lights
 	LightManager::Instance().SetAmbientLight(0.5f, 0.5f, 0.2f);
@@ -234,10 +231,15 @@ void MainScene::LogicUpdate()
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	if (currentSceneState == PLAYING)
 	{
-
+		
 		if (player->healhComponent->IsDead())
 		{
 			currentSceneState = GAMEOVER;
+		}
+
+		if (Hive::totalHives == 0 && Hive::totalSpiders == 0)
+		{
+			currentSceneState = WIN;
 		}
 
 		UpdateUI();
@@ -272,28 +274,25 @@ void MainScene::LogicUpdate()
 	else if (currentSceneState == WIN)
 	{
 		endGameText->_message = "YOU WIN!";
-		DisplayMenu();
+		DisplayEndGameMenu();
 	}
 	else if (currentSceneState == GAMEOVER)
 	{
 	
 		endGameText->_message = "YOU'RE DEAD!";
-		DisplayMenu();
+		DisplayEndGameMenu();
 
 	}
 }
 
 void MainScene::DisplayPauseMenu()
 {
-
 	Input::SetCursorMode("normal");
 	restartButton->isActive = 1;
 	saveButton->isActive = 1;
 	quitToDesktopButton->isActive =1;
 	quitToMenuButton->isActive = 1;
 	resumeButton->isActive = 1;
-
-
 }
 
 void MainScene::Resume()
@@ -310,7 +309,7 @@ void MainScene::Resume()
 
 
 
-void MainScene::DisplayMenu()
+void MainScene::DisplayEndGameMenu()
 {
 	pumpkinAmmoImage->isActive = false;
 	healthBar->isActive = false;
@@ -318,6 +317,9 @@ void MainScene::DisplayMenu()
 	endGameText->isActive = 1;
 	GUIManager::Instance().SetBackgroundColor(0, 0, 0, 1);
 	Input::SetCursorMode("normal");
+	restartButton->isActive = 1;
+	quitToDesktopButton->isActive = 1;
+	quitToMenuButton->isActive = 1;
 
 
 }

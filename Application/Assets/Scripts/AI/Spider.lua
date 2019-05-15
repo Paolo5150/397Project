@@ -1,5 +1,5 @@
 --Script variables
-movementSpeed = 200;
+movementSpeed = 500;
 rotationSpeed = 5;
 fleeDistance = 6000; --Distance the ai will try and get to before stopping fleeing
 agroDistance = 5000; --Distance the ai will notice and start following the target

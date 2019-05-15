@@ -8,7 +8,7 @@
 
 namespace
 {
-	const float attackRate = 0.8;
+	const float attackRate = 0.5;
 }
 
 Spider::Spider() : GameObject("Spider")
