@@ -107,6 +107,8 @@ Transform* Spider::GetTarget() const
 
 void Spider::Start()
 {
+	Hive::totalSpiders++;
+	
 	BoxCollider* slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
 	slowCollider->ResetCollisionLayer();
 	slowCollider->AddCollisionLayer(CollisionLayers::SPIDER);
@@ -144,7 +146,7 @@ void Spider::Start()
 			Pumpkin* p = (Pumpkin*)go;
 			if (p->state == Pumpkin::SHOT)
 			{
-				healthComponent->AddToHealth(-10);
+				healthComponent->AddToHealth(-25);
 
 				if (healthComponent->IsDead())
 				{
@@ -207,6 +209,17 @@ void Spider::Update()
 			FlagToBeDestroyed();
 		}
 	}
+
+	// Limit spider's position within terrain
+	if (transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 1500)
+		transform.SetPosition(Terrain::Instance().GetTerrainMaxX() - 1500, transform.GetPosition().y, transform.GetPosition().z);
+	else if (transform.GetPosition().x < Terrain::Instance().GetTerrainMinX() + 1500)
+		transform.SetPosition(Terrain::Instance().GetTerrainMinX() + 1500, transform.GetPosition().y, transform.GetPosition().z);
+
+	if (transform.GetPosition().z > Terrain::Instance().GetTerrainMaxZ() - 1500)
+		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 1500);
+	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 1500)
+		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 1500);
 }
 
 void Spider::OnCollision(GameObject* g)

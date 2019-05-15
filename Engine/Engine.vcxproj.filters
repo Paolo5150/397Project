@@ -75,11 +75,11 @@
     <ClCompile Include="src\Components\PathNode.cpp" />
     <ClCompile Include="src\Utils\PathFinder.cpp" />
     <ClCompile Include="src\Prefabs\Ship.cpp" />
-    <ClCompile Include="src\Prefabs\Gun.cpp" />
     <ClCompile Include="src\Prefabs\GranadeLauncher.cpp" />
     <ClCompile Include="src\Prefabs\Player.cpp" />
-    <ClCompile Include="src\Prefabs\Mountains.cpp" />
     <ClCompile Include="src\Prefabs\Hive.cpp" />
+    <ClCompile Include="src\Prefabs\Tree.cpp" />
+    <ClCompile Include="src\Prefabs\PumpkinBunch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -184,13 +184,13 @@
     <ClInclude Include="src\Components\PathNode.h" />
     <ClInclude Include="src\Utils\PathFinder.h" />
     <ClInclude Include="src\Prefabs\Ship.h" />
-    <ClInclude Include="src\Prefabs\Gun.h" />
     <ClInclude Include="src\Prefabs\PlayerStats.h" />
     <ClInclude Include="src\Prefabs\GranadeLauncher.h" />
     <ClInclude Include="src\Prefabs\Player.h" />
     <ClInclude Include="src\Components\HealthComponent.h" />
-    <ClInclude Include="src\Prefabs\Mountains.h" />
     <ClInclude Include="src\Prefabs\Hive.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIProgressBar.h" />
+    <ClInclude Include="src\Prefabs\Tree.h" />
+    <ClInclude Include="src\Prefabs\PumpkinBunch.h" />
   </ItemGroup>
 </Project>

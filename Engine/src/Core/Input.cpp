@@ -211,7 +211,7 @@ void Input::Key_Callback(GLFWwindow* window, int key, int scancode, int action, 
 	}
 	else
 	{
-		Logger::LogWarning("Key_Callback went out of range!");
+		Logger::LogWarning("Key_Callback went out of range with value ", key, "!");
 	}
 }
 

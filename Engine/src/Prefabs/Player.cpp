@@ -23,8 +23,8 @@ Player::Player() : GameObject("Player")
 	_movementSpeed = 20;
 	_rotationSpeed = 20;
 	_isTopView = false;
-	_intendedDir = glm::vec3(0, 0, 0);	
-	ammoCounter = 5000000;
+	_intendedDir = glm::vec3(0, 0, 0);
+	ammoCounter = 10;
 
 	gn = new GranadeLauncher();
 
@@ -55,9 +55,9 @@ Player::~Player() {}
 void Player::Start()
 {
 	GameObject::Start();
-	int x, y, z;
-	Terrain::Instance().GetCenter(x, y, z);
-	transform.SetPosition(x, y, z);
+	//int x, y, z;
+	//Terrain::Instance().GetCenter(x, y, z);
+	//transform.SetPosition(x, y, z);
 	transform.SetRotation(0, 0, 0);
 
 	boxCollider = new BoxCollider();
@@ -72,7 +72,7 @@ void Player::Start()
 
 	//boxCollider->enableRender = 1;
 	boxCollider->transform.parent = nullptr;
-	boxCollider->collisionCallback = [this](GameObject* go){
+	boxCollider->collisionCallback = [this](GameObject* go) {
 		_movementSpeed = 0;
 	};
 
@@ -83,17 +83,22 @@ void Player::Start()
 	pickupCollider->ResetCollisionLayer();
 	//pickupCollider->enableRender = 1;
 	pickupCollider->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
-	pickupCollider->collisionCallback = [this](GameObject* go){
+	pickupCollider->collisionCallback = [this](GameObject* go) {
 
 		if (go->GetName() == "Pumpkin")
 		{
 			Pumpkin* p = (Pumpkin*)go;
 			if (p->state == Pumpkin::GROUND)
 			{
-				
+
 				ammoCounter++;
 				go->FlagToBeDestroyed();
 			}
+		}
+		else if (go->GetName() == "PumpkinBunch")
+		{
+			ammoCounter += 3;
+			go->FlagToBeDestroyed();
 		}
 
 	};
@@ -103,7 +108,7 @@ void Player::Start()
 	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
 	gunCam->AddChild(gn);
 
-	healhComponent = new HealthComponent(100,100);
+	healhComponent = new HealthComponent(100, 100);
 	AddComponent(healhComponent);
 
 }
@@ -134,7 +139,7 @@ void Player::Update()
 			pump->shootDirection = transform.GetLocalFront();
 			SceneManager::Instance().GetCurrentScene().AddGameObject(pump);
 			ammoCounter--;
-			
+
 		}
 	}
 	else
@@ -143,20 +148,21 @@ void Player::Update()
 
 	UpdateControls();
 
+
 	float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
 	transform.SetPosition(transform.GetPosition().x, h + 60, transform.GetPosition().z);
 
 	// Limit camera position within terrain
-	if (transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 50)
-		transform.SetPosition(Terrain::Instance().GetTerrainMaxX() - 50, transform.GetPosition().y, transform.GetPosition().z);
-	else if (transform.GetPosition().x < Terrain::Instance().GetTerrainMinX() + 50)
-		transform.SetPosition(Terrain::Instance().GetTerrainMinX() + 50, transform.GetPosition().y, transform.GetPosition().z);
+	if (transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 1500)
+		transform.SetPosition(Terrain::Instance().GetTerrainMaxX() - 1500, transform.GetPosition().y, transform.GetPosition().z);
+	else if (transform.GetPosition().x < Terrain::Instance().GetTerrainMinX() + 1500)
+		transform.SetPosition(Terrain::Instance().GetTerrainMinX() + 1500, transform.GetPosition().y, transform.GetPosition().z);
 
-	if (transform.GetPosition().z > Terrain::Instance().GetTerrainMaxZ() - 50)
-		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 50);
-	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 50)
-		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 50);
-	
+	if (transform.GetPosition().z > Terrain::Instance().GetTerrainMaxZ() - 1500)
+		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 1500);
+	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 1500)
+		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 1500);
+
 	mainCamera->transform.SetPosition(transform.GetPosition());
 	gunCam->transform.SetPosition(transform.GetPosition());
 	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
@@ -177,7 +183,7 @@ void Player::UpdateControls()
 		//Logger::LogInfo("Delta", Input::GetDeltaMousePosX(), Input::GetDeltaMousePosY());
 		timer = 0;
 	}
-	
+
 	if (Timer::GetTickCount() == 1)
 	{
 		Input::Update();

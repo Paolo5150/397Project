@@ -47,6 +47,18 @@ function PopulateVariables(state, targetDistance, targetRotation, targetRotation
     _randomTimer = randomTimer;
 end
 
+function RandomWanderPos()
+    _wanderPosX = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
+    _wanderPosY = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
+    _wanderPosZ = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
+end
+
+function ClearWanderPos()
+    _wanderPosX = -1
+    _wanderPosY = -1
+    _wanderPosZ = -1
+end
+
 --Entry function
 --Returns: state, animation, fowardMovement, rightMovement, rotation(left/right), wanderDirection
 function Think(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, terrainMaxX, terrainMaxZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
@@ -74,9 +86,7 @@ end
 
 function Idle()
     animation = 14;
-    _wanderPosX = -1
-    _wanderPosY = -1
-    _wanderPosZ = -1
+    ClearWanderPos()
 
     rotation = 0;
     fowardMovement = 0;
@@ -87,9 +97,7 @@ function Idle()
 
         if(math.random(1, 100) < 10) then
             _state = "Wander";
-            _wanderPosX = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
-            _wanderPosY = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
-            _wanderPosZ = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
+            RandomWanderPos()
         end
     end
 
@@ -102,9 +110,7 @@ function Wander()
     animation = 7;  
 
     if(_wanderPosX == -1 and _wanderPosY == -1 and _wanderPosZ == -1) then
-        _wanderPosX = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
-        _wanderPosY = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
-        _wanderPosZ = math.random() + math.random(_terrainMaxX - 200, _terrainMaxZ - 200);
+        RandomWanderPos()
     end
 
     rotation = _nodeRotationReverse * rotationSpeed * _timerDeltaS;
@@ -130,13 +136,17 @@ end
 
 function Seek()
     animation = 7;
-    _wanderPosX = -1;
-    _wanderPosY = -1;
-    _wanderPosZ = -1;
+    ClearWanderPos()
 
-    rotation = _nodeRotationReverse * rotationSpeed * _timerDeltaS;
-    fowardMovement = -(movementSpeed * _timerDeltaS);
-    rightMovement = 0;
+    if(_targetDistance <= attackDistance + 200) then
+        rotation = _targetRotationReverse * rotationSpeed * _timerDeltaS;
+        fowardMovement = -(movementSpeed * _timerDeltaS);
+        rightMovement = 0;
+    else
+        rotation = _nodeRotationReverse * rotationSpeed * _timerDeltaS;
+        fowardMovement = -(movementSpeed * _timerDeltaS);
+        rightMovement = 0;
+    end
 
     if(_targetDistance >= maxFollowDistance) then
         _state = "Wander";
@@ -149,9 +159,7 @@ end
 
 function Fight()
     animation = 0;
-    _wanderPosX = -1;
-    _wanderPosY = -1;
-    _wanderPosZ = -1;
+    ClearWanderPos()
 
     rotation = _targetRotationReverse * rotationSpeed * _timerDeltaS;
     fowardMovement = 0;
@@ -168,9 +176,7 @@ end
 
 function Slow()
     animation = 14;
-    _wanderPosX = -1;
-    _wanderPosY = -1;
-    _wanderPosZ = -1;
+    ClearWanderPos()
 
     rotation = _targetRotationReverse * rotationSpeed * _timerDeltaS;
     fowardMovement = 0;

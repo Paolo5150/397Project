@@ -13,7 +13,7 @@ static std::string modelFolderName;
 static std::string pathToFolder;
 static bool texturesAsWell = true;
 }
-Model* AssimpWrapper::LoadModel(const std::string& path, bool loadTextures)
+Model* AssimpWrapper::LoadModel(const std::string& path, bool loadTextures, bool preserve)
 {
 	Assimp::Importer import;
 	texturesAsWell = loadTextures;
@@ -31,7 +31,7 @@ Model* AssimpWrapper::LoadModel(const std::string& path, bool loadTextures)
 	pathToFolder = "Assets\\Models\\" + modelFolderName ;
 	Model* model = NULL;
 	AnimatedModel* animatedModel = NULL;
-
+	preserveTextures = preserve;
 	if (scene->HasAnimations())
 	{
 		//Logger::LogInfo("This model", modelFolderName, "is animated");
@@ -264,7 +264,7 @@ void AssimpWrapper::LoadTextureIntoMaterial(aiTextureType type, aiMaterial* mate
 		std::string fileNameOnly = FileUtils::GetFileNameFromAbsolutePath(assimpPath.C_Str());
 		std::string finalPath = textureFolder + "\\" + fileNameOnly;
 		//Logger::LogWarning("Trying to get texture from", finalPath);
-		Texture2D* t = AssetLoader::Instance().LoadTexture(finalPath);
+		Texture2D* t = AssetLoader::Instance().LoadTexture(finalPath,preserveTextures);
 		model->allTextures.push_back(t);
 
 

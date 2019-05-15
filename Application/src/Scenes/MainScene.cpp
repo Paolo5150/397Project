@@ -35,6 +35,7 @@
 #include "Graphics\RenderingEngine.h"
 #include "Physics\PhysicsWorld.h"
 #include "Prefabs\Player.h"
+#include "Prefabs\Spider.h"
 #include "Components\AIBase.h"
 
 MainCamera* cam;
@@ -51,11 +52,10 @@ void MainScene::LoadAssets() {
 
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Pumpkin\\pumpkin.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\PumpkinBunch\\pumpkinbunch.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Barrel\\barrel.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Gun\\gun.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Hive\\hive.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Mountains\\mountains.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx", false);
@@ -96,6 +96,7 @@ void MainScene::Initialize() {
 	//Terrain
 
 	Terrain::Instance().Initialize(256);
+	//Terrain::Instance().Initialize(512);
 
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
@@ -139,8 +140,8 @@ void MainScene::Initialize() {
 	pLight->SetIntensity(50.0f);
 
 	PathFinder::Instance().Generate(&Terrain::Instance());
-	for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
-		AddGameObject(PathFinder::Instance().pathNodes[i]);
+	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
+		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
 
 
@@ -228,6 +229,20 @@ void MainScene::LogicUpdate()
 		{
 			Logger::LogInfo("Set state to 2");
 			((Hive*)i)->SetState(2);
+		}
+	}
+
+	if (Input::GetKeyPressed(GLFW_KEY_P))
+	{
+		Logger::LogInfo(player->transform.ToString());
+	}
+
+	if (Input::GetKeyPressed(GLFW_KEY_O))
+	{
+		for (auto const& i : GetGameobjectsByName("Spider"))
+		{
+			Logger::LogInfo("Killing all spiders");
+			((Spider*)i)->FlagToBeDestroyed();
 		}
 	}
 }
