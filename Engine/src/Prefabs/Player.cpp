@@ -163,6 +163,16 @@ void Player::Update()
 	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 1500)
 		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 1500);
 
+	if (transform.GetPosition().y < 750)
+	{
+		underwaterTimer += Timer::GetDeltaS();
+
+		if (underwaterTimer > 3)
+			healhComponent->AddToHealth(Timer::GetDeltaS() * -3);
+	}
+	else
+		underwaterTimer = 0;
+
 	mainCamera->transform.SetPosition(transform.GetPosition());
 	gunCam->transform.SetPosition(transform.GetPosition());
 	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
