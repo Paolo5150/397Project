@@ -183,6 +183,8 @@ void MainScene::Start()
 
 void MainScene::LogicUpdate()
 {
+
+	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
 	if (currentSceneState == PLAYING)
 	{
 
@@ -230,7 +232,7 @@ void MainScene::LogicUpdate()
 	}
 
 
-	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
+
 
 
 }
