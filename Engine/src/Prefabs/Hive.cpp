@@ -4,6 +4,8 @@
 #include "..\Scene\Scene.h"
 #include "..\Scene\SceneManager.h"
 #include "..\Prefabs\Terrain.h"
+#include "..\Event\EventDispatcher.h"
+#include "..\Event\AIEvents.h"
 #include "Spider.h"
 #include "Player.h"
 
@@ -111,6 +113,7 @@ void Hive::Start()
 		{
 			go->FlagToBeDestroyed();
 			healtthComponent->AddToHealth(-10);
+			EventDispatcher::Instance().DispatchEvent(new EnemySpottedEvent());
 
 			if (healtthComponent->GetHealthMaxRatio() < 0.7 && healtthComponent->GetHealthMaxRatio() > 0.4)
 				SetState(1);

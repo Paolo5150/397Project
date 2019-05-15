@@ -109,6 +109,16 @@ std::string AIBase::GetState() const
 	return _state;
 }
 
+void AIBase::SetEventReceived(bool received)
+{
+	_eventReceived = received;
+}
+
+bool AIBase::GetEventReceived() const
+{
+	return _eventReceived;
+}
+
 void AIBase::Move(float forward, float right)
 {
 	_parentTransform->SetPosition(_parentTransform->GetPosition() + (forward * _parentTransform->GetLocalFront()));
@@ -171,8 +181,22 @@ void AIBase::Think()
 	lua_pushnumber(_luaState, Timer::GetDeltaS());
 	lua_pushnumber(_luaState, _lastStateChange);
 	lua_pushnumber(_luaState, _randomTimer);
+	lua_pushboolean(_luaState, _eventReceived);
 
-	lua_call(_luaState, 16, 8); //call the function with 16 arguments and return 8 results
+	//lua_setglobal(_luaState, "Think");
+	lua_call(_luaState, 17, 9); //call the function with 16 arguments and return 8 results
+
+	/*Logger::LogInfo("----------");
+	Logger::LogInfo((std::string)lua_tostring(_luaState, -1));
+	Logger::LogInfo((float)lua_tonumber(_luaState, -2));
+	Logger::LogInfo((float)lua_tonumber(_luaState, -3));
+	Logger::LogInfo((float)lua_tonumber(_luaState, -4));
+	Logger::LogInfo((float)lua_tonumber(_luaState, -5));
+	Logger::LogInfo((float)lua_tonumber(_luaState, -6));
+	Logger::LogInfo((float)lua_tonumber(_luaState, -7));
+	Logger::LogInfo((float)lua_tonumber(_luaState, -8));
+	Logger::LogInfo((bool)lua_toboolean(_luaState, -9));
+	Logger::LogInfo("----------");*/
 
 	if (Lua::GetStringFromStack("_state", _luaState) != GetState()) //These should probably be retreived from the functon to increase reusablilty
 	{
@@ -184,6 +208,8 @@ void AIBase::Think()
 	_otherTarget.x = Lua::GetFloatFromStack("_wanderPosX", _luaState);
 	_otherTarget.y = Lua::GetFloatFromStack("_wanderPosY", _luaState);
 	_otherTarget.z = Lua::GetFloatFromStack("_wanderPosZ", _luaState);
+	SetEventReceived(Lua::GetBoolFromStack("_eventReceived", _luaState));
 
+	
 	Lua::CloseLua(_luaState);
 }

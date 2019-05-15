@@ -3,6 +3,8 @@
 #include "..\Components\SphereCollider.h"
 #include "..\Components\BoxCollider.h"
 #include "..\Components\HealthComponent.h"
+#include "..\Event\EventDispatcher.h"
+#include "..\Event\AIEvents.h"
 #include "Hive.h"
 #include "Pumpkin.h"
 
@@ -27,6 +29,8 @@ Spider::Spider() : GameObject("Spider")
 
 	AddComponent(aiBase);
 	AddComponent(healthComponent);
+
+	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
 Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
@@ -47,6 +51,8 @@ Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
 
 	AddComponent(aiBase);
 	AddComponent(healthComponent);
+
+	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
 Spider::Spider(Transform& g) : GameObject("Spider")
@@ -66,6 +72,8 @@ Spider::Spider(Transform& g) : GameObject("Spider")
 
 	AddComponent(aiBase);
 	AddComponent(healthComponent);
+
+	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
 Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("Spider")
@@ -86,11 +94,14 @@ Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("S
 
 	AddComponent(aiBase);
 	AddComponent(healthComponent);
+
+	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
 Spider::~Spider()
 {
 	Hive::totalSpiders--;
+	EventDispatcher::Instance().UnsubscribeCallback<EnemySpottedEvent>(_enemySpottedEventID);
 }
 
 
@@ -220,6 +231,13 @@ void Spider::Update()
 		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 1500);
 	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 1500)
 		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 1500);
+}
+
+bool Spider::EnemySpotted(Event* e)
+{
+	aiBase->SetEventReceived(true);
+
+	return 0;
 }
 
 void Spider::OnCollision(GameObject* g)

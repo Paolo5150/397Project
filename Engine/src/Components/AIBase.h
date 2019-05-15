@@ -37,6 +37,10 @@ public:
 
 	std::string GetState() const;
 
+	void SetEventReceived(bool received);
+
+	bool GetEventReceived() const;
+
 	void Move(float forward = 0.0f, float right = 0.0f);
 
 	void Rotate(float amount = 0.0f);
@@ -54,6 +58,7 @@ private:
 	lua_State* _luaState;
 	glm::vec3 _otherTarget; //Postition that can be used for wandering/patrolling or any other location based logic
 	glm::vec3 _nextNode;
+	bool _eventReceived;
 
 	std::string _scriptPath;
 

@@ -13,7 +13,7 @@ waterScaleX, waterScaleY, waterScaleZ = 10000, 10000, 1;
 Create("Water", -9999, 750, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
 
 --Create all npcs and props
-Create("Pumpkin", 7680, -9999, 8263.64)
+--[[Create("Pumpkin", 7680, -9999, 8263.64)
 Create("Pumpkin", 9023.74, -9999, 9264.36)
 Create("Pumpkin", 9424.54, -9999, 8964.33)
 Create("Pumpkin", 10271.8, -9999, 11173.3)
@@ -79,7 +79,7 @@ Create("PumpkinBunch", 4470, -9999, 3370);
 Create("PumpkinBunch", 4730, -9999, 3370);
 
 Create("Cabin", 2771, -9999, 2272, 0, 300, 0);
-Create("Cabin", 2895, -9999, 3954, 0, 20, 0);
+Create("Cabin", 2895, -9999, 3954, 0, 20, 0);]]--
 
 Create("Hive", 4800, -9999, 7600);
 Create("Hive", 8200, -9999, 6500);
@@ -88,7 +88,7 @@ Create("Hive", 2721, -9999, 13133);
 Create("Hive", 6808, -9999, 10868);
 Create("Hive", 10344, -9999, 10293);
 
-Create("Tree", 9100, -9999, 8000);
+--[[Create("Tree", 9100, -9999, 8000);
 Create("Tree", 10500, -9999, 5500);
 Create("Tree", 8760, -9999, 4600);
 Create("Tree", 8000, -9999, 4350);
@@ -97,7 +97,7 @@ Create("Tree", 8975, -9999, 9100);
 --Farm-ish area
 Create("Tree", 9334.88, -9999, 5430.89);
 Create("Tree", 8631.7, -9999, 5523.17);
-Create("Tree", 8482.53, -9999, 4968.06);
+Create("Tree", 8482.53, -9999, 4968.06);]]--
 
 --Trees around cabins
 --Create("Tree", 4805, -9999, 3032);

@@ -30,11 +30,12 @@ public:
 
 	void OnCollision(GameObject* g) override;
 private:
-
 	AIBase* aiBase;
 	float attackTimer;
 	float deathTimer;
 	HealthComponent* healthComponent;
+	std::string _enemySpottedEventID;
 
+	bool EnemySpotted(Event* e);
 };
 
