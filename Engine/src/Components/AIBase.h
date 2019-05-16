@@ -43,6 +43,10 @@ public:
 
 	void Move(float forward = 0.0f, float right = 0.0f);
 
+	void MoveForward(float forward = 0.0f);
+
+	void MoveRight(float right = 0.0f);
+
 	void Rotate(float amount = 0.0f);
 
 	void SetAnimation(int index = 0);
