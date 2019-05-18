@@ -6,6 +6,8 @@
 #include <list>
 #include <limits>
 #include <float.h>
+#include <thread>
+#include <future>
 PathFinder& PathFinder::Instance()
 {
 	static PathFinder instance;
@@ -174,6 +176,7 @@ void PathFinder::Start()
 	}
 
 }
+
 
 
 std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finish)
