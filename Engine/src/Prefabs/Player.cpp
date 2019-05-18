@@ -97,13 +97,12 @@ void Player::Start()
 		}
 		else if (go->GetName() == "PumpkinBunch")
 		{
-			ammoCounter += 15;
+			ammoCounter += 10;
 			go->FlagToBeDestroyed();
 		}
 
 	};
-
-
+	
 	gn->transform.SetScale(0.01, 0.01, 0.01);
 	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
 	gunCam->AddChild(gn);
@@ -112,10 +111,6 @@ void Player::Start()
 	AddComponent(healhComponent);
 
 }
-
-
-
-
 
 
 void Player::Update()

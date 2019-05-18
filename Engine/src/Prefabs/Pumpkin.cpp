@@ -7,7 +7,7 @@ namespace
 	const float MAX_LIFETIME = 5;
 }
 
-float Pumpkin::damageGiven = 25;
+float Pumpkin::damageGiven = 20;
 
 Pumpkin::Pumpkin() : GameObject("Pumpkin")
 {
