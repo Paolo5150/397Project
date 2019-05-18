@@ -32,6 +32,7 @@
 #include "Prefabs\Cabin.h"
 #include "Prefabs\Hive.h"
 #include "Prefabs\Player.h"
+#include "Prefabs\PumpkinBunch.h"
 #include "Prefabs\GranadeLauncher.h"
 #include "Utils\PathFinder.h"
 #include "Graphics\RenderingEngine.h"
@@ -185,7 +186,7 @@ void MainScene::Initialize() {
 		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
 	//GameObjects
-	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
+	/*for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player (Warning: Player must be created before any AI)
@@ -193,7 +194,7 @@ void MainScene::Initialize() {
 			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").at(0))->transform);
 		}
 		AddGameObject(obj);
-	}
+	}*/
 
 	player = ((Player*)GetGameobjectsByName("Player").at(0));
 
@@ -229,9 +230,22 @@ void MainScene::LogicUpdate()
 {
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
+	Logger::LogInfo("Total bunches", PumpkinBunch::totalPumpkinBunches);
 	if (currentSceneState == PLAYING)
 	{
-		
+		//Spawn bunches
+		static float bunchTimer = 0;
+		bunchTimer += Timer::GetDeltaS();
+
+		if (bunchTimer >= 2 && PumpkinBunch::totalPumpkinBunches < 20)
+		{
+			bunchTimer = 0;
+			glm::vec3 pos = PathFinder::Instance().GetRandomFreeNodePosition();
+			PumpkinBunch* pb = new PumpkinBunch();
+			pb->transform.SetScale(10, 10, 10);
+			AddGameObject(pb);
+		}
+
 		if (player->healhComponent->IsDead())
 		{
 			currentSceneState = GAMEOVER;

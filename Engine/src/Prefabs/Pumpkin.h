@@ -20,7 +20,9 @@ public:
 	void Update() override;
 
 	glm::vec3 shootDirection;
+
 private:
+
 	float speed;
 	float lifeTimer;
 };

@@ -2,6 +2,7 @@
 #include "..\Prefabs\Terrain.h"
 #include "..\Event\EventDispatcher.h"
 #include "..\Event\ApplicationEvents.h"
+#include <ctime>
 #include <list>
 #include <limits>
 #include <float.h>
@@ -15,7 +16,7 @@ PathFinder& PathFinder::Instance()
 PathFinder::PathFinder()
 {
 	nodesQT = nullptr;
-
+	srand((unsigned)time(0));
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
 
 		if (nodesQT != nullptr)
@@ -32,6 +33,31 @@ PathFinder::~PathFinder()
 	if (nodesQT != nullptr)
 	delete nodesQT;
 }
+
+glm::vec3 PathFinder::GetRandomFreeNodePosition()
+{
+	bool valid = false;
+	glm::vec3 v;
+	while (!valid)
+	{
+
+		int random = rand() % pathNodes.size() - 1;
+
+		PathNode* pn = pathNodes[random];
+
+		if (pn->cost == 0 && pn->transform.GetPosition().y > 750)
+		{
+			valid = 1;
+			v = pn->transform.GetPosition();
+		}
+	}
+
+	return v;
+
+
+
+}
+
 
 
 PathNode* PathFinder::ClosestNodeAt(int x, int y,  int z)

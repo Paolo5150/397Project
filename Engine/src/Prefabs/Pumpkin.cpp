@@ -7,6 +7,7 @@ namespace
 	const float MAX_LIFETIME = 5;
 }
 
+
 Pumpkin::Pumpkin() : GameObject("Pumpkin")
 {
 	
@@ -36,6 +37,7 @@ void Pumpkin::Start()
 
 Pumpkin::~Pumpkin()
 {
+
 
 }
 
