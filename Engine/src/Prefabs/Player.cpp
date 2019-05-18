@@ -27,7 +27,8 @@ Player::Player() : GameObject("Player")
 	ammoCounter = 25;
 
 	gn = new GranadeLauncher();
-
+	gn->Start();
+	gn->boxCollider->ResetCollisionLayer();
 
 
 	gunCam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
@@ -35,6 +36,9 @@ Player::Player() : GameObject("Player")
 	gunCam->AddLayerMask(Layers::GUN);
 	gunCam->SetDepth(10);
 	gunCam->SetIsStatic(0);
+	gn->SetActive(0);
+
+	hasGun = false;
 
 
 
@@ -83,6 +87,8 @@ void Player::Start()
 	pickupCollider->ResetCollisionLayer();
 	//pickupCollider->enableRender = 1;
 	pickupCollider->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
+	pickupCollider->AddCollideAgainstLayer(CollisionLayers::LAUNCHER);
+
 	pickupCollider->collisionCallback = [this](GameObject* go) {
 
 		if (go->GetName() == "Pumpkin")
@@ -98,6 +104,15 @@ void Player::Start()
 		else if (go->GetName() == "PumpkinBunch")
 		{
 			ammoCounter += 10;
+			go->FlagToBeDestroyed();
+		}
+		
+		else if (go->GetName() == "GranadeLauncher")
+		{
+			Logger::LogInfo("Got launcher");
+			gn->SetActive(1);
+			gn->boxCollider->SetActive(0);
+			hasGun = 1;
 			go->FlagToBeDestroyed();
 		}
 
@@ -121,7 +136,7 @@ void Player::Update()
 	_intendedDir.z = 0;
 
 	//Logger::LogInfo(gn->transform.ToString());
-	if (Input::GetMouseDown(0) && ammoCounter > 0)
+	if (Input::GetMouseDown(0) && ammoCounter > 0 && hasGun)
 	{
 		shootTimer += Timer::GetDeltaS();
 		if (shootTimer >= SHOOT_RATE)

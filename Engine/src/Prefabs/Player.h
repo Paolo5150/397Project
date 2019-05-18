@@ -91,4 +91,6 @@ private:
 	float underwaterTimer;
 
 	glm::vec3 _intendedDir;
+
+	bool hasGun;
 };

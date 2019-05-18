@@ -10,6 +10,7 @@ struct CollisionLayers
 		OBSTACLE = 1 << 3,
 		PATHNODE = 1 << 4,
 		PUPMKIN = 1 << 5,
-		SPIDER = 1 << 6
+		SPIDER = 1 << 6,
+		LAUNCHER = 1 << 7
 	};
 };

@@ -207,6 +207,9 @@ void MainScene::Initialize() {
 
 	Lua::CloseLua();
 
+	//Randomly spawn the gun
+	
+
 	currentSceneState = PLAYING;
 
 }
@@ -222,6 +225,16 @@ void MainScene::Start()
 	PhysicsWorld::Instance().PerformCollisions(true);
 
 	RenderingEngine::godRays = 1;
+
+	glm::vec3 gunPos = PathFinder::Instance().GetRandomFreeNodePosition();
+	GranadeLauncher* gn = new GranadeLauncher();
+	gn->Start();
+	gn->SetLayer(0);
+	gn->SetLayer(Layers::DEFAULT);
+	gn->transform.SetScale(0.1, 0.1, 0.1);
+	gn->transform.SetPosition(gunPos);
+	AddGameObject(gn);
+
 	Input::SetIsEnabled(1);
 }
 

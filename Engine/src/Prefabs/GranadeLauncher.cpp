@@ -18,6 +18,19 @@ GranadeLauncher::GranadeLauncher() : GameObject("GranadeLauncher")
 	ApplyMaterial(mat_crate);
 }
 
+void GranadeLauncher::Start()
+{
+	boxCollider = new BoxCollider();
+	boxCollider->ResetCollisionLayer();
+	boxCollider->AddCollisionLayer(CollisionLayers::LAUNCHER);
+	boxCollider->ResetCollideAgainstLayer();
+	boxCollider->AddCollideAgainstLayer(CollisionLayers::PLAYER);
+	boxCollider->transform.SetScale(0.2, 0.2, 0.2);
+	boxCollider->transform.SetPosition(0, 0.2, 0);
+
+
+	AddComponent(boxCollider);
+}
 
 
 GranadeLauncher::~GranadeLauncher()
