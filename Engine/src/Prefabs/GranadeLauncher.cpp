@@ -12,7 +12,7 @@ GranadeLauncher::GranadeLauncher() : GameObject("GranadeLauncher")
 	GetChild("GrenadeLauncherToon1")->GetComponent<MeshRenderer>("MeshRenderer")->SetIsCullable(false);
 	SetLayer(0);
 	SetLayer(Layers::GUN);
-
+	spin = false;
 
 
 	ApplyMaterial(mat_crate);
@@ -28,10 +28,16 @@ void GranadeLauncher::Start()
 	boxCollider->transform.SetScale(0.2, 0.2, 0.2);
 	boxCollider->transform.SetPosition(0, 0.2, 0);
 
-
 	AddComponent(boxCollider);
 }
 
+void GranadeLauncher::Update()
+{
+	GameObject::Update();
+
+	if (spin)
+		transform.RotateBy(20 * Timer::GetDeltaS(), 0, 1, 0);
+}
 
 GranadeLauncher::~GranadeLauncher()
 {

@@ -49,7 +49,7 @@ glm::vec3 PathFinder::GetRandomFreeNodePosition()
 			pn->transform.GetPosition().x < Terrain::Instance().GetTerrainMaxX() - 2000 &&
 			pn->transform.GetPosition().x > Terrain::Instance().GetTerrainMinX() + 2000 && 
 			pn->transform.GetPosition().z < Terrain::Instance().GetTerrainMaxZ() - 2000 &&
-			pn->transform.GetPosition().z > Terrain::Instance().GetTerrainMinZ() - 2000)
+			pn->transform.GetPosition().z > Terrain::Instance().GetTerrainMinZ() + 2000)
 		{
 			valid = 1;
 			v = pn->transform.GetPosition();

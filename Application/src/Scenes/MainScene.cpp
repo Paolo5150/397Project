@@ -225,14 +225,16 @@ void MainScene::Start()
 	PhysicsWorld::Instance().PerformCollisions(true);
 
 	RenderingEngine::godRays = 1;
-
+	// Place gun
 	glm::vec3 gunPos = PathFinder::Instance().GetRandomFreeNodePosition();
 	GranadeLauncher* gn = new GranadeLauncher();
 	gn->Start();
 	gn->SetLayer(0);
+	gn->spin = 1;
 	gn->SetLayer(Layers::DEFAULT);
+	gn->boxCollider->transform.SetScale(100, 100, 180);	
 	gn->transform.SetScale(0.1, 0.1, 0.1);
-	gn->transform.SetPosition(gunPos);
+	gn->transform.SetPosition(gunPos + glm::vec3(0,50,0));
 	AddGameObject(gn);
 
 	Input::SetIsEnabled(1);

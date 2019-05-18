@@ -10,7 +10,9 @@ public:
 	~GranadeLauncher();
 
 	void Start() override;
+	void Update() override;
 	BoxCollider* boxCollider;
+	bool spin;
 private:
 
 };
