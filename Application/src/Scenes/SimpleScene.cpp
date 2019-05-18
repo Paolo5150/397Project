@@ -38,7 +38,6 @@
 #include "Components\AIBase.h"
 
 
-GameObject* nanosuit;
 GameObject* crate;
 
 
@@ -50,8 +49,7 @@ SimpleScene::SimpleScene() : Scene("SimpleScene")
 void SimpleScene::LoadAssets() {
 
 
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Pumpkin\\pumpkin.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj");
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Pumpkin\\pumpkin.obj");	
 
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
@@ -110,7 +108,7 @@ void SimpleScene::Initialize() {
 	player = new Player();
 	AddGameObject(player);	
 
-	nanosuit = AssetLoader::Instance().GetAsset<Model>("Nanosuit")->CreateGameObject();
+
 	crate = AssetLoader::Instance().GetAsset<Model>("GranadeLauncher")->CreateGameObject();
 	crate->transform.SetScale(0.01, 0.01, 0.01);
 	crate->transform.SetPosition(1, 15, 3);
@@ -120,16 +118,25 @@ void SimpleScene::Initialize() {
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
 
-	nanosuit->transform.SetPosition(x+400, y, z);
-	nanosuit->transform.SetScale(5, 5, 5);
-	nanosuit->transform.SetRotation(0, 45, 0);
+	// Place gun
+	GranadeLauncher* gn = new GranadeLauncher();
+	gn->Start();
+	gn->SetLayer(0);
+	gn->spin = 1;
+	gn->SetLayer(Layers::DEFAULT);
+	//gn->boxCollider->transform.SetScale(100, 100, 180);
+	gn->transform.SetScale(0.1, 0.1, 0.1);
+	gn->transform.SetPosition(glm::vec3(x,y,z) + glm::vec3(0, 50, 0));
+	AddGameObject(gn);
+	player->transform.SetPosition(glm::vec3(x, y, z) + glm::vec3(200, 50, 0));
+
 
 	crate->transform.SetPosition(0, 0, 5);
-	nanosuit->AddChild(crate);
+
 	
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
-	AddGameObject(nanosuit);
+	AddGameObject(gn);
 
 	AddGameObject(&Terrain::Instance());
 
@@ -142,28 +149,12 @@ void SimpleScene::Start()
 	Scene::Start();
 
 
+
 	RenderingEngine::godRays = 1;
 }
 
 void SimpleScene::LogicUpdate()
 {
-
-	static float timer = 0;
-
-	timer += Timer::GetDeltaS();
-
-	if (timer > 0.2)
-	{
-		Logger::LogInfo("p", player->transform.VectorsToString());
-		Logger::LogError("c", player->mainCamera-> transform.VectorsToString());
-
-
-		timer = 0;
-	}
-
-	if (Input::GetKeyDown(GLFW_KEY_SPACE))
-		nanosuit->transform.RotateBy(5, nanosuit->transform.GetLocalUp());
-
 	
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))

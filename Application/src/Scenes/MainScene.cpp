@@ -44,6 +44,7 @@
 MainCamera* cam;
 bool reinit = false;
 
+
 MainScene::MainScene() : Scene("MainScene")
 {
 

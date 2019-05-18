@@ -14,6 +14,12 @@ GranadeLauncher::GranadeLauncher() : GameObject("GranadeLauncher")
 	SetLayer(Layers::GUN);
 	spin = false;
 
+	pointLight = new PointLight();
+	pointLight->SetIntensity(80);
+	pointLight->SetDiffuseColor(1, 1, 1);
+	pointLight->transform.SetPosition(glm::vec3(0,500,0));
+	AddChild(pointLight);
+
 
 	ApplyMaterial(mat_crate);
 }
@@ -36,7 +42,7 @@ void GranadeLauncher::Update()
 	GameObject::Update();
 
 	if (spin)
-		transform.RotateBy(20 * Timer::GetDeltaS(), 0, 1, 0);
+		transform.RotateBy(50 * Timer::GetDeltaS(), 0, 1, 0);
 }
 
 GranadeLauncher::~GranadeLauncher()

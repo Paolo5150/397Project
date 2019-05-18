@@ -29,7 +29,7 @@ Player::Player() : GameObject("Player")
 	gn = new GranadeLauncher();
 	gn->Start();
 	gn->boxCollider->ResetCollisionLayer();
-
+	
 
 	gunCam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
 	gunCam->RemoveAllMaskLayers();
@@ -112,6 +112,7 @@ void Player::Start()
 			Logger::LogInfo("Got launcher");
 			gn->SetActive(1);
 			gn->boxCollider->SetActive(0);
+			gn->pointLight->SetActive(0);
 			hasGun = 1;
 			go->FlagToBeDestroyed();
 		}
