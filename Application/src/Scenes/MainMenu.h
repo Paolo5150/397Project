@@ -66,5 +66,12 @@ private:
 	GUIText* loadingText;
 	GUIButton* startButton;
 
+	GUIButton* quitButton;
+	GUIButton* loadButton;
+	GUIText* gameTitle;
+	GUIImage* gameLogo;
+	GUIImage* menuImage;
+	GUIButton* manualButton;
+
 
 };

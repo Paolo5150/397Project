@@ -68,6 +68,7 @@ void Core::Initialize()
 	//Load textures
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\logo.png", true);
 
+
 	//Splash screen
 	int wx, wy;
 	Window::Instance().GetWindowSize(wx, wy);
