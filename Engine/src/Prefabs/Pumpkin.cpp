@@ -7,6 +7,7 @@ namespace
 	const float MAX_LIFETIME = 5;
 }
 
+float Pumpkin::damageGiven = 25;
 
 Pumpkin::Pumpkin() : GameObject("Pumpkin")
 {
@@ -14,7 +15,7 @@ Pumpkin::Pumpkin() : GameObject("Pumpkin")
 	AssetLoader::Instance().GetAsset<Model>("Pumpkin")->PopulateGameObject(this);
 	transform.SetScale(40, 40, 40);
 	state = GROUND;
-	speed = 1300;
+	speed = 2000;
 	SetIsStatic(0);
 
 }

@@ -185,7 +185,7 @@ void MainScene::Initialize() {
 		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
 	//GameObjects
-	/*for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
+	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
 		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player (Warning: Player must be created before any AI)
@@ -193,7 +193,7 @@ void MainScene::Initialize() {
 			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").at(0))->transform);
 		}
 		AddGameObject(obj);
-	}*/
+	}
 
 	player = ((Player*)GetGameobjectsByName("Player").at(0));
 
@@ -236,12 +236,12 @@ void MainScene::LogicUpdate()
 		static float bunchTimer = 0;
 		bunchTimer += Timer::GetDeltaS();
 
-		if (bunchTimer >= 2 && PumpkinBunch::totalPumpkinBunches < 20)
+		if (bunchTimer >= 2 && PumpkinBunch::totalPumpkinBunches < 40)
 		{
 			bunchTimer = 0;
 			glm::vec3 pos = PathFinder::Instance().GetRandomFreeNodePosition();
 			PumpkinBunch* pb = new PumpkinBunch();
-			pb->transform.SetScale(10, 10, 10);
+			pb->transform.SetPosition(pos);
 			AddGameObject(pb);
 		}
 

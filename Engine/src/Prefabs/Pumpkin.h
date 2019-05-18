@@ -20,9 +20,10 @@ public:
 	void Update() override;
 
 	glm::vec3 shootDirection;
+	static float GetDamageGiven(){ return damageGiven; }
 
 private:
-
+	static float damageGiven;
 	float speed;
 	float lifeTimer;
 };

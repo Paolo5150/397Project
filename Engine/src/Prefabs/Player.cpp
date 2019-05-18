@@ -11,7 +11,7 @@ namespace {
 	const float MAX_SPEED = 1000;
 	float ORIGINAL_SPEED = 500;
 	float counter = 0;
-	float SHOOT_RATE = 0.1;
+	float SHOOT_RATE = 0.2;
 
 	CameraPerspective* gunCam;
 }
@@ -24,7 +24,7 @@ Player::Player() : GameObject("Player")
 	_rotationSpeed = 20;
 	_isTopView = false;
 	_intendedDir = glm::vec3(0, 0, 0);
-	ammoCounter = 1000000;
+	ammoCounter = 25;
 
 	gn = new GranadeLauncher();
 
@@ -97,7 +97,7 @@ void Player::Start()
 		}
 		else if (go->GetName() == "PumpkinBunch")
 		{
-			ammoCounter += 3;
+			ammoCounter += 15;
 			go->FlagToBeDestroyed();
 		}
 
@@ -149,8 +149,8 @@ void Player::Update()
 	UpdateControls();
 
 
-	//float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
-//	transform.SetPosition(transform.GetPosition().x, h + 60, transform.GetPosition().z);
+	float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
+	transform.SetPosition(transform.GetPosition().x, h + 60, transform.GetPosition().z);
 
 	// Limit camera position within terrain
 	if (transform.GetPosition().x > Terrain::Instance().GetTerrainMaxX() - 1500)

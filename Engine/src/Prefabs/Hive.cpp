@@ -4,6 +4,8 @@
 #include "..\Scene\Scene.h"
 #include "..\Scene\SceneManager.h"
 #include "..\Prefabs\Terrain.h"
+#include "..\Prefabs\Pumpkin.h"
+
 #include "Spider.h"
 #include "Player.h"
 
@@ -112,7 +114,7 @@ void Hive::Start()
 		if (go->GetName() == "Pumpkin")
 		{
 			go->FlagToBeDestroyed();
-			healtthComponent->AddToHealth(-10);
+			healtthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
 
 			if (healtthComponent->GetHealthMaxRatio() < 0.7 && healtthComponent->GetHealthMaxRatio() > 0.4)
 				SetState(1);

@@ -45,7 +45,9 @@ glm::vec3 PathFinder::GetRandomFreeNodePosition()
 
 		PathNode* pn = pathNodes[random];
 
-		if (pn->cost == 0 && pn->transform.GetPosition().y > 750)
+		if (pn->cost == 0 && pn->transform.GetPosition().y > 750 &&
+			pn->transform.GetPosition().x < Terrain::Instance().GetTerrainMaxX() - 1500 &&
+			pn->transform.GetPosition().x > Terrain::Instance().GetTerrainMinX() + 1500)
 		{
 			valid = 1;
 			v = pn->transform.GetPosition();

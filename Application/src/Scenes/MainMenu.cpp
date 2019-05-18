@@ -90,7 +90,7 @@ void MainMenuScene::Initialize() {
 
 	}, "", 1.5, 10, 10, 20, 65, 1, 0.5, 0.2, 1));
 
-	loadingText = new GUIText("LoadingText", "Loading scene...", "invasionFont", 1.5, 5, 90, 0.2, 0.2, 0.2, 1);
+	loadingText = new GUIText("LoadingText", "Loading scene...", "invasionFont", 1.5, 5, 90, 0.9, 0.9, 0.9, 1);
 	loadingText->isActive = 0;
 
 	GUIManager::Instance().AddGUIObject(gameTitle);
