@@ -134,7 +134,7 @@ glm::vec3 Test(glm::vec3 position, glm::vec3 target)
 
 void AIBase::Update()
 {
-	if (Timer::GetTimeS() >= _updateTimer + 0.3f)
+	if (Timer::GetTimeS() >= _updateTimer + 0.5f)
 	{
 		_updateTimer = Timer::GetTimeS();
 		if (_otherTarget.x != -1 && _otherTarget.y != -1 && _otherTarget.z != -1)

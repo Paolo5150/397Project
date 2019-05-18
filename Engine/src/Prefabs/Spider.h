@@ -29,7 +29,16 @@ public:
 	void Update() override;
 
 	void OnCollision(GameObject* g) override;
+
+	static unsigned GetTotalSpiders(){ return totalSpiders; }
+	static unsigned GetTotalSpidersKilled(){ return totalSpidersKilled; }
+	static void ResetTotalSpidersKilled() { totalSpidersKilled = 0; }
+
 private:
+
+	static unsigned totalSpiders;
+	static unsigned totalSpidersKilled;
+
 
 	AIBase* aiBase;
 	float attackTimer;

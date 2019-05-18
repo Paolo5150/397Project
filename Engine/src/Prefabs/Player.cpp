@@ -16,6 +16,9 @@ namespace {
 	CameraPerspective* gunCam;
 }
 
+unsigned Player::totalPumpkinsShot = 0;
+
+
 
 Player::Player() : GameObject("Player")
 {
@@ -37,6 +40,7 @@ Player::Player() : GameObject("Player")
 	gunCam->SetDepth(10);
 	gunCam->SetIsStatic(0);
 	gn->SetActive(0);
+	totalPumpkinsShot = 0;
 
 	hasGun = false;
 
@@ -150,6 +154,7 @@ void Player::Update()
 			pump->shootDirection = transform.GetLocalFront();
 			SceneManager::Instance().GetCurrentScene().AddGameObject(pump);
 			ammoCounter--;
+			totalPumpkinsShot++;
 
 		}
 	}

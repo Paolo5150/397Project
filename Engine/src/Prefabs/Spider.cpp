@@ -11,6 +11,10 @@ namespace
 	const float attackRate = 0.5;
 }
 
+unsigned Spider::totalSpiders = 0;
+unsigned Spider::totalSpidersKilled = 0;
+
+
 Spider::Spider() : GameObject("Spider")
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
@@ -90,7 +94,9 @@ Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("S
 
 Spider::~Spider()
 {
-	Hive::totalSpiders--;
+	totalSpiders--;
+	totalSpidersKilled++;
+
 }
 
 
@@ -108,7 +114,7 @@ Transform* Spider::GetTarget() const
 void Spider::Start()
 {
 	GameObject::Start();
-	Hive::totalSpiders++;
+	totalSpiders++;
 	
 	BoxCollider* slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
 	slowCollider->ResetCollisionLayer();

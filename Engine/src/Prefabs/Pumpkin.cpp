@@ -15,7 +15,7 @@ Pumpkin::Pumpkin() : GameObject("Pumpkin")
 	AssetLoader::Instance().GetAsset<Model>("Pumpkin")->PopulateGameObject(this);
 	transform.SetScale(40, 40, 40);
 	state = GROUND;
-	speed = 2000;
+	speed = 4000;
 	SetIsStatic(0);
 
 }

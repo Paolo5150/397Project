@@ -77,6 +77,12 @@ public:
 
 	GUIText* pumpkinAmmoText;
 	GUIText* endGameText;
+	GUIText* spidersLeftText;
+	GUIText* hivesLeftText;
+	GUIText* spidersKilledText;
+	GUIText* pumpkinsShotText;
+
+
 	GUIButton* resumeButton;
 	GUIButton* saveButton;
 	GUIButton* restartButton;

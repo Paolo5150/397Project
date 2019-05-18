@@ -9,7 +9,7 @@
 #include "Spider.h"
 #include "Player.h"
 
-unsigned int Hive::totalSpiders = 0;
+
 unsigned int Hive::totalHives = 0;
 
 
@@ -132,7 +132,7 @@ void Hive::Update()
 {
 	if (canSpawnSpiders)
 	{
-		if (totalSpiders < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 15.0f) //Spawns spider only if the maximum spiders has not been reached and if a set amount of time has elapsed
+		if (Spider::GetTotalSpiders() < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 15.0f) //Spawns spider only if the maximum spiders has not been reached and if a set amount of time has elapsed
 		{
 			Spider* spider = new Spider();
 
