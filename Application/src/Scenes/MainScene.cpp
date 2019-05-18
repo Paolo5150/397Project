@@ -229,7 +229,7 @@ void MainScene::LogicUpdate()
 {
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
-	Logger::LogInfo("Total bunches", PumpkinBunch::totalPumpkinBunches);
+
 	if (currentSceneState == PLAYING)
 	{
 		//Spawn bunches
@@ -241,6 +241,7 @@ void MainScene::LogicUpdate()
 			bunchTimer = 0;
 			glm::vec3 pos = PathFinder::Instance().GetRandomFreeNodePosition();
 			PumpkinBunch* pb = new PumpkinBunch();
+			pb->Start();
 			pb->transform.SetPosition(pos);
 			AddGameObject(pb);
 		}

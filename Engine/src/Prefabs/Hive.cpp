@@ -134,6 +134,7 @@ void Hive::Update()
 	{
 		if (totalSpiders < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 15.0f) //Spawns spider only if the maximum spiders has not been reached and if a set amount of time has elapsed
 		{
+
 			Spider* spider = new Spider();
 
 			//Spawn spiders in a circle around hive (not sure if this is working)
