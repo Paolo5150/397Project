@@ -115,6 +115,8 @@ void Hive::Start()
 		{
 			go->FlagToBeDestroyed();
 			healtthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
+			ApplyColor(0.8, 0.0, 0.0);
+			colorTimer = 0.1f;
 
 			if (healtthComponent->GetHealthMaxRatio() < 0.7 && healtthComponent->GetHealthMaxRatio() > 0.4)
 				SetState(1);
@@ -130,6 +132,10 @@ void Hive::Start()
 
 void Hive::Update()
 {
+	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
+	if (colorTimer == 0)
+		ApplyColor(1, 1, 1);
+
 	if (canSpawnSpiders)
 	{
 		if (Spider::GetTotalSpiders() < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 15.0f) //Spawns spider only if the maximum spiders has not been reached and if a set amount of time has elapsed
