@@ -33,4 +33,6 @@ void AssetContainer::UnloadPreserved()
 		if (it->second->preserve)
 			delete it->second;
 	}
+
+	assets.clear();
 }
