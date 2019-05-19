@@ -39,7 +39,7 @@ private:
 	static unsigned totalSpiders;
 	static unsigned totalSpidersKilled;
 
-
+	float colorTimer;
 	AIBase* aiBase;
 	float attackTimer;
 	float deathTimer;
