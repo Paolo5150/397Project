@@ -4,6 +4,7 @@
 #include "..\Components\BoxCollider.h"
 #include "..\Components\HealthComponent.h"
 #include "Hive.h"
+#include "..\GUI\GUIElements\GUIManager.h"
 #include "Pumpkin.h"
 
 namespace
@@ -203,7 +204,7 @@ void Spider::Update()
 			if (aiBase->GetTarget()->gameObject != nullptr)
 			{
 				HealthComponent* h = aiBase->GetTarget()->gameObject->GetComponent<HealthComponent>("HealthComponent");
-
+				GUIManager::Instance().FlashRed();
 				if (h != nullptr)
 				{
 					h->AddToHealth(-5);
