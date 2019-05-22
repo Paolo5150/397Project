@@ -197,6 +197,7 @@
     <ClInclude Include="src\Prefabs\Player.h" />
     <ClInclude Include="src\Prefabs\PlayerStats.h" />
     <ClInclude Include="src\Prefabs\PumpkinBunch.h" />
+    <ClInclude Include="src\GameObject\Saveable.h" />
     <ClInclude Include="src\Prefabs\Ship.h" />
     <ClInclude Include="src\Prefabs\Spider.h" />
     <ClInclude Include="src\Components\AIBase.h" />
@@ -299,6 +300,7 @@
     <ClInclude Include="src\Utils\Maths.h" />
     <ClInclude Include="src\Utils\PathFinder.h" />
     <ClInclude Include="src\Utils\Quadtree.h" />
+    <ClInclude Include="src\Utils\SaveGameManager.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
@@ -306,6 +308,7 @@
     <ClCompile Include="src\Prefabs\Hive.cpp" />
     <ClCompile Include="src\Prefabs\Player.cpp" />
     <ClCompile Include="src\Prefabs\PumpkinBunch.cpp" />
+    <ClCompile Include="src\GameObject\Saveable.cpp" />
     <ClCompile Include="src\Prefabs\Ship.cpp" />
     <ClCompile Include="src\Prefabs\Spider.cpp" />
     <ClCompile Include="src\Components\AIBase.cpp" />
@@ -386,6 +389,7 @@
     <ClCompile Include="src\Utils\GameAssetFactory.cpp" />
     <ClCompile Include="src\Utils\Maths.cpp" />
     <ClCompile Include="src\Utils\PathFinder.cpp" />
+    <ClCompile Include="src\Utils\SaveGameManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

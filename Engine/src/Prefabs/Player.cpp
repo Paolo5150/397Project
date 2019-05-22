@@ -20,7 +20,7 @@ unsigned Player::totalPumpkinsShot = 0;
 
 
 
-Player::Player() : GameObject("Player")
+Player::Player() : GameObject("Player"), Saveable()
 {
 	mainCamera = new MainCamera();
 	_movementSpeed = 20;
@@ -297,7 +297,12 @@ void Player::UpdateControls()
 
 }
 
-
+std::string Player::Save()
+{
+	std::ostringstream ss;
+	ss << transform.GetPosition().x << " " << transform.GetPosition().y << " " << transform.GetPosition().z;
+	return ((std::string)(ss.str()));
+}
 
 void Player::LateUpdate()
 {

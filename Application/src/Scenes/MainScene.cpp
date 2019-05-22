@@ -40,6 +40,7 @@
 #include "Prefabs\Player.h"
 #include "Prefabs\Spider.h"
 #include "Components\AIBase.h"
+#include "Utils\SaveGameManager.h"
 
 MainCamera* cam;
 bool reinit = false;
@@ -303,6 +304,11 @@ void MainScene::LogicUpdate()
 			GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0.5);
 			DisplayPauseMenu();
 
+		}
+
+		if (Input::GetKeyPressed(GLFW_KEY_F2))
+		{
+			SaveGameManager::Dump();
 		}
 	}
 	else if (currentSceneState == PAUSE)

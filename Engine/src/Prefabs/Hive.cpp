@@ -117,6 +117,7 @@ void Hive::Start()
 		{
 			go->FlagToBeDestroyed();
 			healtthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
+			EventDispatcher::Instance().DispatchEvent(new EnemySpottedEvent());
 			ApplyColor(0.8, 0.0, 0.0);
 			colorTimer = 0.1f;
 			redFlashing = 1;

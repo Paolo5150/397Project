@@ -250,6 +250,16 @@ void Spider::Update()
 		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMaxZ() - 1500);
 	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 1500)
 		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 1500);
+
+	if (transform.GetPosition().y < 750)
+	{
+		underwaterTimer += Timer::GetDeltaS();
+
+		if (underwaterTimer > 3)
+			healthComponent->AddToHealth(Timer::GetDeltaS() * -3);
+	}
+	else
+		underwaterTimer = 0;
 }
 
 bool Spider::EnemySpotted(Event* e)

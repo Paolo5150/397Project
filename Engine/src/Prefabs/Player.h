@@ -1,11 +1,12 @@
 #pragma once
 #include "..\GameObject\GameObject.h"
+#include "..\GameObject\Saveable.h"
 #include "..\Utils\AssetLoader.h"
 #include "..\Core\MainCamera.h"
 #include "..\Components\HealthComponent.h"
 
 
-class Player : public GameObject
+class Player : public GameObject, public Saveable
 {
 public:
 	Player();
@@ -15,6 +16,8 @@ public:
 
 	void Update() override;
 	void UpdateControls();
+
+	std::string Save() override;
 
 	Camera* mainCamera;
 	void LateUpdate();

@@ -19,6 +19,7 @@ AIBase::AIBase(std::string scriptPath) : Component("AIBase")
 	_lastStateChange = 0.0f;
 	_randomTimer = 0.0f;
 	_updateTimer = 0.0f;
+	_eventReceived = false;
 }
 
 AIBase::AIBase(Transform& targetTransform, std::string scriptPath) : Component("AIBase")
@@ -38,6 +39,7 @@ AIBase::AIBase(Transform& targetTransform, std::string scriptPath) : Component("
 	_lastStateChange = 0.0f;
 	_randomTimer = 0.0f;
 	_updateTimer = 0.0f;
+	_eventReceived = false;
 }
 
 AIBase::~AIBase()

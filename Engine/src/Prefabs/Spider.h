@@ -44,6 +44,7 @@ private:
 	AIBase* aiBase;
 	float attackTimer;
 	float deathTimer;
+	float underwaterTimer;
 	HealthComponent* healthComponent;
 	std::string _enemySpottedEventID;
 
