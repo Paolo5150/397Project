@@ -102,8 +102,11 @@ Transform* AIBase::GetTarget() const
 
 void AIBase::SetState(std::string state)
 {
-	_state = state;
-	_lastStateChange = Timer::GetTimeS();
+	if (state != _state)
+	{
+		_state = state;
+		_lastStateChange = Timer::GetTimeS();
+	}
 }
 
 std::string AIBase::GetState() const
@@ -111,9 +114,29 @@ std::string AIBase::GetState() const
 	return _state;
 }
 
+void AIBase::SetEventReceived(bool received)
+{
+	_eventReceived = received;
+}
+
+bool AIBase::GetEventReceived() const
+{
+	return _eventReceived;
+}
+
 void AIBase::Move(float forward, float right)
 {
 	_parentTransform->SetPosition(_parentTransform->GetPosition() + (forward * _parentTransform->GetLocalFront()));
+	_parentTransform->SetPosition(_parentTransform->GetPosition() + (right * _parentTransform->GetLocalRight()));
+}
+
+void AIBase::MoveForward(float forward)
+{
+	_parentTransform->SetPosition(_parentTransform->GetPosition() + (forward * _parentTransform->GetLocalFront()));
+}
+
+void AIBase::MoveRight(float right)
+{
 	_parentTransform->SetPosition(_parentTransform->GetPosition() + (right * _parentTransform->GetLocalRight()));
 }
 
@@ -181,19 +204,28 @@ void AIBase::Think()
 	lua_pushnumber(_luaState, Timer::GetDeltaS());
 	lua_pushnumber(_luaState, _lastStateChange);
 	lua_pushnumber(_luaState, _randomTimer);
+	lua_pushboolean(_luaState, _eventReceived);
 
-	lua_call(_luaState, 16, 8); //call the function with 16 arguments and return 8 results
+	lua_call(_luaState, 17, 9); //call the function with 16 arguments and return 9 results
 
-	if (Lua::GetStringFromStack("_state", _luaState) != GetState()) //These should probably be retreived from the functon to increase reusablilty
-	{
-		SetState(Lua::GetStringFromStack("_state", _luaState));
-	}
+	/*SetState(Lua::GetStringFromStack("_state", _luaState));
 	Rotate(Lua::GetFloatFromStack("rotation", _luaState));
 	Move(Lua::GetFloatFromStack("fowardMovement", _luaState), Lua::GetFloatFromStack("rightMovement", _luaState));
 	SetAnimation(Lua::GetIntFromStack("animation", _luaState));
 	_otherTarget.x = Lua::GetFloatFromStack("_wanderPosX", _luaState);
 	_otherTarget.y = Lua::GetFloatFromStack("_wanderPosY", _luaState);
 	_otherTarget.z = Lua::GetFloatFromStack("_wanderPosZ", _luaState);
+	SetEventReceived(Lua::GetBoolFromStack("_eventReceived", _luaState));*/
 
+	SetState(lua_tostring(_luaState, -9));
+	SetAnimation(lua_tonumber(_luaState, -8));
+	MoveForward(lua_tonumber(_luaState, -7));
+	MoveRight(lua_tonumber(_luaState, -6));
+	Rotate(lua_tonumber(_luaState, -5));
+	_otherTarget.x = lua_tonumber(_luaState, -4);
+	_otherTarget.y = lua_tonumber(_luaState, -3);
+	_otherTarget.z = lua_tonumber(_luaState, -2);
+	SetEventReceived(lua_toboolean(_luaState, -1));
+	
 	Lua::CloseLua(_luaState);
 }

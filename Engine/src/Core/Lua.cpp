@@ -173,6 +173,50 @@ void Lua::ClearCreatedAssets()
 	}
 }
 
+void Lua::StackDump(lua_State *L)
+{
+	for (int i = 1; i <= lua_gettop(L); i++)
+	{
+		int type = lua_type(L, i);
+		switch (type)
+		{
+			case LUA_TSTRING:
+				Logger::LogInfo(lua_tostring(L, i));
+				break;
+			case LUA_TBOOLEAN:
+				Logger::LogInfo(lua_toboolean(L, i) ? "true" : "false");
+				break;
+			case LUA_TNUMBER:
+				Logger::LogInfo(lua_tonumber(L, i));
+				break;
+			default:
+				Logger::LogInfo(lua_typename(L, type));
+				break;
+		}
+	}
+	Logger::LogInfo("\n");
+}
+
+void Lua::StackDump(lua_State *L, int index)
+{
+	int type = lua_type(L, index);
+	switch (type)
+	{
+		case LUA_TSTRING:
+			Logger::LogInfo(lua_tostring(L, index));
+			break;
+		case LUA_TBOOLEAN:
+			Logger::LogInfo(lua_toboolean(L, index) ? "true" : "false");
+			break;
+		case LUA_TNUMBER:
+			Logger::LogInfo(lua_tonumber(L, index));
+			break;
+		default:
+			Logger::LogInfo(lua_typename(L, type));
+			break;
+	}
+}
+
 std::string Lua::GetStringFromStack(std::string variable, lua_State*& L)
 {
 	lua_settop(L, 0);
@@ -187,6 +231,23 @@ std::string Lua::GetStringFromStack(std::string variable, lua_State*& L)
 	else
 	{
 		Logger::LogError("Lua stack index is not a string!");
+		throw "Lua stack index is not a string!";
+		return "";
+	}
+}
+
+std::string Lua::GetStringFromStack(int index, lua_State*& L)
+{
+	if (LuaType(L, index, "string"))
+	{
+		std::string stack = (std::string)lua_tostring(L, index);
+		lua_pop(L, index);
+		return stack;
+	}
+	else
+	{
+		Logger::LogError("Lua stack index is not a string!");
+		throw "Lua stack index is not a string!";
 		return "";
 	}
 }
@@ -205,6 +266,23 @@ int Lua::GetIntFromStack(std::string variable, lua_State*& L)
 	else
 	{
 		Logger::LogError("Lua stack index is not an int!");
+		throw "Lua stack index is not a int!";
+		return -1;
+	}
+}
+
+int Lua::GetIntFromStack(int index, lua_State*& L)
+{
+	if (LuaType(L, index, "number"))
+	{
+		int stack = (int)lua_tonumber(L, index);
+		lua_pop(L, index);
+		return stack;
+	}
+	else
+	{
+		Logger::LogError("Lua stack index is not a int!");
+		throw "Lua stack index is not a int!";
 		return -1;
 	}
 }
@@ -223,7 +301,58 @@ float Lua::GetFloatFromStack(std::string variable, lua_State*& L)
 	else
 	{
 		Logger::LogError("Lua stack index is not a float!");
+		throw "Lua stack index is not a float!";
 		return -1;
 	}
 }
 
+float Lua::GetFloatFromStack(int index, lua_State*& L)
+{
+	if (LuaType(L, index, "number"))
+	{
+		float stack = (float)lua_tonumber(L, index);
+		lua_pop(L, index);
+		return stack;
+	}
+	else
+	{
+		Logger::LogError("Lua stack index is not a float!");
+		throw "Lua stack index is not a float!";
+		return -1;
+	}
+}
+
+bool Lua::GetBoolFromStack(std::string variable, lua_State*& L)
+{
+	lua_settop(L, 0);
+	lua_getglobal(L, variable.c_str());
+
+	if (LuaType(L, 1, "bool"))
+	{
+		bool stack = (bool)lua_toboolean(L, 1);
+		lua_pop(L, 1);
+		return stack;
+	}
+	else
+	{
+		Logger::LogError("Lua stack index is not a bool!");
+		throw "Lua stack index is not a bool!";
+		return false;
+	}
+}
+
+bool Lua::GetBoolFromStack(int index, lua_State*& L)
+{
+	if (LuaType(L, index, "bool"))
+	{
+		bool stack = (bool)lua_toboolean(L, index);
+		lua_pop(L, index);
+		return stack;
+	}
+	else
+	{
+		Logger::LogError("Lua stack index is not a bool!");
+		throw "Lua stack index is not a bool!";
+		return false;
+	}
+}

@@ -1,7 +1,6 @@
 --Script variables
 movementSpeed = 500;
 rotationSpeed = 5;
-fleeDistance = 6000; --Distance the ai will try and get to before stopping fleeing
 agroDistance = 5000; --Distance the ai will notice and start following the target
 maxFollowDistance = 6000; --Distance the ai will stop following the target
 attackDistance = 150; --Distance the ai will switch to fighting
@@ -27,8 +26,9 @@ _timerCurrentTime = 0;
 _timerDeltaS = 0;
 _lastStateChange = 0;
 _randomTimer = 0;
+_eventReceived = false;
 
-function PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, terrainMaxX, terrainMaxZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
+function PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, terrainMaxX, terrainMaxZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer, eventReceived)
     _state = state;
     _targetDistance = targetDistance;
     _targetRotation = targetRotation;
@@ -45,6 +45,7 @@ function PopulateVariables(state, targetDistance, targetRotation, targetRotation
     _timerDeltaS = timerDeltaS;
     _lastStateChange = lastStateChange;
     _randomTimer = randomTimer;
+    _eventReceived = eventReceived;
 end
 
 function RandomWanderPos()
@@ -61,9 +62,14 @@ end
 
 --Entry function
 --Returns: state, animation, fowardMovement, rightMovement, rotation(left/right), wanderDirection
-function Think(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, terrainMaxX, terrainMaxZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer)
-    PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, terrainMaxX, terrainMaxZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer);
+function Think(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, terrainMaxX, terrainMaxZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer, eventReceived)
+    PopulateVariables(state, targetDistance, targetRotation, targetRotationReverse, nodeDistance, nodeRotation, nodeRotationReverse, wanderPosX, wanderPosY, wanderPosZ, terrainMaxX, terrainMaxZ, timerCurrentTime, timerDeltaS, lastStateChange, randomTimer, eventReceived);
     
+    if(_eventReceived == true) then
+        _state = "Seek";
+        Seek();
+    end
+
     if(_state == "Idle") then
         Idle();
     elseif(_state == "Wander") then
@@ -72,8 +78,6 @@ function Think(state, targetDistance, targetRotation, targetRotationReverse, nod
         Seek();
     elseif(_state == "Fight") then
         Fight();
-    elseif(_state == "Flee") then
-        Flee();
     elseif(_state == "Slow") then
         Slow();
     else
@@ -81,7 +85,7 @@ function Think(state, targetDistance, targetRotation, targetRotationReverse, nod
         Idle();
     end
 
-    return _state, animation, fowardMovement, rightMovement, rotation, _wanderPosX, _wanderPosY, _wanderPosZ;
+    return _state, animation, fowardMovement, rightMovement, rotation, _wanderPosX, _wanderPosY, _wanderPosZ, _eventReceived;
 end
 
 function Idle()
@@ -148,18 +152,24 @@ function Seek()
         rightMovement = 0;
     end
 
-    if(_targetDistance >= maxFollowDistance) then
+    if(_targetDistance >= maxFollowDistance and _eventReceived == false) then
         _state = "Wander";
     end
 
     if(_targetDistance <= attackDistance) then
         _state = "Fight";
+        if(_eventReceived == true) then
+            Fight()
+        end
     end
 end
 
 function Fight()
     animation = 0;
     ClearWanderPos()
+    if(_eventReceived == true) then
+        _eventReceived = false;
+    end
 
     rotation = _targetRotationReverse * rotationSpeed * _timerDeltaS;
     fowardMovement = 0;
@@ -168,10 +178,6 @@ function Fight()
     if(_targetDistance > attackDistance) then
         _state = "Seek";
     end
-end
-
-function Flee()
-    animation = 7;
 end
 
 function Slow()

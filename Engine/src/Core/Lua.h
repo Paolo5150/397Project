@@ -112,31 +112,98 @@ public:
 	*/
 	static void ClearCreatedAssets();
 
+	static void StackDump(lua_State *L);
+
+	static void StackDump(lua_State *L, int index);
+
 	//-- Stack Returns --//
 	/**
 	* @brief		Gets a string variable from the given lua state. Uses the built-in lua state if none is specified
 	*
 	* @param		variable	the variable name to get from the stack
 	* @param		L			the lua state to get the variable from
+	*
+	* @return		string		the stack variable
+	* @throws		Exception if variable is not a string
 	*/
-	static std::string GetStringFromStack(std::string variable, lua_State*& L = lState); //Gets a string from the lua state, with the index stackIndex
+	static std::string GetStringFromStack(std::string variable, lua_State*& L = lState); //Gets a string from the lua state
+
+	/**
+	* @brief		Gets a bool variable from the given lua state. Uses the built-in lua state if none is specified
+	*
+	* @param		index		the index of the variable to get from the stack
+	* @param		L			the lua state to get the variable from
+	*
+	* @return		string		the stack variable
+	* @throws		Exception if variable is not a string
+	*/
+	static std::string GetStringFromStack(int index, lua_State*& L = lState); //Gets a string from the lua state
 	
 	/**
 	* @brief		Gets an int variable from the given lua state. Uses the built-in lua state if none is specified
 	*
 	* @param		variable	the variable name to get from the stack
 	* @param		L			the lua state to get the variable from
+	*
+	* @return		int			the stack variable
+	* @throws		Exception if variable is not a int
 	*/
-	static int GetIntFromStack(std::string variable, lua_State*& L = lState); //Gets an int from the lua state, with the index stackIndex
+	static int GetIntFromStack(std::string variable, lua_State*& L = lState); //Gets an int from the lua state
+
+	/**
+	* @brief		Gets a bool variable from the given lua state. Uses the built-in lua state if none is specified
+	*
+	* @param		index		the index of the variable to get from the stack
+	* @param		L			the lua state to get the variable from
+	*
+	* @return		int			the stack variable
+	* @throws		Exception if variable is not a int
+	*/
+	static int GetIntFromStack(int index, lua_State*& L = lState); //Gets an int from the lua state
 
 	/**
 	* @brief		Gets a float variable from the given lua state. Uses the built-in lua state if none is specified
 	*
 	* @param		variable	the variable name to get from the stack
 	* @param		L			the lua state to get the variable from
+	*
+	* @return		float		the stack variable
+	* @throws		Exception if variable is not a float
 	*/
-	static float GetFloatFromStack(std::string variable, lua_State*& L = lState); //Gets an int from the lua state, with the index stackIndex
+	static float GetFloatFromStack(std::string variable, lua_State*& L = lState); //Gets a float from the lua state
+
+	/**
+	* @brief		Gets a float variable from the given lua state. Uses the built-in lua state if none is specified
+	*
+	* @param		index		the index of the variable to get from the stack
+	* @param		L			the lua state to get the variable from
+	*
+	* @return		float		the stack variable
+	* @throws		Exception if variable is not a float
+	*/
+	static float GetFloatFromStack(int index, lua_State*& L = lState); //Gets a float from the lua state
 	
+	/**
+	* @brief		Gets a bool variable from the given lua state. Uses the built-in lua state if none is specified
+	*
+	* @param		variable	the variable name to get from the stack
+	* @param		L			the lua state to get the variable from
+	*
+	* @return		bool		the stack variable
+	* @throws		Exception if variable is not a bool
+	*/
+	static bool GetBoolFromStack(std::string variable, lua_State*& L = lState); //Gets a bool from the lua state
+
+	/**
+	* @brief		Gets a bool variable from the given lua state. Uses the built-in lua state if none is specified
+	*
+	* @param		index		the index of the variable to get from the stack
+	* @param		L			the lua state to get the variable from
+	*
+	* @return		bool		the stack variable
+	* @throws		Exception if variable is not a bool
+	*/
+	static bool GetBoolFromStack(int index, lua_State*& L = lState); //Gets a bool from the lua state
 
 private:
 	static lua_State* lState; //built-in lua state

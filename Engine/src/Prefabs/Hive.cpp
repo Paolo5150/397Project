@@ -4,6 +4,8 @@
 #include "..\Scene\Scene.h"
 #include "..\Scene\SceneManager.h"
 #include "..\Prefabs\Terrain.h"
+#include "..\Event\EventDispatcher.h"
+#include "..\Event\AIEvents.h"
 #include "..\Prefabs\Pumpkin.h"
 
 #include "Spider.h"

@@ -192,5 +192,6 @@
     <ClInclude Include="src\GUI\GUIElements\GUIProgressBar.h" />
     <ClInclude Include="src\Prefabs\Tree.h" />
     <ClInclude Include="src\Prefabs\PumpkinBunch.h" />
+    <ClInclude Include="src\Event\AIEvents.h" />
   </ItemGroup>
 </Project>

@@ -45,6 +45,8 @@ private:
 	float attackTimer;
 	float deathTimer;
 	HealthComponent* healthComponent;
+	std::string _enemySpottedEventID;
 
+	bool EnemySpotted(Event* e);
 };
 

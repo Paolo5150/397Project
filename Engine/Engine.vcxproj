@@ -190,6 +190,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\HealthComponent.h" />
+    <ClInclude Include="src\Event\AIEvents.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIProgressBar.h" />
     <ClInclude Include="src\Prefabs\GranadeLauncher.h" />
     <ClInclude Include="src\Prefabs\Hive.h" />
