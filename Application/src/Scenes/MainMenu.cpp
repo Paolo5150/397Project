@@ -23,6 +23,7 @@ MainMenuScene::MainMenuScene() : Scene("MainMenuScene")
 
 void MainMenuScene::LoadAssets() {
 
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
 
 
 }
@@ -40,6 +41,8 @@ void MainMenuScene::Initialize() {
 	int wx, wy;
 	Window::Instance().GetWindowSize(wx, wy);
 	loadingImage = new GUIImage("Logo", AssetLoader::Instance().GetAsset<Texture2D>("logo"),5,5,90,90,1);
+	manualImage = new GUIImage("IntroManual", AssetLoader::Instance().GetAsset<Texture2D>("manual"), 5, 5, 90, 90, 1);
+	manualImage->isActive = 0;
 
 	loadingImage->isActive = 0;
 
@@ -81,6 +84,7 @@ void MainMenuScene::Initialize() {
 	}, "", 1.5, 10, 10, 20, 35, 0, 0, 0, 1));
 
 	manualButton = (new GUIButton("menuManualButton", "Game Manual", [&]{
+		manualImage->isActive = 1;
 
 	}, "", 1.5, 10, 10, 20, 50, 0, 0, 0, 1));
 	
@@ -98,28 +102,30 @@ void MainMenuScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(loadingImage);
 	GUIManager::Instance().AddGUIObject(loadingText);
 	
-	
 
 	GUIManager::Instance().AddGUIObject(startButton);
 	GUIManager::Instance().AddGUIObject(loadButton);
 	GUIManager::Instance().AddGUIObject(manualButton);
 	GUIManager::Instance().AddGUIObject(quitButton);
 	GUIManager::Instance().AddGUIObject(gameLogo);
+	GUIManager::Instance().AddGUIObject(manualImage);
+
 
 }
 void MainMenuScene::LogicUpdate() {
 	//Logger::LogInfo("Updating scene", name);
 
-	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
-		SceneManager::Instance().LoadNewScene("ExitScene");
 
 
-	if (Input::GetKeyPressed(GLFW_KEY_ENTER))
+	if (manualImage->isActive)	
 	{
-		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 1);
-
-		GUIManager::Instance().Render(1);
-		SceneManager::Instance().LoadNewScene("MainScene");
+		if (Input::GetMouseDown(0) || Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
+			manualImage->isActive = 0;
+	}
+	else
+	{
+		if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
+			SceneManager::Instance().LoadNewScene("ExitScene");
 	}
 
 	Scene::LogicUpdate();

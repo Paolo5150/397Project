@@ -232,11 +232,11 @@ void MainScene::Start()
 {
 	Scene::Start();
 
-
 	PathFinder::Instance().Start();
 
 	PhysicsWorld::Instance().FillQuadtree(true);
 	PhysicsWorld::Instance().PerformCollisions(true);
+	Logger::LogInfo("Nodes", PathFinder::Instance().pathNodes.size());
 
 	RenderingEngine::godRays = 1;
 	// Place gun
@@ -391,7 +391,7 @@ void MainScene::Restart()
 
 void MainScene::UpdateUI()
 {
-		std::stringstream ss;
+	std::stringstream ss;
 	if (player != nullptr)
 	{
 		ss << "x ";
