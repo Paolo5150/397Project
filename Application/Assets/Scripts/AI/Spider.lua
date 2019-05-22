@@ -1,5 +1,5 @@
 --Script variables
-movementSpeed = 200;
+movementSpeed = 500;
 rotationSpeed = 5;
 agroDistance = 5000; --Distance the ai will notice and start following the target
 maxFollowDistance = 6000; --Distance the ai will stop following the target

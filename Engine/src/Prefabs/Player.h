@@ -88,5 +88,7 @@ private:
 	*/
 	glm::vec3 _lastPos;
 
+	float underwaterTimer;
+
 	glm::vec3 _intendedDir;
 };

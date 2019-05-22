@@ -224,7 +224,7 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 
 		currentNode = shortest;
 
-	} while (shortest != goalNode && path.size() < 10);
+	} while (shortest != goalNode && path.size() < 5);
 
 
 

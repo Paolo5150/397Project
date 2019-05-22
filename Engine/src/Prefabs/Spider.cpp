@@ -10,7 +10,7 @@
 
 namespace
 {
-	const float attackRate = 0.8;
+	const float attackRate = 0.5;
 }
 
 Spider::Spider() : GameObject("Spider")
@@ -118,6 +118,7 @@ Transform* Spider::GetTarget() const
 
 void Spider::Start()
 {
+	GameObject::Start();
 	Hive::totalSpiders++;
 	
 	BoxCollider* slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
@@ -181,6 +182,7 @@ void Spider::Start()
 
 void Spider::Update()
 {
+
 	GameObject::Update(); //call base Update
 
 	if (((AIBase*)GetComponent<AIBase>("AIBase"))->GetState() == "Slow")

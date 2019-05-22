@@ -10,6 +10,8 @@
 #include "Player.h"
 
 unsigned int Hive::totalSpiders = 0;
+unsigned int Hive::totalHives = 0;
+
 
 Hive::Hive() : GameObject("Hive")
 {
@@ -20,13 +22,12 @@ Hive::Hive() : GameObject("Hive")
 	mat_hive.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
 	mat_hive.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hive_diffuse"));
 	mat_hive.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hive_normal"), TextureUniform::NORMAL0);
-	
-
 
 	ApplyMaterial(mat_hive);
 
 	_maxSpiders = 10;
 	canSpawnSpiders = true;
+	totalHives++;
 }
 
 Hive::Hive(int maxSpiders) : GameObject("Hive")
@@ -43,6 +44,7 @@ Hive::Hive(int maxSpiders) : GameObject("Hive")
 
 	_maxSpiders = maxSpiders;
 	canSpawnSpiders = true;
+
 }
 
 void Hive::SetMaxSpiders(unsigned int maxSpiders)
@@ -152,5 +154,5 @@ void Hive::Update()
 
 Hive::~Hive()
 {
-
+	totalHives--;
 }
