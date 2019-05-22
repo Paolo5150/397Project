@@ -1,4 +1,6 @@
 #include "AIBase.h"
+#include <thread>
+#include <future>
 
 AIBase::AIBase(std::string scriptPath) : Component("AIBase")
 {
@@ -148,18 +150,26 @@ void AIBase::SetAnimation(int index)
 	GetParent()->GetComponent<Animator>("Animator")->SetCurrentAnimation(index);
 }
 
+glm::vec3 Test(glm::vec3 position, glm::vec3 target)
+{
+	return PathFinder::Instance().GeneratePath(position, target).at(0);
+}
+
 void AIBase::Update()
 {
-	if (Timer::GetTimeS() >= _updateTimer + 0.3f)
+	if (Timer::GetTimeS() >= _updateTimer + 0.5f)
 	{
 		_updateTimer = Timer::GetTimeS();
 		if (_otherTarget.x != -1 && _otherTarget.y != -1 && _otherTarget.z != -1)
 		{
-			_nextNode = PathFinder::Instance().GeneratePath(_parentTransform->GetPosition(), _otherTarget).at(0);
+			auto f1 = std::async(std::launch::async, Test, _parentTransform->GetPosition(), _otherTarget);
+			_nextNode = f1.get();
 		}
 		else if (_targetTransform != nullptr)
 		{
-			_nextNode = PathFinder::Instance().GeneratePath(_parentTransform->GetPosition(), _targetTransform->GetPosition()).at(0);
+		//	_nextNode = PathFinder::Instance().GeneratePath(_parentTransform->GetPosition(), _targetTransform->GetPosition()).at(0);
+			auto f1 = std::async(std::launch::async, Test, _parentTransform->GetPosition(), _targetTransform->GetPosition());
+			_nextNode = f1.get();
 		}
 	}
 

@@ -95,7 +95,7 @@ public:
 
 	void SelectFont(std::string fontName);
 	void ResetFont(){ ImGui::PopFont(); ImGui::SetWindowFontScale(1); }
-
+	void FlashRed();
 	void DeleteGUIObjects(bool preservedToo);
 	std::list<std::function<void()>> buttonCallbacks;
 private:
@@ -122,6 +122,9 @@ private:
 	* @post			The GUIManager instance is created
 	*/
 	GUIManager(){};
+
+	float redFlashTimer;
+	bool redFLashing;
 
 };
 

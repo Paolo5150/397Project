@@ -6,10 +6,12 @@
 #include "..\Prefabs\Terrain.h"
 #include "..\Event\EventDispatcher.h"
 #include "..\Event\AIEvents.h"
+#include "..\Prefabs\Pumpkin.h"
+
 #include "Spider.h"
 #include "Player.h"
 
-unsigned int Hive::totalSpiders = 0;
+
 unsigned int Hive::totalHives = 0;
 
 
@@ -114,8 +116,10 @@ void Hive::Start()
 		if (go->GetName() == "Pumpkin")
 		{
 			go->FlagToBeDestroyed();
-			healtthComponent->AddToHealth(-10);
-			EventDispatcher::Instance().DispatchEvent(new EnemySpottedEvent());
+			healtthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
+			ApplyColor(0.8, 0.0, 0.0);
+			colorTimer = 0.1f;
+			redFlashing = 1;
 
 			if (healtthComponent->GetHealthMaxRatio() < 0.7 && healtthComponent->GetHealthMaxRatio() > 0.4)
 				SetState(1);
@@ -131,9 +135,16 @@ void Hive::Start()
 
 void Hive::Update()
 {
+	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
+	if (colorTimer == 0 && redFlashing)
+	{
+		ApplyColor(1, 1, 1);
+		redFlashing = 0;
+	}
+
 	if (canSpawnSpiders)
 	{
-		if (totalSpiders < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 15.0f) //Spawns spider only if the maximum spiders has not been reached and if a set amount of time has elapsed
+		if (Spider::GetTotalSpiders() < _maxSpiders && Timer::GetTimeS() >= _lastSpawnedSpider + 15.0f) //Spawns spider only if the maximum spiders has not been reached and if a set amount of time has elapsed
 		{
 			Spider* spider = new Spider();
 

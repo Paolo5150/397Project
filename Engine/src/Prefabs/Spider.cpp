@@ -6,12 +6,17 @@
 #include "..\Event\EventDispatcher.h"
 #include "..\Event\AIEvents.h"
 #include "Hive.h"
+#include "..\GUI\GUIElements\GUIManager.h"
 #include "Pumpkin.h"
 
 namespace
 {
 	const float attackRate = 0.5;
 }
+
+unsigned Spider::totalSpiders = 0;
+unsigned Spider::totalSpidersKilled = 0;
+
 
 Spider::Spider() : GameObject("Spider")
 {
@@ -100,8 +105,9 @@ Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("S
 
 Spider::~Spider()
 {
-	Hive::totalSpiders--;
-	EventDispatcher::Instance().UnsubscribeCallback<EnemySpottedEvent>(_enemySpottedEventID);
+	totalSpiders--;
+	totalSpidersKilled++;
+
 }
 
 
@@ -119,7 +125,7 @@ Transform* Spider::GetTarget() const
 void Spider::Start()
 {
 	GameObject::Start();
-	Hive::totalSpiders++;
+	totalSpiders++;
 	
 	BoxCollider* slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
 	slowCollider->ResetCollisionLayer();
@@ -158,8 +164,11 @@ void Spider::Start()
 			Pumpkin* p = (Pumpkin*)go;
 			if (p->state == Pumpkin::SHOT)
 			{
-				healthComponent->AddToHealth(-25);
+				healthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
 
+				ApplyColor(0.8, 0.0, 0.0);
+				colorTimer = 0.1f;
+				redFlashing = 1;
 				if (healthComponent->IsDead())
 				{
 					pumpkinCollider->SetActive(0);
@@ -185,6 +194,13 @@ void Spider::Update()
 
 	GameObject::Update(); //call base Update
 
+	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
+	if (colorTimer == 0 && redFlashing)
+	{
+		ApplyColor(1, 1, 1);
+		redFlashing = 0;
+	}
+
 	if (((AIBase*)GetComponent<AIBase>("AIBase"))->GetState() == "Slow")
 		((AIBase*)GetComponent<AIBase>("AIBase"))->SetState(""); //Lets the ai pick a state again
 
@@ -199,10 +215,11 @@ void Spider::Update()
 		if (attackTimer >= attackRate)
 		{
 			attackTimer = 0;
+			
 			if (aiBase->GetTarget()->gameObject != nullptr)
 			{
 				HealthComponent* h = aiBase->GetTarget()->gameObject->GetComponent<HealthComponent>("HealthComponent");
-
+				GUIManager::Instance().FlashRed();
 				if (h != nullptr)
 				{
 					h->AddToHealth(-5);

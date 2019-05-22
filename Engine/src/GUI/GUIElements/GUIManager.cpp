@@ -34,7 +34,7 @@ void GUIManager::Initialize()
 		DeleteGUIObjects(0);
 		return 0;
 	});
-
+	redFLashing = 0;
 
 }
 
@@ -63,8 +63,24 @@ void GUIManager::AddGUIObject(GUIObject* gobj, bool preserve )
 
 }
 
+void GUIManager::FlashRed()
+{
+	redFlashTimer = 0.1f;
+	SetBackgroundColor(0.8, 0.0, 0.0, 0.5);
+	redFLashing = 1;
+
+}
+
+
 void GUIManager::Render(bool forceRefresh, bool forceClear)
 {
+	redFlashTimer = redFlashTimer < 0 ? 0 : redFlashTimer - Timer::GetDeltaS();
+
+	if (redFlashTimer <= 0 && redFLashing == 1)
+	{
+		SetBackgroundColor(0.0, 0.0, 0.0, 0.0);
+		redFLashing = 0;
+	}
 
 	if (forceClear)
 		Core::Instance().GetGraphicsAPI().ClearColorBuffer();
