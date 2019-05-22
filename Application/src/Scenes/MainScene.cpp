@@ -32,6 +32,7 @@
 #include "Prefabs\Cabin.h"
 #include "Prefabs\Hive.h"
 #include "Prefabs\Player.h"
+#include "Prefabs\PumpkinBunch.h"
 #include "Prefabs\GranadeLauncher.h"
 #include "Utils\PathFinder.h"
 #include "Graphics\RenderingEngine.h"
@@ -42,6 +43,7 @@
 
 MainCamera* cam;
 bool reinit = false;
+
 
 MainScene::MainScene() : Scene("MainScene")
 {
@@ -106,9 +108,15 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(manual);
 
 	// HUD elements
-	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont", 1, 90, 5, 1, 1, 1, 1);
-	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 80, 3, 7, 7, 1);
-		endGameText = new GUIText("EndGameText", "", "invasionFont", 2, 40, 10, 1, 1, 1, 1);
+	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont", 1, 85, 5, 1, 1, 1, 1);
+	spidersLeftText = new GUIText("spiderLeftText", "", "invasionFont", 1, 80,10, 1, 1, 1, 1);
+	hivesLeftText = new GUIText("hivesLeftText", "", "invasionFont", 1, 80, 13, 1, 1, 1, 1);
+
+	spidersKilledText = new GUIText("spidersKilledText", "", "invasionFont", 2, 35, 20, 1, 1, 1, 1);
+	pumpkinsShotText = new GUIText("pumpkinsShotText", "", "invasionFont", 2, 35, 30, 1, 1, 1, 1);
+
+	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 80,3, 7, 7, 1);
+	endGameText = new GUIText("EndGameText", "", "invasionFont", 2, 35, 10, 1, 1, 1, 1);
 	endGameText->isActive = 0;
 
 	resumeButton = (new GUIButton("ResumeButton", "Resume", [&]{
@@ -154,6 +162,12 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoText);
 	GUIManager::Instance().AddGUIObject(pumpkinAmmoImage);
 	GUIManager::Instance().AddGUIObject(endGameText);
+	GUIManager::Instance().AddGUIObject(spidersLeftText);
+	GUIManager::Instance().AddGUIObject(hivesLeftText);
+	GUIManager::Instance().AddGUIObject(spidersKilledText);
+	GUIManager::Instance().AddGUIObject(pumpkinsShotText);
+
+
 
 	GUIManager::Instance().AddGUIObject(restartButton);
 	GUIManager::Instance().AddGUIObject(saveButton);
@@ -206,6 +220,10 @@ void MainScene::Initialize() {
 
 	Lua::CloseLua();
 
+	//Randomly spawn the gun
+	
+	Player::ResetTotalPumpkinShots();
+	Spider::ResetTotalSpidersKilled();
 	currentSceneState = PLAYING;
 
 }
@@ -214,13 +232,25 @@ void MainScene::Start()
 {
 	Scene::Start();
 
-
 	PathFinder::Instance().Start();
 
 	PhysicsWorld::Instance().FillQuadtree(true);
 	PhysicsWorld::Instance().PerformCollisions(true);
+	Logger::LogInfo("Nodes", PathFinder::Instance().pathNodes.size());
 
 	RenderingEngine::godRays = 1;
+	// Place gun
+	glm::vec3 gunPos = PathFinder::Instance().GetRandomFreeNodePosition();
+	GranadeLauncher* gn = new GranadeLauncher();
+	gn->Start();
+	gn->SetLayer(0);
+	gn->spin = 1;
+	gn->SetLayer(Layers::DEFAULT);
+	gn->boxCollider->transform.SetScale(100, 100, 180);	
+	gn->transform.SetScale(0.1, 0.1, 0.1);
+	gn->transform.SetPosition(gunPos + glm::vec3(0,50,0));
+	AddGameObject(gn);
+
 	Input::SetIsEnabled(1);
 }
 
@@ -228,15 +258,29 @@ void MainScene::LogicUpdate()
 {
 
 	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
+
 	if (currentSceneState == PLAYING)
 	{
-		
+		//Spawn bunches
+		static float bunchTimer = 0;
+		bunchTimer += Timer::GetDeltaS();
+
+		if (bunchTimer >= 2 && PumpkinBunch::totalPumpkinBunches < 40)
+		{
+			bunchTimer = 0;
+			glm::vec3 pos = PathFinder::Instance().GetRandomFreeNodePosition();
+			PumpkinBunch* pb = new PumpkinBunch();
+			pb->Start();
+			pb->transform.SetPosition(pos);
+			AddGameObject(pb);
+		}
+
 		if (player->healhComponent->IsDead())
 		{
 			currentSceneState = GAMEOVER;
 		}
 
-		if (Hive::totalHives == 0 && Hive::totalSpiders == 0)
+		if (Hive::totalHives == 0 && Spider::GetTotalSpiders() == 0)
 		{
 			currentSceneState = WIN;
 		}
@@ -314,8 +358,21 @@ void MainScene::DisplayEndGameMenu()
 	healthBar->isActive = false;
 	pumpkinAmmoText->isActive = 0;
 	endGameText->isActive = 1;
+	spidersLeftText->isActive = 0;
+	hivesLeftText->isActive = 0;
 	GUIManager::Instance().SetBackgroundColor(0, 0, 0, 1);
 	Input::SetCursorMode("normal");
+
+	std::stringstream ss;
+	ss << "Spiders killed: ";
+	ss << Spider::GetTotalSpidersKilled();
+	spidersKilledText->_message = ss.str();
+
+	ss.str("");
+	ss << "Pumpkins shot: ";
+	ss << Player::GetTotalPumpkinsShot();
+	pumpkinsShotText->_message = ss.str();
+
 	restartButton->isActive = 1;
 	quitToDesktopButton->isActive = 1;
 	quitToMenuButton->isActive = 1;
@@ -334,16 +391,25 @@ void MainScene::Restart()
 
 void MainScene::UpdateUI()
 {
+	std::stringstream ss;
 	if (player != nullptr)
 	{
-		std::stringstream ss;
 		ss << "x ";
 		ss << player->ammoCounter;
 		pumpkinAmmoText->_message = ss.str();
-
 		healthBar->percentage = player->healhComponent->GetHealthMaxRatio();
-
 	}
+
+	ss.str("");
+	ss << "Spiders: ";
+	ss << Spider::GetTotalSpiders();
+	spidersLeftText->_message = ss.str();
+
+	ss.str("");
+	ss << "Hives: ";
+	ss << Hive::totalHives;
+	hivesLeftText->_message = ss.str();
+
 }
 
 

@@ -2,16 +2,14 @@
 #include "..\Components\SphereCollider.h"
 #include "..\Components\BoxCollider.h"
 
-namespace
-{
-	const float MAX_LIFETIME = 5;
-}
+unsigned PumpkinBunch::totalPumpkinBunches;
 
 PumpkinBunch::PumpkinBunch() : GameObject("PumpkinBunch")
 {
 	AssetLoader::Instance().GetAsset<Model>("PumpkinBunch")->PopulateGameObject(this);
 	transform.SetScale(40, 40, 40);
 	SetIsStatic(0);
+	totalPumpkinBunches++;
 }
 
 void PumpkinBunch::Start()
@@ -32,5 +30,6 @@ void PumpkinBunch::Start()
 
 PumpkinBunch::~PumpkinBunch()
 {
+	totalPumpkinBunches--;
 
 }

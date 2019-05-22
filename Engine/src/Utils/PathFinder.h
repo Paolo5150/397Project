@@ -18,6 +18,7 @@ public:
 	QuadTree<PathNode*>* nodesQT;
 	std::vector<std::vector<PathNode*>> nodeMap;
 
+	glm::vec3 GetRandomFreeNodePosition();
 	std::vector<glm::vec3> GeneratePath(glm::vec3 start, glm::vec3 finish);
 	std::vector<PathNode*> pathNodes;
 private:

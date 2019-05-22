@@ -15,6 +15,7 @@ public:
 	PumpkinBunch();
 	~PumpkinBunch();
 	void Start() override;
+	static unsigned totalPumpkinBunches;
 
 private:
 };

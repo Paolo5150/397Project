@@ -67,6 +67,8 @@ public:
 	float shootTimer;
 	GranadeLauncher* gn;
 
+	static unsigned GetTotalPumpkinsShot(){ return totalPumpkinsShot; }
+	static void ResetTotalPumpkinShots() { totalPumpkinsShot = 0; }
 private:
 	/**
 	* @brief		The camera movement speed
@@ -91,4 +93,8 @@ private:
 	float underwaterTimer;
 
 	glm::vec3 _intendedDir;
+
+	static unsigned totalPumpkinsShot;
+
+	bool hasGun;
 };

@@ -11,10 +11,13 @@ namespace {
 	const float MAX_SPEED = 1000;
 	float ORIGINAL_SPEED = 500;
 	float counter = 0;
-	float SHOOT_RATE = 0.1;
+	float SHOOT_RATE = 0.2;
 
 	CameraPerspective* gunCam;
 }
+
+unsigned Player::totalPumpkinsShot = 0;
+
 
 
 Player::Player() : GameObject("Player")
@@ -24,17 +27,22 @@ Player::Player() : GameObject("Player")
 	_rotationSpeed = 20;
 	_isTopView = false;
 	_intendedDir = glm::vec3(0, 0, 0);
-	ammoCounter = 1000000;
+	ammoCounter = 25;
 
 	gn = new GranadeLauncher();
-
-
+	gn->Start();
+	gn->boxCollider->ResetCollisionLayer();
+	
 
 	gunCam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
 	gunCam->RemoveAllMaskLayers();
 	gunCam->AddLayerMask(Layers::GUN);
 	gunCam->SetDepth(10);
 	gunCam->SetIsStatic(0);
+	gn->SetActive(0);
+	totalPumpkinsShot = 0;
+
+	hasGun = false;
 
 
 
@@ -83,6 +91,8 @@ void Player::Start()
 	pickupCollider->ResetCollisionLayer();
 	//pickupCollider->enableRender = 1;
 	pickupCollider->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
+	pickupCollider->AddCollideAgainstLayer(CollisionLayers::LAUNCHER);
+
 	pickupCollider->collisionCallback = [this](GameObject* go) {
 
 		if (go->GetName() == "Pumpkin")
@@ -97,13 +107,22 @@ void Player::Start()
 		}
 		else if (go->GetName() == "PumpkinBunch")
 		{
-			ammoCounter += 3;
+			ammoCounter += 10;
+			go->FlagToBeDestroyed();
+		}
+		
+		else if (go->GetName() == "GranadeLauncher")
+		{
+			Logger::LogInfo("Got launcher");
+			gn->SetActive(1);
+			gn->boxCollider->SetActive(0);
+			gn->pointLight->SetActive(0);
+			hasGun = 1;
 			go->FlagToBeDestroyed();
 		}
 
 	};
-
-
+	
 	gn->transform.SetScale(0.01, 0.01, 0.01);
 	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
 	gunCam->AddChild(gn);
@@ -114,10 +133,6 @@ void Player::Start()
 }
 
 
-
-
-
-
 void Player::Update()
 {
 	GameObject::Update();
@@ -126,7 +141,7 @@ void Player::Update()
 	_intendedDir.z = 0;
 
 	//Logger::LogInfo(gn->transform.ToString());
-	if (Input::GetMouseDown(0) && ammoCounter > 0)
+	if (Input::GetMouseDown(0) && ammoCounter > 0 && hasGun)
 	{
 		shootTimer += Timer::GetDeltaS();
 		if (shootTimer >= SHOOT_RATE)
@@ -139,6 +154,7 @@ void Player::Update()
 			pump->shootDirection = transform.GetLocalFront();
 			SceneManager::Instance().GetCurrentScene().AddGameObject(pump);
 			ammoCounter--;
+			totalPumpkinsShot++;
 
 		}
 	}
