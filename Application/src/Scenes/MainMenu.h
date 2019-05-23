@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene/Scene.h"
+#include "Utils\SaveGameManager.h"
 #include "GUI\GUIElements\GUIImage.h"
 #include "GUI\GUIElements\GUIText.h"
 #include "GUI\GUIElements\GUIButton.h"

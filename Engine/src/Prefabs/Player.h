@@ -60,14 +60,16 @@ public:
 	*/
 	float GetRotationSpeed() const;
 
+	void SetRotation(float x, float y, float z);
 
 	BoxCollider* boxCollider;
 	BoxCollider* pickupCollider;
 
-	HealthComponent* healhComponent;
+	HealthComponent* healthComponent;
 
 	int ammoCounter;
 	float shootTimer;
+	bool hasGun;
 	GranadeLauncher* gn;
 
 	static unsigned GetTotalPumpkinsShot(){ return totalPumpkinsShot; }
@@ -99,5 +101,5 @@ private:
 
 	static unsigned totalPumpkinsShot;
 
-	bool hasGun;
+	//bool hasGun;
 };

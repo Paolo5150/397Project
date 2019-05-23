@@ -2,12 +2,13 @@
 #include <string>
 
 #include "../GameObject/GameObject.h"
+#include "../GameObject/Saveable.h"
 #include "..\Utils\AssetLoader.h"
 
 class AIBase;
 class HealthComponent;
 
-class Spider : public GameObject
+class Spider : public GameObject, public Saveable
 {
 public:
 	Spider();
@@ -28,11 +29,16 @@ public:
 
 	void Update() override;
 
+	std::string Save() override;
+
 	void OnCollision(GameObject* g) override;
 
 	static unsigned GetTotalSpiders(){ return totalSpiders; }
 	static unsigned GetTotalSpidersKilled(){ return totalSpidersKilled; }
 	static void ResetTotalSpidersKilled() { totalSpidersKilled = 0; }
+
+	AIBase* aiBase;
+	HealthComponent* healthComponent;
 
 private:
 
@@ -41,11 +47,9 @@ private:
 
 	bool redFlashing;
 	float colorTimer;
-	AIBase* aiBase;
 	float attackTimer;
 	float deathTimer;
 	float underwaterTimer;
-	HealthComponent* healthComponent;
 	std::string _enemySpottedEventID;
 
 	bool EnemySpotted(Event* e);

@@ -128,7 +128,7 @@ void MainScene::Initialize() {
 
 	saveButton = (new GUIButton("SaveButton", "Save", [&]{		
 
-		//Call save method here!
+		SaveGameManager::SaveGame();
 
 	}, "", 1.5, 10, 10, 45, 30, 1, 1, 1, 1));
 
@@ -252,6 +252,11 @@ void MainScene::Start()
 	gn->transform.SetPosition(gunPos + glm::vec3(0,50,0));
 	AddGameObject(gn);
 
+	if (SaveGameManager::loadWhenPossible == true)
+	{
+		SaveGameManager::LoadGame();
+	}
+
 	Input::SetIsEnabled(1);
 }
 
@@ -276,7 +281,7 @@ void MainScene::LogicUpdate()
 			AddGameObject(pb);
 		}
 
-		if (player->healhComponent->IsDead())
+		if (player->healthComponent->IsDead())
 		{
 			currentSceneState = GAMEOVER;
 		}
@@ -403,7 +408,7 @@ void MainScene::UpdateUI()
 		ss << "x ";
 		ss << player->ammoCounter;
 		pumpkinAmmoText->_message = ss.str();
-		healthBar->percentage = player->healhComponent->GetHealthMaxRatio();
+		healthBar->percentage = player->healthComponent->GetHealthMaxRatio();
 	}
 
 	ss.str("");

@@ -122,3 +122,19 @@ std::vector<GameObject*> Scene::GetGameobjectsByName(std::string name)
 
 	return r;
 }
+
+bool Scene::RemoveGameobjectsByName(std::string name)
+{
+	bool deleted = false;
+
+	for (auto it = m_allGameObjects.begin(); it != m_allGameObjects.end(); it++)
+	{
+		if ((*it)->GetName() == name)
+		{
+			deleted = true;
+			it = m_allGameObjects.erase(it);
+		}
+	}
+
+	return deleted;
+}

@@ -1,9 +1,29 @@
 #pragma once
+#include <fstream>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <string>
 #include "FileUtils.h"
-#include "..\Scene\SceneManager.h"
-#include "..\Scene\Scene.h"
-#include "..\Core\Logger.h"
-#include "..\GameObject\Saveable.h"
+
+/*
+--------------------
+Format Information
+--------------------
+First line is time/date of save
+----------
+ObjectType (Player, Pumpkin, etc)
+PosX
+PosY
+PosZ
+RotX
+RotY
+RotZ
+Health (Living objects)
+Ammo (Player)
+end
+----------
+*/
 
 static class SaveGameManager
 {
@@ -12,7 +32,9 @@ public:
 	static void LoadGame();
 	static void Dump();
 
-private:
+	static bool loadWhenPossible;
 
+private:
+	static std::string GetCurrentTime();
 };
 

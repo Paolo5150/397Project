@@ -18,7 +18,7 @@ unsigned Spider::totalSpiders = 0;
 unsigned Spider::totalSpidersKilled = 0;
 
 
-Spider::Spider() : GameObject("Spider")
+Spider::Spider() : GameObject("Spider"), Saveable()
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
@@ -38,7 +38,7 @@ Spider::Spider() : GameObject("Spider")
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
-Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
+Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider"), Saveable()
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
@@ -60,7 +60,7 @@ Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
-Spider::Spider(Transform& g) : GameObject("Spider")
+Spider::Spider(Transform& g) : GameObject("Spider"), Saveable()
 {
 
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
@@ -81,7 +81,7 @@ Spider::Spider(Transform& g) : GameObject("Spider")
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
-Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("Spider")
+Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("Spider"), Saveable()
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
@@ -107,7 +107,7 @@ Spider::~Spider()
 {
 	totalSpiders--;
 	totalSpidersKilled++;
-
+	EventDispatcher::Instance().UnsubscribeCallback<EnemySpottedEvent>(_enemySpottedEventID);
 }
 
 
@@ -260,6 +260,21 @@ void Spider::Update()
 	}
 	else
 		underwaterTimer = 0;
+}
+
+std::string Spider::Save()
+{
+	std::ostringstream ss;
+	ss << "Spider" << "\n"
+		<< transform.GetPosition().x << "\n"
+		<< transform.GetPosition().y << "\n"
+		<< transform.GetPosition().z << "\n"
+		<< transform.GetRotation().x << "\n"
+		<< transform.GetRotation().y << "\n"
+		<< transform.GetRotation().z << "\n"
+		<< healthComponent->GetCurrentHealth() << "\n"
+		<< "end" << "\n";
+	return (ss.str());
 }
 
 bool Spider::EnemySpotted(Event* e)

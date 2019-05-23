@@ -10,7 +10,7 @@
 Create("Player", 3428, -9999, 3341, 0, 50, 0);
 
 waterScaleX, waterScaleY, waterScaleZ = 10000, 10000, 1;
-Create("Water", -9999, 750, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
+--Create("Water", -9999, 750, -9999, -90, 0, 0, waterScaleX, waterScaleY, waterScaleZ);
 
 
 --Crates next to ship

@@ -80,7 +80,22 @@ void MainMenuScene::Initialize() {
 
 	loadButton = (new GUIButton("menuLoadButton", "Load Game", [&]{
 
-		//Load Game Here
+		Input::SetCursorMode("disabled");
+		//GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+		//loadingImage->isActive = 1;
+		startButton->isActive = 0;
+		gameLogo->isActive = 0;
+		gameTitle->isActive = 0;
+		loadButton->isActive = 0;
+		manualButton->isActive = 0;
+		quitButton->isActive = 0;
+		loadingText->isActive = 1;
+
+		GUIManager::Instance().RenderNoButtonCallbacks();
+
+		SaveGameManager::loadWhenPossible = true;
+		SceneManager::Instance().LoadNewScene("MainScene");
+
 	}, "", 1.5, 10, 10, 20, 35, 0, 0, 0, 1));
 
 	manualButton = (new GUIButton("menuManualButton", "Game Manual", [&]{

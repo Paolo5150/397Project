@@ -127,8 +127,8 @@ void Player::Start()
 	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
 	gunCam->AddChild(gn);
 
-	healhComponent = new HealthComponent(100, 100);
-	AddComponent(healhComponent);
+	healthComponent = new HealthComponent(100, 100);
+	AddComponent(healthComponent);
 
 }
 
@@ -184,7 +184,7 @@ void Player::Update()
 		underwaterTimer += Timer::GetDeltaS();
 
 		if (underwaterTimer > 3)
-			healhComponent->AddToHealth(Timer::GetDeltaS() * -3);
+			healthComponent->AddToHealth(Timer::GetDeltaS() * -3);
 	}
 	else
 		underwaterTimer = 0;
@@ -300,8 +300,18 @@ void Player::UpdateControls()
 std::string Player::Save()
 {
 	std::ostringstream ss;
-	ss << transform.GetPosition().x << " " << transform.GetPosition().y << " " << transform.GetPosition().z;
-	return ((std::string)(ss.str()));
+	ss << "Player" << "\n"
+		<< transform.GetPosition().x << "\n"
+		<< transform.GetPosition().y << "\n"
+		<< transform.GetPosition().z << "\n"
+		<< transform.GetRotation().x << "\n"
+		<< transform.GetRotation().y << "\n"
+		<< transform.GetRotation().z << "\n"
+		<< healthComponent->GetCurrentHealth() << "\n"
+		<< (int)hasGun << "\n"
+		<< ammoCounter << "\n"
+		<< "end" << "\n";
+	return (ss.str());
 }
 
 void Player::LateUpdate()
@@ -330,4 +340,11 @@ float Player::GetMovementSpeed() const
 float Player::GetRotationSpeed() const
 {
 	return _rotationSpeed;
+}
+
+void Player::SetRotation(float x, float y, float z)
+{
+	transform.SetRotation(x, y, z);
+	mainCamera->transform.SetRotation(x, y, z);
+	gunCam->transform.SetRotation(x, y, z);
 }

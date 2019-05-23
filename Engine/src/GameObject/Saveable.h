@@ -1,4 +1,5 @@
-#include <iostream>
+#pragma once
+#include <string>
 #include <list>
 
 class Saveable
@@ -8,7 +9,7 @@ public:
 	~Saveable();
 	virtual std::string Save() = 0;
 
-	static std::list<Saveable*> GetSaveableObects();
+	static std::list<Saveable*>& GetSaveableObects();
 
 private:
 	static std::list<Saveable*> _saveableObjects;
