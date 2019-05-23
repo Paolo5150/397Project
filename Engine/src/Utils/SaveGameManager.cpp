@@ -3,15 +3,16 @@
 #include "..\Scene\Scene.h"
 #include "..\Core\Logger.h"
 #include "..\GameObject\Saveable.h"
+#include "..\Prefabs\Hive.h"
 #include "..\Prefabs\Player.h"
 #include "..\Prefabs\Spider.h"
 #include "..\Components\AIBase.h"
 
-void SaveGameManager::SaveGame()
+void SaveGameManager::SaveGame(std::string filePath)
 {
-	Logger::LogInfo("Saving game to \"user/saves/save.dat\"");
+	Logger::LogInfo("Saving game to \"", filePath, "\"");
 	std::ofstream file;
-	file.open("user/saves/save.dat");
+	file.open(filePath);
 
 	file << GetCurrentTime() << "\n";
 	for (std::list<Saveable*>::const_iterator it = Saveable::GetSaveableObects().begin(); it != Saveable::GetSaveableObects().end(); it++)
@@ -21,22 +22,25 @@ void SaveGameManager::SaveGame()
 	file.close();
 }
 
-void SaveGameManager::LoadGame()
+void SaveGameManager::LoadGame(std::string filePath)
 {
-	if (FileUtils::IsFileThere("user/saves/save.dat"))
+	if (FileUtils::IsFileThere(filePath))
 	{
-		Logger::LogInfo("Save file found, loading...");
+		Logger::LogInfo("Save file found, loading \"", filePath, "\"...");
 
 		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Player");
 		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Spider");
-		std::ifstream inputFile("user/saves/save.dat");
+		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Hive");
+		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("MainCamera");
+		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Camera_Perspective");
+		std::ifstream inputFile(filePath);
 		std::string line;
 		std::getline(inputFile, line, '\n'); //Throw away time/date, can use this later for saves if required
+		Logger::LogInfo("Save file originally created at: ", line);
 
 		bool inObject = false; //True when 'inside' the variables for an object
 		std::string objectType = "";
-		GameObject* obj = nullptr;
-		GameObject* player = nullptr;
+		Player* player = nullptr;
 		while (std::getline(inputFile, line, '\n'))
 		{
 			if (inObject)
@@ -44,81 +48,102 @@ void SaveGameManager::LoadGame()
 				if (line == "end")
 				{
 					inObject = false;
-					break;
-				}
-
-				if (objectType == "Player")
-				{
-					obj = new Player();
-					obj->Start();
-					player = obj;
-				}
-				else if (objectType == "Spider")
-				{
-					obj = new Spider();
 				}
 				else
 				{
-					return;
-				}
-
-				float x = stof(line);
-
-				std::getline(inputFile, line, '\n');
-				float y = stof(line);
-
-				std::getline(inputFile, line, '\n');
-				float z = stof(line);
-
-				std::getline(inputFile, line, '\n');
-				float rotX = stof(line);
-
-				std::getline(inputFile, line, '\n');
-				float rotY = stof(line);
-
-				std::getline(inputFile, line, '\n');
-				float rotZ = stof(line);
-
-				float health;
-				if (objectType == "Player" || objectType == "Spider")
-				{
-					std::getline(inputFile, line, '\n');
-					health = stof(line);
-				}
-
-				if (objectType == "Player")
-				{
-					std::getline(inputFile, line, '\n');
-					bool hasGun = bool(stoi(line));
-
-					std::getline(inputFile, line, '\n');
-					float ammo = stof(line);
-
-					if (hasGun)
+					if (objectType == "Player")
 					{
-						SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("GranadeLauncher");
-						((Player*)obj)->gn->SetActive(1);
-						((Player*)obj)->gn->boxCollider->SetActive(0);
-						((Player*)obj)->gn->pointLight->SetActive(0);
-						((Player*)obj)->hasGun = true;
-						((Player*)obj)->ammoCounter = ammo;
-						((Player*)obj)->healthComponent->AddToHealth(-(((Player*)obj)->healthComponent->GetMaxHealth() - health));
+						Player* obj = (Player*)GameAssetFactory::Instance().Create("Player");
+						obj->Start();
+
+						float x = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float y = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float z = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float health = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						bool hasGun = (bool)stoi(line);
+
+						std::getline(inputFile, line, '\n');
+						float ammo = stof(line);
+
+						if (hasGun)
+						{
+							SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("GranadeLauncher");
+							obj->gn->SetActive(1);
+							obj->gn->boxCollider->SetActive(0);
+							obj->gn->pointLight->SetActive(0);
+							obj->hasGun = true;
+						}
+						obj->transform.SetPosition(x, y, z);
+						//obj->SetRotation(rotX, rotY, rotZ);
+						obj->ammoCounter = ammo;
+						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
+
+						Logger::LogInfo("Added Player from save");
+						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
+						player = obj;
 					}
-					((Player*)obj)->SetRotation(rotX, rotY, rotZ);
-				}
-				else if (objectType == "Spider")
-				{
-					Spider* obj = new Spider();
-					((Spider*)obj)->aiBase->SetTarget(player->transform);
-					((Spider*)obj)->transform.SetRotation(rotX, rotY, rotZ);
-					((Spider*)obj)->healthComponent->AddToHealth(-(((Spider*)obj)->healthComponent->GetMaxHealth() - health));
-				}
+					else if (objectType == "Spider")
+					{
+						Spider* obj = (Spider*)GameAssetFactory::Instance().Create("Spider");
+						obj->Start();
 
+						float x = stof(line);
 
-				if (obj != nullptr)
-				{
-					obj->transform.SetPosition(x, y, z);
-					SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
+						std::getline(inputFile, line, '\n');
+						float y = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float z = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float health = stof(line);
+
+						obj->transform.SetPosition(x, y, z);
+						//obj->transform.SetRotation(rotX, rotY, rotZ);
+						obj->aiBase->SetTarget(player->transform);
+						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
+
+						Logger::LogInfo("Added Spider from save");
+						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
+					}
+					else if (objectType == "Hive")
+					{
+						Hive* obj = (Hive*)GameAssetFactory::Instance().Create("Hive");
+						obj->Start();
+
+						float x = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float y = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float z = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float health = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						int state = stoi(line);
+
+						obj->transform.SetPosition(x, y, z);
+						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
+						obj->SetState(state);
+
+						Logger::LogInfo("Added Hive from save");
+						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
+					}
+					else
+					{
+						return;
+					}
 				}
 			}
 			else
@@ -129,9 +154,10 @@ void SaveGameManager::LoadGame()
 					objectType = line;
 				}
 			}
-			inputFile.close();
-			SaveGameManager::loadWhenPossible = false;
 		}
+		inputFile.close();
+		//SaveGameManager::loadWhenPossible = false;
+		Logger::LogInfo("Save game loaded!");
 	}
 	else
 	{

@@ -304,9 +304,9 @@ std::string Player::Save()
 		<< transform.GetPosition().x << "\n"
 		<< transform.GetPosition().y << "\n"
 		<< transform.GetPosition().z << "\n"
-		<< transform.GetRotation().x << "\n"
-		<< transform.GetRotation().y << "\n"
-		<< transform.GetRotation().z << "\n"
+		//<< transform.GetRotation().x << "\n"
+		//<< transform.GetRotation().y << "\n"
+		//<< transform.GetRotation().z << "\n"
 		<< healthComponent->GetCurrentHealth() << "\n"
 		<< (int)hasGun << "\n"
 		<< ammoCounter << "\n"
@@ -340,11 +340,4 @@ float Player::GetMovementSpeed() const
 float Player::GetRotationSpeed() const
 {
 	return _rotationSpeed;
-}
-
-void Player::SetRotation(float x, float y, float z)
-{
-	transform.SetRotation(x, y, z);
-	mainCamera->transform.SetRotation(x, y, z);
-	gunCam->transform.SetRotation(x, y, z);
 }

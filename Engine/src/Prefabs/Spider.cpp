@@ -269,9 +269,9 @@ std::string Spider::Save()
 		<< transform.GetPosition().x << "\n"
 		<< transform.GetPosition().y << "\n"
 		<< transform.GetPosition().z << "\n"
-		<< transform.GetRotation().x << "\n"
-		<< transform.GetRotation().y << "\n"
-		<< transform.GetRotation().z << "\n"
+		//<< transform.GetRotation().x << "\n"
+		//<< transform.GetRotation().y << "\n"
+		//<< transform.GetRotation().z << "\n"
 		<< healthComponent->GetCurrentHealth() << "\n"
 		<< "end" << "\n";
 	return (ss.str());

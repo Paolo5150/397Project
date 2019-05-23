@@ -110,29 +110,29 @@ void MainScene::Initialize() {
 
 	// HUD elements
 	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont", 1, 85, 5, 1, 1, 1, 1);
-	spidersLeftText = new GUIText("spiderLeftText", "", "invasionFont", 1, 80,10, 1, 1, 1, 1);
+	spidersLeftText = new GUIText("spiderLeftText", "", "invasionFont", 1, 80, 10, 1, 1, 1, 1);
 	hivesLeftText = new GUIText("hivesLeftText", "", "invasionFont", 1, 80, 13, 1, 1, 1, 1);
 
 	spidersKilledText = new GUIText("spidersKilledText", "", "invasionFont", 2, 35, 20, 1, 1, 1, 1);
 	pumpkinsShotText = new GUIText("pumpkinsShotText", "", "invasionFont", 2, 35, 30, 1, 1, 1, 1);
 
-	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 80,3, 7, 7, 1);
+	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 80, 3, 7, 7, 1);
 	endGameText = new GUIText("EndGameText", "", "invasionFont", 2, 35, 10, 1, 1, 1, 1);
 	endGameText->isActive = 0;
 
-	resumeButton = (new GUIButton("ResumeButton", "Resume", [&]{
+	resumeButton = (new GUIButton("ResumeButton", "Resume", [&] {
 
 		Resume();
 
 	}, "", 1.5, 10, 10, 45, 15, 1, 1, 1, 1));
 
-	saveButton = (new GUIButton("SaveButton", "Save", [&]{		
+	saveButton = (new GUIButton("SaveButton", "Save", [&] {
 
 		SaveGameManager::SaveGame();
 
 	}, "", 1.5, 10, 10, 45, 30, 1, 1, 1, 1));
 
-	restartButton = (new GUIButton("RestartButton", "Restart", [&]{
+	restartButton = (new GUIButton("RestartButton", "Restart", [&] {
 
 		Input::SetCursorMode("disabled");
 		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
@@ -140,14 +140,14 @@ void MainScene::Initialize() {
 
 	}, "", 1.5, 10, 10, 45, 45, 1, 1, 1, 1));
 
-	quitToMenuButton = (new GUIButton("QuitToMenuButton", "Menu", [&]{
+	quitToMenuButton = (new GUIButton("QuitToMenuButton", "Menu", [&] {
 
 		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
 		SceneManager::Instance().LoadNewScene("MainMenuScene");
 
 	}, "", 1.5, 10, 10, 45, 60, 1, 1, 1, 1));
 
-	quitToDesktopButton = (new GUIButton("QuitButton", "Quit", [&]{
+	quitToDesktopButton = (new GUIButton("QuitButton", "Quit", [&] {
 
 		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
 		SceneManager::Instance().LoadNewScene("ExitScene");
@@ -198,15 +198,28 @@ void MainScene::Initialize() {
 	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
 		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
-	//GameObjects
+		//GameObjects
 	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
-		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player (Warning: Player must be created before any AI)
+		if (SaveGameManager::loadWhenPossible == true && (obj->GetName() == "Player" || obj->GetName() == "Spider" || obj->GetName() == "Hive"))
 		{
-			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").at(0))->transform);
+			Lua::RemoveCreatedAsset(i);
 		}
-		AddGameObject(obj);
+		else
+		{
+			Logger::LogInfo("Adding ", obj->GetName());
+			if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player (Warning: Player must be created before any AI)
+			{
+				((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").at(0))->transform);
+			}
+			AddGameObject(obj);
+		}
+	}
+
+	if (SaveGameManager::loadWhenPossible == true)
+	{
+		SaveGameManager::LoadGame();
 	}
 
 	player = ((Player*)GetGameobjectsByName("Player").at(0));
@@ -220,9 +233,10 @@ void MainScene::Initialize() {
 	AddGameObject(&Terrain::Instance());
 
 	Lua::CloseLua();
+	SaveGameManager::loadWhenPossible = false;
 
 	//Randomly spawn the gun
-	
+
 	Player::ResetTotalPumpkinShots();
 	Spider::ResetTotalSpidersKilled();
 	currentSceneState = PLAYING;
@@ -241,20 +255,18 @@ void MainScene::Start()
 
 	RenderingEngine::godRays = 1;
 	// Place gun
-	glm::vec3 gunPos = PathFinder::Instance().GetRandomFreeNodePosition();
-	GranadeLauncher* gn = new GranadeLauncher();
-	gn->Start();
-	gn->SetLayer(0);
-	gn->spin = 1;
-	gn->SetLayer(Layers::DEFAULT);
-	gn->boxCollider->transform.SetScale(100, 100, 180);	
-	gn->transform.SetScale(0.1, 0.1, 0.1);
-	gn->transform.SetPosition(gunPos + glm::vec3(0,50,0));
-	AddGameObject(gn);
-
-	if (SaveGameManager::loadWhenPossible == true)
+	if (player->hasGun == false)
 	{
-		SaveGameManager::LoadGame();
+		glm::vec3 gunPos = PathFinder::Instance().GetRandomFreeNodePosition();
+		GranadeLauncher* gn = new GranadeLauncher();
+		gn->Start();
+		gn->SetLayer(0);
+		gn->spin = 1;
+		gn->SetLayer(Layers::DEFAULT);
+		gn->boxCollider->transform.SetScale(100, 100, 180);
+		gn->transform.SetScale(0.1, 0.1, 0.1);
+		gn->transform.SetPosition(gunPos + glm::vec3(0, 50, 0));
+		AddGameObject(gn);
 	}
 
 	Input::SetIsEnabled(1);
@@ -315,15 +327,26 @@ void MainScene::LogicUpdate()
 		{
 			SaveGameManager::Dump();
 		}
+
+		if (Input::GetKeyPressed(GLFW_KEY_F3))
+		{
+			((Spider*)GetGameobjectsByName("Spider").at(0))->aiBase->DumpVariables();
+		}
+
+		if (Input::GetKeyPressed(GLFW_KEY_F4))
+		{
+			std::vector<GameObject*> vec = GetGameobjectsByName("Camera_Perspective");
+			Logger::LogInfo("");
+		}
 	}
 	else if (currentSceneState == PAUSE)
-	{		
+	{
 
 		if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		{
 			Resume();
 		}
-			
+
 	}
 	else if (currentSceneState == WIN)
 	{
@@ -332,7 +355,7 @@ void MainScene::LogicUpdate()
 	}
 	else if (currentSceneState == GAMEOVER)
 	{
-	
+
 		endGameText->_message = "YOU'RE DEAD!";
 		DisplayEndGameMenu();
 
@@ -344,7 +367,7 @@ void MainScene::DisplayPauseMenu()
 	Input::SetCursorMode("normal");
 	restartButton->isActive = 1;
 	saveButton->isActive = 1;
-	quitToDesktopButton->isActive =1;
+	quitToDesktopButton->isActive = 1;
 	quitToMenuButton->isActive = 1;
 	resumeButton->isActive = 1;
 }

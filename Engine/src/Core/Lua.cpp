@@ -145,6 +145,36 @@ void Lua::AddCreatedAsset(InternalAsset* asset)
 	createdAssetsLength++; //Increase the length count by one
 }
 
+void Lua::RemoveCreatedAsset(unsigned int index)
+{
+	if (index < GetCreatedAssetLength())
+	{
+		InternalAsset** tempArray = new InternalAsset*[createdAssetsLength]; //Create a temp array to copy the createdasset array to
+		for (int i = 0; i < createdAssetsLength; i++) //Copy all of the created assets to the temp array
+		{
+			tempArray[i] = createdAssets[i];
+		}
+		delete[] createdAssets;
+		createdAssets = new InternalAsset*[createdAssetsLength - 1]; //Create a new array, one element smaller than the previous array
+		int addedIndex = 0;
+		for (int i = 0; i < createdAssetsLength; i++) //Copy all the elements back in, minus the removed one
+		{
+			if (i != index)
+			{
+				createdAssets[addedIndex] = tempArray[i];
+				addedIndex++;
+			}
+		}
+		delete[] tempArray; //Delete the temp array
+
+		createdAssetsLength--; //Decrease the length count by one
+	}
+	else
+	{
+		Logger::LogWarning("Lua::RemoveCreatedAsset: Index out of bounds!");
+	}
+}
+
 int Lua::GetCreatedAssetLength()
 {
 	return createdAssetsLength;

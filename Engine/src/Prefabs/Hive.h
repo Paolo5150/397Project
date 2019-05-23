@@ -1,9 +1,12 @@
 #pragma once
+#include<string>
+
 #include "..\GameObject\GameObject.h"
+#include "..\GameObject\Saveable.h"
 #include "..\Utils\AssetLoader.h"
 #include "..\Components\HealthComponent.h"
 
-class Hive : public GameObject
+class Hive : public GameObject, public Saveable
 {
 public:
 	Hive();
@@ -24,8 +27,10 @@ public:
 
 	void Update() override;
 
+	std::string Save() override;
 	
 	static unsigned int totalHives;
+	HealthComponent* healthComponent;
 private:
 	float colorTimer;
 	bool redFlashing;
@@ -33,5 +38,4 @@ private:
 	int _lastSpawnedSpider;
 	unsigned int _currentState;
 	unsigned int _maxSpiders;
-	HealthComponent* healtthComponent;
 };

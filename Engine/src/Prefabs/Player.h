@@ -60,8 +60,6 @@ public:
 	*/
 	float GetRotationSpeed() const;
 
-	void SetRotation(float x, float y, float z);
-
 	BoxCollider* boxCollider;
 	BoxCollider* pickupCollider;
 

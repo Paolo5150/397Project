@@ -4,7 +4,9 @@
 #include <ctime>
 #include <iomanip>
 #include <string>
+
 #include "FileUtils.h"
+#include "GameAssetFactory.h"
 
 /*
 --------------------
@@ -28,8 +30,8 @@ end
 static class SaveGameManager
 {
 public:
-	static void SaveGame();
-	static void LoadGame();
+	static void SaveGame(std::string filePath = "user/saves/save.dat");
+	static void LoadGame(std::string filePath = "user/saves/save.dat");
 	static void Dump();
 
 	static bool loadWhenPossible;

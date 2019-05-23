@@ -55,6 +55,8 @@ public:
 
 	virtual void OnAttach(GameObject* go) override;
 
+	void DumpVariables();
+
 private:
 	std::string _state;
 	Transform* _parentTransform;
