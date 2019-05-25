@@ -16,7 +16,7 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 	SetParent(parent);
 	SetIsSelfManaged(false, true);
 	SetIsStatic(0);
-
+	flashing = 0;
 }
 
 GameObject::~GameObject()
@@ -139,6 +139,14 @@ void GameObject::SetParent(GameObject *parent)
 		_parent = parent;
 	}
 }
+
+void GameObject::FlashColor(float r, float g, float b)
+{
+	ApplyColor(r,g,b);
+	colorTimer = 0.1f;
+	flashing = 1;
+}
+
 
 std::string GameObject::GetName() const
 {
@@ -286,6 +294,13 @@ void GameObject::Update()
 	if (Timer::GetTickCount() <= 1 || !_isStatic)
 	{
 		transform.Update();
+	}
+
+	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
+	if (colorTimer == 0 && flashing)
+	{
+		ApplyColor(1, 1, 1);
+		flashing = 0;
 	}
 
 	auto it = _children.begin();

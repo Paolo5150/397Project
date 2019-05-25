@@ -166,9 +166,7 @@ void Spider::Start()
 			{
 				healthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
 
-				ApplyColor(0.8, 0.0, 0.0);
-				colorTimer = 0.1f;
-				redFlashing = 1;
+				FlashColor(1, 0, 0);
 				if (healthComponent->IsDead())
 				{
 					pumpkinCollider->SetActive(0);
@@ -191,15 +189,10 @@ void Spider::Start()
 
 void Spider::Update()
 {
-	return;
+
 	GameObject::Update(); //call base Update
 
-	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
-	if (colorTimer == 0 && redFlashing)
-	{
-		ApplyColor(1, 1, 1);
-		redFlashing = 0;
-	}
+
 
 	if (((AIBase*)GetComponent<AIBase>("AIBase"))->GetState() == "Slow")
 		((AIBase*)GetComponent<AIBase>("AIBase"))->SetState(""); //Lets the ai pick a state again

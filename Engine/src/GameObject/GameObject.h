@@ -352,6 +352,7 @@ public:
 	*/
 	virtual void Update();
 
+	void FlashColor(float r, float g, float b);
 
 	virtual void Start(){};
 
@@ -446,6 +447,9 @@ public:
 	virtual void OnAddToScene(Scene& theScene);
 
 protected:
+	float colorTimer;
+	bool flashing;
+
 	/**
 	* @param The name of the object
 	*/

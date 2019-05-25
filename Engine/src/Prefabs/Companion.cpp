@@ -23,7 +23,7 @@ Companion::Companion() : GameObject("Companion")
 	healthComponent = new HealthComponent(100, 100);
 	transform.SetScale(0.05, 0.05, 0.05);
 	AddComponent(healthComponent);
-
+	attackDamage = 15;
 	walkSpeed = 550;
 	runSpeed = 800;
 	currentSpeed = walkSpeed;
@@ -102,10 +102,11 @@ void Companion::Attack()
 
 	if (hc != nullptr)
 	{
-		if (timer > 0.8f)
+		if (timer > 1.0f)
 		{
 			timer = 0;
 			hc->AddToHealth(-100);
+			target->FlashColor(1, 0, 0);
 		}
 	}
 	else
@@ -158,8 +159,6 @@ void Companion::FollowPlayer()
 	glm::vec3 toPlayer = glm::vec3(playerRef->transform.GetPosition().x, transform.GetPosition().y, playerRef->transform.GetPosition().z) - transform.GetPosition();
 	if (glm::length(toPlayer) < 250)
 		currentState = IDLE_STATE;
-
-
 }
 
 void Companion::GoToTarget()

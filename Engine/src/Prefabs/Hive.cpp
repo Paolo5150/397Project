@@ -117,9 +117,8 @@ void Hive::Start()
 		{
 			go->FlagToBeDestroyed();
 			healtthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
-			ApplyColor(0.8, 0.0, 0.0);
-			colorTimer = 0.1f;
-			redFlashing = 1;
+			FlashColor(1, 0, 0);
+
 		}
 	};
 	SetState(0);
@@ -127,12 +126,8 @@ void Hive::Start()
 
 void Hive::Update()
 {
-	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
-	if (colorTimer == 0 && redFlashing)
-	{
-		ApplyColor(1, 1, 1);
-		redFlashing = 0;
-	}
+	GameObject::Update();
+	
 
 	if (healtthComponent->GetHealthMaxRatio() < 0.7 && healtthComponent->GetHealthMaxRatio() > 0.4)
 		SetState(1);
