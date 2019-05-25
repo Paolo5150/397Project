@@ -84,7 +84,12 @@ void Companion::Attack()
 	{
 		currentState = FOLLOW_STATE;
 	}
+
 	glm::vec3 toTarg = glm::vec3(target->transform.GetPosition().x, transform.GetPosition().y, target->transform.GetPosition().z) - transform.GetPosition();
+
+
+	if (glm::length(toTarg) > 240)
+		currentState = CHARGE_STATE;
 
 	float yAngle = glm::angle(transform.GetLocalFront(), glm::normalize(toTarg));
 	glm::vec3 cross = glm::cross(transform.GetLocalFront(), glm::normalize(toTarg));
@@ -105,15 +110,12 @@ void Companion::Attack()
 		if (timer > 1.0f)
 		{
 			timer = 0;
-			hc->AddToHealth(-100);
+			hc->AddToHealth(-attackDamage);
 			target->FlashColor(1, 0, 0);
 		}
 	}
 	else
 		currentState = FOLLOW_STATE;
-
-
-
 
 	if (Input::GetKeyPressed(GLFW_KEY_E))
 	{
@@ -131,7 +133,7 @@ void Companion::Charge()
 
 	currentSpeed = runSpeed;
 	glm::vec3 toPlayer = glm::vec3(target->transform.GetPosition().x, transform.GetPosition().y, target->transform.GetPosition().z) - transform.GetPosition();
-	if (glm::length(toPlayer) < 220)
+	if (glm::length(toPlayer) < 240)
 		currentState = ATTACK_STATE;
 	
 	GoToTarget();

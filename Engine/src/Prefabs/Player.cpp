@@ -4,6 +4,7 @@
 #include "Companion.h"
 #include "Terrain.h"
 #include "Pumpkin.h"
+#include "Targeter.h"
 
 namespace {
 
@@ -143,11 +144,7 @@ void Player::Update()
 	_intendedDir.y = 0;
 	_intendedDir.z = 0;
 
-	if (Input::GetMouseDown(1))
-	{
-		GameObject* hive = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Hive")[0];
-		companion->SetTarget(hive);
-	}
+
 
 
 
@@ -168,6 +165,21 @@ void Player::Update()
 			ammoCounter--;
 			totalPumpkinsShot++;
 
+		}
+	}
+	else if (Input::GetMouseDown(1))
+	{
+		shootTimer += Timer::GetDeltaS();
+
+		if (shootTimer >= SHOOT_RATE)
+		{
+			shootTimer = 0;
+
+			Targeter* pump = new Targeter();
+			pump->transform.SetPosition(transform.GetPosition() + transform.GetLocalFront() * 80.0f - transform.GetLocalUp() * 10.0f);
+			pump->Start();
+			pump->shootDirection = transform.GetLocalFront();
+			SceneManager::Instance().GetCurrentScene().AddGameObject(pump);
 		}
 	}
 	else

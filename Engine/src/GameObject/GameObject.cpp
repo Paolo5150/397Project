@@ -46,7 +46,7 @@ void GameObject::SetName(std::string name)
 
 void GameObject::FlagToBeDestroyed()
 {
-	SetActive(false);
+//	SetActive(false);
 	_toBeDestroyed = true;
 
 	for (auto it = std::begin(_children); it != std::end(_children); it++)

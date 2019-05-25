@@ -52,7 +52,7 @@ private:
 	void FollowPlayer();
 	void Charge();
 	void GoToTarget();
-
+	float attackDamage;
 	float walkSpeed;
 	float runSpeed;
 	float currentSpeed;

@@ -6,6 +6,7 @@
 
 class AIBase;
 class HealthComponent;
+class BoxCollider;
 
 class Spider : public GameObject
 {
@@ -43,6 +44,8 @@ private:
 	float deathTimer;
 	HealthComponent* healthComponent;
 	std::string _enemySpottedEventID;
+	BoxCollider* pumpkinCollider;
+	BoxCollider* slowCollider;
 
 	bool EnemySpotted(Event* e);
 };

@@ -81,6 +81,7 @@
     <ClCompile Include="src\Prefabs\Tree.cpp" />
     <ClCompile Include="src\Prefabs\PumpkinBunch.cpp" />
     <ClCompile Include="src\Prefabs\Companion.cpp" />
+    <ClCompile Include="src\Prefabs\Targeter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\LuaRegistry.h" />
@@ -195,5 +196,6 @@
     <ClInclude Include="src\Prefabs\PumpkinBunch.h" />
     <ClInclude Include="src\Event\AIEvents.h" />
     <ClInclude Include="src\Prefabs\Companion.h" />
+    <ClInclude Include="src\Prefabs\Targeter.h" />
   </ItemGroup>
 </Project>

@@ -127,7 +127,7 @@ void Spider::Start()
 	GameObject::Start();
 	totalSpiders++;
 	
-	BoxCollider* slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
+	slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
 	slowCollider->ResetCollisionLayer();
 	slowCollider->AddCollisionLayer(CollisionLayers::SPIDER);
 	slowCollider->ResetCollideAgainstLayer();
@@ -146,7 +146,7 @@ void Spider::Start()
 		}
 	};
 
-	BoxCollider* pumpkinCollider = new BoxCollider(); //Used for when a pumpkin bullet hits the spider
+	pumpkinCollider = new BoxCollider(); //Used for when a pumpkin bullet hits the spider
 	pumpkinCollider->ResetCollisionLayer();
 	pumpkinCollider->AddCollisionLayer(CollisionLayers::ENEMY);
 	pumpkinCollider->ResetCollideAgainstLayer();
@@ -156,7 +156,7 @@ void Spider::Start()
 	pumpkinCollider->transform.SetPosition(0, 35, 0);
 	AddComponent(pumpkinCollider);
 
-	pumpkinCollider->collisionCallback = [this,pumpkinCollider,slowCollider](GameObject* go) {
+	pumpkinCollider->collisionCallback = [this](GameObject* go) {
 
 
 		if (go->GetName() == "Pumpkin")
@@ -167,16 +167,7 @@ void Spider::Start()
 				healthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
 
 				FlashColor(1, 0, 0);
-				if (healthComponent->IsDead())
-				{
-					pumpkinCollider->SetActive(0);
-					slowCollider->SetActive(0);
-
-					GetComponent<Animator>("Animator")->SetCurrentAnimation(1, false);
-					aiBase->SetActive(false);
-					aiBase->SetState("Dead");
-					deathTimer = Timer::GetTimeS();
-				}
+				
 
 				go->FlagToBeDestroyed();
 			}
@@ -192,6 +183,16 @@ void Spider::Update()
 
 	GameObject::Update(); //call base Update
 
+	if (healthComponent->IsDead() && aiBase->GetState() != "Dead")
+	{
+		pumpkinCollider->SetActive(0);
+		slowCollider->SetActive(0);
+
+		GetComponent<Animator>("Animator")->SetCurrentAnimation(1, false);
+		aiBase->SetActive(false);
+		aiBase->SetState("Dead");
+		deathTimer = Timer::GetTimeS();
+	}
 
 
 	if (((AIBase*)GetComponent<AIBase>("AIBase"))->GetState() == "Slow")

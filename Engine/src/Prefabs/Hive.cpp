@@ -103,14 +103,18 @@ void Hive::Start()
 	BoxCollider* sc = new BoxCollider();
 	sc->ResetCollisionLayer();
 	sc->AddCollisionLayer(CollisionLayers::OBSTACLE);
+
 	sc->ResetCollideAgainstLayer();
 	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
 	sc->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
+
+
 	//sc->enableRender = 1;
 	sc->transform.SetScale(0.6, 0.6, 0.6);
 	sc->transform.SetPosition(0, 0.6, 0);
 	AddComponent(sc);
 
+	// Callback needs to be specified after adding the component
 	sc->collisionCallback = [this](GameObject* go)
 	{
 		if (go->GetName() == "Pumpkin")
