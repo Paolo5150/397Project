@@ -54,9 +54,10 @@ GameObject* AnimatedModel::CreateGameObject()
 	GameObject* e = new GameObject(name);
 	Animator* anim = (Animator*)e->AddComponent(new Animator(this));
 
+	
 	for (int i = 0; i < allMeshes.size(); i++)
 	{
-
+		
 		GameObject* c = new GameObject(meshesNames[i]);
 
 		MeshRenderer* mr = new MeshRenderer(&allMeshes[i], allMaterials[i]); //Default material
@@ -75,6 +76,7 @@ void AnimatedModel::PopulateGameObject(GameObject* go)
 {
 	go->AddComponent(new Animator(this));
 	Animator* anim = (Animator*)go->GetComponent<Animator>("Animator");
+
 
 	for (int i = 0; i < allMeshes.size(); i++)
 	{

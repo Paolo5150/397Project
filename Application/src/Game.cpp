@@ -38,7 +38,7 @@ void Game::AppInitialize()
 	SceneManager::Instance().AddScene(new SimpleScene());
 
 	//Load first scene
-	SceneManager::Instance().LoadNewScene("MainMenuScene"); //Scene initialize is called here
+	SceneManager::Instance().LoadNewScene("SimpleScene"); //Scene initialize is called here
 
 
 	

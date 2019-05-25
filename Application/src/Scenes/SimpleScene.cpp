@@ -55,6 +55,8 @@ void SimpleScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx", false);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Alien\\alien.fbx",false);
+
 
 	AssetLoader::Instance().LoadTexture("Assets\\Models\\GranadeLauncher\\launcher.jpg");
 
@@ -109,34 +111,23 @@ void SimpleScene::Initialize() {
 	AddGameObject(player);	
 
 
-	crate = AssetLoader::Instance().GetAsset<Model>("GranadeLauncher")->CreateGameObject();
-	crate->transform.SetScale(0.01, 0.01, 0.01);
-	crate->transform.SetPosition(1, 15, 3);
-
-
+	crate = AssetLoader::Instance().GetAsset<Model>("Alien")->CreateGameObject();
+	crate->transform.SetScale(0.2, 0.2, 0.2);
+	crate->PrintHierarchy();
 
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
 
-	// Place gun
-	GranadeLauncher* gn = new GranadeLauncher();
-	gn->Start();
-	gn->SetLayer(0);
-	gn->spin = 1;
-	gn->SetLayer(Layers::DEFAULT);
-	//gn->boxCollider->transform.SetScale(100, 100, 180);
-	gn->transform.SetScale(0.1, 0.1, 0.1);
-	gn->transform.SetPosition(glm::vec3(x,y,z) + glm::vec3(0, 50, 0));
-	AddGameObject(gn);
+	
 	player->transform.SetPosition(glm::vec3(x, y, z) + glm::vec3(200, 50, 0));
 
 
-	crate->transform.SetPosition(0, 0, 5);
+	crate->transform.SetPosition(x,y,z);
 
 	
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
-	AddGameObject(gn);
+	AddGameObject(crate);
 
 	AddGameObject(&Terrain::Instance());
 
@@ -155,9 +146,18 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	
+	static int index = 0;
 
-	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
+	if (Input::GetKeyPressed(GLFW_KEY_X))
+		index++;
+
+	if (Input::GetKeyPressed(GLFW_KEY_Z))
+		index--;
+
+	crate->GetComponent<Animator>("Animator")->SetCurrentAnimation(index);
+
+
+	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
 		SceneManager::Instance().LoadNewScene("ExitScene");
 
 	Scene::LogicUpdate(); //Must be last statement!

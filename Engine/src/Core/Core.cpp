@@ -229,7 +229,6 @@ void Core::LoadBasicAssets()
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj",false,true);
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", false,true);
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", false,true);
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Tree\\tree.obj",true,true);
 
 
 }

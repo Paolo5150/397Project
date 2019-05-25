@@ -168,12 +168,12 @@ GameObject* GameObject::GetParent() const
 
 void GameObject::AddChild(GameObject* child)
 {
-	if (HasChild(child->GetName()) == false)
-	{
+	//if (HasChild(child->GetName()) == false)
+	//{
 		child->SetParent(this);
 		child->transform.parent = &transform;
 		_children.push_back(child);
-	}
+	//}
 }
 
 Component* GameObject::AddComponent(Component* component)
