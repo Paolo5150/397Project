@@ -25,16 +25,30 @@ public:
 		WALK = 12
 	};
 
+	enum STATE
+	{
+		FOLLOW_STATE = 500,
+		IDLE_STATE,
+		ATTACK_STATE,
+		DEAD_STATE
+	};
+
 	Companion();
 	~Companion();
 	void Start() override;
 	void Update() override;
 
-
+	STATE currentState;
 private:
 
 	GameObject* playerRef;
 	Animator* animator;
 	HealthComponent* healthComponent;
+
+	void Idle();
+	void FollowPlayer();
+
+
+	
 
 };
