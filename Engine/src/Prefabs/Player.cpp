@@ -238,9 +238,9 @@ void Player::UpdateControls()
 	}
 	else
 	{
-		transform.SetRotation(0, 0, 0);
-		mainCamera->transform.SetRotation(0, 0, 0);
-		gunCam->transform.SetRotation(0, 0, 0);
+	//	transform.SetRotation(0, 0, 0);
+		//mainCamera->transform.SetRotation(0, 0, 0);
+	//	gunCam->transform.SetRotation(0, 0, 0);
 	}
 
 

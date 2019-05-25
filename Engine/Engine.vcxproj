@@ -192,6 +192,7 @@
     <ClInclude Include="src\Components\HealthComponent.h" />
     <ClInclude Include="src\Event\AIEvents.h" />
     <ClInclude Include="src\GUI\GUIElements\GUIProgressBar.h" />
+    <ClInclude Include="src\Prefabs\Companion.h" />
     <ClInclude Include="src\Prefabs\GranadeLauncher.h" />
     <ClInclude Include="src\Prefabs\Hive.h" />
     <ClInclude Include="src\Prefabs\Player.h" />
@@ -302,6 +303,7 @@
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Prefabs\Companion.cpp" />
     <ClCompile Include="src\Prefabs\GranadeLauncher.cpp" />
     <ClCompile Include="src\Prefabs\Hive.cpp" />
     <ClCompile Include="src\Prefabs\Player.cpp" />

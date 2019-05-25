@@ -19,7 +19,7 @@
 #include "GUI\GUIElements\GUIImage.h"
 #include "GUI\GUIElements\GUIProgressBar.h"
 #include "GUI\GUIElements\GUIButton.h"
-
+#include "Prefabs\Companion.h"
 
 #include "Components\Animator.h"
 
@@ -61,6 +61,8 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx", false);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Alien\\alien.fbx", false);
+
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Tree\\tree.obj", true, false);
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
@@ -168,8 +170,6 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(spidersKilledText);
 	GUIManager::Instance().AddGUIObject(pumpkinsShotText);
 
-
-
 	GUIManager::Instance().AddGUIObject(restartButton);
 	GUIManager::Instance().AddGUIObject(saveButton);
 	GUIManager::Instance().AddGUIObject(quitToDesktopButton);
@@ -195,8 +195,8 @@ void MainScene::Initialize() {
 	dirLight2->SetIntensity(0.5f);
 
 	PathFinder::Instance().Generate(&Terrain::Instance());
-	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
-		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
+	for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
+		AddGameObject(PathFinder::Instance().pathNodes[i]);
 
 	//GameObjects
 	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
@@ -220,8 +220,11 @@ void MainScene::Initialize() {
 	AddGameObject(&Terrain::Instance());
 
 	Lua::CloseLua();
+	
+	Companion* comp = new Companion();
+	comp->transform.SetPosition(x, y, z);
+	AddGameObject(comp);
 
-	//Randomly spawn the gun
 	
 	Player::ResetTotalPumpkinShots();
 	Spider::ResetTotalSpidersKilled();

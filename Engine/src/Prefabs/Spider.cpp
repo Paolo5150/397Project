@@ -191,7 +191,7 @@ void Spider::Start()
 
 void Spider::Update()
 {
-
+	return;
 	GameObject::Update(); //call base Update
 
 	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
