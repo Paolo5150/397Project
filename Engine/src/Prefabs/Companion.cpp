@@ -56,13 +56,20 @@ void Companion::Update()
 		std::vector<glm::vec3> path = PathFinder::Instance().GeneratePath(transform.GetPosition(), playerRef->transform.GetPosition());
 		nextNode = path[0];
 
-		Logger::LogInfo("Dir", Maths::Vec3ToString(transform.GetPosition()));
+
 	}
 
 	glm::vec3  dir = glm::normalize(nextNode - transform.GetPosition()) * 400.0f * Timer::GetDeltaS();
 	next = transform.GetPosition() + dir;
-
 	transform.SetPosition(next);
+
+	glm::vec3 toTarget = glm::vec3(playerRef->transform.GetPosition().x, transform.GetPosition().y, playerRef->transform.GetPosition().z) - transform.GetPosition();
+	float yAngle = glm::angle(transform.GetLocalFront(), glm::normalize(toTarget));
+	glm::vec3 cross = glm::cross(transform.GetLocalFront(), glm::normalize(toTarget));
+
+	yAngle *= glm::sign(cross.y);
+
+	transform.RotateBy(glm::degrees(yAngle), 0, 1, 0);
 
 	float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
 	transform.SetPosition(transform.GetPosition().x,h,transform.GetPosition().z);
