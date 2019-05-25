@@ -83,10 +83,15 @@ void Companion::Attack()
 	if (target == nullptr)
 	{
 		currentState = FOLLOW_STATE;
-
-
 	}
+	glm::vec3 toTarg = glm::vec3(target->transform.GetPosition().x, transform.GetPosition().y, target->transform.GetPosition().z) - transform.GetPosition();
 
+	float yAngle = glm::angle(transform.GetLocalFront(), glm::normalize(toTarg));
+	glm::vec3 cross = glm::cross(transform.GetLocalFront(), glm::normalize(toTarg));
+
+	yAngle *= glm::sign(cross.y);
+	if (abs(yAngle) > 0.1)
+		transform.RotateBy(glm::degrees(yAngle), 0, 1, 0);
 	animator->SetCurrentAnimation(ANIMATION::ATTACK);
 
 	HealthComponent* hc = target->GetComponent<HealthComponent>("HealthComponent");
@@ -125,7 +130,7 @@ void Companion::Charge()
 
 	currentSpeed = runSpeed;
 	glm::vec3 toPlayer = glm::vec3(target->transform.GetPosition().x, transform.GetPosition().y, target->transform.GetPosition().z) - transform.GetPosition();
-	if (glm::length(toPlayer) < 250)
+	if (glm::length(toPlayer) < 220)
 		currentState = ATTACK_STATE;
 	
 	GoToTarget();
@@ -166,7 +171,7 @@ void Companion::GoToTarget()
 	timer += Timer::GetDeltaS();
 	
 
-	if (timer > 0.5f)
+	if (timer > 0.2f)
 	{
 
 		timer = 0;
@@ -174,7 +179,7 @@ void Companion::GoToTarget()
 		nextNode = path[0];
 
 	}
-	glm::vec3 toTarg = glm::vec3(target->transform.GetPosition().x, transform.GetPosition().y, target->transform.GetPosition().z) - transform.GetPosition();
+	glm::vec3 toTarg = glm::vec3(nextNode.x, transform.GetPosition().y, nextNode.z) - transform.GetPosition();
 
 	float yAngle = glm::angle(transform.GetLocalFront(), glm::normalize(toTarg));
 	glm::vec3 cross = glm::cross(transform.GetLocalFront(), glm::normalize(toTarg));
