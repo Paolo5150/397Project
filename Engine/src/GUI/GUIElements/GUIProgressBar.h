@@ -57,10 +57,9 @@ public:
 	{
 
 		ImGui::SetCursorPosX(pixelPosition.x);
-		ImGui::SetCursorPosY(pixelPosition.y);
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1, 0, 0, 1));
+		ImGui::SetCursorPosY(pixelPosition.y);		
 		ImGui::ProgressBar(percentage, ImVec2(pixelSize.x, pixelSize.y), message.c_str());
-		ImGui::PopStyleColor();
+		
 	}
 
 };
