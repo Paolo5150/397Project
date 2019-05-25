@@ -195,8 +195,8 @@ void MainScene::Initialize() {
 	dirLight2->SetIntensity(0.5f);
 
 	PathFinder::Instance().Generate(&Terrain::Instance());
-	for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
-		AddGameObject(PathFinder::Instance().pathNodes[i]);
+	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
+		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
 	//GameObjects
 	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
@@ -222,7 +222,7 @@ void MainScene::Initialize() {
 	Lua::CloseLua();
 	
 	Companion* comp = new Companion();
-	comp->transform.SetPosition(x, y, z);
+	comp->transform.SetPosition(player->transform.GetPosition());
 	AddGameObject(comp);
 
 	

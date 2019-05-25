@@ -247,8 +247,8 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 finis
 		if (shortest != nullptr)
 		{
 
-			shortest->sc->meshRenderer->GetMaterial().SetColor(1, 1, 1);
-			shortest->sc->enableRender = 1;
+			//shortest->sc->meshRenderer->GetMaterial().SetColor(1, 1, 1);
+			//shortest->sc->enableRender = 1;
 			path.push_back(shortest->transform.GetPosition());
 
 		}

@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "..\Scene\Scene.h"
 #include "..\Scene\SceneManager.h"
-
+#include "Companion.h"
 #include "Terrain.h"
 #include "Pumpkin.h"
 
@@ -66,6 +66,9 @@ void Player::Start()
 	//int x, y, z;
 	//Terrain::Instance().GetCenter(x, y, z);
 	//transform.SetPosition(x, y, z);
+
+	companion = dynamic_cast<Companion*>(SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Companion")[0]);	
+
 	transform.SetRotation(0, 0, 0);
 
 	boxCollider = new BoxCollider();
@@ -139,6 +142,15 @@ void Player::Update()
 	_intendedDir.x = 0;
 	_intendedDir.y = 0;
 	_intendedDir.z = 0;
+
+	if (Input::GetMouseDown(1))
+	{
+		GameObject* hive = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Hive")[0];
+		companion->SetTarget(hive);
+	}
+
+
+
 
 	//Logger::LogInfo(gn->transform.ToString());
 	if (Input::GetMouseDown(0) && ammoCounter > 0 && hasGun)

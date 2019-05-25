@@ -4,6 +4,7 @@
 #include "..\Core\MainCamera.h"
 #include "..\Components\HealthComponent.h"
 
+class Companion;
 
 class Player : public GameObject
 {
@@ -97,4 +98,6 @@ private:
 	static unsigned totalPumpkinsShot;
 
 	bool hasGun;
+
+	Companion* companion;
 };
