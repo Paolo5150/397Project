@@ -250,7 +250,7 @@ void MainScene::Start()
 	gn->SetLayer(0);
 	gn->spin = 1;
 	gn->SetLayer(Layers::DEFAULT);
-	gn->boxCollider->transform.SetScale(100, 100, 180);	
+	gn->GetCollider()->transform.SetScale(100, 100, 180);	
 	gn->transform.SetScale(0.1, 0.1, 0.1);
 	gn->transform.SetPosition(gunPos + glm::vec3(0,50,0));
 	AddGameObject(gn);
@@ -399,7 +399,7 @@ void MainScene::UpdateUI()
 	if (player != nullptr)
 	{
 		ss << "x ";
-		ss << player->ammoCounter;
+		ss << player->GetAmmos();
 		pumpkinAmmoText->_message = ss.str();
 		healthBar->percentage = player->healhComponent->GetHealthMaxRatio();
 	}

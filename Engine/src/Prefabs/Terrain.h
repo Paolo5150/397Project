@@ -19,6 +19,9 @@ class Terrain : public GameObject
 {
 public:
 
+	/**
+	* @return		The terarin instance
+	*/
 	static Terrain& Instance();
 
 

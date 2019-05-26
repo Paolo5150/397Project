@@ -32,7 +32,7 @@ Player::Player() : GameObject("Player")
 
 	gn = new GranadeLauncher();
 	gn->Start();
-	gn->boxCollider->ResetCollisionLayer();
+	gn->GetCollider()->ResetCollisionLayer();
 	
 
 	gunCam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
@@ -68,7 +68,6 @@ void Player::Start()
 	//Terrain::Instance().GetCenter(x, y, z);
 	//transform.SetPosition(x, y, z);
 
-	companion = dynamic_cast<Companion*>(SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Companion")[0]);	
 
 	transform.SetRotation(0, 0, 0);
 
@@ -119,7 +118,7 @@ void Player::Start()
 		{
 			Logger::LogInfo("Got launcher");
 			gn->SetActive(1);
-			gn->boxCollider->SetActive(0);
+			gn->GetCollider()->SetActive(0);
 			gn->pointLight->SetActive(0);
 			hasGun = 1;
 			go->FlagToBeDestroyed();

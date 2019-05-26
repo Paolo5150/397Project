@@ -27,7 +27,7 @@ public:
 	
 	static unsigned int totalHives;
 private:
-	bool redFlashing;
+
 	bool canSpawnSpiders;
 	int _lastSpawnedSpider;
 	unsigned int _currentState;

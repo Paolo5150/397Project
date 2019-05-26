@@ -7,7 +7,17 @@
 #include "..\Components\Animator.h"
 #include "Player.h"
 
-
+/**
+* @class Companion
+* @brief Specialized entity that defines a Companion.
+*
+* @author Paolo Ferri
+* @version 01
+* @date 25/05/2018
+*
+*
+* @bug No known bugs.
+*/
 class Companion : public GameObject
 {
 public:
@@ -34,27 +44,108 @@ public:
 		CHARGE_STATE
 	};
 
+	/**
+	* @brief		Constructor
+	* @pre			The companion object does not exist
+	* @post			The companion object is created
+	*/
 	Companion();
-	~Companion();
-	void Start() override;
-	void Update() override;
-	void SetTarget(GameObject* target);
-	void Attack();
 
+	/**
+	* @brief		Destructor
+	* @pre			The companion object must exist
+	* @post			The companion object is destroyed
+	*/
+	~Companion();
+
+	/**
+	* @brief		Initialize player
+	* @pre			The companion object must exist
+	* @post			The companion object is initialized, colliders are added
+	*/
+	void Start() override;
+
+	/**
+	* @brief		Overridden callback for update method
+	* @pre			The companion object must exist
+	*/
+	void Update() override;
+
+	/**
+	* @brief		Set a target for the companion to attack
+	* @pre			The companion object must exist
+	*/
+	void SetTarget(GameObject* target);
+
+	/**
+	* @brief		The current state
+	*/
 	STATE currentState;
 private:
 
+	/**
+	* @brief		Reference to the player object
+	*/
 	GameObject* playerRef;
+
+	/**
+	* @brief		Reference to animator component
+	*/
 	Animator* animator;
+
+	/**
+	* @brief		Reference to health component
+	*/
 	HealthComponent* healthComponent;
+
+	/**
+	* @brief		Reference to current target
+	*/
 	GameObject* target;
+
+	/**
+	* @brief		Idle state method
+	*/
 	void Idle();
+
+	/**
+	* @brief		Follow player around the level
+	*/
 	void FollowPlayer();
+
+	/**
+	* @brief		Run towards current target
+	*/
 	void Charge();
+
+	/**
+	* @brief		Walk towards current target
+	*/
 	void GoToTarget();
+	/**
+	* @brief		Attack the current target
+	* @pre			The companion object must exist
+	*/
+	void Attack();
+
+	/**
+	* @brief		Companion damage when attacking
+	*/
 	float attackDamage;
+
+	/**
+	* @brief		Walking speed
+	*/
 	float walkSpeed;
+
+	/**
+	* @brief		Running speed
+	*/
 	float runSpeed;
+
+	/**
+	* @brief		Current movememnt speed
+	*/
 	float currentSpeed;
 
 
