@@ -261,7 +261,7 @@ void MainScene::Start()
 void MainScene::LogicUpdate()
 {
 
-	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
+	PhysicsWorld::Instance().Update();
 
 	if (currentSceneState == PLAYING)
 	{

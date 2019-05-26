@@ -19,7 +19,7 @@ class GUIImage;
 * This class is a facade for the ImGUI Library
 * @author Paolo Ferri
 * @version 01
-* @date 15/03/2018
+* @date 15/03/2019
 *
 *
 * @bug No known bugs.

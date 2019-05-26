@@ -21,7 +21,7 @@ class GUIText;
 *
 * @author Paolo Ferri
 * @version 01
-* @date 12/03/2018
+* @date 12/03/2019
 *
 *
 * @bug No known bugs.

@@ -125,7 +125,7 @@ void PhysicsWorld::AddCollider(Collider* rb)
 
 
 
-void PhysicsWorld::Update(float deltaS)
+void PhysicsWorld::Update()
 {
 	FillQuadtree(0);
 	PerformCollisions(false);
