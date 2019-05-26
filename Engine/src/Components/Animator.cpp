@@ -21,7 +21,7 @@ Animator::Animator(AnimatedModel* m) : Component("Animator")
 
 	currentAnimation->loop = true;
 	isResetting = 0;
-
+	stopPercentage = 1.0;
 }
 
 Animator::~Animator()
@@ -71,9 +71,12 @@ void Animator::Update()
 	else
 		model->GetTransformations(0, currentAnimation, allBonesTransforms);
 
-	time_in_ticks += Timer::GetDeltaS() * currentAnimation->ticksPerSecond;
+		time_in_ticks += Timer::GetDeltaS() * currentAnimation->ticksPerSecond;
 
-	animation_time = fmod(time_in_ticks * animationSpeed, currentAnimation->duration);
+		if (animation_time / currentAnimation->GetDuration() < stopPercentage)
+			animation_time = fmod(time_in_ticks * animationSpeed, currentAnimation->GetDuration());
+
+	
 
 }
 void Animator::OnPreRender(Camera& cam, Shader* currentShader)

@@ -70,6 +70,8 @@ public:
 	*/
 	void OnPreRender(Camera& cam, Shader* currentShader = nullptr);
 
+	double stopPercentage;
+
 private:
 	/**
 	* @brief		The current animation speed
@@ -141,6 +143,7 @@ private:
 	* @brief		Whether the animation has been played at leasts one time
 	*/
 	bool playedOnce;
+
 
 };
 

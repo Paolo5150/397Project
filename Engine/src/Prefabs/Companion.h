@@ -77,6 +77,8 @@ public:
 	*/
 	void SetTarget(GameObject* target);
 
+	HealthComponent* GetHealthComponent() { return healthComponent; }
+
 	/**
 	* @brief		The current state
 	*/
@@ -117,6 +119,11 @@ private:
 	* @brief		Run towards current target
 	*/
 	void Charge();
+
+	/**
+	* @brief		Play dead animation
+	*/
+	void Die();
 
 	/**
 	* @brief		Walk towards current target

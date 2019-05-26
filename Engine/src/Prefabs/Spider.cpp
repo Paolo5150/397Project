@@ -107,7 +107,6 @@ Spider::~Spider()
 {
 	totalSpiders--;
 	totalSpidersKilled++;
-
 }
 
 

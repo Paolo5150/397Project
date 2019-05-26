@@ -318,7 +318,7 @@ void AssimpWrapper::LoadAnimations(const aiScene* scene, AnimatedModel* model)
 	for (int i = 0; i < scene->mNumAnimations; i++)
 	{
 		ModelAnimation a;
-		a.duration = scene->mAnimations[i]->mDuration;
+		a.SetDuration(scene->mAnimations[i]->mDuration);
 		a.animationName = scene->mAnimations[i]->mName.C_Str();
 		a.ticksPerSecond = scene->mAnimations[i]->mTicksPerSecond;
 		if (a.ticksPerSecond == 0)

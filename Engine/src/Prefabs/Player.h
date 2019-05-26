@@ -195,4 +195,5 @@ private:
 	*/
 	bool hasGun;
 
+	Companion* companion;
 };

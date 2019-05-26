@@ -68,6 +68,7 @@ void Player::Start()
 	//Terrain::Instance().GetCenter(x, y, z);
 	//transform.SetPosition(x, y, z);
 
+	companion = dynamic_cast<Companion*>(SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Companion")[0]);
 
 	transform.SetRotation(0, 0, 0);
 
@@ -144,7 +145,23 @@ void Player::Update()
 	_intendedDir.z = 0;
 
 
+	if (companion->currentState == Companion::DEAD_STATE)
+	{
+		if (glm::length(transform.GetPosition() - companion->transform.GetPosition()) < 150)
+		{
+			static float healthTimer = 0;
+			healthTimer += Timer::GetDeltaS();
+			companion->ApplyColor(0.3, 0.8, 0.3);
 
+			if (healthTimer > 5)
+			{
+				healthTimer = 0;
+				companion->GetHealthComponent()->AddToHealth(100);
+				companion->ApplyColor(0.5,0.5,0.5);
+				companion->currentState = Companion::FOLLOW_STATE;
+			}
+		}
+	}
 
 
 

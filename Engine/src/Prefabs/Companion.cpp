@@ -48,21 +48,32 @@ void Companion::Update()
 	GameObject::Update();
 
 	
+	if (healthComponent->IsDead() && currentState != DEAD_STATE)
+	{
+		animator->stopPercentage = 0.5;
+		currentState = DEAD_STATE;
+	}
+
 
 	switch (currentState)
 	{
 	case IDLE_STATE:
+		animator->stopPercentage = 1;
 		Idle();
 		break;
 	case FOLLOW_STATE:
+		animator->stopPercentage = 1;
 		FollowPlayer();
 		break;
 	case ATTACK_STATE:
+		animator->stopPercentage = 1;
 		Attack();
 		break;
 	case DEAD_STATE:
+		Die();
 		break;
 	case CHARGE_STATE:
+		animator->stopPercentage = 1;
 		Charge();
 
 	}
@@ -149,6 +160,12 @@ void Companion::SetTarget(GameObject* target)
 	currentSpeed = runSpeed;
 	this->target = target;
 	
+}
+
+void Companion::Die()
+{
+	animator->SetCurrentAnimation(ANIMATION::DEATH2,0);
+
 }
 
 
