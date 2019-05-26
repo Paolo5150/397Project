@@ -83,6 +83,7 @@ void Companion::Attack()
 	if (target == nullptr)
 	{
 		currentState = FOLLOW_STATE;
+		return;
 	}
 
 	glm::vec3 toTarg = glm::vec3(target->transform.GetPosition().x, transform.GetPosition().y, target->transform.GetPosition().z) - transform.GetPosition();

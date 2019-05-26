@@ -12,8 +12,6 @@
 * @author Paolo Ferri
 * @version 01
 * @date 4/05/2019
-*
-*
 * @bug No known bugs.
 */
 template <class T>

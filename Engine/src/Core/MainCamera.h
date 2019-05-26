@@ -1,7 +1,6 @@
 #pragma once
 #include "CameraPerspective.h"
 #include "Input.h"
-#include "..\Components\RigidBody.h"
 #include "..\Components\BoxCollider.h"
 #include "..\Components\SphereCollider.h"
 #include "..\Prefabs\GranadeLauncher.h"

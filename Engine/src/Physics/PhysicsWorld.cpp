@@ -140,10 +140,6 @@ void PhysicsWorld::Update()
 	//dynamicsWorld->stepSimulation(deltaS, 10);
 }
 
-bool PhysicsWorld::CollisionCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
-{
-	return false;
-}
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {

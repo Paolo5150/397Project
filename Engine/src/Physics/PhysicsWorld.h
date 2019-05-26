@@ -3,12 +3,12 @@
 #include "Bullet\btBulletCollisionCommon.h"
 #include "Bullet\btBulletDynamicsCommon.h"
 #include "Bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.h"
-#include "..\Components\RigidBody.h"
 #include "Bullet\BulletCollision/CollisionDispatch/btCollisionObjectWrapper.h"
 #include "Bullet\BulletCollision/CollisionDispatch/btCollisionObject.h"
 #include "..\Utils\Quadtree.h"
 #include <list>
 
+class Collider;
 /**
 * @class PhysicsWorld
 * @brief Singleto class that manages collisions

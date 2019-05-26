@@ -63,7 +63,6 @@
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Components\Collider.cpp" />
     <ClCompile Include="src\Components\BoxCollider.cpp" />
-    <ClCompile Include="src\Components\RigidBody.cpp" />
     <ClCompile Include="src\Components\SphereCollider.cpp" />
     <ClCompile Include="src\Physics\CollisionChecks.cpp" />
     <ClCompile Include="src\Components\AIBase.cpp" />
@@ -124,7 +123,6 @@
     <ClInclude Include="src\Graphics\Mesh.h" />
     <ClInclude Include="src\Graphics\Model.h" />
     <ClInclude Include="src\Graphics\ModelAnimation.h" />
-    <ClInclude Include="src\Graphics\ModelBone.h" />
     <ClInclude Include="src\Graphics\ModelNode.h" />
     <ClInclude Include="src\Graphics\RenderingEngine.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
@@ -171,7 +169,6 @@
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Components\Collider.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />
-    <ClInclude Include="src\Components\RigidBody.h" />
     <ClInclude Include="src\Components\SphereCollider.h" />
     <ClInclude Include="src\Utils\Quadtree.h" />
     <ClInclude Include="src\Physics\CollisionChecks.h" />

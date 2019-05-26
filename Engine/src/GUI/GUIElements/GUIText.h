@@ -61,9 +61,18 @@ public:
 	* @brief		The mtext color
 	*/
 	glm::vec4 _color;
+	/**
+	* @brief		The scale of the text
+	*/
 	float fontScale;
-	std::string fontName;
 
+	/**
+	* @brief		The name of the font used
+	*/
+	std::string fontName;
+	/**
+	* @brief		Render the GUI object
+	*/
 	void RenderImGuiElement() override
 	{
 		ImGui::SetCursorPosX(pixelPosition.x);

@@ -67,10 +67,19 @@ public:
 	*/
 	glm::vec4 _color;
 
+	/**
+	* @brief The name of the font used
+	*/
 	std::string fontName;
 
+	/**
+	* @brief The scale of the text
+	*/
 	float fontScale;
 
+	/**
+	* @brief		Render the GUI object
+	*/
 	void RenderImGuiElement() override
 	{
 		ImGui::SetCursorPosX(pixelPosition.x);

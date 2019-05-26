@@ -56,7 +56,9 @@ public:
 	*/
 	ImTextureID GetTextureID(){ return (ImTextureID)_imageID; }
 
-
+	/**
+	* @brief		Render the GUI object
+	*/
 	void RenderImGuiElement() override
 	{
 		ImGui::SetCursorPosX(pixelPosition.x);

@@ -18,15 +18,14 @@ class GUIProgressBar : public GUIObject
 {
 public:
 	/**
-	* @brief		Creates a GUI text
+	* @brief		Creates a GUIProgressBar
 	*
-	* @post					The GUIText object is created
+	* @post					The GUIProgressBar object is created
 	* @param message		The text to display
 	* @param posX			The X position on the screen
 	* @param posY			The Y position on the screen
-	* @param r				The red channel of the color
-	* @param g				The green channel of the color
-	* @param b				The blue channel of the color
+	* @param sizeX			The width of the progress bar
+	* @param sizeY			The height of the progress bar
 	* @param isPercentage	Wether the details provided are percentage of the current window
 	*/
 	GUIProgressBar(std::string uniqueName,std::string message,float posX , float posY , float sizeX, float sizeY, bool isPercentage = false) : GUIObject(uniqueName){
@@ -41,18 +40,28 @@ public:
 	}
 
 	/**
-	* @brief		Destroy the GUIText
+	* @brief		Destroy the GUIProgressBar
 	*
-	* @pre			The GUIText object must exist
-	* @post			The GUIText object is destroyed
+	* @pre			The GUIProgressBar object must exist
+	* @post			The GUIProgressBar object is destroyed
 	*/
 	~GUIProgressBar(){
 
 	};
 
+	/**
+	* @brief		Message to be displayed on the bar
+	*/
 	std::string message;
+
+	/**
+	* @brief		The value / max value ratio
+	*/
 	float percentage;
 
+	/**
+	* @brief		Render the GUI object
+	*/
 	void RenderImGuiElement() override
 	{
 
