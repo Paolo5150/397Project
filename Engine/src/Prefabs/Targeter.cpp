@@ -14,9 +14,13 @@ namespace
 
 Targeter::Targeter() : GameObject("Targeter")
 {
+	AssetLoader::Instance().GetAsset<Model>("Bone")->PopulateGameObject(this);
 
-
-	transform.SetScale(40, 40, 40);
+	Material mat;
+	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStatic"));
+	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("white"));
+	ApplyMaterial(mat);
+	transform.SetScale(30,30,30);
 
 	speed = 10000;
 	SetIsStatic(0);
@@ -43,7 +47,7 @@ void Targeter::Start()
 		go->FlashColor(0, 1, 1);
 		FlagToBeDestroyed();
 	};
-	sc->enableRender = 1;
+
 
 }
 
