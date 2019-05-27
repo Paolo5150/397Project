@@ -145,25 +145,31 @@ void Player::Update()
 	_intendedDir.y = 0;
 	_intendedDir.z = 0;
 
-
+	static float healthTimer = 0;
+	static const int reviveTime = 8;
 	if (companion->currentState == Companion::DEAD_STATE)
 	{
 		if (glm::length(transform.GetPosition() - companion->transform.GetPosition()) < 150)
 		{
-			static float healthTimer = 0;
-			healthTimer += Timer::GetDeltaS();
-			companion->ApplyColor(0.3, 0.8, 0.3);
+		healthTimer += Timer::GetDeltaS();
+			
+		companion->ApplyColor( healthTimer / reviveTime, healthTimer / reviveTime,healthTimer / reviveTime);
 
-			if (healthTimer > 5)
+		if (healthTimer > reviveTime)
 			{
 				healthTimer = 0;
 				companion->GetHealthComponent()->AddToHealth(100);
 				companion->ApplyColor(1,1,1);
+
 				companion->currentState = Companion::FOLLOW_STATE;
 			}
 		}
 		else
-			companion->ApplyColor(0.5, 0.5, 0.5);
+		{
+			healthTimer = 0;
+			companion->ApplyColor(healthTimer / reviveTime, healthTimer / reviveTime, healthTimer / reviveTime);
+
+		}
 
 	}
 
