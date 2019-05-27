@@ -18,7 +18,7 @@ unsigned Spider::totalSpiders = 0;
 unsigned Spider::totalSpidersKilled = 0;
 
 
-Spider::Spider() : GameObject("Spider"), Saveable()
+Spider::Spider() : GameObject("Enemy_Spider"), Saveable()
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
@@ -38,7 +38,7 @@ Spider::Spider() : GameObject("Spider"), Saveable()
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
-Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider"), Saveable()
+Spider::Spider(float posX, float posY, float posZ) : GameObject("Enemy_Spider"), Saveable()
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
@@ -60,9 +60,8 @@ Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider"), Savea
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
-Spider::Spider(Transform& g) : GameObject("Spider"), Saveable()
+Spider::Spider(Transform& g) : GameObject("Enemy_Spider"), Saveable()
 {
-
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
 	deathTimer = 0.0f;
@@ -81,7 +80,7 @@ Spider::Spider(Transform& g) : GameObject("Spider"), Saveable()
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
-Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("Spider"), Saveable()
+Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("Enemy_Spider"), Saveable()
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
@@ -224,6 +223,14 @@ void Spider::Update()
 				{
 					h->AddToHealth(-5);
 				}
+				else
+				{
+					Logger::LogInfo("HealthComponent null!");
+				}
+			}
+			else
+			{
+				Logger::LogInfo("GameObject null!");
 			}
 		}
 	}

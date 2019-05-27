@@ -32,7 +32,6 @@ static class SaveGameManager
 public:
 	static void SaveGame(std::string filePath = "user/saves/save.dat");
 	static void LoadGame(std::string filePath = "user/saves/save.dat");
-	static void Dump();
 
 	static bool loadWhenPossible;
 

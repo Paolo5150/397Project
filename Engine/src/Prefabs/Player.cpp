@@ -111,7 +111,7 @@ void Player::Start()
 			go->FlagToBeDestroyed();
 		}
 		
-		else if (go->GetName() == "GranadeLauncher")
+		else if (go->GetName() == "GranadeLauncher" && hasGun == false)
 		{
 			Logger::LogInfo("Got launcher");
 			gn->SetActive(1);

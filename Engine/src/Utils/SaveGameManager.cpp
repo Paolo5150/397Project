@@ -31,8 +31,6 @@ void SaveGameManager::LoadGame(std::string filePath)
 		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Player");
 		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Spider");
 		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Hive");
-		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("MainCamera");
-		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Camera_Perspective");
 		std::ifstream inputFile(filePath);
 		std::string line;
 		std::getline(inputFile, line, '\n'); //Throw away time/date, can use this later for saves if required
@@ -75,7 +73,6 @@ void SaveGameManager::LoadGame(std::string filePath)
 
 						if (hasGun)
 						{
-							SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("GranadeLauncher");
 							obj->gn->SetActive(1);
 							obj->gn->boxCollider->SetActive(0);
 							obj->gn->pointLight->SetActive(0);
@@ -84,10 +81,12 @@ void SaveGameManager::LoadGame(std::string filePath)
 						obj->transform.SetPosition(x, y, z);
 						//obj->SetRotation(rotX, rotY, rotZ);
 						obj->ammoCounter = ammo;
+						Logger::LogInfo("Removing ", obj->healthComponent->GetMaxHealth() - health, " health from player");
 						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
+						Logger::LogInfo("New Health: ", obj->healthComponent->GetCurrentHealth());
 
-						Logger::LogInfo("Added Player from save");
 						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
+						Logger::LogInfo("Added Player from save");
 						player = obj;
 					}
 					else if (objectType == "Spider")
@@ -108,11 +107,11 @@ void SaveGameManager::LoadGame(std::string filePath)
 
 						obj->transform.SetPosition(x, y, z);
 						//obj->transform.SetRotation(rotX, rotY, rotZ);
-						obj->aiBase->SetTarget(player->transform);
+						obj->SetTarget(player->transform);
 						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
 
-						Logger::LogInfo("Added Spider from save");
 						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
+						Logger::LogInfo("Added Spider from save");
 					}
 					else if (objectType == "Hive")
 					{
@@ -137,8 +136,8 @@ void SaveGameManager::LoadGame(std::string filePath)
 						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
 						obj->SetState(state);
 
-						Logger::LogInfo("Added Hive from save");
 						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
+						Logger::LogInfo("Added Hive from save");
 					}
 					else
 					{
@@ -148,7 +147,7 @@ void SaveGameManager::LoadGame(std::string filePath)
 			}
 			else
 			{
-				if (line == "Player" || line == "Spider")
+				if (line == "Player" || line == "Spider" || line == "Hive")
 				{
 					inObject = true;
 					objectType = line;
@@ -156,20 +155,11 @@ void SaveGameManager::LoadGame(std::string filePath)
 			}
 		}
 		inputFile.close();
-		//SaveGameManager::loadWhenPossible = false;
 		Logger::LogInfo("Save game loaded!");
 	}
 	else
 	{
 		Logger::LogInfo("No save file found");
-	}
-}
-
-void SaveGameManager::Dump()
-{
-	for (std::list<Saveable*>::const_iterator it = Saveable::GetSaveableObects().begin(); it != Saveable::GetSaveableObects().end(); it++)
-	{
-		Logger::LogInfo((*it)->Save());
 	}
 }
 

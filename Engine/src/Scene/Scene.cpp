@@ -131,8 +131,7 @@ bool Scene::RemoveGameobjectsByName(std::string name)
 	{
 		if ((*it)->GetName() == name)
 		{
-			deleted = true;
-			it = m_allGameObjects.erase(it);
+			(*it)->FlagToBeDestroyed();
 		}
 	}
 

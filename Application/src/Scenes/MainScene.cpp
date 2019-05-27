@@ -99,6 +99,11 @@ void MainScene::Initialize() {
 
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
+	if (SaveGameManager::loadWhenPossible == true)
+	{
+		SaveGameManager::LoadGame();
+	}
+
 	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
 
 
@@ -202,24 +207,15 @@ void MainScene::Initialize() {
 	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
-		if (SaveGameManager::loadWhenPossible == true && (obj->GetName() == "Player" || obj->GetName() == "Spider" || obj->GetName() == "Hive"))
+		if (!(SaveGameManager::loadWhenPossible == true && (obj->GetName() == "Spider" || obj->GetName() == "Hive")))
 		{
-			Lua::RemoveCreatedAsset(i);
-		}
-		else
-		{
-			Logger::LogInfo("Adding ", obj->GetName());
 			if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player (Warning: Player must be created before any AI)
 			{
-				((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").at(0))->transform);
+				((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)GetGameobjectsByName("Player").at(0))->transform);
 			}
+			Logger::LogInfo("Adding: ", obj->GetName());
 			AddGameObject(obj);
 		}
-	}
-
-	if (SaveGameManager::loadWhenPossible == true)
-	{
-		SaveGameManager::LoadGame();
 	}
 
 	player = ((Player*)GetGameobjectsByName("Player").at(0));
@@ -323,21 +319,10 @@ void MainScene::LogicUpdate()
 
 		}
 
+
 		if (Input::GetKeyPressed(GLFW_KEY_F2))
-		{
-			SaveGameManager::Dump();
-		}
+			Logger::LogInfo("Player Health: ", player->healthComponent->GetCurrentHealth());
 
-		if (Input::GetKeyPressed(GLFW_KEY_F3))
-		{
-			((Spider*)GetGameobjectsByName("Spider").at(0))->aiBase->DumpVariables();
-		}
-
-		if (Input::GetKeyPressed(GLFW_KEY_F4))
-		{
-			std::vector<GameObject*> vec = GetGameobjectsByName("Camera_Perspective");
-			Logger::LogInfo("");
-		}
 	}
 	else if (currentSceneState == PAUSE)
 	{
