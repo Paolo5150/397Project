@@ -5,6 +5,7 @@
 #include "Terrain.h"
 #include "Pumpkin.h"
 #include "Targeter.h"
+#include "..\GUI\GUIElements\GUIManager.h"
 
 namespace {
 
@@ -161,6 +162,9 @@ void Player::Update()
 				companion->currentState = Companion::FOLLOW_STATE;
 			}
 		}
+		else
+			companion->ApplyColor(0.5, 0.5, 0.5);
+
 	}
 
 
@@ -337,6 +341,10 @@ void Player::UpdateControls()
 
 }
 
+void Player::FlashColor(float r, float g, float b)
+{
+	GUIManager::Instance().FlashRed();
+}
 
 
 void Player::LateUpdate()

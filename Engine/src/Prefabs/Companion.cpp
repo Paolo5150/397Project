@@ -27,7 +27,7 @@ Companion::Companion() : GameObject("Companion")
 	walkSpeed = 550;
 	runSpeed = 800;
 	currentSpeed = walkSpeed;
-	currentState = IDLE_STATE;
+	
 }
 
 Companion::~Companion()
@@ -40,16 +40,20 @@ void Companion::Start()
 	GameObject::Start();
 
 	playerRef = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player")[0];
-
+	currentState = IDLE_STATE;
 }
 
 void Companion::Update()
 {
 	GameObject::Update();
 
+
+	if (currentState != DEAD_STATE)
+	ApplyColor(0.5, 0.5, 0.5);
 	
 	if (healthComponent->IsDead() && currentState != DEAD_STATE)
 	{
+		ApplyColor(0.5, 0.5, 0.5);
 		animator->stopPercentage = 0.5;
 		currentState = DEAD_STATE;
 	}
@@ -59,10 +63,12 @@ void Companion::Update()
 	{
 	case IDLE_STATE:
 		animator->stopPercentage = 1;
+		CheckForSpiders();
 		Idle();
 		break;
 	case FOLLOW_STATE:
 		animator->stopPercentage = 1;
+		CheckForSpiders();
 		FollowPlayer();
 		break;
 	case ATTACK_STATE:
@@ -93,7 +99,7 @@ void Companion::Attack()
 {
 	if (target == nullptr)
 	{
-		currentState = FOLLOW_STATE;
+		currentState = IDLE_STATE;
 		return;
 	}
 
@@ -124,28 +130,36 @@ void Companion::Attack()
 			timer = 0;
 			hc->AddToHealth(-attackDamage);
 			target->FlashColor(1, 0, 0);
+
+			if (hc->IsDead())
+			{
+				target = nullptr;
+				currentState = Companion::IDLE_STATE;
+				return;
+			}
 		}
 	}
 	else
-		currentState = FOLLOW_STATE;
+		currentState = Companion::IDLE_STATE;;
 
 	if (Input::GetKeyPressed(GLFW_KEY_E))
 	{
-		currentState = Companion::FOLLOW_STATE;
+		currentState = Companion::IDLE_STATE;
 	}
 
 }
 
 void Companion::Charge()
 {
-	if (Input::GetKeyPressed(GLFW_KEY_E))
+	
+	if (Input::GetKeyPressed(GLFW_KEY_E) || target->GetName()=="Player")
 	{
 		currentState = Companion::FOLLOW_STATE;
 	}
 
 	currentSpeed = runSpeed;
-	glm::vec3 toPlayer = glm::vec3(target->transform.GetPosition().x, transform.GetPosition().y, target->transform.GetPosition().z) - transform.GetPosition();
-	if (glm::length(toPlayer) < 240)
+	glm::vec3 toTarget = glm::vec3(target->transform.GetPosition().x, transform.GetPosition().y, target->transform.GetPosition().z) - transform.GetPosition();
+	if (glm::length(toTarget) < 240)
 		currentState = ATTACK_STATE;
 	
 	GoToTarget();
@@ -194,7 +208,7 @@ void Companion::GoToTarget()
 	{
 
 		timer = 0;
-		std::vector<glm::vec3> path = PathFinder::Instance().GeneratePath(transform.GetPosition(), target->transform.GetPosition());
+		std::vector<glm::vec3> path = PathFinder::Instance().GeneratePath(transform.GetPosition(), target->transform.GetGlobalPosition());
 		nextNode = path[0];
 
 	}
@@ -213,4 +227,32 @@ void Companion::GoToTarget()
 
 	float h = Terrain::Instance().GetHeightAt(transform.GetPosition().x, transform.GetPosition().z);
 	transform.SetPosition(transform.GetPosition().x, h, transform.GetPosition().z);
+}
+
+
+void Companion::CheckForSpiders()
+{
+	static float checkSpidersTimer = 0;
+	checkSpidersTimer += Timer::GetDeltaS();
+
+
+
+	GameObject* closestSpider = nullptr;
+	if (checkSpidersTimer > .4f)
+	{
+
+		checkSpidersTimer = 0;
+		for (int i = 0; i < SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Enemy_Spider").size(); i++)
+		{
+			float dist = glm::length(SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Enemy_Spider")[i]->transform.GetGlobalPosition() - transform.GetGlobalPosition());
+			closestSpider = dist < 300 ? SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Enemy_Spider")[i] : closestSpider;
+
+		}
+	}
+
+	if (closestSpider != nullptr)
+	{
+		SetTarget(closestSpider);
+	}
+
 }

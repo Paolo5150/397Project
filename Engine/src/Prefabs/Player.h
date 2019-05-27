@@ -54,6 +54,8 @@ public:
 	*/
 	void Update() override;
 
+	void FlashColor(float r, float g, float b) override;
+
 	/**
 	* @brief		Read keyboards input to move the player
 	* @pre			The player object must exist

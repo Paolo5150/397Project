@@ -100,6 +100,7 @@ private:
 	*/
 	HealthComponent* healthComponent;
 
+
 	/**
 	* @brief		Reference to current target
 	*/
@@ -134,6 +135,8 @@ private:
 	* @pre			The companion object must exist
 	*/
 	void Attack();
+
+	void CheckForSpiders();
 
 	/**
 	* @brief		Companion damage when attacking

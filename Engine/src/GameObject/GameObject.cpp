@@ -4,8 +4,9 @@
 #include "Component.h"
 #include "..\Graphics\Shader.h"
 #include "..\Core\Camera.h"
-#include "..\Components\Renderer.h"
+#include "..\Components\MeshRenderer.h"
 #include "..\Core\Timer.h"
+
 
 
 GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent) : transform(Transform(this))
@@ -299,7 +300,7 @@ void GameObject::Update()
 	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
 	if (colorTimer == 0 && flashing)
 	{
-		ApplyColor(1, 1, 1);
+		ApplyColor(1,1,1);
 		flashing = 0;
 	}
 

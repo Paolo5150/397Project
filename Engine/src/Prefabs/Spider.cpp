@@ -7,7 +7,13 @@
 #include "..\Event\AIEvents.h"
 #include "Hive.h"
 #include "..\GUI\GUIElements\GUIManager.h"
+#include "..\Scene\SceneManager.h"
+#include "..\Scene\Scene.h"
+
 #include "Pumpkin.h"
+#include "Companion.h"
+#include "PLayer.h"
+
 
 namespace
 {
@@ -18,7 +24,7 @@ unsigned Spider::totalSpiders = 0;
 unsigned Spider::totalSpidersKilled = 0;
 
 
-Spider::Spider() : GameObject("Spider")
+Spider::Spider() : GameObject("Enemy_Spider")
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
@@ -38,7 +44,7 @@ Spider::Spider() : GameObject("Spider")
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
-Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
+Spider::Spider(float posX, float posY, float posZ) : GameObject("Enemy_Spider")
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
@@ -60,7 +66,7 @@ Spider::Spider(float posX, float posY, float posZ) : GameObject("Spider")
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
-Spider::Spider(Transform& g) : GameObject("Spider")
+Spider::Spider(Transform& g) : GameObject("Enemy_Spider")
 {
 
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
@@ -81,7 +87,7 @@ Spider::Spider(Transform& g) : GameObject("Spider")
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
 }
 
-Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("Spider")
+Spider::Spider(Transform& g, float posX, float posY, float posZ) : GameObject("Enemy_Spider")
 {
 	AssetLoader::Instance().GetAsset<Model>("Spider")->PopulateGameObject(this);
 
@@ -125,6 +131,11 @@ void Spider::Start()
 {
 	GameObject::Start();
 	totalSpiders++;
+	
+	companion = dynamic_cast<Companion*>(SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Companion")[0]);
+	player = dynamic_cast<Player*>(SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player")[0]);
+
+
 	
 	slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
 	slowCollider->ResetCollisionLayer();
@@ -182,6 +193,22 @@ void Spider::Update()
 
 	GameObject::Update(); //call base Update
 
+	float toPlayer = glm::length(player->transform.GetPosition() - transform.GetPosition());
+	float toComp = glm::length(companion->transform.GetPosition() - transform.GetPosition());
+
+	if (companion->GetHealthComponent()->IsDead())
+		SetTarget(player->transform);
+	else
+	{
+		if (toPlayer < toComp)
+			SetTarget(player->transform);
+
+		else
+			SetTarget(companion->transform);
+
+	}
+
+
 	if (healthComponent->IsDead() && aiBase->GetState() != "Dead")
 	{
 		pumpkinCollider->SetActive(0);
@@ -212,9 +239,10 @@ void Spider::Update()
 			if (aiBase->GetTarget()->gameObject != nullptr)
 			{
 				HealthComponent* h = aiBase->GetTarget()->gameObject->GetComponent<HealthComponent>("HealthComponent");
-				GUIManager::Instance().FlashRed();
+				
 				if (h != nullptr)
 				{
+					aiBase->GetTarget()->gameObject->FlashColor(1, 0, 0);
 					h->AddToHealth(-5);
 				}
 			}

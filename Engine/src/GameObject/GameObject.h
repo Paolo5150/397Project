@@ -352,7 +352,7 @@ public:
 	*/
 	virtual void Update();
 
-	void FlashColor(float r, float g, float b);
+	virtual void FlashColor(float r, float g, float b);
 
 	virtual void Start(){};
 
@@ -495,6 +495,7 @@ protected:
 	* @param output			The string to be printed
 	*/
 	void PrintHierarchy(int indentation, std::string& output);
+
 
 };
 
