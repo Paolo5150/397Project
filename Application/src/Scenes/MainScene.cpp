@@ -182,7 +182,7 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(healthBar);
 
 	//Lights
-	LightManager::Instance().SetAmbientLight(0.5f, 0.5f, 0.2f);
+	LightManager::Instance().SetAmbientLight(0.7f, 0.7f, 0.4f);
 
 	DirectionalLight* dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
@@ -194,7 +194,7 @@ void MainScene::Initialize() {
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
 	dirLight2->transform.SetRotation(90, -120, 0);
-	dirLight2->SetIntensity(0.5f);
+	dirLight2->SetIntensity(0.3f);
 
 	PathFinder::Instance().Generate(&Terrain::Instance());
 	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
@@ -224,7 +224,7 @@ void MainScene::Initialize() {
 	Lua::CloseLua();
 	
 	Companion* comp = new Companion();
-	comp->transform.SetPosition(player->transform.GetPosition());
+	comp->transform.SetPosition(player->transform.GetPosition() + glm::vec3(200,-20,0));
 	AddGameObject(comp);
 
 	

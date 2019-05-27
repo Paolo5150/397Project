@@ -27,7 +27,7 @@ Hive::Hive() : GameObject("Hive")
 
 	ApplyMaterial(mat_hive);
 
-	_maxSpiders = 12;
+	_maxSpiders = 15;
 	canSpawnSpiders = true;
 	totalHives++;
 }

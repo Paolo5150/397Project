@@ -158,7 +158,7 @@ void Player::Update()
 			{
 				healthTimer = 0;
 				companion->GetHealthComponent()->AddToHealth(100);
-				companion->ApplyColor(0.5,0.5,0.5);
+				companion->ApplyColor(1,1,1);
 				companion->currentState = Companion::FOLLOW_STATE;
 			}
 		}

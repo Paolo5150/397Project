@@ -15,7 +15,7 @@ Companion::Companion() : GameObject("Companion")
 	Material mat;
 	mat.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultAnimated"));
 	mat.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("white"));
-	mat.SetColor(0.5, 0.5, 0.5);
+
 
 	ApplyMaterial(mat);
 
@@ -48,9 +48,7 @@ void Companion::Update()
 	GameObject::Update();
 
 
-	if (currentState != DEAD_STATE)
-	ApplyColor(0.5, 0.5, 0.5);
-	
+
 	if (healthComponent->IsDead() && currentState != DEAD_STATE)
 	{
 		ApplyColor(0.5, 0.5, 0.5);
