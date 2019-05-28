@@ -9,7 +9,7 @@
 
 * @author Paolo Ferri
 * @version 01
-* @date 15/03/2018
+* @date 15/03/2019
 *
 *
 * @bug No known bugs.
@@ -56,7 +56,9 @@ public:
 	*/
 	ImTextureID GetTextureID(){ return (ImTextureID)_imageID; }
 
-
+	/**
+	* @brief		Render the GUI object
+	*/
 	void RenderImGuiElement() override
 	{
 		ImGui::SetCursorPosX(pixelPosition.x);

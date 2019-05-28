@@ -7,7 +7,13 @@
 #include "..\Event\AIEvents.h"
 #include "Hive.h"
 #include "..\GUI\GUIElements\GUIManager.h"
+#include "..\Scene\SceneManager.h"
+#include "..\Scene\Scene.h"
+
 #include "Pumpkin.h"
+#include "Companion.h"
+#include "PLayer.h"
+
 
 namespace
 {
@@ -127,7 +133,12 @@ void Spider::Start()
 	GameObject::Start();
 	totalSpiders++;
 	
-	BoxCollider* slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
+	companion = dynamic_cast<Companion*>(SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Companion")[0]);
+	player = dynamic_cast<Player*>(SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player")[0]);
+
+
+	
+	slowCollider = new BoxCollider(); //Used for slowing down/stopping if touching another spider
 	slowCollider->ResetCollisionLayer();
 	slowCollider->AddCollisionLayer(CollisionLayers::SPIDER);
 	slowCollider->ResetCollideAgainstLayer();
@@ -146,7 +157,7 @@ void Spider::Start()
 		}
 	};
 
-	BoxCollider* pumpkinCollider = new BoxCollider(); //Used for when a pumpkin bullet hits the spider
+	pumpkinCollider = new BoxCollider(); //Used for when a pumpkin bullet hits the spider
 	pumpkinCollider->ResetCollisionLayer();
 	pumpkinCollider->AddCollisionLayer(CollisionLayers::ENEMY);
 	pumpkinCollider->ResetCollideAgainstLayer();
@@ -156,7 +167,7 @@ void Spider::Start()
 	pumpkinCollider->transform.SetPosition(0, 35, 0);
 	AddComponent(pumpkinCollider);
 
-	pumpkinCollider->collisionCallback = [this,pumpkinCollider,slowCollider](GameObject* go) {
+	pumpkinCollider->collisionCallback = [this](GameObject* go) {
 
 
 		if (go->GetName() == "Pumpkin")
@@ -166,19 +177,8 @@ void Spider::Start()
 			{
 				healthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
 
-				ApplyColor(0.8, 0.0, 0.0);
-				colorTimer = 0.1f;
-				redFlashing = 1;
-				if (healthComponent->IsDead())
-				{
-					pumpkinCollider->SetActive(0);
-					slowCollider->SetActive(0);
-
-					GetComponent<Animator>("Animator")->SetCurrentAnimation(1, false);
-					aiBase->SetActive(false);
-					aiBase->SetState("Dead");
-					deathTimer = Timer::GetTimeS();
-				}
+				FlashColor(1, 0, 0);
+				
 
 				go->FlagToBeDestroyed();
 			}
@@ -194,12 +194,33 @@ void Spider::Update()
 
 	GameObject::Update(); //call base Update
 
-	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
-	if (colorTimer == 0 && redFlashing)
+	float toPlayer = glm::length(player->transform.GetPosition() - transform.GetPosition());
+	float toComp = glm::length(companion->transform.GetPosition() - transform.GetPosition());
+
+	if (companion->GetHealthComponent()->IsDead())
+		SetTarget(player->transform);
+	else
 	{
-		ApplyColor(1, 1, 1);
-		redFlashing = 0;
+		if (toPlayer < toComp)
+			SetTarget(player->transform);
+
+		else
+			SetTarget(companion->transform);
+
 	}
+
+
+	if (healthComponent->IsDead() && aiBase->GetState() != "Dead")
+	{
+		pumpkinCollider->SetActive(0);
+		slowCollider->SetActive(0);
+
+		GetComponent<Animator>("Animator")->SetCurrentAnimation(1, false);
+		aiBase->SetActive(false);
+		aiBase->SetState("Dead");
+		deathTimer = Timer::GetTimeS();
+	}
+
 
 	if (((AIBase*)GetComponent<AIBase>("AIBase"))->GetState() == "Slow")
 		((AIBase*)GetComponent<AIBase>("AIBase"))->SetState(""); //Lets the ai pick a state again
@@ -219,9 +240,10 @@ void Spider::Update()
 			if (aiBase->GetTarget()->gameObject != nullptr)
 			{
 				HealthComponent* h = aiBase->GetTarget()->gameObject->GetComponent<HealthComponent>("HealthComponent");
-				GUIManager::Instance().FlashRed();
+				
 				if (h != nullptr)
 				{
+					aiBase->GetTarget()->gameObject->FlashColor(1, 0, 0);
 					h->AddToHealth(-5);
 				}
 				else

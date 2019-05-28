@@ -196,6 +196,8 @@ void Core::LoadBasicAssets()
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\grass.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\ground.jpg", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\rock.jpg", true);
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\white.png", true);
+
 	//AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm1.png", true);
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\hm4.png", true);
 	AssetLoader::Instance().LoadCubeMap("Assets\\SkyBoxes\\ClearSky", true);
@@ -229,7 +231,6 @@ void Core::LoadBasicAssets()
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj",false,true);
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", false,true);
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", false,true);
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Tree\\tree.obj",true,true);
 
 
 }

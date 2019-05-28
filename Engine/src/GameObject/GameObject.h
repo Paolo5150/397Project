@@ -352,6 +352,7 @@ public:
 	*/
 	virtual void Update();
 
+	virtual void FlashColor(float r, float g, float b);
 
 	virtual void Start(){};
 
@@ -446,6 +447,9 @@ public:
 	virtual void OnAddToScene(Scene& theScene);
 
 protected:
+	float colorTimer;
+	bool flashing;
+
 	/**
 	* @param The name of the object
 	*/
@@ -491,6 +495,7 @@ protected:
 	* @param output			The string to be printed
 	*/
 	void PrintHierarchy(int indentation, std::string& output);
+
 
 };
 

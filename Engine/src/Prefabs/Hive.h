@@ -32,8 +32,7 @@ public:
 	static unsigned int totalHives;
 	HealthComponent* healthComponent;
 private:
-	float colorTimer;
-	bool redFlashing;
+
 	bool canSpawnSpiders;
 	int _lastSpawnedSpider;
 	unsigned int _currentState;

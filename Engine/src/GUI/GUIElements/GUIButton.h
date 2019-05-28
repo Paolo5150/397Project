@@ -9,7 +9,7 @@
 
 * @author Paolo Ferri
 * @version 01
-* @date 15/03/2018
+* @date 15/03/2019
 *
 *
 * @bug No known bugs.
@@ -67,10 +67,19 @@ public:
 	*/
 	glm::vec4 _color;
 
+	/**
+	* @brief The name of the font used
+	*/
 	std::string fontName;
 
+	/**
+	* @brief The scale of the text
+	*/
 	float fontScale;
 
+	/**
+	* @brief		Render the GUI object
+	*/
 	void RenderImGuiElement() override
 	{
 		ImGui::SetCursorPosX(pixelPosition.x);

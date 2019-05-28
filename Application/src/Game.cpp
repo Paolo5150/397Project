@@ -19,10 +19,7 @@ Application* CreateApplication()
 
 Game::Game(std::string appName)
 {
-	this->name = appName;
-
-
-	
+	this->name = appName;	
 }
 
 Game::~Game()

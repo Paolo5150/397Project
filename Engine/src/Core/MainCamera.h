@@ -1,7 +1,6 @@
 #pragma once
 #include "CameraPerspective.h"
 #include "Input.h"
-#include "..\Components\RigidBody.h"
 #include "..\Components\BoxCollider.h"
 #include "..\Components\SphereCollider.h"
 #include "..\Prefabs\GranadeLauncher.h"
@@ -14,7 +13,7 @@
 *
 * @author Paolo Ferri
 * @version 01
-* @date 10/04/2018
+* @date 10/04/2019
 *
 *
 * @bug No known bugs.

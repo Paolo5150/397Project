@@ -4,8 +4,9 @@
 #include "Component.h"
 #include "..\Graphics\Shader.h"
 #include "..\Core\Camera.h"
-#include "..\Components\Renderer.h"
+#include "..\Components\MeshRenderer.h"
 #include "..\Core\Timer.h"
+
 
 
 GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent) : transform(Transform(this))
@@ -16,7 +17,7 @@ GameObject::GameObject(std::string name, bool isActive, unsigned int layer, Game
 	SetParent(parent);
 	SetIsSelfManaged(false, true);
 	SetIsStatic(0);
-
+	flashing = 0;
 }
 
 GameObject::~GameObject()
@@ -46,7 +47,7 @@ void GameObject::SetName(std::string name)
 
 void GameObject::FlagToBeDestroyed()
 {
-	SetActive(false);
+//	SetActive(false);
 	_toBeDestroyed = true;
 
 	for (auto it = std::begin(_children); it != std::end(_children); it++)
@@ -140,6 +141,14 @@ void GameObject::SetParent(GameObject *parent)
 	}
 }
 
+void GameObject::FlashColor(float r, float g, float b)
+{
+	ApplyColor(r,g,b);
+	colorTimer = 0.1f;
+	flashing = 1;
+}
+
+
 std::string GameObject::GetName() const
 {
 	return _name;
@@ -168,12 +177,12 @@ GameObject* GameObject::GetParent() const
 
 void GameObject::AddChild(GameObject* child)
 {
-	if (HasChild(child->GetName()) == false)
-	{
+	//if (HasChild(child->GetName()) == false)
+	//{
 		child->SetParent(this);
 		child->transform.parent = &transform;
 		_children.push_back(child);
-	}
+	//}
 }
 
 Component* GameObject::AddComponent(Component* component)
@@ -286,6 +295,13 @@ void GameObject::Update()
 	if (Timer::GetTickCount() <= 1 || !_isStatic)
 	{
 		transform.Update();
+	}
+
+	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
+	if (colorTimer == 0 && flashing)
+	{
+		ApplyColor(1,1,1);
+		flashing = 0;
 	}
 
 	auto it = _children.begin();

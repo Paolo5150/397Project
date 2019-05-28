@@ -19,7 +19,7 @@
 #include "GUI\GUIElements\GUIImage.h"
 #include "GUI\GUIElements\GUIProgressBar.h"
 #include "GUI\GUIElements\GUIButton.h"
-
+#include "Prefabs\Companion.h"
 
 #include "Components\Animator.h"
 
@@ -62,6 +62,11 @@ void MainScene::LoadAssets() {
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
 	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx", false);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Alien\\alien.fbx", false);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Bone\\bone.obj", false);
+
+
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Tree\\tree.obj", true, false);
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
 
@@ -179,8 +184,6 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(spidersKilledText);
 	GUIManager::Instance().AddGUIObject(pumpkinsShotText);
 
-
-
 	GUIManager::Instance().AddGUIObject(restartButton);
 	GUIManager::Instance().AddGUIObject(saveButton);
 	GUIManager::Instance().AddGUIObject(quitToDesktopButton);
@@ -191,7 +194,7 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(healthBar);
 
 	//Lights
-	LightManager::Instance().SetAmbientLight(0.5f, 0.5f, 0.2f);
+	LightManager::Instance().SetAmbientLight(0.7f, 0.7f, 0.4f);
 
 	DirectionalLight* dirLight = new DirectionalLight();
 	dirLight->SetDiffuseColor(1, 1, 1);
@@ -203,7 +206,7 @@ void MainScene::Initialize() {
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
 	dirLight2->transform.SetRotation(90, -120, 0);
-	dirLight2->SetIntensity(0.5f);
+	dirLight2->SetIntensity(0.3f);
 
 	PathFinder::Instance().Generate(&Terrain::Instance());
 	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
@@ -233,11 +236,22 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(&Terrain::Instance());
 
+	if(SaveGameManager::loadWhenPossible == false)
+	{
+		Companion* comp = new Companion();
+		comp->transform.SetPosition(player->transform.GetPosition() + glm::vec3(200,-20,0));
+		AddGameObject(comp);
+	}
+
 	Lua::CloseLua();
 	SaveGameManager::loadWhenPossible = false;
 
 	//Randomly spawn the gun
 
+	
+
+
+	
 	Player::ResetTotalPumpkinShots();
 	Spider::ResetTotalSpidersKilled();
 	currentSceneState = PLAYING;
@@ -276,7 +290,7 @@ void MainScene::Start()
 void MainScene::LogicUpdate()
 {
 
-	PhysicsWorld::Instance().Update(Timer::GetDeltaS());
+	PhysicsWorld::Instance().Update();
 
 	if (currentSceneState == PLAYING)
 	{
@@ -415,7 +429,7 @@ void MainScene::UpdateUI()
 	if (player != nullptr)
 	{
 		ss << "x ";
-		ss << player->ammoCounter;
+		ss << player->GetAmmos();
 		pumpkinAmmoText->_message = ss.str();
 		healthBar->percentage = player->healthComponent->GetHealthMaxRatio();
 	}
