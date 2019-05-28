@@ -1,6 +1,5 @@
 #include "LuaRegistry.h"
-#include "..\Scene\SceneManager.h"
-#include "..\Scene\Scene.h"
+#include "..\Utils\SaveGameManager.h"
 
 int LuaRegistry::Lua_Create(lua_State* L)
 {
@@ -47,7 +46,7 @@ int LuaRegistry::Lua_Create(lua_State* L)
 		lua_pop(L, -9);
 		lua_pop(L, -10);
 
-		if (!(assetType == "Player" && SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").size() != 0))
+		if (!(SaveGameManager::loadWhenPossible == true && SaveGameManager::IsSaveable(assetType)))
 		{
 			asset = GameAssetFactory::Instance().Create(assetType); //Create Asset
 
@@ -92,7 +91,7 @@ int LuaRegistry::Lua_Create(lua_State* L)
 		lua_pop(L, -6);
 		lua_pop(L, -7);
 
-		if (!(assetType == "Player" && SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").size() != 0))
+		if (!(SaveGameManager::loadWhenPossible == true && SaveGameManager::IsSaveable(assetType)))
 		{
 			asset = GameAssetFactory::Instance().Create(assetType); //Create Asset
 
@@ -116,10 +115,6 @@ int LuaRegistry::Lua_Create(lua_State* L)
 
 			((GameObject*)asset)->transform.SetRotation(rotX, rotY, rotZ);
 		}
-		else
-		{
-			Logger::LogInfo("Ignoring Player from Lua");
-		}
 	}
 	else if (numParams == 4)
 	{
@@ -134,7 +129,7 @@ int LuaRegistry::Lua_Create(lua_State* L)
 		lua_pop(L, -3);
 		lua_pop(L, -4);
 
-		if (!(assetType == "Player" && SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").size() != 0))
+		if (!(SaveGameManager::loadWhenPossible == true && SaveGameManager::IsSaveable(assetType)))
 		{
 			asset = GameAssetFactory::Instance().Create(assetType); //Create Asset
 
@@ -164,7 +159,6 @@ int LuaRegistry::Lua_Create(lua_State* L)
 
 	if (asset != nullptr)
 	{
-		Logger::LogInfo("Added from lua: ", ((GameObject*)asset)->GetName());
 		Lua::AddCreatedAsset(asset);
 	}
 

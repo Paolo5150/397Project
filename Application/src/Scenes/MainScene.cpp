@@ -102,6 +102,11 @@ void MainScene::Initialize() {
 	if (SaveGameManager::loadWhenPossible == true)
 	{
 		SaveGameManager::LoadGame();
+
+		for (int i = 0; i < GetGameobjectsByName("Enemy_Spider").size(); i++)
+		{
+			((AIBase*)((Spider*)GetGameobjectsByName("Enemy_Spider").at(i))->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)GetGameobjectsByName("Player").at(0))->transform);
+		}
 	}
 
 	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
@@ -133,7 +138,8 @@ void MainScene::Initialize() {
 
 	saveButton = (new GUIButton("SaveButton", "Save", [&] {
 
-		SaveGameManager::SaveGame();
+		if(player->hasGun == true)
+			SaveGameManager::SaveGame();
 
 	}, "", 1.5, 10, 10, 45, 30, 1, 1, 1, 1));
 
@@ -207,13 +213,12 @@ void MainScene::Initialize() {
 	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
-		if (!(SaveGameManager::loadWhenPossible == true && (obj->GetName() == "Spider" || obj->GetName() == "Hive")))
+		if (!(SaveGameManager::loadWhenPossible == true && SaveGameManager::IsSaveable(obj->GetName())))
 		{
 			if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player (Warning: Player must be created before any AI)
 			{
 				((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)GetGameobjectsByName("Player").at(0))->transform);
 			}
-			Logger::LogInfo("Adding: ", obj->GetName());
 			AddGameObject(obj);
 		}
 	}
@@ -318,10 +323,6 @@ void MainScene::LogicUpdate()
 			DisplayPauseMenu();
 
 		}
-
-
-		if (Input::GetKeyPressed(GLFW_KEY_F2))
-			Logger::LogInfo("Player Health: ", player->healthComponent->GetCurrentHealth());
 
 	}
 	else if (currentSceneState == PAUSE)

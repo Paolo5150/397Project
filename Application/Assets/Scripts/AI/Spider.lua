@@ -85,6 +85,8 @@ function Think(state, targetDistance, targetRotation, targetRotationReverse, nod
         Idle();
     end
 
+    print(_eventReceived)
+
     return _state, animation, fowardMovement, rightMovement, rotation, _wanderPosX, _wanderPosY, _wanderPosZ, _eventReceived;
 end
 

@@ -20,6 +20,9 @@ Hive::Hive() : GameObject("Hive"), Saveable()
 	AssetLoader::Instance().GetAsset<Model>("Hive")->PopulateGameObject(this);
 	transform.SetScale(100, 100, 100);
 
+	healthComponent = new HealthComponent(1000, 1000);
+	AddComponent(healthComponent);
+
 	Material mat_hive;
 	mat_hive.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
 	mat_hive.Loadtexture(AssetLoader::Instance().GetAsset<Texture2D>("hive_diffuse"));
@@ -30,12 +33,17 @@ Hive::Hive() : GameObject("Hive"), Saveable()
 	_maxSpiders = 10;
 	canSpawnSpiders = true;
 	totalHives++;
+
+	SetState(0);
 }
 
 Hive::Hive(int maxSpiders) : GameObject("Hive"), Saveable()
 {
 	AssetLoader::Instance().GetAsset<Model>("Hive")->PopulateGameObject(this);
 	transform.SetScale(200, 200, 200);
+
+	healthComponent = new HealthComponent(1000, 1000);
+	AddComponent(healthComponent);
 
 	Material mat_hive;
 	mat_hive.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
@@ -46,7 +54,9 @@ Hive::Hive(int maxSpiders) : GameObject("Hive"), Saveable()
 
 	_maxSpiders = maxSpiders;
 	canSpawnSpiders = true;
+	totalHives++;
 
+	SetState(0);
 }
 
 void Hive::SetMaxSpiders(unsigned int maxSpiders)
@@ -88,6 +98,7 @@ void Hive::SetState(unsigned int index)
 			Logger::LogWarning("Attempted to set invalid Hive State!");
 			break;
 	}
+	Logger::LogInfo("Set state to ", index);
 }
 
 unsigned int Hive::GetState() const
@@ -97,9 +108,6 @@ unsigned int Hive::GetState() const
 
 void Hive::Start()
 {
-	healthComponent = new HealthComponent(1000, 1000);
-	AddComponent(healthComponent);
-
 	BoxCollider* sc = new BoxCollider();
 	sc->ResetCollisionLayer();
 	sc->AddCollisionLayer(CollisionLayers::OBSTACLE);
@@ -131,7 +139,6 @@ void Hive::Start()
 				FlagToBeDestroyed();
 		}
 	};
-	SetState(0);
 }
 
 void Hive::Update()

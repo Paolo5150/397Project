@@ -52,7 +52,6 @@ void SaveGameManager::LoadGame(std::string filePath)
 					if (objectType == "Player")
 					{
 						Player* obj = (Player*)GameAssetFactory::Instance().Create("Player");
-						obj->Start();
 
 						float x = stof(line);
 
@@ -79,20 +78,15 @@ void SaveGameManager::LoadGame(std::string filePath)
 							obj->hasGun = true;
 						}
 						obj->transform.SetPosition(x, y, z);
-						//obj->SetRotation(rotX, rotY, rotZ);
 						obj->ammoCounter = ammo;
-						Logger::LogInfo("Removing ", obj->healthComponent->GetMaxHealth() - health, " health from player");
 						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
-						Logger::LogInfo("New Health: ", obj->healthComponent->GetCurrentHealth());
 
 						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
-						Logger::LogInfo("Added Player from save");
 						player = obj;
 					}
 					else if (objectType == "Spider")
 					{
 						Spider* obj = (Spider*)GameAssetFactory::Instance().Create("Spider");
-						obj->Start();
 
 						float x = stof(line);
 
@@ -106,17 +100,13 @@ void SaveGameManager::LoadGame(std::string filePath)
 						float health = stof(line);
 
 						obj->transform.SetPosition(x, y, z);
-						//obj->transform.SetRotation(rotX, rotY, rotZ);
-						obj->SetTarget(player->transform);
 						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
 
 						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
-						Logger::LogInfo("Added Spider from save");
 					}
 					else if (objectType == "Hive")
 					{
 						Hive* obj = (Hive*)GameAssetFactory::Instance().Create("Hive");
-						obj->Start();
 
 						float x = stof(line);
 
@@ -137,7 +127,6 @@ void SaveGameManager::LoadGame(std::string filePath)
 						obj->SetState(state);
 
 						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
-						Logger::LogInfo("Added Hive from save");
 					}
 					else
 					{
@@ -147,7 +136,7 @@ void SaveGameManager::LoadGame(std::string filePath)
 			}
 			else
 			{
-				if (line == "Player" || line == "Spider" || line == "Hive")
+				if (IsSaveable(line))
 				{
 					inObject = true;
 					objectType = line;
@@ -160,6 +149,18 @@ void SaveGameManager::LoadGame(std::string filePath)
 	else
 	{
 		Logger::LogInfo("No save file found");
+	}
+}
+
+bool SaveGameManager::IsSaveable(std::string type)
+{
+	if (type == "Player" || type == "Spider" || type == "Hive")
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 

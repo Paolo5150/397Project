@@ -44,8 +44,8 @@ Player::Player() : GameObject("Player"), Saveable()
 
 	hasGun = false;
 
-
-
+	healthComponent = new HealthComponent(100, 100);
+	AddComponent(healthComponent);
 }
 
 void Player::OnAddToScene(Scene& theScene)
@@ -126,10 +126,6 @@ void Player::Start()
 	gn->transform.SetScale(0.01, 0.01, 0.01);
 	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
 	gunCam->AddChild(gn);
-
-	healthComponent = new HealthComponent(100, 100);
-	AddComponent(healthComponent);
-
 }
 
 
@@ -184,7 +180,9 @@ void Player::Update()
 		underwaterTimer += Timer::GetDeltaS();
 
 		if (underwaterTimer > 3)
+		{
 			healthComponent->AddToHealth(Timer::GetDeltaS() * -3);
+		}
 	}
 	else
 		underwaterTimer = 0;

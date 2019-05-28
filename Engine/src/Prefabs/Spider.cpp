@@ -36,6 +36,7 @@ Spider::Spider() : GameObject("Enemy_Spider"), Saveable()
 	AddComponent(healthComponent);
 
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
+	Logger::LogInfo("Spider Event ID: ", _enemySpottedEventID);
 }
 
 Spider::Spider(float posX, float posY, float posZ) : GameObject("Enemy_Spider"), Saveable()

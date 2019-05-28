@@ -11,7 +11,7 @@
 class AIBase : public Component
 {
 public:
-	AIBase(std::string scriptPath); //Note: do not call a seeking function without setting a target first!
+	AIBase(std::string scriptPath); //Note: do not call Update function without setting a target first!
 
 	AIBase(Transform& targetTransform, std::string scriptPath);
 
