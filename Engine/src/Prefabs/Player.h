@@ -4,19 +4,74 @@
 #include "..\Core\MainCamera.h"
 #include "..\Components\HealthComponent.h"
 
+class Companion;
 
+/**
+* @class Player
+* @brief Premade gameobject for the player object
+*
+*
+* @author Paolo Ferri
+* @version 01
+* @date 15/05/2019
+*
+*
+* @bug No known bugs.
+*/
 class Player : public GameObject
 {
 public:
+	/**
+	* @brief		Constructor
+	* @pre			The player object does not exist
+	* @post			The player object is created
+	*/
 	Player();
+
+	/**
+	* @brief		Destructor
+	* @pre			The player object must exist
+	* @post			The player object is destroyed
+	*/
 	~Player();
+
+	/**
+	* @brief		Initialize player
+	* @pre			The player object must exist
+	* @post			The player object is initialized, colliders are added
+	*/
 	void Start() override;
+
+	/**
+	* @brief		Overridden callback when the player is added to the scene
+	* @pre			The player object must exist
+	*/
 	virtual void OnAddToScene(Scene& theScene) override;
 
+	/**
+	* @brief		Overridden callback for update method
+	* @pre			The player object must exist
+	*/
 	void Update() override;
+
+	void FlashColor(float r, float g, float b) override;
+
+	/**
+	* @brief		Read keyboards input to move the player
+	* @pre			The player object must exist
+	* @post			The player moves with keyboard/mouse
+	*/
 	void UpdateControls();
 
+	/**
+	* @brief		Reference to main camera object
+	*/
 	Camera* mainCamera;
+
+	/**
+	* @brief		Overridden callback for late update method
+	* @pre			The player object must exist
+	*/
 	void LateUpdate();
 
 	/**
@@ -57,19 +112,51 @@ public:
 	*/
 	float GetRotationSpeed() const;
 
-
+	/**
+	* @brief		Box collider used for collisions
+	*/
 	BoxCollider* boxCollider;
+
+	/**
+	* @brief		Box collider used for collisions
+	*/
 	BoxCollider* pickupCollider;
 
+	/**
+	* @brief		Health component, keeps track of player health
+	*/
 	HealthComponent* healhComponent;
 
-	int ammoCounter;
-	float shootTimer;
-	GranadeLauncher* gn;
+	/**
+	* @return			The ammo available
+	*/
+	int GetAmmos() { return ammoCounter; }
 
+	/**
+	* @brief		returns total number of pumpkins shot
+	* @return		The total number of pumpkins shot
+	*/
 	static unsigned GetTotalPumpkinsShot(){ return totalPumpkinsShot; }
+
+	/**
+	* @brief		Reset total number of pumpkins shot
+	*/
 	static void ResetTotalPumpkinShots() { totalPumpkinsShot = 0; }
 private:
+	/**
+	* @brief		The gun model
+	*/
+	GranadeLauncher* gn;
+
+	/**
+	* @brief		Keeps track of shoot rate
+	*/
+	float shootTimer;
+
+	/**
+	* @brief		Number of ammos available
+	*/
+	int ammoCounter;
 	/**
 	* @brief		The camera movement speed
 	*/
@@ -90,11 +177,25 @@ private:
 	*/
 	glm::vec3 _lastPos;
 
+	/**
+	* @brief		Tracks the time the player spent underwater
+	*/
 	float underwaterTimer;
 
+	/**
+	* @brief		Intended direction in world space according to input
+	*/
 	glm::vec3 _intendedDir;
 
+	/**
+	* @brief		Total number of pumpkins shot
+	*/
 	static unsigned totalPumpkinsShot;
 
+	/**
+	* @brief		Whether the gun has been picked up
+	*/
 	bool hasGun;
+
+	Companion* companion;
 };

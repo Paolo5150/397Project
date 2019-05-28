@@ -1,9 +1,11 @@
 #include "Player.h"
 #include "..\Scene\Scene.h"
 #include "..\Scene\SceneManager.h"
-
+#include "Companion.h"
 #include "Terrain.h"
 #include "Pumpkin.h"
+#include "Targeter.h"
+#include "..\GUI\GUIElements\GUIManager.h"
 
 namespace {
 
@@ -31,7 +33,7 @@ Player::Player() : GameObject("Player")
 
 	gn = new GranadeLauncher();
 	gn->Start();
-	gn->boxCollider->ResetCollisionLayer();
+	gn->GetCollider()->ResetCollisionLayer();
 	
 
 	gunCam = new CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 10000.0f);
@@ -66,6 +68,9 @@ void Player::Start()
 	//int x, y, z;
 	//Terrain::Instance().GetCenter(x, y, z);
 	//transform.SetPosition(x, y, z);
+
+	companion = dynamic_cast<Companion*>(SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Companion")[0]);
+
 	transform.SetRotation(0, 0, 0);
 
 	boxCollider = new BoxCollider();
@@ -115,7 +120,7 @@ void Player::Start()
 		{
 			Logger::LogInfo("Got launcher");
 			gn->SetActive(1);
-			gn->boxCollider->SetActive(0);
+			gn->GetCollider()->SetActive(0);
 			gn->pointLight->SetActive(0);
 			hasGun = 1;
 			go->FlagToBeDestroyed();
@@ -140,6 +145,36 @@ void Player::Update()
 	_intendedDir.y = 0;
 	_intendedDir.z = 0;
 
+	static float healthTimer = 0;
+	static const int reviveTime = 8;
+	if (companion->currentState == Companion::DEAD_STATE)
+	{
+		if (glm::length(transform.GetPosition() - companion->transform.GetPosition()) < 150)
+		{
+		healthTimer += Timer::GetDeltaS();
+			
+		companion->ApplyColor( healthTimer / reviveTime, healthTimer / reviveTime,healthTimer / reviveTime);
+
+		if (healthTimer > reviveTime)
+			{
+				healthTimer = 0;
+				companion->GetHealthComponent()->AddToHealth(100);
+				companion->ApplyColor(1,1,1);
+
+				companion->currentState = Companion::FOLLOW_STATE;
+			}
+		}
+		else
+		{
+			healthTimer = 0;
+			companion->ApplyColor(healthTimer / reviveTime, healthTimer / reviveTime, healthTimer / reviveTime);
+
+		}
+
+	}
+
+
+
 	//Logger::LogInfo(gn->transform.ToString());
 	if (Input::GetMouseDown(0) && ammoCounter > 0 && hasGun)
 	{
@@ -156,6 +191,21 @@ void Player::Update()
 			ammoCounter--;
 			totalPumpkinsShot++;
 
+		}
+	}
+	else if (Input::GetMouseDown(1))
+	{
+		shootTimer += Timer::GetDeltaS();
+
+		if (shootTimer >= SHOOT_RATE)
+		{
+			shootTimer = 0;
+
+			Targeter* pump = new Targeter();
+			pump->transform.SetPosition(transform.GetPosition() + transform.GetLocalFront() * 80.0f - transform.GetLocalUp() * 10.0f);
+			pump->Start();
+			pump->shootDirection = transform.GetLocalFront();
+			SceneManager::Instance().GetCurrentScene().AddGameObject(pump);
 		}
 	}
 	else
@@ -238,9 +288,9 @@ void Player::UpdateControls()
 	}
 	else
 	{
-		transform.SetRotation(0, 0, 0);
-		mainCamera->transform.SetRotation(0, 0, 0);
-		gunCam->transform.SetRotation(0, 0, 0);
+	//	transform.SetRotation(0, 0, 0);
+		//mainCamera->transform.SetRotation(0, 0, 0);
+	//	gunCam->transform.SetRotation(0, 0, 0);
 	}
 
 
@@ -297,6 +347,10 @@ void Player::UpdateControls()
 
 }
 
+void Player::FlashColor(float r, float g, float b)
+{
+	GUIManager::Instance().FlashRed();
+}
 
 
 void Player::LateUpdate()

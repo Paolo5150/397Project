@@ -16,7 +16,7 @@ class Shader;
 *
 * @author Paolo Ferri
 * @version 01
-* @date 28/02/2018
+* @date 28/02/2019
 *
 * @bug No known bugs.
 */

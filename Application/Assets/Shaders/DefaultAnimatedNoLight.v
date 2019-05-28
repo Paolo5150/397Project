@@ -37,7 +37,7 @@ void main()
 	vec4 boned_position = bone_transform * vec4(inPosition, 1.0); // transformed by bones
 	
 vec4 fragPos = u_model * vec4(inPosition, 1.0);
-
+gl_ClipDistance[0] = dot( fragPos,u_clippingPlane);
 gl_Position = u_mvp  * boned_position;
 
 Normal = normalize( u_model * bone_transform* vec4(normalize(inNormals),0.0)).xyz;

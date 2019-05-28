@@ -6,6 +6,10 @@
 
 class AIBase;
 class HealthComponent;
+class BoxCollider;
+class Companion;
+class Player;
+
 
 class Spider : public GameObject
 {
@@ -38,14 +42,15 @@ private:
 
 	static unsigned totalSpiders;
 	static unsigned totalSpidersKilled;
-
-	bool redFlashing;
-	float colorTimer;
 	AIBase* aiBase;
 	float attackTimer;
 	float deathTimer;
 	HealthComponent* healthComponent;
 	std::string _enemySpottedEventID;
+	BoxCollider* pumpkinCollider;
+	BoxCollider* slowCollider;
+	Companion* companion;
+	Player* player;
 
 	bool EnemySpotted(Event* e);
 };

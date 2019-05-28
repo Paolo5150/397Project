@@ -55,8 +55,8 @@
 // VERSION HISTORY
 //
 //   1.20 (2019-02-07) PackFontRange skips missing codepoints; GetScaleFontVMetrics()
-//   1.19 (2018-02-11) GPOS kerning, STBTT_fmod
-//   1.18 (2018-01-29) add missing function
+//   1.19 (2019-02-11) GPOS kerning, STBTT_fmod
+//   1.18 (2019-01-29) add missing function
 //   1.17 (2017-07-23) make more arguments const; doc fix
 //   1.16 (2017-07-12) SDF support
 //   1.15 (2017-03-03) make more arguments const
@@ -4805,8 +4805,8 @@ STBTT_DEF int stbtt_CompareUTF8toUTF16_bigendian(const char *s1, int len1, const
 
 // FULL VERSION HISTORY
 //
-//   1.19 (2018-02-11) OpenType GPOS kerning (horizontal only), STBTT_fmod
-//   1.18 (2018-01-29) add missing function
+//   1.19 (2019-02-11) OpenType GPOS kerning (horizontal only), STBTT_fmod
+//   1.18 (2019-01-29) add missing function
 //   1.17 (2017-07-23) make more arguments const; doc fix
 //   1.16 (2017-07-12) SDF support
 //   1.15 (2017-03-03) make more arguments const

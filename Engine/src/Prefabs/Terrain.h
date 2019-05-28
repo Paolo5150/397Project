@@ -10,7 +10,7 @@
 *
 * @author Paolo Ferri
 * @version 01
-* @date 05/03/2018
+* @date 05/03/2019
 *
 *
 * @bug No known bugs.
@@ -19,6 +19,9 @@ class Terrain : public GameObject
 {
 public:
 
+	/**
+	* @return		The terarin instance
+	*/
 	static Terrain& Instance();
 
 

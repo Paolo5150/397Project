@@ -27,7 +27,7 @@ Hive::Hive() : GameObject("Hive")
 
 	ApplyMaterial(mat_hive);
 
-	_maxSpiders = 10;
+	_maxSpiders = 15;
 	canSpawnSpiders = true;
 	totalHives++;
 }
@@ -103,31 +103,26 @@ void Hive::Start()
 	BoxCollider* sc = new BoxCollider();
 	sc->ResetCollisionLayer();
 	sc->AddCollisionLayer(CollisionLayers::OBSTACLE);
+
 	sc->ResetCollideAgainstLayer();
 	sc->AddCollideAgainstLayer(CollisionLayers::PLAYER);
 	sc->AddCollideAgainstLayer(CollisionLayers::PUPMKIN);
+
+
 	//sc->enableRender = 1;
 	sc->transform.SetScale(0.6, 0.6, 0.6);
 	sc->transform.SetPosition(0, 0.6, 0);
 	AddComponent(sc);
 
+	// Callback needs to be specified after adding the component
 	sc->collisionCallback = [this](GameObject* go)
 	{
 		if (go->GetName() == "Pumpkin")
 		{
 			go->FlagToBeDestroyed();
 			healtthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
-			ApplyColor(0.8, 0.0, 0.0);
-			colorTimer = 0.1f;
-			redFlashing = 1;
+			FlashColor(1, 0, 0);
 
-			if (healtthComponent->GetHealthMaxRatio() < 0.7 && healtthComponent->GetHealthMaxRatio() > 0.4)
-				SetState(1);
-			else if (healtthComponent->GetHealthMaxRatio() <= 0.4)
-				SetState(2);
-
-			if (healtthComponent->IsDead())
-				FlagToBeDestroyed();
 		}
 	};
 	SetState(0);
@@ -135,12 +130,16 @@ void Hive::Start()
 
 void Hive::Update()
 {
-	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
-	if (colorTimer == 0 && redFlashing)
-	{
-		ApplyColor(1, 1, 1);
-		redFlashing = 0;
-	}
+	GameObject::Update();
+	
+
+	if (healtthComponent->GetHealthMaxRatio() < 0.7 && healtthComponent->GetHealthMaxRatio() > 0.4)
+		SetState(1);
+	else if (healtthComponent->GetHealthMaxRatio() <= 0.4)
+		SetState(2);
+
+	if (healtthComponent->IsDead())
+		FlagToBeDestroyed();
 
 	if (canSpawnSpiders)
 	{

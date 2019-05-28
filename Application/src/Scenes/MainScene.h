@@ -13,7 +13,7 @@ class GUIButton;
 *
 * @author Paolo Ferri
 * @version 01
-* @date 07/03/2018
+* @date 07/03/2019
 *
 *
 * @bug No known bugs.

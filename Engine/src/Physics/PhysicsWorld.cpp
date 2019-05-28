@@ -125,7 +125,7 @@ void PhysicsWorld::AddCollider(Collider* rb)
 
 
 
-void PhysicsWorld::Update(float deltaS)
+void PhysicsWorld::Update()
 {
 	FillQuadtree(0);
 	PerformCollisions(false);
@@ -140,10 +140,6 @@ void PhysicsWorld::Update(float deltaS)
 	//dynamicsWorld->stepSimulation(deltaS, 10);
 }
 
-bool PhysicsWorld::CollisionCallback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
-{
-	return false;
-}
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {
