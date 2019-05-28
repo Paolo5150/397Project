@@ -230,9 +230,7 @@ void Player::Update()
 		underwaterTimer += Timer::GetDeltaS();
 
 		if (underwaterTimer > 3)
-		{
 			healthComponent->AddToHealth(Timer::GetDeltaS() * -3);
-		}
 	}
 	else
 		underwaterTimer = 0;
@@ -371,9 +369,6 @@ void Player::LateUpdate()
 {
 	_movementSpeed = ORIGINAL_SPEED;
 }
-
-
-
 
 void Player::SetMovementSpeed(float speed)
 {

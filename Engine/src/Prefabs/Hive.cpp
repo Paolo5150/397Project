@@ -98,7 +98,7 @@ void Hive::SetState(unsigned int index)
 			Logger::LogWarning("Attempted to set invalid Hive State!");
 			break;
 	}
-	Logger::LogInfo("Set state to ", index);
+
 }
 
 unsigned int Hive::GetState() const
@@ -130,19 +130,7 @@ void Hive::Start()
 			go->FlagToBeDestroyed();
 			healthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
 			EventDispatcher::Instance().DispatchEvent(new EnemySpottedEvent());
-			ApplyColor(0.8, 0.0, 0.0);
 			FlashColor(1, 0, 0);
-			colorTimer = 0.1f;
-			redFlashing = 1;
-
-			if (healthComponent->GetHealthMaxRatio() < 0.7 && healthComponent->GetHealthMaxRatio() > 0.4)
-				SetState(1);
-			else if (healthComponent->GetHealthMaxRatio() <= 0.4)
-				SetState(2);
-
-			if (healthComponent->IsDead())
-				FlagToBeDestroyed();
-
 		}
 	};
 }
@@ -152,12 +140,12 @@ void Hive::Update()
 	GameObject::Update();
 	
 
-	if (healtthComponent->GetHealthMaxRatio() < 0.7 && healtthComponent->GetHealthMaxRatio() > 0.4)
+	if (healthComponent->GetHealthMaxRatio() < 0.7 && healthComponent->GetHealthMaxRatio() > 0.4)
 		SetState(1);
-	else if (healtthComponent->GetHealthMaxRatio() <= 0.4)
+	else if (healthComponent->GetHealthMaxRatio() <= 0.4)
 		SetState(2);
 
-	if (healtthComponent->IsDead())
+	if (healthComponent->IsDead())
 		FlagToBeDestroyed();
 
 	if (canSpawnSpiders)

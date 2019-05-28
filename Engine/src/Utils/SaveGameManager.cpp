@@ -6,7 +6,9 @@
 #include "..\Prefabs\Hive.h"
 #include "..\Prefabs\Player.h"
 #include "..\Prefabs\Spider.h"
+#include "..\Prefabs\Companion.h"
 #include "..\Components\AIBase.h"
+#include "..\Components\HealthComponent.h"
 
 void SaveGameManager::SaveGame(std::string filePath)
 {
@@ -73,7 +75,7 @@ void SaveGameManager::LoadGame(std::string filePath)
 						if (hasGun)
 						{
 							obj->gn->SetActive(1);
-							obj->gn->boxCollider->SetActive(0);
+							obj->gn->GetCollider()->SetActive(0);
 							obj->gn->pointLight->SetActive(0);
 							obj->hasGun = true;
 						}
@@ -100,7 +102,27 @@ void SaveGameManager::LoadGame(std::string filePath)
 						float health = stof(line);
 
 						obj->transform.SetPosition(x, y, z);
-						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
+						obj->GetComponent<HealthComponent>("HealthComponent")->AddToHealth(-(obj->GetComponent<HealthComponent>("HealthComponent")->GetMaxHealth() - health));
+
+						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
+					}
+					else if (objectType == "Companion")
+					{
+						Companion* obj = (Companion*)GameAssetFactory::Instance().Create("Companion");
+
+						float x = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float y = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float z = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float health = stof(line);
+
+						obj->transform.SetPosition(x, y, z);
+						obj->GetComponent<HealthComponent>("HealthComponent")->AddToHealth(-(obj->GetComponent<HealthComponent>("HealthComponent")->GetMaxHealth() - health));
 
 						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
 					}
@@ -123,7 +145,7 @@ void SaveGameManager::LoadGame(std::string filePath)
 						int state = stoi(line);
 
 						obj->transform.SetPosition(x, y, z);
-						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
+						obj->GetComponent<HealthComponent>("HealthComponent")->AddToHealth(-(obj->GetComponent<HealthComponent>("HealthComponent")->GetMaxHealth() - health));
 						obj->SetState(state);
 
 						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
@@ -154,7 +176,7 @@ void SaveGameManager::LoadGame(std::string filePath)
 
 bool SaveGameManager::IsSaveable(std::string type)
 {
-	if (type == "Player" || type == "Spider" || type == "Hive")
+	if (type == "Player" || type == "Spider" || type == "Companion" || type == "Hive")
 	{
 		return true;
 	}

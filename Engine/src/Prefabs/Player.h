@@ -130,13 +130,19 @@ public:
 	*/
 	HealthComponent* healthComponent;
 
+	/**
+	* @brief		Number of ammos available
+	*/
 	int ammoCounter;
-	float shootTimer;
 	
 	/**
 	* @brief		Whether the gun has been picked up
 	*/
 	bool hasGun;
+
+	/**
+	* @brief		The gun model
+	*/
 	GranadeLauncher* gn;
 
 	/**
@@ -155,20 +161,12 @@ public:
 	*/
 	static void ResetTotalPumpkinShots() { totalPumpkinsShot = 0; }
 private:
-	/**
-	* @brief		The gun model
-	*/
-	GranadeLauncher* gn;
 
 	/**
 	* @brief		Keeps track of shoot rate
 	*/
 	float shootTimer;
 
-	/**
-	* @brief		Number of ammos available
-	*/
-	int ammoCounter;
 	/**
 	* @brief		The camera movement speed
 	*/

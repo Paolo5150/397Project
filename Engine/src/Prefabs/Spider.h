@@ -41,14 +41,12 @@ public:
 	static unsigned GetTotalSpidersKilled(){ return totalSpidersKilled; }
 	static void ResetTotalSpidersKilled() { totalSpidersKilled = 0; }
 
-	AIBase* aiBase;
-	HealthComponent* healthComponent;
-
 private:
 
 	static unsigned totalSpiders;
 	static unsigned totalSpidersKilled;
-
+	AIBase* aiBase;
+	HealthComponent* healthComponent;
 	float attackTimer;
 	float deathTimer;
 	float underwaterTimer;

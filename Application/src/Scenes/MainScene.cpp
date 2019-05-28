@@ -212,7 +212,14 @@ void MainScene::Initialize() {
 	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
 		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
-		//GameObjects
+	//GameObjects
+	if (SaveGameManager::loadWhenPossible == false)
+	{
+		Companion* comp = new Companion();
+		comp->transform.SetPosition(player->transform.GetPosition() + glm::vec3(200, -20, 0));
+		AddGameObject(comp);
+	}
+
 	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
@@ -236,21 +243,10 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(&Terrain::Instance());
 
-	if(SaveGameManager::loadWhenPossible == false)
-	{
-		Companion* comp = new Companion();
-		comp->transform.SetPosition(player->transform.GetPosition() + glm::vec3(200,-20,0));
-		AddGameObject(comp);
-	}
-
 	Lua::CloseLua();
 	SaveGameManager::loadWhenPossible = false;
 
 	//Randomly spawn the gun
-
-	
-
-
 	
 	Player::ResetTotalPumpkinShots();
 	Spider::ResetTotalSpidersKilled();
@@ -278,7 +274,7 @@ void MainScene::Start()
 		gn->SetLayer(0);
 		gn->spin = 1;
 		gn->SetLayer(Layers::DEFAULT);
-		gn->boxCollider->transform.SetScale(100, 100, 180);
+		gn->GetCollider()->transform.SetScale(100, 100, 180);
 		gn->transform.SetScale(0.1, 0.1, 0.1);
 		gn->transform.SetPosition(gunPos + glm::vec3(0, 50, 0));
 		AddGameObject(gn);

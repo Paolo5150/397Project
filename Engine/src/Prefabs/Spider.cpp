@@ -42,7 +42,7 @@ Spider::Spider() : GameObject("Enemy_Spider"), Saveable()
 	AddComponent(healthComponent);
 
 	_enemySpottedEventID = EventDispatcher::Instance().SubscribeCallback<EnemySpottedEvent>(std::bind(&Spider::EnemySpotted, this, std::placeholders::_1));
-	Logger::LogInfo("Spider Event ID: ", _enemySpottedEventID);
+	//Logger::LogInfo("Spider Event ID: ", _enemySpottedEventID);
 }
 
 Spider::Spider(float posX, float posY, float posZ) : GameObject("Enemy_Spider"), Saveable()
@@ -246,14 +246,6 @@ void Spider::Update()
 					aiBase->GetTarget()->gameObject->FlashColor(1, 0, 0);
 					h->AddToHealth(-5);
 				}
-				else
-				{
-					Logger::LogInfo("HealthComponent null!");
-				}
-			}
-			else
-			{
-				Logger::LogInfo("GameObject null!");
 			}
 		}
 	}
@@ -281,7 +273,7 @@ void Spider::Update()
 	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 1500)
 		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 1500);
 
-	if (transform.GetPosition().y < 750)
+	/*if (transform.GetPosition().y < 750)
 	{
 		underwaterTimer += Timer::GetDeltaS();
 
@@ -289,7 +281,7 @@ void Spider::Update()
 			healthComponent->AddToHealth(Timer::GetDeltaS() * -3);
 	}
 	else
-		underwaterTimer = 0;
+		underwaterTimer = 0;*/
 }
 
 std::string Spider::Save()
