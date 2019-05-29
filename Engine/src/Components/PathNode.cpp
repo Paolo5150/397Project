@@ -11,7 +11,8 @@ PathNode::PathNode() : GameObject("PathNode")
 	cost = 0;
 }
 PathNode::~PathNode()
-{}
+{
+}
 
 
 void PathNode::Start()

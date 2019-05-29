@@ -92,6 +92,7 @@ void MainScene::UnloadAssets() {
 
 }
 void MainScene::QuitScene() {
+	PathFinder::Instance().DeleteNodes();
 
 	Scene::QuitScene();
 
