@@ -26,7 +26,7 @@ MainMenuScene::MainMenuScene() : Scene("MainMenuScene")
 
 void MainMenuScene::LoadAssets() {
 
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.jpg");
 
 
 }

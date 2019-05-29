@@ -67,7 +67,7 @@ void MainScene::LoadAssets() {
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Tree\\tree.obj", true, false);
 
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.jpg");
 
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Spider\\spider_3.fbx", 0);
 
