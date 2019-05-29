@@ -75,7 +75,6 @@ void SimpleScene::UnloadAssets() {
 
 }
 void SimpleScene::QuitScene() {
-	Logger::LogError("Scene asset clean up");
 
 	Scene::QuitScene();
 

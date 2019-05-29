@@ -83,6 +83,7 @@ Water::~Water()
 {
 	EventDispatcher::Instance().UnsubscribeCallback<WindowResizeEvent>(waterResizeToken);
 
+	delete waterCamera;
 	delete material;
 	delete refractionBuffer;
 	delete reflectionBuffer;
