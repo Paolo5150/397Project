@@ -108,19 +108,18 @@ public:
 	static InternalAsset* GetCreatedAsset(unsigned int index);
 
 	/**
-	* @brief		Removes an asset from the array of created assets
-	*
-	* @param		index	the index of the asset to remove from the array of created assets
-	*/
-	static void RemoveCreatedAsset(unsigned int index);
-
-	/**
 	* @brief		Clears all the created assets from the array
 	*/
 	static void ClearCreatedAssets();
 
+	/**
+	* @brief		Dumps the contents of the lua_state's stack to the logger
+	*/
 	static void StackDump(lua_State *L);
 
+	/**
+	* @brief		Dumps the contents of the lua_state'stack at the specified index to the logger
+	*/
 	static void StackDump(lua_State *L, int index);
 
 	//-- Stack Returns --//

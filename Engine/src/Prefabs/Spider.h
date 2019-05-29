@@ -11,7 +11,18 @@ class BoxCollider;
 class Companion;
 class Player;
 
-
+/**
+* @class Spider
+* @brief Premade gameobject for the Spider object
+*
+*
+* @author Dylan Green
+* @version 01
+* @date 10/05/2019
+*
+*
+* @bug No known bugs.
+*/
 class Spider : public GameObject, public Saveable
 {
 public:

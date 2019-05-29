@@ -30,9 +30,9 @@ void SaveGameManager::LoadGame(std::string filePath)
 	{
 		Logger::LogInfo("Save file found, loading \"", filePath, "\"...");
 
-		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Player");
-		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Spider");
-		SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Hive");
+		//SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Player");
+		//SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Spider");
+		//SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Hive");
 		std::ifstream inputFile(filePath);
 		std::string line;
 		std::getline(inputFile, line, '\n'); //Throw away time/date, can use this later for saves if required
@@ -41,6 +41,7 @@ void SaveGameManager::LoadGame(std::string filePath)
 		bool inObject = false; //True when 'inside' the variables for an object
 		std::string objectType = "";
 		Player* player = nullptr;
+
 		while (std::getline(inputFile, line, '\n'))
 		{
 			if (inObject)
@@ -72,6 +73,10 @@ void SaveGameManager::LoadGame(std::string filePath)
 						std::getline(inputFile, line, '\n');
 						float ammo = stof(line);
 
+						obj->transform.SetPosition(x, y, z);
+
+						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
+
 						if (hasGun)
 						{
 							obj->gn->SetActive(1);
@@ -79,9 +84,8 @@ void SaveGameManager::LoadGame(std::string filePath)
 							obj->gn->pointLight->SetActive(0);
 							obj->hasGun = true;
 						}
-						obj->transform.SetPosition(x, y, z);
+
 						obj->ammoCounter = ammo;
-						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
 
 						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
 						player = obj;

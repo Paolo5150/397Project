@@ -27,6 +27,17 @@ end
 ----------
 */
 
+/**
+* @class SaveGameManager
+* @brief Save assets inheriting from Saveable and allows for loading them back into the game
+*
+* @author Dylan Green
+* @version 01
+* @date 22/05/2019
+*
+*
+* @bug No known bugs.
+*/
 static class SaveGameManager
 {
 public:

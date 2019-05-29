@@ -74,7 +74,9 @@ public:
 
 	/**
 	* @brief		Overridden callback for save method
-	* @pre			The companion object must exist
+	* @pre			The hive object must exist
+	*
+	* @return		String containing information to be saved
 	*/
 	std::string Save() override;
 
