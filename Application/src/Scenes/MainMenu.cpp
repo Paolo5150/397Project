@@ -68,6 +68,7 @@ void MainMenuScene::Initialize() {
 		loadButton->isActive = 0;
 		manualButton->isActive = 0;
 		quitButton->isActive = 0;
+		loadFailedText->isActive = 0;
 		loadingText->isActive = 1;
 
 		GUIManager::Instance().RenderNoButtonCallbacks();
@@ -91,8 +92,8 @@ void MainMenuScene::Initialize() {
 			loadButton->isActive = 0;
 			manualButton->isActive = 0;
 			quitButton->isActive = 0;
-			loadingText->isActive = 1;
 			loadFailedText->isActive = 0;
+			loadingText->isActive = 1;
 
 			GUIManager::Instance().RenderNoButtonCallbacks();
 
