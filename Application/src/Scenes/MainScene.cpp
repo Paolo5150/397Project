@@ -213,13 +213,6 @@ void MainScene::Initialize() {
 		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
 	//GameObjects
-	if (SaveGameManager::loadWhenPossible == false)
-	{
-		Companion* comp = new Companion();
-		comp->transform.SetPosition(player->transform.GetPosition() + glm::vec3(200, -20, 0));
-		AddGameObject(comp);
-	}
-
 	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
@@ -234,6 +227,13 @@ void MainScene::Initialize() {
 	}
 
 	player = ((Player*)GetGameobjectsByName("Player").at(0));
+
+	if (SaveGameManager::loadWhenPossible == false)
+	{
+		Companion* comp = new Companion();
+		comp->transform.SetPosition(player->transform.GetPosition() + glm::vec3(200, -20, 0));
+		AddGameObject(comp);
+	}
 
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);

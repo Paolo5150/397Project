@@ -24,7 +24,7 @@ void SaveGameManager::SaveGame(std::string filePath)
 	file.close();
 }
 
-void SaveGameManager::LoadGame(std::string filePath)
+bool SaveGameManager::LoadGame(std::string filePath)
 {
 	if (FileUtils::IsFileThere(filePath))
 	{
@@ -156,7 +156,7 @@ void SaveGameManager::LoadGame(std::string filePath)
 					}
 					else
 					{
-						return;
+						return false;
 					}
 				}
 			}
@@ -171,10 +171,12 @@ void SaveGameManager::LoadGame(std::string filePath)
 		}
 		inputFile.close();
 		Logger::LogInfo("Save game loaded!");
+		return true;
 	}
 	else
 	{
 		Logger::LogInfo("No save file found");
+		return false;
 	}
 }
 
