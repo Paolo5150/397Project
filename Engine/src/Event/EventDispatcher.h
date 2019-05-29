@@ -113,6 +113,11 @@ private:
 	* @brief		The list of callbacks
 	*/
 	std::map<std::string,std::list < CallbackObj >> allCallbacks;
+
+	/**
+	* @brief		Incremental number for callbackIDs
+	*/
+	int incrementalID = 0;
 };
 
 
@@ -145,6 +150,9 @@ std::string EventDispatcher::SubscribeCallback(std::function<bool(Event*)> callb
 	ss << eventName;
 	ss << "_";
 	ss << *(long *)(char *)&callback;
+	ss << "_";
+	ss << incrementalID;
+	incrementalID++;
 
 	allCallbacks[eventName].push_back(CallbackObj(ss.str(),callback));
 	std::string myS = ss.str();
