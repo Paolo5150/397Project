@@ -153,17 +153,20 @@ void MainScene::Initialize() {
 			if (SaveGameManager::CanLoadGame())
 			{
 				centerText->position.x = 5;
+				centerText->CalculateSizePosition();
 				centerText->_message = "Save Successful!";
 			}
 			else
 			{
 				centerText->position.x = 5;
+				centerText->CalculateSizePosition();
 				centerText->_message = "Save Failed!";
 			}
 		}
 		else
 		{
 			centerText->position.x = 5;
+			centerText->CalculateSizePosition();
 			centerText->_message = "Collect the gun before saving!";
 		}
 
