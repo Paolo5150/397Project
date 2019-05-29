@@ -65,6 +65,7 @@ private:
 
 	GUIImage* loadingImage;
 	GUIText* loadingText;
+	GUIText* loadFailedText;
 	GUIButton* startButton;
 	GUIImage* manualImage;
 

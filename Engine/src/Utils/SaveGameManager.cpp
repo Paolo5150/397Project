@@ -180,6 +180,18 @@ bool SaveGameManager::LoadGame(std::string filePath)
 	}
 }
 
+bool SaveGameManager::CanLoadGame(std::string filePath)
+{
+	if (FileUtils::IsFileThere(filePath))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool SaveGameManager::IsSaveable(std::string type)
 {
 	if (type == "Player" || type == "Spider" || type == "Companion" || type == "Hive")

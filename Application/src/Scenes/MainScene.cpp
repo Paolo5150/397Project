@@ -135,6 +135,12 @@ void MainScene::Initialize() {
 	endGameText = new GUIText("EndGameText", "", "invasionFont", 2, 35, 10, 1, 1, 1, 1);
 	endGameText->isActive = 0;
 
+	saveFailedText = new GUIText("saveFailedText", "Save failed! Collect the gun before saving!", "arcadeFont", 1, 10, 90, 1, 1, 1, 1);
+	saveFailedText->isActive = 0;
+
+	saveSuccessText = new GUIText("saveSuccessText", "Save Successful!", "arcadeFont", 1, 10, 90, 1, 1, 1, 1);
+	saveSuccessText->isActive = 0;
+
 	resumeButton = (new GUIButton("ResumeButton", "Resume", [&] {
 
 		Resume();
@@ -143,8 +149,15 @@ void MainScene::Initialize() {
 
 	saveButton = (new GUIButton("SaveButton", "Save", [&] {
 
-		if(player->hasGun == true)
+		if (player->hasGun == true)
+		{
 			SaveGameManager::SaveGame();
+			saveSuccessText->isActive = 1;
+		}
+		else
+		{
+			saveFailedText->isActive = 1;
+		}
 
 	}, "", 1.5, 10, 10, 45, 30, 1, 1, 1, 1));
 
@@ -183,6 +196,8 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(hivesLeftText);
 	GUIManager::Instance().AddGUIObject(spidersKilledText);
 	GUIManager::Instance().AddGUIObject(pumpkinsShotText);
+	GUIManager::Instance().AddGUIObject(saveFailedText);
+	GUIManager::Instance().AddGUIObject(saveSuccessText);
 
 	GUIManager::Instance().AddGUIObject(restartButton);
 	GUIManager::Instance().AddGUIObject(saveButton);
@@ -372,6 +387,8 @@ void MainScene::Resume()
 {
 	GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
 	Input::SetCursorMode("disabled");
+	saveFailedText->isActive = 0;
+	saveSuccessText->isActive = 0;
 	restartButton->isActive = 0;
 	saveButton->isActive = 0;
 	quitToDesktopButton->isActive = 0;

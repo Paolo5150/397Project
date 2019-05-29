@@ -81,7 +81,8 @@ public:
 	GUIText* hivesLeftText;
 	GUIText* spidersKilledText;
 	GUIText* pumpkinsShotText;
-
+	GUIText* saveFailedText;
+	GUIText* saveSuccessText;
 
 	GUIButton* resumeButton;
 	GUIButton* saveButton;

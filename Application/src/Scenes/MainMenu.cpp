@@ -80,21 +80,27 @@ void MainMenuScene::Initialize() {
 
 	loadButton = (new GUIButton("menuLoadButton", "Load Game", [&]{
 
-		Input::SetCursorMode("disabled");
-		//GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
-		//loadingImage->isActive = 1;
-		startButton->isActive = 0;
-		gameLogo->isActive = 0;
-		gameTitle->isActive = 0;
-		loadButton->isActive = 0;
-		manualButton->isActive = 0;
-		quitButton->isActive = 0;
-		loadingText->isActive = 1;
+		if (SaveGameManager::CanLoadGame())
+		{
+			Input::SetCursorMode("disabled");
+			//GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
+			//loadingImage->isActive = 1;
+			startButton->isActive = 0;
+			gameLogo->isActive = 0;
+			gameTitle->isActive = 0;
+			loadButton->isActive = 0;
+			manualButton->isActive = 0;
+			quitButton->isActive = 0;
+			loadingText->isActive = 1;
+			loadFailedText->isActive = 0;
 
-		GUIManager::Instance().RenderNoButtonCallbacks();
+			GUIManager::Instance().RenderNoButtonCallbacks();
 
-		SaveGameManager::loadWhenPossible = true;
-		SceneManager::Instance().LoadNewScene("MainScene");
+			SaveGameManager::loadWhenPossible = true;
+			SceneManager::Instance().LoadNewScene("MainScene");
+		}
+		else
+			loadFailedText->isActive = 1;
 
 	}, "", 1.5, 10, 10, 20, 35, 0, 0, 0, 1));
 
@@ -110,12 +116,15 @@ void MainMenuScene::Initialize() {
 	}, "", 1.5, 10, 10, 20, 65, 1, 0.5, 0.2, 1));
 
 	loadingText = new GUIText("LoadingText", "Loading scene...", "invasionFont", 1.5, 5, 90, 0.9, 0.9, 0.9, 1);
+	loadFailedText = new GUIText("LoadFailedText", "Failed to load game or no save file found", "arcadeFont", 1, 10, 90, 0.9, 0.9, 0.9, 1);
 	loadingText->isActive = 0;
+	loadFailedText->isActive = 0;
 
 	GUIManager::Instance().AddGUIObject(gameTitle);
 	GUIManager::Instance().AddGUIObject(menuImage);
 	GUIManager::Instance().AddGUIObject(loadingImage);
 	GUIManager::Instance().AddGUIObject(loadingText);
+	GUIManager::Instance().AddGUIObject(loadFailedText);
 	
 
 	GUIManager::Instance().AddGUIObject(startButton);
