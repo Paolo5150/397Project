@@ -272,7 +272,7 @@ void Spider::Update()
 	if (transform.GetPosition().z < Terrain::Instance().GetTerrainMinZ() + 1500)
 		transform.SetPosition(transform.GetPosition().x, transform.GetPosition().y, Terrain::Instance().GetTerrainMinZ() + 1500);
 
-	/*if (transform.GetPosition().y < 750)
+	if (transform.GetPosition().y < 750)
 	{
 		underwaterTimer += Timer::GetDeltaS();
 
@@ -280,7 +280,7 @@ void Spider::Update()
 			healthComponent->AddToHealth(Timer::GetDeltaS() * -3);
 	}
 	else
-		underwaterTimer = 0;*/
+		underwaterTimer = 0;
 }
 
 std::string Spider::Save()

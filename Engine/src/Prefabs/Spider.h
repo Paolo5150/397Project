@@ -60,6 +60,10 @@ private:
 	HealthComponent* healthComponent;
 	float attackTimer;
 	float deathTimer;
+
+	/**
+	* @brief		Timer for drowning
+	*/
 	float underwaterTimer;
 	std::string _enemySpottedEventID;
 	BoxCollider* pumpkinCollider;

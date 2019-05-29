@@ -21,7 +21,6 @@
 class Hive : public GameObject, public Saveable
 {
 public:
-//---- Public Member Functions ----//
 	/**
 	* @brief		Constructor
 	*
@@ -48,16 +47,39 @@ public:
 	*/
 	~Hive();
 
+	/**
+	*@brief			Sets the maximum number of spiders in the scene before this hive will stop spawning them
+	*
+	* @pre			The hive object must exist
+	*
+	* @param		maxSpiders	maximum number of spiders in the scene before this hive will stop spawning them
+	*/
 	void SetMaxSpiders(unsigned int maxSpiders);
 
+	/**
+	*@brief			Gets the maximum number of spiders in the scene before this hive will stop spawning them
+	*
+	* @pre			The hive object must exist
+	*
+	* @return		maximum number of spiders in the scene before this hive will stop spawning them
+	*/
 	unsigned int GetMaxSpiders() const;
 
+	/**
+	* @brief		Sets the current model state of the hive
+	*
+	* @pre			The hive object must exist
+	*
+	* @param		index	the index of the hive state to set (0-2)
+	*/
 	void SetState(unsigned int index);
 
 	/**
 	* @brief		Returns the current model state of the hive
 	*
-	* @pre			The hive object
+	* @pre			The hive object must exist
+	*
+	* @return		the model state of the hive
 	*/
 	unsigned int GetState() const;
 

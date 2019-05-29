@@ -305,15 +305,14 @@ void MainScene::Start()
 		gn->transform.SetScale(0.1, 0.1, 0.1);
 		gn->transform.SetPosition(gunPos + glm::vec3(0, 50, 0));
 		AddGameObject(gn);
+
+		centerText->isActive = 1;
+		centerText->position.y = 10;
+		centerText->CalculateSizePosition();
+		centerText->_message = "Find the gun!";
 	}
 
 	Input::SetIsEnabled(1);
-	centerText->isActive = 1;
-
-
-	centerText->position.y = 10;
-	centerText->CalculateSizePosition();
-	centerText->_message = "Find the gun!";
 }
 
 void MainScene::LogicUpdate()

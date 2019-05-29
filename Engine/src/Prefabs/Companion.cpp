@@ -82,6 +82,15 @@ void Companion::Update()
 
 	}
 	
+	if (transform.GetPosition().y < 750)
+	{
+		underwaterTimer += Timer::GetDeltaS();
+
+		if (underwaterTimer > 3)
+			healthComponent->AddToHealth(Timer::GetDeltaS() * -3);
+	}
+	else
+		underwaterTimer = 0;
 }
 
 std::string Companion::Save()

@@ -168,6 +168,11 @@ private:
 	*/
 	float currentSpeed;
 
+	/**
+	* @brief		Timer for drowning
+	*/
+	float underwaterTimer;
+
 
 	
 
