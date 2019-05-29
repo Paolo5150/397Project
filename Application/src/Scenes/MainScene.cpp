@@ -194,7 +194,7 @@ void MainScene::Initialize() {
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->SetDiffuseColor(1, 1, 1);
 	dirLight2->transform.SetRotation(90, -120, 0);
-	dirLight2->SetIntensity(0.3f);
+	dirLight2->SetIntensity(0.5f);
 
 	PathFinder::Instance().Generate(&Terrain::Instance());
 	/*for (unsigned i = 0; i < PathFinder::Instance().pathNodes.size(); i++)
