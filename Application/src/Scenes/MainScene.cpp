@@ -32,6 +32,8 @@
 #include "Prefabs\Cabin.h"
 #include "Prefabs\Hive.h"
 #include "Prefabs\Player.h"
+#include "Prefabs\Companion.h"
+
 #include "Prefabs\PumpkinBunch.h"
 #include "Prefabs\GranadeLauncher.h"
 #include "Utils\PathFinder.h"
@@ -136,6 +138,8 @@ void MainScene::Initialize() {
 	endGameText->isActive = 0;
 
 	centerText = new GUIText("centerText", "", "arcadeFont", 1, 25, 50, 1, 1, 1, 1);
+	centerText->position.x = 5;
+	centerText->CalculateSizePosition();
 	centerText->isActive = 0;
 
 	resumeButton = (new GUIButton("ResumeButton", "Resume", [&] {
@@ -152,21 +156,17 @@ void MainScene::Initialize() {
 			SaveGameManager::SaveGame();
 			if (SaveGameManager::CanLoadGame())
 			{
-				centerText->position.x = 5;
-				centerText->CalculateSizePosition();
 				centerText->_message = "Save Successful!";
 			}
 			else
 			{
-				centerText->position.x = 5;
-				centerText->CalculateSizePosition();
+
 				centerText->_message = "Save Failed!";
 			}
 		}
 		else
 		{
-			centerText->position.x = 5;
-			centerText->CalculateSizePosition();
+
 			centerText->_message = "Collect the gun before saving!";
 		}
 
@@ -289,6 +289,8 @@ void MainScene::Start()
 	PhysicsWorld::Instance().PerformCollisions(true);
 	Logger::LogInfo("Nodes", PathFinder::Instance().pathNodes.size());
 
+	companion = dynamic_cast<Companion*>(GetGameobjectsByName("Companion")[0]);
+
 	RenderingEngine::godRays = 1;
 	// Place gun
 	if (player->hasGun == false)
@@ -306,15 +308,40 @@ void MainScene::Start()
 	}
 
 	Input::SetIsEnabled(1);
+	centerText->isActive = 1;
+
+
+	centerText->position.y = 10;
+	centerText->CalculateSizePosition();
+	centerText->_message = "Find the gun!";
 }
 
 void MainScene::LogicUpdate()
 {
 
+
 	PhysicsWorld::Instance().Update();
 
 	if (currentSceneState == PLAYING)
 	{
+		static float textTimer = 0;
+		textTimer += Timer::GetDeltaS();
+
+		if (textTimer > 20)
+		{
+			centerText->isActive = 0;
+			textTimer = 0;
+		}
+
+		if (companion->GetHealthComponent()->IsDead())
+		{
+			centerText->isActive = 1;
+			centerText->position.y = 10;
+			centerText->CalculateSizePosition();
+			centerText->_message = "Your companion is down! Stand next to it to revive it!";
+
+		}
+		
 		//Spawn bunches
 		static float bunchTimer = 0;
 		bunchTimer += Timer::GetDeltaS();
@@ -362,7 +389,7 @@ void MainScene::LogicUpdate()
 	}
 	else if (currentSceneState == PAUSE)
 	{
-
+		
 		if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		{
 			Resume();
@@ -391,6 +418,7 @@ void MainScene::DisplayPauseMenu()
 	quitToDesktopButton->isActive = 1;
 	quitToMenuButton->isActive = 1;
 	resumeButton->isActive = 1;
+	centerText->isActive = 0;
 }
 
 void MainScene::Resume()
@@ -410,6 +438,7 @@ void MainScene::Resume()
 
 void MainScene::DisplayEndGameMenu()
 {
+	centerText->isActive = 0;
 	pumpkinAmmoImage->isActive = false;
 	healthBar->isActive = false;
 	pumpkinAmmoText->isActive = 0;

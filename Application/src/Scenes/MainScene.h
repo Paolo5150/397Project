@@ -5,6 +5,7 @@ class GUIImage;
 class Player;
 class GUIProgressBar;
 class GUIButton;
+class Companion;
 
 /**
 * @class MainScene
@@ -91,6 +92,7 @@ public:
 	GUIProgressBar* healthBar;
 	
 	Player* player;
+	Companion* companion;
 
 	void Restart();
 	void Resume();
