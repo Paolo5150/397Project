@@ -116,9 +116,6 @@ void MainScene::Initialize() {
 		}
 	}
 
-	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
-
-
 	//Timer::SetDisplayFPS(true);
 
 	manual = new GUIImage("manualImage", AssetLoader::Instance().GetAsset<Texture2D>("manual"), 10, 10, 80, 80, 1);
@@ -238,6 +235,7 @@ void MainScene::Initialize() {
 		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
 	//GameObjects
+	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
 	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
@@ -250,6 +248,7 @@ void MainScene::Initialize() {
 			AddGameObject(obj);
 		}
 	}
+	Lua::CloseLua();
 
 	player = ((Player*)GetGameobjectsByName("Player").at(0));
 
@@ -268,15 +267,17 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(&Terrain::Instance());
 
-	Lua::CloseLua();
-	SaveGameManager::loadWhenPossible = false;
 
 	//Randomly spawn the gun
 	
-	Player::ResetTotalPumpkinShots();
-	Spider::ResetTotalSpidersKilled();
+	if (SaveGameManager::loadWhenPossible == false)
+	{
+		Player::ResetTotalPumpkinShots();
+		Spider::ResetTotalSpidersKilled();
+	}
 	currentSceneState = PLAYING;
 
+	SaveGameManager::loadWhenPossible = false;
 }
 
 void MainScene::Start()

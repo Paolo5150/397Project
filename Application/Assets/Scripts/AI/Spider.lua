@@ -1,3 +1,5 @@
+--AI Scripts must take in and return the same amount of values as the Think function shown here, everything else is at the user's discretion
+
 --Script variables
 movementSpeed = 500;
 rotationSpeed = 5;

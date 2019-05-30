@@ -4,6 +4,7 @@
 #include "Companion.h"
 #include "Terrain.h"
 #include "Pumpkin.h"
+#include "Spider.h"
 #include "Targeter.h"
 #include "..\GUI\GUIElements\GUIManager.h"
 
@@ -356,6 +357,8 @@ std::string Player::Save()
 		<< healthComponent->GetCurrentHealth() << "\n"
 		<< (int)hasGun << "\n"
 		<< ammoCounter << "\n"
+		<< GetTotalPumpkinsShot() << "\n"
+		<< Spider::GetTotalSpidersKilled() << "\n"
 		<< "end" << "\n";
 	return (ss.str());
 }

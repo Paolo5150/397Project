@@ -30,9 +30,6 @@ bool SaveGameManager::LoadGame(std::string filePath)
 	{
 		Logger::LogInfo("Save file found, loading \"", filePath, "\"...");
 
-		//SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Player");
-		//SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Spider");
-		//SceneManager::Instance().GetCurrentScene().RemoveGameobjectsByName("Hive");
 		std::ifstream inputFile(filePath);
 		std::string line;
 		std::getline(inputFile, line, '\n'); //Throw away time/date, can use this later for saves if required
@@ -73,6 +70,12 @@ bool SaveGameManager::LoadGame(std::string filePath)
 						std::getline(inputFile, line, '\n');
 						float ammo = stof(line);
 
+						std::getline(inputFile, line, '\n');
+						float pumpkinsShot = stof(line);
+
+						std::getline(inputFile, line, '\n');
+						float spidersKilled = stof(line);
+
 						obj->transform.SetPosition(x, y, z);
 
 						obj->healthComponent->AddToHealth(-(obj->healthComponent->GetMaxHealth() - health));
@@ -86,6 +89,9 @@ bool SaveGameManager::LoadGame(std::string filePath)
 						}
 
 						obj->ammoCounter = ammo;
+
+						Player::SetTotalPumpkinsShot(pumpkinsShot);
+						Spider::SetTotalSpidersKilled(spidersKilled);
 
 						SceneManager::Instance().GetCurrentScene().AddGameObject(obj);
 						player = obj;
@@ -184,11 +190,77 @@ bool SaveGameManager::CanLoadGame(std::string filePath)
 {
 	if (FileUtils::IsFileThere(filePath))
 	{
-		return true;
+		std::ifstream inputFile(filePath);
+		std::string line;
+		std::getline(inputFile, line, '\n'); //Time/date
+
+		bool inObject = false; //True when 'inside' the variables for an object
+		std::string objectType = "";
+
+		while (std::getline(inputFile, line, '\n'))
+		{
+			if (inObject)
+			{
+				if (line == "end")
+				{
+					inObject = false;
+				}
+				else
+				{
+					if (objectType == "Player")
+					{
+						//x
+						std::getline(inputFile, line, '\n'); //y
+						std::getline(inputFile, line, '\n'); //z
+						std::getline(inputFile, line, '\n'); //health
+						std::getline(inputFile, line, '\n'); //hasGun
+						std::getline(inputFile, line, '\n'); //ammo
+						std::getline(inputFile, line, '\n'); //pumpkinsshot
+						std::getline(inputFile, line, '\n'); //spiderskilled
+					}
+					else if (objectType == "Spider")
+					{
+						//x
+						std::getline(inputFile, line, '\n'); //y
+						std::getline(inputFile, line, '\n'); //z
+						std::getline(inputFile, line, '\n'); //health
+					}
+					else if (objectType == "Companion")
+					{
+						//x
+						std::getline(inputFile, line, '\n'); //y
+						std::getline(inputFile, line, '\n'); //z
+						std::getline(inputFile, line, '\n'); //health
+					}
+					else if (objectType == "Hive")
+					{
+						//x
+						std::getline(inputFile, line, '\n'); //y
+						std::getline(inputFile, line, '\n'); //z
+						std::getline(inputFile, line, '\n'); //health
+						std::getline(inputFile, line, '\n'); //state
+					}
+					else
+					{
+						return false; //Not valid save
+					}
+				}
+			}
+			else
+			{
+				if (IsSaveable(line))
+				{
+					inObject = true;
+					objectType = line;
+				}
+			}
+		}
+		inputFile.close();
+		return true; //Valid save
 	}
 	else
 	{
-		return false;
+		return false; //No save found
 	}
 }
 

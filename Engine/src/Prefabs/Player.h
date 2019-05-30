@@ -151,6 +151,12 @@ public:
 	int GetAmmos() { return ammoCounter; }
 
 	/**
+	* @brief		sets total number of pumpkins shot
+	* @param		pumpkinsShot	The total number of pumpkins shot
+	*/
+	static void SetTotalPumpkinsShot(unsigned pumpkinsShot) { totalPumpkinsShot = pumpkinsShot; }
+
+	/**
 	* @brief		returns total number of pumpkins shot
 	* @return		The total number of pumpkins shot
 	*/
