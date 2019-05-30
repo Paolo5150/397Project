@@ -56,27 +56,9 @@ MainScene::MainScene() : Scene("MainScene")
 void MainScene::LoadAssets() {
 
 
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Pumpkin\\pumpkin.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\PumpkinBunch\\pumpkinbunch.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Barrel\\barrel.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Hive\\hive.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx");
-	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx", false);
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Alien\\alien.fbx", false);
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Bone\\bone.obj", false);
 
-
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Tree\\tree.obj", true, false);
 
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.jpg");
-
-	AssetLoader::Instance().LoadModel("Assets\\Models\\Spider\\spider_3.fbx", 0);
-
-	AssetLoader::Instance().LoadTexture("Assets\\Models\\Spider\\textures\\Spinnen_Bein_tex_COLOR_.jpg");
-	AssetLoader::Instance().LoadTexture("Assets\\Models\\GranadeLauncher\\launcher.jpg");
-
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_diffuse.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\crate_normal.tga");
 	AssetLoader::Instance().LoadTexture("Assets\\Textures\\pumpkinIcon.png");

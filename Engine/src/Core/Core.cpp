@@ -231,6 +231,20 @@ void Core::LoadBasicAssets()
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Sphere\\sphere_low.obj",false,true);
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj", false,true);
 	AssetLoader::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", false,true);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Pumpkin\\pumpkin.obj",1,1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\PumpkinBunch\\pumpkinbunch.obj",1,1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Barrel\\barrel.obj",1,1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj",1,1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Hive\\hive.obj",1,1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Ship\\ship.obj",1,1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Cabin\\cabin.fbx",1,1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\GranadeLauncher\\launcher.fbx", false,1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Alien\\alien.fbx", false,1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Bone\\bone.obj", false,1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Tree\\tree.obj", true, 1);
+	AssetLoader::Instance().LoadModel("Assets\\Models\\Spider\\spider_3.fbx", 0,1);
+	AssetLoader::Instance().LoadTexture("Assets\\Models\\Spider\\textures\\Spinnen_Bein_tex_COLOR_.jpg",1);
+	AssetLoader::Instance().LoadTexture("Assets\\Models\\GranadeLauncher\\launcher.jpg",1);
 
 
 }
