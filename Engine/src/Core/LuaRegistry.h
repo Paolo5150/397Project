@@ -31,7 +31,5 @@ public:
 	*
 	* @see			GameAssetFactory#Create
 	*/
-	static int Lua_CreateOld(lua_State* L);
-
 	static int Lua_Create(lua_State* L);
 };

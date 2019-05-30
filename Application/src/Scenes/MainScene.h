@@ -5,6 +5,7 @@ class GUIImage;
 class Player;
 class GUIProgressBar;
 class GUIButton;
+class Companion;
 
 /**
 * @class MainScene
@@ -81,7 +82,7 @@ public:
 	GUIText* hivesLeftText;
 	GUIText* spidersKilledText;
 	GUIText* pumpkinsShotText;
-
+	GUIText* centerText;
 
 	GUIButton* resumeButton;
 	GUIButton* saveButton;
@@ -91,6 +92,7 @@ public:
 	GUIProgressBar* healthBar;
 	
 	Player* player;
+	Companion* companion;
 
 	void Restart();
 	void Resume();

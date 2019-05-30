@@ -120,6 +120,8 @@ public:
 
 	std::vector<GameObject*> GetGameobjectsByName(std::string name);
 
+	bool RemoveGameobjectsByName(std::string name); //returns true if any objects were removed
+
 protected:
 	/**
 	* @brief		The list of gameobjects in the scene

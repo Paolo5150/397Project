@@ -8,7 +8,7 @@
 int animIndex = 0;
 
 
-Companion::Companion() : GameObject("Companion")
+Companion::Companion() : GameObject("Companion"), Saveable()
 {
 	AssetLoader::Instance().GetAsset<Model>("Alien")->PopulateGameObject(this);
 
@@ -82,6 +82,27 @@ void Companion::Update()
 
 	}
 	
+	if (transform.GetPosition().y < 750)
+	{
+		underwaterTimer += Timer::GetDeltaS();
+
+		if (underwaterTimer > 3)
+			healthComponent->AddToHealth(Timer::GetDeltaS() * -3);
+	}
+	else
+		underwaterTimer = 0;
+}
+
+std::string Companion::Save()
+{
+	std::ostringstream ss;
+	ss << "Companion" << "\n"
+		<< transform.GetPosition().x << "\n"
+		<< transform.GetPosition().y << "\n"
+		<< transform.GetPosition().z << "\n"
+		<< healthComponent->GetCurrentHealth() << "\n"
+		<< "end" << "\n";
+	return (ss.str());
 }
 
 void Companion::Idle()

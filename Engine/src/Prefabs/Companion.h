@@ -1,6 +1,8 @@
+#pragma once
 #include <string>
 
 #include "../GameObject/GameObject.h"
+#include "..\GameObject\Saveable.h"
 #include "..\Utils\AssetLoader.h"
 #include "..\Components\HealthComponent.h"
 #include "..\Components\BoxCollider.h"
@@ -18,7 +20,7 @@
 *
 * @bug No known bugs.
 */
-class Companion : public GameObject
+class Companion : public GameObject, Saveable
 {
 public:
 
@@ -70,6 +72,14 @@ public:
 	* @pre			The companion object must exist
 	*/
 	void Update() override;
+
+	/**
+	* @brief		Overridden callback for save method
+	* @pre			The hive object must exist
+	*
+	* @return		String containing information to be saved
+	*/
+	std::string Save() override;
 
 	/**
 	* @brief		Set a target for the companion to attack
@@ -157,6 +167,11 @@ private:
 	* @brief		Current movememnt speed
 	*/
 	float currentSpeed;
+
+	/**
+	* @brief		Timer for drowning
+	*/
+	float underwaterTimer;
 
 
 	

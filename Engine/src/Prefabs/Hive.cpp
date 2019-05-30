@@ -15,10 +15,13 @@
 unsigned int Hive::totalHives = 0;
 
 
-Hive::Hive() : GameObject("Hive")
+Hive::Hive() : GameObject("Hive"), Saveable()
 {
 	AssetLoader::Instance().GetAsset<Model>("Hive")->PopulateGameObject(this);
 	transform.SetScale(100, 100, 100);
+
+	healthComponent = new HealthComponent(1000, 1000);
+	AddComponent(healthComponent);
 
 	Material mat_hive;
 	mat_hive.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
@@ -30,12 +33,17 @@ Hive::Hive() : GameObject("Hive")
 	_maxSpiders = 15;
 	canSpawnSpiders = true;
 	totalHives++;
+
+	SetState(0);
 }
 
-Hive::Hive(int maxSpiders) : GameObject("Hive")
+Hive::Hive(int maxSpiders) : GameObject("Hive"), Saveable()
 {
 	AssetLoader::Instance().GetAsset<Model>("Hive")->PopulateGameObject(this);
 	transform.SetScale(200, 200, 200);
+
+	healthComponent = new HealthComponent(1000, 1000);
+	AddComponent(healthComponent);
 
 	Material mat_hive;
 	mat_hive.SetShader(AssetLoader::Instance().GetAsset<Shader>("DefaultStaticNormalMap"));
@@ -46,7 +54,9 @@ Hive::Hive(int maxSpiders) : GameObject("Hive")
 
 	_maxSpiders = maxSpiders;
 	canSpawnSpiders = true;
+	totalHives++;
 
+	SetState(0);
 }
 
 void Hive::SetMaxSpiders(unsigned int maxSpiders)
@@ -88,6 +98,7 @@ void Hive::SetState(unsigned int index)
 			Logger::LogWarning("Attempted to set invalid Hive State!");
 			break;
 	}
+
 }
 
 unsigned int Hive::GetState() const
@@ -97,9 +108,6 @@ unsigned int Hive::GetState() const
 
 void Hive::Start()
 {
-	healtthComponent = new HealthComponent(1000, 1000);
-	AddComponent(healtthComponent);
-
 	BoxCollider* sc = new BoxCollider();
 	sc->ResetCollisionLayer();
 	sc->AddCollisionLayer(CollisionLayers::OBSTACLE);
@@ -120,12 +128,11 @@ void Hive::Start()
 		if (go->GetName() == "Pumpkin")
 		{
 			go->FlagToBeDestroyed();
-			healtthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
+			healthComponent->AddToHealth(-Pumpkin::GetDamageGiven());
+			EventDispatcher::Instance().DispatchEvent(new EnemySpottedEvent());
 			FlashColor(1, 0, 0);
-
 		}
 	};
-	SetState(0);
 }
 
 void Hive::Update()
@@ -133,12 +140,12 @@ void Hive::Update()
 	GameObject::Update();
 	
 
-	if (healtthComponent->GetHealthMaxRatio() < 0.7 && healtthComponent->GetHealthMaxRatio() > 0.4)
+	if (healthComponent->GetHealthMaxRatio() < 0.7 && healthComponent->GetHealthMaxRatio() > 0.4)
 		SetState(1);
-	else if (healtthComponent->GetHealthMaxRatio() <= 0.4)
+	else if (healthComponent->GetHealthMaxRatio() <= 0.4)
 		SetState(2);
 
-	if (healtthComponent->IsDead())
+	if (healthComponent->IsDead())
 		FlagToBeDestroyed();
 
 	if (canSpawnSpiders)
@@ -160,6 +167,19 @@ void Hive::Update()
 			_lastSpawnedSpider = Timer::GetTimeS();
 		}
 	}
+}
+
+std::string Hive::Save()
+{
+	std::ostringstream ss;
+	ss << "Hive" << "\n"
+		<< transform.GetPosition().x << "\n"
+		<< transform.GetPosition().y << "\n"
+		<< transform.GetPosition().z << "\n"
+		<< healthComponent->GetCurrentHealth() << "\n"
+		<< GetState() << "\n"
+		<< "end" << "\n";
+	return (ss.str());
 }
 
 Hive::~Hive()

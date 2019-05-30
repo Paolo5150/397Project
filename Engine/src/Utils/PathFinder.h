@@ -85,6 +85,8 @@ public:
 	*/
 	std::vector<glm::vec3> GeneratePath(glm::vec3 start, glm::vec3 finish);
 
+	void DeleteNodes();
+
 	/**
 	* @brief						List of nodes in no particular order
 	*/

@@ -1,5 +1,6 @@
 #pragma once
 #include "..\GameObject\GameObject.h"
+#include "..\GameObject\Saveable.h"
 #include "..\Utils\AssetLoader.h"
 #include "..\Core\MainCamera.h"
 #include "..\Components\HealthComponent.h"
@@ -18,7 +19,7 @@ class Companion;
 *
 * @bug No known bugs.
 */
-class Player : public GameObject
+class Player : public GameObject, public Saveable
 {
 public:
 	/**
@@ -62,6 +63,8 @@ public:
 	* @post			The player moves with keyboard/mouse
 	*/
 	void UpdateControls();
+
+	std::string Save() override;
 
 	/**
 	* @brief		Reference to main camera object
@@ -125,12 +128,33 @@ public:
 	/**
 	* @brief		Health component, keeps track of player health
 	*/
-	HealthComponent* healhComponent;
+	HealthComponent* healthComponent;
+
+	/**
+	* @brief		Number of ammos available
+	*/
+	int ammoCounter;
+	
+	/**
+	* @brief		Whether the gun has been picked up
+	*/
+	bool hasGun;
+
+	/**
+	* @brief		The gun model
+	*/
+	GranadeLauncher* gn;
 
 	/**
 	* @return			The ammo available
 	*/
 	int GetAmmos() { return ammoCounter; }
+
+	/**
+	* @brief		sets total number of pumpkins shot
+	* @param		pumpkinsShot	The total number of pumpkins shot
+	*/
+	static void SetTotalPumpkinsShot(unsigned pumpkinsShot) { totalPumpkinsShot = pumpkinsShot; }
 
 	/**
 	* @brief		returns total number of pumpkins shot
@@ -143,20 +167,12 @@ public:
 	*/
 	static void ResetTotalPumpkinShots() { totalPumpkinsShot = 0; }
 private:
-	/**
-	* @brief		The gun model
-	*/
-	GranadeLauncher* gn;
 
 	/**
 	* @brief		Keeps track of shoot rate
 	*/
 	float shootTimer;
 
-	/**
-	* @brief		Number of ammos available
-	*/
-	int ammoCounter;
 	/**
 	* @brief		The camera movement speed
 	*/
@@ -191,11 +207,6 @@ private:
 	* @brief		Total number of pumpkins shot
 	*/
 	static unsigned totalPumpkinsShot;
-
-	/**
-	* @brief		Whether the gun has been picked up
-	*/
-	bool hasGun;
 
 	Companion* companion;
 };

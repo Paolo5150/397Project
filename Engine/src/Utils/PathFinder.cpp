@@ -36,6 +36,15 @@ PathFinder::~PathFinder()
 	delete nodesQT;
 }
 
+void PathFinder::DeleteNodes()
+{
+	for (int i = 0; i < pathNodes.size(); i++)
+	{
+		delete pathNodes[i];
+	}
+}
+
+
 glm::vec3 PathFinder::GetRandomFreeNodePosition()
 {
 	bool valid = false;

@@ -19,6 +19,7 @@ AIBase::AIBase(std::string scriptPath) : Component("AIBase")
 	_lastStateChange = 0.0f;
 	_randomTimer = 0.0f;
 	_updateTimer = 0.0f;
+	_eventReceived = false;
 }
 
 AIBase::AIBase(Transform& targetTransform, std::string scriptPath) : Component("AIBase")
@@ -38,6 +39,7 @@ AIBase::AIBase(Transform& targetTransform, std::string scriptPath) : Component("
 	_lastStateChange = 0.0f;
 	_randomTimer = 0.0f;
 	_updateTimer = 0.0f;
+	_eventReceived = false;
 }
 
 AIBase::~AIBase()
@@ -228,4 +230,25 @@ void AIBase::Think()
 	SetEventReceived(lua_toboolean(_luaState, -1));
 	
 	Lua::CloseLua(_luaState);
+}
+
+void AIBase::DumpVariables()
+{
+	Logger::LogInfo("State: ", GetState());
+	Logger::LogInfo("DistanceToTarget: ", GetDistanceToTarget());
+	Logger::LogInfo("RotationToTarget: ", GetRotationToTarget());
+	Logger::LogInfo("ReverseRotationToTarget: ", GetReverseRotationToTarget());
+	Logger::LogInfo("DistanceToNode: ", GetDistanceToNode());
+	Logger::LogInfo("RotationToNode: ", GetRotationToNode());
+	Logger::LogInfo("ReverseRotationToNode: ", GetReverseRotationToNode());
+	Logger::LogInfo("OtherTargetX: ", _otherTarget.x);
+	Logger::LogInfo("OtherTargetY: ", _otherTarget.y);
+	Logger::LogInfo("OtherTargetZ: ", _otherTarget.z);
+	Logger::LogInfo("TerrainMaxX: ", Terrain::Instance().GetTerrainMaxX());
+	Logger::LogInfo("TerrainMaxZ: ", Terrain::Instance().GetTerrainMaxZ());
+	Logger::LogInfo("TimeS: ", Timer::GetTimeS());
+	Logger::LogInfo("DeltaS: ", Timer::GetDeltaS());
+	Logger::LogInfo("LastStateChange: ", _lastStateChange);
+	Logger::LogInfo("RandomTimer: ", _randomTimer);
+	Logger::LogInfo("EventReceived: ", _eventReceived);
 }

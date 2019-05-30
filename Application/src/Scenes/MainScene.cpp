@@ -32,6 +32,8 @@
 #include "Prefabs\Cabin.h"
 #include "Prefabs\Hive.h"
 #include "Prefabs\Player.h"
+#include "Prefabs\Companion.h"
+
 #include "Prefabs\PumpkinBunch.h"
 #include "Prefabs\GranadeLauncher.h"
 #include "Utils\PathFinder.h"
@@ -40,6 +42,7 @@
 #include "Prefabs\Player.h"
 #include "Prefabs\Spider.h"
 #include "Components\AIBase.h"
+#include "Utils\SaveGameManager.h"
 
 MainCamera* cam;
 bool reinit = false;
@@ -89,7 +92,7 @@ void MainScene::UnloadAssets() {
 
 }
 void MainScene::QuitScene() {
-	Logger::LogError("Scene asset clean up");
+	PathFinder::Instance().DeleteNodes();
 
 	Scene::QuitScene();
 
@@ -103,8 +106,15 @@ void MainScene::Initialize() {
 
 	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
-	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
+	if (SaveGameManager::loadWhenPossible == true)
+	{
+		SaveGameManager::LoadGame();
 
+		for (int i = 0; i < GetGameobjectsByName("Enemy_Spider").size(); i++)
+		{
+			((AIBase*)((Spider*)GetGameobjectsByName("Enemy_Spider").at(i))->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)GetGameobjectsByName("Player").at(0))->transform);
+		}
+	}
 
 	//Timer::SetDisplayFPS(true);
 
@@ -114,29 +124,52 @@ void MainScene::Initialize() {
 
 	// HUD elements
 	pumpkinAmmoText = new GUIText("ammoText", "X 50", "invasionFont", 1, 85, 5, 1, 1, 1, 1);
-	spidersLeftText = new GUIText("spiderLeftText", "", "invasionFont", 1, 80,10, 1, 1, 1, 1);
+	spidersLeftText = new GUIText("spiderLeftText", "", "invasionFont", 1, 80, 10, 1, 1, 1, 1);
 	hivesLeftText = new GUIText("hivesLeftText", "", "invasionFont", 1, 80, 13, 1, 1, 1, 1);
 
 	spidersKilledText = new GUIText("spidersKilledText", "", "invasionFont", 2, 35, 20, 1, 1, 1, 1);
 	pumpkinsShotText = new GUIText("pumpkinsShotText", "", "invasionFont", 2, 35, 30, 1, 1, 1, 1);
 
-	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 80,3, 7, 7, 1);
+	pumpkinAmmoImage = new GUIImage("pumpkinIcon", AssetLoader::Instance().GetAsset<Texture2D>("pumpkinIcon"), 80, 3, 7, 7, 1);
 	endGameText = new GUIText("EndGameText", "", "invasionFont", 2, 35, 10, 1, 1, 1, 1);
 	endGameText->isActive = 0;
 
-	resumeButton = (new GUIButton("ResumeButton", "Resume", [&]{
+	centerText = new GUIText("centerText", "", "arcadeFont", 1, 25, 50, 1, 1, 1, 1);
+	centerText->position.x = 5;
+	centerText->CalculateSizePosition();
+	centerText->isActive = 0;
+
+	resumeButton = (new GUIButton("ResumeButton", "Resume", [&] {
 
 		Resume();
 
 	}, "", 1.5, 10, 10, 45, 15, 1, 1, 1, 1));
 
-	saveButton = (new GUIButton("SaveButton", "Save", [&]{		
+	saveButton = (new GUIButton("SaveButton", "Save", [&] {
 
-		//Call save method here!
+		centerText->isActive = 1;
+		if (player->hasGun == true)
+		{
+			SaveGameManager::SaveGame();
+			if (SaveGameManager::CanLoadGame())
+			{
+				centerText->_message = "Save Successful!";
+			}
+			else
+			{
+
+				centerText->_message = "Save Failed!";
+			}
+		}
+		else
+		{
+
+			centerText->_message = "Collect the gun before saving!";
+		}
 
 	}, "", 1.5, 10, 10, 45, 30, 1, 1, 1, 1));
 
-	restartButton = (new GUIButton("RestartButton", "Restart", [&]{
+	restartButton = (new GUIButton("RestartButton", "Restart", [&] {
 
 		Input::SetCursorMode("disabled");
 		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
@@ -144,14 +177,14 @@ void MainScene::Initialize() {
 
 	}, "", 1.5, 10, 10, 45, 45, 1, 1, 1, 1));
 
-	quitToMenuButton = (new GUIButton("QuitToMenuButton", "Menu", [&]{
+	quitToMenuButton = (new GUIButton("QuitToMenuButton", "Menu", [&] {
 
 		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
 		SceneManager::Instance().LoadNewScene("MainMenuScene");
 
 	}, "", 1.5, 10, 10, 45, 60, 1, 1, 1, 1));
 
-	quitToDesktopButton = (new GUIButton("QuitButton", "Quit", [&]{
+	quitToDesktopButton = (new GUIButton("QuitButton", "Quit", [&] {
 
 		GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
 		SceneManager::Instance().LoadNewScene("ExitScene");
@@ -171,6 +204,7 @@ void MainScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(hivesLeftText);
 	GUIManager::Instance().AddGUIObject(spidersKilledText);
 	GUIManager::Instance().AddGUIObject(pumpkinsShotText);
+	GUIManager::Instance().AddGUIObject(centerText);
 
 	GUIManager::Instance().AddGUIObject(restartButton);
 	GUIManager::Instance().AddGUIObject(saveButton);
@@ -201,17 +235,29 @@ void MainScene::Initialize() {
 		AddGameObject(PathFinder::Instance().pathNodes[i]);*/
 
 	//GameObjects
+	Lua::RunLua("Assets\\Scripts\\Level1.lua", false, true);
 	for (int i = 0; i < Lua::GetCreatedAssetLength(); i++) //Loop through all the game objects and add them to the scene
 	{
 		GameObject* obj = (GameObject*)Lua::GetCreatedAsset(i);
-		if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player (Warning: Player must be created before any AI)
+		if (!(SaveGameManager::loadWhenPossible == true && SaveGameManager::IsSaveable(obj->GetName())))
 		{
-			((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Player").at(0))->transform);
+			if (obj->HasComponent("AIBase")) //If the object has an ai component, set its target to the player (Warning: Player must be created before any AI)
+			{
+				((AIBase*)obj->GetComponent<AIBase>("AIBase"))->SetTarget(((Player*)GetGameobjectsByName("Player").at(0))->transform);
+			}
+			AddGameObject(obj);
 		}
-		AddGameObject(obj);
 	}
+	Lua::CloseLua();
 
 	player = ((Player*)GetGameobjectsByName("Player").at(0));
+
+	if (SaveGameManager::loadWhenPossible == false)
+	{
+		Companion* comp = new Companion();
+		comp->transform.SetPosition(player->transform.GetPosition() + glm::vec3(200, -20, 0));
+		AddGameObject(comp);
+	}
 
 	int x, y, z;
 	Terrain::Instance().GetCenter(x, y, z);
@@ -221,17 +267,17 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(&Terrain::Instance());
 
-	Lua::CloseLua();
-	
-	Companion* comp = new Companion();
-	comp->transform.SetPosition(player->transform.GetPosition() + glm::vec3(200,-20,0));
-	AddGameObject(comp);
 
+	//Randomly spawn the gun
 	
-	Player::ResetTotalPumpkinShots();
-	Spider::ResetTotalSpidersKilled();
+	if (SaveGameManager::loadWhenPossible == false)
+	{
+		Player::ResetTotalPumpkinShots();
+		Spider::ResetTotalSpidersKilled();
+	}
 	currentSceneState = PLAYING;
 
+	SaveGameManager::loadWhenPossible = false;
 }
 
 void MainScene::Start()
@@ -244,18 +290,28 @@ void MainScene::Start()
 	PhysicsWorld::Instance().PerformCollisions(true);
 	Logger::LogInfo("Nodes", PathFinder::Instance().pathNodes.size());
 
+	companion = dynamic_cast<Companion*>(GetGameobjectsByName("Companion")[0]);
+
 	RenderingEngine::godRays = 1;
 	// Place gun
-	glm::vec3 gunPos = PathFinder::Instance().GetRandomFreeNodePosition();
-	GranadeLauncher* gn = new GranadeLauncher();
-	gn->Start();
-	gn->SetLayer(0);
-	gn->spin = 1;
-	gn->SetLayer(Layers::DEFAULT);
-	gn->GetCollider()->transform.SetScale(100, 100, 180);	
-	gn->transform.SetScale(0.1, 0.1, 0.1);
-	gn->transform.SetPosition(gunPos + glm::vec3(0,50,0));
-	AddGameObject(gn);
+	if (player->hasGun == false)
+	{
+		glm::vec3 gunPos = PathFinder::Instance().GetRandomFreeNodePosition();
+		GranadeLauncher* gn = new GranadeLauncher();
+		gn->Start();
+		gn->SetLayer(0);
+		gn->spin = 1;
+		gn->SetLayer(Layers::DEFAULT);
+		gn->GetCollider()->transform.SetScale(100, 100, 180);
+		gn->transform.SetScale(0.1, 0.1, 0.1);
+		gn->transform.SetPosition(gunPos + glm::vec3(0, 50, 0));
+		AddGameObject(gn);
+
+		centerText->isActive = 1;
+		centerText->position.y = 10;
+		centerText->CalculateSizePosition();
+		centerText->_message = "Find the gun!";
+	}
 
 	Input::SetIsEnabled(1);
 }
@@ -263,10 +319,29 @@ void MainScene::Start()
 void MainScene::LogicUpdate()
 {
 
+
 	PhysicsWorld::Instance().Update();
 
 	if (currentSceneState == PLAYING)
 	{
+		static float textTimer = 0;
+		textTimer += Timer::GetDeltaS();
+
+		if (textTimer > 20)
+		{
+			centerText->isActive = 0;
+			textTimer = 0;
+		}
+
+		if (companion->GetHealthComponent()->IsDead())
+		{
+			centerText->isActive = 1;
+			centerText->position.y = 10;
+			centerText->CalculateSizePosition();
+			centerText->_message = "Your companion is down! Stand next to it to revive it!";
+
+		}
+		
 		//Spawn bunches
 		static float bunchTimer = 0;
 		bunchTimer += Timer::GetDeltaS();
@@ -281,7 +356,7 @@ void MainScene::LogicUpdate()
 			AddGameObject(pb);
 		}
 
-		if (player->healhComponent->IsDead())
+		if (player->healthComponent->IsDead())
 		{
 			currentSceneState = GAMEOVER;
 		}
@@ -310,15 +385,16 @@ void MainScene::LogicUpdate()
 			DisplayPauseMenu();
 
 		}
+
 	}
 	else if (currentSceneState == PAUSE)
-	{		
-
+	{
+		
 		if (Input::GetKeyPressed(GLFW_KEY_ESCAPE) || Input::GetKeyPressed(GLFW_KEY_X))
 		{
 			Resume();
 		}
-			
+
 	}
 	else if (currentSceneState == WIN)
 	{
@@ -327,7 +403,7 @@ void MainScene::LogicUpdate()
 	}
 	else if (currentSceneState == GAMEOVER)
 	{
-	
+
 		endGameText->_message = "YOU'RE DEAD!";
 		DisplayEndGameMenu();
 
@@ -339,15 +415,17 @@ void MainScene::DisplayPauseMenu()
 	Input::SetCursorMode("normal");
 	restartButton->isActive = 1;
 	saveButton->isActive = 1;
-	quitToDesktopButton->isActive =1;
+	quitToDesktopButton->isActive = 1;
 	quitToMenuButton->isActive = 1;
 	resumeButton->isActive = 1;
+	centerText->isActive = 0;
 }
 
 void MainScene::Resume()
 {
 	GUIManager::Instance().SetBackgroundColor(0, 0, 0, 0);
 	Input::SetCursorMode("disabled");
+	centerText->isActive = 0;
 	restartButton->isActive = 0;
 	saveButton->isActive = 0;
 	quitToDesktopButton->isActive = 0;
@@ -360,6 +438,7 @@ void MainScene::Resume()
 
 void MainScene::DisplayEndGameMenu()
 {
+	centerText->isActive = 0;
 	pumpkinAmmoImage->isActive = false;
 	healthBar->isActive = false;
 	pumpkinAmmoText->isActive = 0;
@@ -403,7 +482,7 @@ void MainScene::UpdateUI()
 		ss << "x ";
 		ss << player->GetAmmos();
 		pumpkinAmmoText->_message = ss.str();
-		healthBar->percentage = player->healhComponent->GetHealthMaxRatio();
+		healthBar->percentage = player->healthComponent->GetHealthMaxRatio();
 	}
 
 	ss.str("");

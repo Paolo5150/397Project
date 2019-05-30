@@ -4,6 +4,7 @@
 #include "..\Core\MainCamera.h"
 #include "..\Prefabs\Barrel.h"
 #include "..\Prefabs\Cabin.h"
+#include "..\Prefabs\Companion.h"
 #include "..\Prefabs\Crate.h"
 #include "..\Prefabs\Hive.h"
 #include "..\Prefabs\Player.h"
@@ -58,6 +59,8 @@ InternalAsset* GameAssetFactory::Create(std::string type, std::string name)
 		return new Barrel();
 	else if (type == "Cabin")
 		return new Cabin();
+	else if (type == "Companion")
+		return new Companion();
 	else if (type == "Crate")
 		return new Crate();
 	else if (type == "Hive")

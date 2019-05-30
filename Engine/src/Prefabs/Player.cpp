@@ -4,6 +4,7 @@
 #include "Companion.h"
 #include "Terrain.h"
 #include "Pumpkin.h"
+#include "Spider.h"
 #include "Targeter.h"
 #include "..\GUI\GUIElements\GUIManager.h"
 
@@ -22,7 +23,7 @@ unsigned Player::totalPumpkinsShot = 0;
 
 
 
-Player::Player() : GameObject("Player")
+Player::Player() : GameObject("Player"), Saveable()
 {
 	mainCamera = new MainCamera();
 	_movementSpeed = 20;
@@ -46,8 +47,8 @@ Player::Player() : GameObject("Player")
 
 	hasGun = false;
 
-
-
+	healthComponent = new HealthComponent(100, 100);
+	AddComponent(healthComponent);
 }
 
 void Player::OnAddToScene(Scene& theScene)
@@ -116,7 +117,7 @@ void Player::Start()
 			go->FlagToBeDestroyed();
 		}
 		
-		else if (go->GetName() == "GranadeLauncher")
+		else if (go->GetName() == "GranadeLauncher" && hasGun == false)
 		{
 			Logger::LogInfo("Got launcher");
 			gn->SetActive(1);
@@ -131,10 +132,6 @@ void Player::Start()
 	gn->transform.SetScale(0.01, 0.01, 0.01);
 	gn->transform.SetPosition(-0.899999, -1.96, 3.68);
 	gunCam->AddChild(gn);
-
-	healhComponent = new HealthComponent(100, 100);
-	AddComponent(healhComponent);
-
 }
 
 
@@ -234,7 +231,7 @@ void Player::Update()
 		underwaterTimer += Timer::GetDeltaS();
 
 		if (underwaterTimer > 3)
-			healhComponent->AddToHealth(Timer::GetDeltaS() * -3);
+			healthComponent->AddToHealth(Timer::GetDeltaS() * -3);
 	}
 	else
 		underwaterTimer = 0;
@@ -347,19 +344,34 @@ void Player::UpdateControls()
 
 }
 
+std::string Player::Save()
+{
+	std::ostringstream ss;
+	ss << "Player" << "\n"
+		<< transform.GetPosition().x << "\n"
+		<< transform.GetPosition().y << "\n"
+		<< transform.GetPosition().z << "\n"
+		//<< transform.GetRotation().x << "\n"
+		//<< transform.GetRotation().y << "\n"
+		//<< transform.GetRotation().z << "\n"
+		<< healthComponent->GetCurrentHealth() << "\n"
+		<< (int)hasGun << "\n"
+		<< ammoCounter << "\n"
+		<< GetTotalPumpkinsShot() << "\n"
+		<< Spider::GetTotalSpidersKilled() << "\n"
+		<< "end" << "\n";
+	return (ss.str());
+}
+
 void Player::FlashColor(float r, float g, float b)
 {
 	GUIManager::Instance().FlashRed();
 }
 
-
 void Player::LateUpdate()
 {
 	_movementSpeed = ORIGINAL_SPEED;
 }
-
-
-
 
 void Player::SetMovementSpeed(float speed)
 {

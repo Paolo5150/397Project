@@ -79,6 +79,8 @@
     <ClCompile Include="src\Prefabs\Hive.cpp" />
     <ClCompile Include="src\Prefabs\Tree.cpp" />
     <ClCompile Include="src\Prefabs\PumpkinBunch.cpp" />
+    <ClCompile Include="src\Utils\SaveGameManager.cpp" />
+    <ClCompile Include="src\GameObject\Saveable.cpp" />
     <ClCompile Include="src\Prefabs\Companion.cpp" />
     <ClCompile Include="src\Prefabs\Targeter.cpp" />
   </ItemGroup>
@@ -192,6 +194,8 @@
     <ClInclude Include="src\Prefabs\Tree.h" />
     <ClInclude Include="src\Prefabs\PumpkinBunch.h" />
     <ClInclude Include="src\Event\AIEvents.h" />
+    <ClInclude Include="src\Utils\SaveGameManager.h" />
+    <ClInclude Include="src\GameObject\Saveable.h" />
     <ClInclude Include="src\Prefabs\Companion.h" />
     <ClInclude Include="src\Prefabs\Targeter.h" />
   </ItemGroup>

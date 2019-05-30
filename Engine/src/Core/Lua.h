@@ -112,8 +112,14 @@ public:
 	*/
 	static void ClearCreatedAssets();
 
+	/**
+	* @brief		Dumps the contents of the lua_state's stack to the logger
+	*/
 	static void StackDump(lua_State *L);
 
+	/**
+	* @brief		Dumps the contents of the lua_state'stack at the specified index to the logger
+	*/
 	static void StackDump(lua_State *L, int index);
 
 	//-- Stack Returns --//

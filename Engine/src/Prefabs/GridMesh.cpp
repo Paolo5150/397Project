@@ -13,7 +13,7 @@ GridMesh::GridMesh(int widthVerts, int depthVerts)
 
 GridMesh::~GridMesh()
 {
-	Logger::LogError("Grid mesh gone");
+
 }
 
 void GridMesh::Initialize()
