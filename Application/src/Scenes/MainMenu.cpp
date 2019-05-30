@@ -9,13 +9,16 @@
 #include "GUI\GUIElements\GUIManager.h"
 #include "GUI\GUIElements\GUIButton.h"
 #include "GUI\GUIElements\GUIProgressBar.h"
-
+#include "Prefabs\Water.h"
+#include "Prefabs\Terrain.h"
+#include "Core\MainCamera.h"
+#include "Lighting\DirectionalLight.h"
 
 #include "Core\Input.h"
 #include "Event\EventDispatcher.h"
 #include "Event\ApplicationEvents.h"
 
-
+MainCamera* camera;
 MainMenuScene::MainMenuScene() : Scene("MainMenuScene")
 {
 
@@ -23,7 +26,7 @@ MainMenuScene::MainMenuScene() : Scene("MainMenuScene")
 
 void MainMenuScene::LoadAssets() {
 
-	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.png");
+	AssetLoader::Instance().LoadTexture("Assets\\Textures\\manual.jpg");
 
 
 }
@@ -37,6 +40,11 @@ void MainMenuScene::QuitScene() {
 }
 
 void MainMenuScene::Initialize() {
+
+	Terrain::Instance().Initialize(256);
+	//Terrain::Instance().Initialize(512);
+
+	skybox = new Skybox(AssetLoader::Instance().GetAsset<CubeMap>("SunSet"));
 
 	int wx, wy;
 	Window::Instance().GetWindowSize(wx, wy);
@@ -70,7 +78,7 @@ void MainMenuScene::Initialize() {
 		quitButton->isActive = 0;
 		loadFailedText->isActive = 0;
 		loadingText->isActive = 1;
-
+		loadingImage->isActive = 1;
 		GUIManager::Instance().RenderNoButtonCallbacks();
 
 		SceneManager::Instance().LoadNewScene("MainScene");
@@ -122,7 +130,7 @@ void MainMenuScene::Initialize() {
 	loadFailedText->isActive = 0;
 
 	GUIManager::Instance().AddGUIObject(gameTitle);
-	GUIManager::Instance().AddGUIObject(menuImage);
+	//GUIManager::Instance().AddGUIObject(menuImage);
 	GUIManager::Instance().AddGUIObject(loadingImage);
 	GUIManager::Instance().AddGUIObject(loadingText);
 	GUIManager::Instance().AddGUIObject(loadFailedText);
@@ -135,11 +143,34 @@ void MainMenuScene::Initialize() {
 	GUIManager::Instance().AddGUIObject(gameLogo);
 	GUIManager::Instance().AddGUIObject(manualImage);
 
+	camera = new MainCamera();
+	camera->transform.SetRotation(0, 300, 0);
+
+
+	int x, y, z;
+	Terrain::Instance().GetCenter(x, y, z);
+	camera->transform.SetPosition(x+500, 2000, z+500);
+
+	DirectionalLight* dirLight = new DirectionalLight();
+	dirLight->SetDiffuseColor(1, 1, 1);
+	dirLight->transform.SetRotation(70, 117, 0);
+	dirLight->SetIntensity(0.9f);
+	dirLight->SetDiffuseColor(1.0, 1.0, 0.8);
+	
+	Water* water = new Water();
+	water->transform.SetPosition(x, y+1000, z);
+	water->transform.SetScale(5000, 5000, 5000);
+
+	AddGameObject(&Terrain::Instance());
+	AddGameObject(water);
+	AddGameObject(camera);
+
+
+
 
 }
 void MainMenuScene::LogicUpdate() {
 	//Logger::LogInfo("Updating scene", name);
-
 
 
 	if (manualImage->isActive)	
